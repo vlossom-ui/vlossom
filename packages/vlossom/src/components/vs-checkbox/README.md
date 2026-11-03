@@ -78,66 +78,70 @@ async function confirmChange(from, to) {
 
 ### VsCheckbox Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
-| `styleSet` | `string \| VsCheckboxStyleSet` | | | Custom style set |
-| `width` | `string \| number \| Breakpoints` | | | Width of the component |
-| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
-| `beforeChange` | `(from, to, optionValue) => Promise<boolean> \| null` | `null` | | Async hook called before value change |
-| `checked` | `boolean` | `false` | | Initial checked state |
-| `checkLabel` | `string` | `''` | | Label displayed next to the checkbox |
-| `disabled` | `boolean` | `false` | | Disables the checkbox |
-| `hidden` | `boolean` | `false` | | Hides the component |
-| `id` | `string` | `''` | | HTML id attribute |
-| `indeterminate` | `boolean` | `false` | | Shows indeterminate state |
-| `label` | `string` | `''` | | Field label |
-| `messages` | `Message[]` | `[]` | | Validation messages |
-| `modelValue` | `any` | `false` | | v-model value |
-| `multiple` | `boolean` | `false` | | Enables multiple selection mode |
-| `name` | `string` | `''` | | HTML name attribute |
-| `noDefaultRules` | `boolean` | `false` | | Disables default validation rules |
-| `noLabel` | `boolean` | `false` | | Hides the label |
-| `noMessages` | `boolean` | `false` | | Hides validation messages |
-| `readonly` | `boolean` | `false` | | Makes the checkbox read-only |
-| `required` | `boolean` | `false` | | Marks field as required |
-| `rules` | `Rule[]` | `[]` | | Custom validation rules |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Checkbox box size and label font size |
-| `state` | `UIState` | `'idle'` | | Validation state |
-| `trueValue` | `any` | `true` | | Value when checked |
-| `falseValue` | `any` | `false` | | Value when unchecked |
+| Prop             | Type                                                  | Default  | Required | Description                                                                   |
+| ---------------- | ----------------------------------------------------- | -------- | -------- | ----------------------------------------------------------------------------- |
+| `colorScheme`    | `ColorScheme`                                         |          |          | Color scheme for the component                                                |
+| `styleSet`       | `string \| VsCheckboxStyleSet`                        |          |          | Custom style set                                                              |
+| `width`          | `string \| number \| Breakpoints`                     |          |          | Width of the component                                                        |
+| `grid`           | `string \| number \| Breakpoints`                     |          |          | Grid column span                                                              |
+| `beforeChange`   | `(from, to, optionValue) => Promise<boolean> \| null` | `null`   |          | Async hook called before value change                                         |
+| `checked`        | `boolean`                                             | `false`  |          | Initial checked state                                                         |
+| `checkLabel`     | `string`                                              | `''`     |          | Label displayed next to the checkbox                                          |
+| `disabled`       | `boolean`                                             | `false`  |          | Disables the checkbox                                                         |
+| `hidden`         | `boolean`                                             | `false`  |          | Hides the component                                                           |
+| `id`             | `string`                                              | `''`     |          | HTML id attribute                                                             |
+| `indeterminate`  | `boolean`                                             | `false`  |          | Shows indeterminate state                                                     |
+| `label`          | `string`                                              | `''`     |          | Field label                                                                   |
+| `messages`       | `Message[]`                                           | `[]`     |          | Validation messages                                                           |
+| `modelValue`     | `any`                                                 | `false`  |          | v-model value                                                                 |
+| `multiple`       | `boolean`                                             | `false`  |          | Enables multiple selection mode                                               |
+| `name`           | `string`                                              | `''`     |          | HTML name attribute                                                           |
+| `noDefaultRules` | `boolean`                                             | `false`  |          | Disables default validation rules                                             |
+| `noLabel`        | `boolean`                                             | `false`  |          | Hides the label                                                               |
+| `noMessages`     | `boolean`                                             | `false`  |          | Hides validation messages                                                     |
+| `readonly`       | `boolean`                                             | `false`  |          | Makes the checkbox read-only                                                  |
+| `required`       | `boolean`                                             | `false`  |          | Marks field as required                                                       |
+| `rules`          | `Rule[]`                                              | `[]`     |          | Custom validation rules                                                       |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                | `'md'`   |          | Checkbox box size and label font size                                         |
+| `state`          | `UIState`                                             | `'idle'` |          | Validation state                                                              |
+| `trueValue`      | `any`                                                 | `true`   |          | Value when checked                                                            |
+| `falseValue`     | `any`                                                 | `false`  |          | Value when unchecked                                                          |
+| `changed`        | `boolean`                                             | `false`  |          | Read-only `v-model:changed` (output only). Externally set values are ignored. |
+| `valid`          | `boolean`                                             | `false`  |          | Read-only `v-model:valid` (output only). Externally set values are ignored.   |
 
 ### VsCheckboxSet Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
-| `styleSet` | `string \| VsCheckboxSetStyleSet` | | | Custom style set |
-| `width` | `string \| number \| Breakpoints` | | | Width of the component |
-| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
-| `beforeChange` | `(from, to, optionValue) => Promise<boolean> \| null` | `null` | | Async hook called before value change |
-| `disabled` | `boolean` | `false` | | Disables all checkboxes in the set |
-| `hidden` | `boolean` | `false` | | Hides the component |
-| `id` | `string` | `''` | | HTML id attribute |
-| `label` | `string` | `''` | | Field label |
-| `loading` | `boolean` | `false` |  | Shows a skeleton instead of checkboxes |
-| `max` | `number \| null` | `null` | | Maximum number of selectable items |
-| `messages` | `Message[]` | `[]` | | Validation messages |
-| `min` | `number \| null` | `null` | | Minimum number of selectable items |
-| `modelValue` | `any[]` | `[]` | | v-model binding (array of selected values) |
-| `name` | `string` | `''` | | HTML name attribute |
-| `noDefaultRules` | `boolean` | `false` | | Disables default validation rules |
-| `noLabel` | `boolean` | `false` | | Hides the label |
-| `noMessages` | `boolean` | `false` | | Hides validation messages |
-| `options` | `any[]` | `[]` | | Array of options to display as checkboxes |
-| `optionLabel` | `string` | `'label'` | | Key to use as the label for each option |
-| `optionValue` | `string` | `'value'` | | Key to use as the value for each option |
-| `readonly` | `boolean` | `false` | | Makes all checkboxes read-only |
-| `required` | `boolean` | `false` | | Marks field as required |
-| `rules` | `Rule[]` | `[]` | | Custom validation rules |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Size propagated to each `VsCheckbox` |
-| `state` | `UIState` | `'idle'` | | Validation state |
-| `vertical` | `boolean` | `false` | | Arranges checkboxes vertically |
+| Prop             | Type                                                  | Default   | Required | Description                                                                   |
+| ---------------- | ----------------------------------------------------- | --------- | -------- | ----------------------------------------------------------------------------- |
+| `colorScheme`    | `ColorScheme`                                         |           |          | Color scheme for the component                                                |
+| `styleSet`       | `string \| VsCheckboxSetStyleSet`                     |           |          | Custom style set                                                              |
+| `width`          | `string \| number \| Breakpoints`                     |           |          | Width of the component                                                        |
+| `grid`           | `string \| number \| Breakpoints`                     |           |          | Grid column span                                                              |
+| `beforeChange`   | `(from, to, optionValue) => Promise<boolean> \| null` | `null`    |          | Async hook called before value change                                         |
+| `disabled`       | `boolean`                                             | `false`   |          | Disables all checkboxes in the set                                            |
+| `hidden`         | `boolean`                                             | `false`   |          | Hides the component                                                           |
+| `id`             | `string`                                              | `''`      |          | HTML id attribute                                                             |
+| `label`          | `string`                                              | `''`      |          | Field label                                                                   |
+| `loading`        | `boolean`                                             | `false`   |          | Shows a skeleton instead of checkboxes                                        |
+| `max`            | `number \| null`                                      | `null`    |          | Maximum number of selectable items                                            |
+| `messages`       | `Message[]`                                           | `[]`      |          | Validation messages                                                           |
+| `min`            | `number \| null`                                      | `null`    |          | Minimum number of selectable items                                            |
+| `modelValue`     | `any[]`                                               | `[]`      |          | v-model binding (array of selected values)                                    |
+| `name`           | `string`                                              | `''`      |          | HTML name attribute                                                           |
+| `noDefaultRules` | `boolean`                                             | `false`   |          | Disables default validation rules                                             |
+| `noLabel`        | `boolean`                                             | `false`   |          | Hides the label                                                               |
+| `noMessages`     | `boolean`                                             | `false`   |          | Hides validation messages                                                     |
+| `options`        | `any[]`                                               | `[]`      |          | Array of options to display as checkboxes                                     |
+| `optionLabel`    | `string`                                              | `'label'` |          | Key to use as the label for each option                                       |
+| `optionValue`    | `string`                                              | `'value'` |          | Key to use as the value for each option                                       |
+| `readonly`       | `boolean`                                             | `false`   |          | Makes all checkboxes read-only                                                |
+| `required`       | `boolean`                                             | `false`   |          | Marks field as required                                                       |
+| `rules`          | `Rule[]`                                              | `[]`      |          | Custom validation rules                                                       |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                | `'md'`    |          | Size propagated to each `VsCheckbox`                                          |
+| `state`          | `UIState`                                             | `'idle'`  |          | Validation state                                                              |
+| `vertical`       | `boolean`                                             | `false`   |          | Arranges checkboxes vertically                                                |
+| `changed`        | `boolean`                                             | `false`   |          | Read-only `v-model:changed` (output only). Externally set values are ignored. |
+| `valid`          | `boolean`                                             | `false`   |          | Read-only `v-model:valid` (output only). Externally set values are ignored.   |
 
 ## Types
 
@@ -183,41 +187,41 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `update:modelValue` | `any` | Emitted when the value changes |
-| `update:changed` | `boolean` | Emitted when changed state updates |
-| `update:valid` | `boolean` | Emitted when validation state updates |
-| `change` | `any` | Emitted on value change |
-| `focus` | `FocusEvent` | Emitted when the checkbox gains focus |
-| `blur` | `FocusEvent` | Emitted when the checkbox loses focus |
-| `toggle` | `boolean, MouseEvent` | Emitted after toggling; payload is the new checked state and the mouse event |
-| `clear` | `any` | Emitted with the previous value when the value is cleared |
+| Event               | Payload               | Description                                                                  |
+| ------------------- | --------------------- | ---------------------------------------------------------------------------- |
+| `update:modelValue` | `any`                 | Emitted when the value changes                                               |
+| `update:changed`    | `boolean`             | Emitted when changed state updates                                           |
+| `update:valid`      | `boolean`             | Emitted when validation state updates                                        |
+| `change`            | `any`                 | Emitted on value change                                                      |
+| `focus`             | `FocusEvent`          | Emitted when the checkbox gains focus                                        |
+| `blur`              | `FocusEvent`          | Emitted when the checkbox loses focus                                        |
+| `toggle`            | `boolean, MouseEvent` | Emitted after toggling; payload is the new checked state and the mouse event |
+| `clear`             | `any`                 | Emitted with the previous value when the value is cleared                    |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | — |
-| `label` | Custom label content |
+| Slot          | Description                         |
+| ------------- | ----------------------------------- |
+| `default`     | —                                   |
+| `label`       | Custom label content                |
 | `check-label` | Custom content next to the checkbox |
-| `messages` | Custom validation message content |
+| `messages`    | Custom validation message content   |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `clear` | — | Clears the checkbox value |
-| `reset` | — | Resets the checkbox value to its initial value |
-| `validate` | — | Triggers validation and returns the result |
-| `focus` | — | Focuses the checkbox input element |
-| `blur` | — | Blurs the checkbox input element |
-| `toggle` | — | Toggles the checked state and returns whether the value changed |
+| Method     | Parameters | Description                                                     |
+| ---------- | ---------- | --------------------------------------------------------------- |
+| `clear`    | —          | Clears the checkbox value                                       |
+| `reset`    | —          | Resets the checkbox value to its initial value                  |
+| `validate` | —          | Triggers validation and returns the result                      |
+| `focus`    | —          | Focuses the checkbox input element                              |
+| `blur`     | —          | Blurs the checkbox input element                                |
+| `toggle`   | —          | Toggles the checked state and returns whether the value changed |
 
 ## Cautions
 
 - If `modelValue` of `VsCheckboxSet` is set to values not present in `options` — either on mount or programmatically — the invalid values are removed and a console warning is printed.
 - If `options` changes and some selected values are no longer present, the missing entries are removed and a console warning is printed.
 - While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Use `loading` (or `disabled`) while options are loading if users should not interact with it. `loading` only affects display and interaction; it does not change when values are cleaned up.
-  - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
-  - In the meantime, validation treats no option as selected, so `required` and `min` fail.
+    - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
+    - In the meantime, validation treats no option as selected, so `required` and `min` fail.

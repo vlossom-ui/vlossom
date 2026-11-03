@@ -72,18 +72,8 @@ interface VsAvatarStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
 | Slot      | Description                            |
 | --------- | -------------------------------------- |
 | `default` | 아바타 콘텐츠 — 이미지, 이니셜, 아이콘 |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

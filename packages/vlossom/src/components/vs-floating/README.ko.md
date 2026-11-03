@@ -68,19 +68,19 @@ const dropdownOpen = ref(false);
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `target` | `string` | `''` | ✓ | 위치 기준이 되는 대상 요소의 CSS 선택자 |
-| `align` | `'start' \| 'center' \| 'end'` | `'start'` | | 교차 축 방향의 정렬 |
-| `disabled` | `boolean` | `false` | | 플로팅 요소 표시 방지 |
-| `enterDelay` | `string \| number` | `0` | | 표시 전 지연 시간(밀리초) |
-| `leaveDelay` | `string \| number` | `0` | | 숨김 전 지연 시간(밀리초) |
-| `margin` | `string \| number` | `5` | | 대상과 플로팅 요소 사이의 픽셀 간격 |
-| `noAnimation` | `boolean` | `false` | | 페이드 인/아웃 애니메이션 비활성화 |
-| `placement` | `'top' \| 'bottom' \| 'left' \| 'right' \| 'middle'` | `'bottom'` | | 플로팅 요소의 선호 배치 방향 |
-| `followWidth` | `boolean` | `false` | | 플로팅 요소 너비를 대상 요소 너비에 맞추기 |
-| `overlayId` | `string` | `'#vs-floating-overlay'` | | 텔레포트 컨테이너의 CSS 선택자 |
-| `modelValue` | `boolean` | `false` | | 플로팅 요소 표시/숨김을 위한 v-model 바인딩 |
+| Prop          | 타입                                                 | 기본값                   | 필수 | 설명                                        |
+| ------------- | ---------------------------------------------------- | ------------------------ | ---- | ------------------------------------------- |
+| `target`      | `string`                                             | `''`                     | ✓    | 위치 기준이 되는 대상 요소의 CSS 선택자     |
+| `align`       | `'start' \| 'center' \| 'end'`                       | `'start'`                |      | 교차 축 방향의 정렬                         |
+| `disabled`    | `boolean`                                            | `false`                  |      | 플로팅 요소 표시 방지                       |
+| `enterDelay`  | `string \| number`                                   | `0`                      |      | 표시 전 지연 시간(밀리초)                   |
+| `leaveDelay`  | `string \| number`                                   | `0`                      |      | 숨김 전 지연 시간(밀리초)                   |
+| `margin`      | `string \| number`                                   | `5`                      |      | 대상과 플로팅 요소 사이의 픽셀 간격         |
+| `noAnimation` | `boolean`                                            | `false`                  |      | 페이드 인/아웃 애니메이션 비활성화          |
+| `placement`   | `'top' \| 'bottom' \| 'left' \| 'right' \| 'middle'` | `'bottom'`               |      | 플로팅 요소의 선호 배치 방향                |
+| `followWidth` | `boolean`                                            | `false`                  |      | 플로팅 요소 너비를 대상 요소 너비에 맞추기  |
+| `overlayId`   | `string`                                             | `'#vs-floating-overlay'` |      | 텔레포트 컨테이너의 CSS 선택자              |
+| `modelValue`  | `boolean`                                            | `false`                  |      | 플로팅 요소 표시/숨김을 위한 v-model 바인딩 |
 
 ## 타입
 
@@ -92,17 +92,12 @@ VsFloating은 `styleSet` prop을 사용하지 않습니다. 기본 슬롯을 통
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
+| 이벤트              | 페이로드  | 설명                    |
+| ------------------- | --------- | ----------------------- |
 | `update:modelValue` | `boolean` | 가시성이 변경될 때 발생 |
 
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
+| 슬롯      | 설명                                                                               |
+| --------- | ---------------------------------------------------------------------------------- |
 | `default` | 플로팅 콘텐츠. 계산된 배치 방향을 반영하는 `{ placement: string }` 슬롯 props 제공 |
-
-## 메서드
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |

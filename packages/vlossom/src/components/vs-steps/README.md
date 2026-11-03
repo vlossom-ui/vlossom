@@ -59,18 +59,18 @@ const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 ## Props
 
-| Prop          | Type                                                          | Default  | Required | Description                                           |
-| ------------- | ------------------------------------------------------------- | -------- | -------- | ----------------------------------------------------- |
-| `colorScheme` | `string`                                                      | -        | -        | Color scheme for the component                        |
-| `styleSet`    | `string \| VsStepsStyleSet`                                   | -        | -        | Custom style set for the component                    |
-| `width`       | `string \| number \| Breakpoints`                             | -        | -        | Responsive width                                      |
-| `grid`        | `string \| number \| Breakpoints`                             | -        | -        | Grid column span                                      |
-| `height`      | `string`                                                      | -        | -        | Height of the steps container (used in vertical mode) |
-| `disabled`    | `boolean \| ((step: string, index: number) => boolean)`       | `false`  | -        | Disables steps; can be a boolean or per-step function |
-| `noLabel`     | `boolean`                                                     | `false`  | -        | Hides step labels                                     |
-| `steps`       | `string[]`                                                    | `[]`     | -        | Array of step label strings                           |
-| `vertical`    | `boolean`                                                     | `false`  | -        | Displays steps vertically                             |
-| `modelValue`  | `number`                                                      | `0`      | -        | Current step index (v-model)                          |
+| Prop          | Type                                                    | Default | Required | Description                                           |
+| ------------- | ------------------------------------------------------- | ------- | -------- | ----------------------------------------------------- |
+| `colorScheme` | `string`                                                | -       | -        | Color scheme for the component                        |
+| `styleSet`    | `string \| VsStepsStyleSet`                             | -       | -        | Custom style set for the component                    |
+| `width`       | `string \| number \| Breakpoints`                       | -       | -        | Responsive width                                      |
+| `grid`        | `string \| number \| Breakpoints`                       | -       | -        | Grid column span                                      |
+| `height`      | `string`                                                | -       | -        | Height of the steps container (used in vertical mode) |
+| `disabled`    | `boolean \| ((step: string, index: number) => boolean)` | `false` | -        | Disables steps; can be a boolean or per-step function |
+| `noLabel`     | `boolean`                                               | `false` | -        | Hides step labels                                     |
+| `steps`       | `string[]`                                              | `[]`    | -        | Array of step label strings                           |
+| `vertical`    | `boolean`                                               | `false` | -        | Displays steps vertically                             |
+| `modelValue`  | `number`                                                | `0`     | -        | Current step index (v-model)                          |
 
 ## Types
 
@@ -121,19 +121,14 @@ interface VsStepsStyleSet extends CSSProperties {
 
 ## Events
 
-| Event               | Payload  | Description                            |
-| ------------------- | -------- | -------------------------------------- |
-| `update:modelValue` | `number` | Emitted when the active step changes   |
-| `change`            | `number` | Emitted when the active step changes   |
+| Event               | Payload  | Description                          |
+| ------------------- | -------- | ------------------------------------ |
+| `update:modelValue` | `number` | Emitted when the active step changes |
+| `change`            | `number` | Emitted when the active step changes |
 
 ## Slots
 
-| Slot    | Description                                                                      |
-| ------- | -------------------------------------------------------------------------------- |
+| Slot    | Description                                                                                         |
+| ------- | --------------------------------------------------------------------------------------------------- |
 | `step`  | Custom content for each step circle; receives `{ step, index, isSelected, isPrevious, isDisabled }` |
-| `label` | Custom content for each step label; receives `{ step, index, isSelected, isPrevious, isDisabled }` |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| `label` | Custom content for each step label; receives `{ step, index, isSelected, isPrevious, isDisabled }`  |

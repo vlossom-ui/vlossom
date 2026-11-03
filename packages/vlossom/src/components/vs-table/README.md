@@ -217,7 +217,7 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when there 
 | `loading`       | `boolean`                                      | `false`  | Shows loading state and disables search, pagination, dragging, and selection                                                              |
 | `page`          | `number`                                       |          | Current page index (0-based), v-model                                                                                                     |
 | `pageSize`      | `number`                                       |          | Number of rows per page, v-model. Defaults to the first page size option                                                                  |
-| `pagedItems`    | `VsTableItem[]`                                | `[]`     | Rows on the current page, v-model (output only)                                                                                           |
+| `pagedItems`    | `VsTableItem[]`                                | `[]`     | Rows on the current page. Read-only `v-model:paged-items` (output only). Externally set values are ignored.                              |
 | `pagination`    | `boolean \| VsTablePaginationOptions`          | `false`  | Enables pagination                                                                                                                        |
 | `primary`       | `boolean`                                      | `false`  | Applies primary color to the header                                                                                                       |
 | `responsive`    | `boolean`                                      | `false`  | Enables responsive (stacked) layout                                                                                                       |
@@ -227,7 +227,7 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when there 
 | `serverMode`    | `boolean`                                      | `false`  | Switches to server-side pagination mode                                                                                                   |
 | `state`         | `UIState \| (item, index?, items?) => UIState` | `'idle'` | Row state for styling                                                                                                                     |
 | `stickyHeader`  | `boolean`                                      | `false`  | Makes the table header sticky on scroll                                                                                                   |
-| `totalItems`    | `VsTableItem[]`                                | `[]`     | All rows in display order after search and sorting, v-model (output only)                                                                 |
+| `totalItems`    | `VsTableItem[]`                                | `[]`     | All rows in display order after search and sorting. Read-only `v-model:total-items` (output only). Externally set values are ignored.    |
 
 When `selectable`, `expandable`, or `state` is a function, `index` is the row's position among the rows currently displayed and `items` is that displayed list, so `items[index]` is always `item`.
 
@@ -362,3 +362,4 @@ The `select` slot replaces the selection column cell in the header and in every 
 - Dragging changes only what the table shows. Persist the order yourself from `totalItems` or the `drag` event if it has to survive an `items` update.
 - Pass `items` as a stable reference (`ref`, `computed`, API response), not an array literal in the template. A template literal creates new row objects on every parent render, so binding `v-model:total-items` or `v-model:paged-items` causes recursive updates.
 - To restore a saved selection, set `selectedItems` after `items` has loaded. Rows not in `items` yet are dropped from the selection.
+

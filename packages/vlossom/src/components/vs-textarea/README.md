@@ -79,36 +79,36 @@ const text = ref('');
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsTextareaStyleSet` | | | Custom style set for the component |
-| `autocomplete` | `boolean` | `false` | | Enables browser autocomplete |
-| `changed` | `boolean` | `false` | | v-model for changed state |
-| `disabled` | `boolean` | `false` | | Disables the textarea |
-| `emptyValue` | `string \| null` | `''` | | Value used when the textarea is empty |
-| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
-| `hidden` | `boolean` | `false` | | Hides the component |
-| `id` | `string` | `''` | | HTML `id` attribute |
-| `label` | `string` | `''` | | Label text |
-| `max` | `number \| string` | | | Maximum character length |
-| `messages` | `Message[]` | `[]` | | Validation messages |
-| `min` | `number \| string` | | | Minimum character length |
-| `modelValue` | `string \| null` | `''` | | v-model value |
-| `modelModifiers` | `StringModifiers` | `{}` | | String modifier flags |
-| `name` | `string` | `''` | | HTML `name` attribute |
-| `noDefaultRules` | `boolean` | `false` | | Disables built-in min/max/required rules |
-| `noLabel` | `boolean` | `false` | | Hides the label area |
-| `noMessages` | `boolean` | `false` | | Hides the message area |
-| `placeholder` | `string` | `''` | | Placeholder text |
-| `focusPlaceholder` | `string` | `''` | | Placeholder shown while the textarea is focused. Falls back to `placeholder` when not focused. |
-| `readonly` | `boolean` | `false` | | Makes the textarea read-only |
-| `required` | `boolean` | `false` | | Marks the field as required |
-| `rules` | `Rule[]` | `[]` | | Custom validation rules |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Font size and padding |
-| `state` | `UIState` | `'idle'` | | UI state (`idle`, `success`, `warning`, `error`) |
-| `valid` | `boolean` | `false` | | v-model for valid state |
-| `width` | `string \| number \| Breakpoints` | | | Component width |
+| Prop               | Type                                   | Default  | Required | Description                                                                                    |
+| ------------------ | -------------------------------------- | -------- | -------- | ---------------------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                               |          |          | Color scheme for the component                                                                 |
+| `styleSet`         | `string \| VsTextareaStyleSet`         |          |          | Custom style set for the component                                                             |
+| `autocomplete`     | `boolean`                              | `false`  |          | Enables browser autocomplete                                                                   |
+| `changed`          | `boolean`                              | `false`  |          | Read-only `v-model:changed` (output only). Externally set values are ignored.                  |
+| `disabled`         | `boolean`                              | `false`  |          | Disables the textarea                                                                          |
+| `emptyValue`       | `string \| null`                       | `''`     |          | Value used when the textarea is empty                                                          |
+| `grid`             | `string \| number \| Breakpoints`      |          |          | Grid column span                                                                               |
+| `hidden`           | `boolean`                              | `false`  |          | Hides the component                                                                            |
+| `id`               | `string`                               | `''`     |          | HTML `id` attribute                                                                            |
+| `label`            | `string`                               | `''`     |          | Label text                                                                                     |
+| `max`              | `number \| string`                     |          |          | Maximum character length                                                                       |
+| `messages`         | `Message[]`                            | `[]`     |          | Validation messages                                                                            |
+| `min`              | `number \| string`                     |          |          | Minimum character length                                                                       |
+| `modelValue`       | `string \| null`                       | `''`     |          | v-model value                                                                                  |
+| `modelModifiers`   | `StringModifiers`                      | `{}`     |          | String modifier flags                                                                          |
+| `name`             | `string`                               | `''`     |          | HTML `name` attribute                                                                          |
+| `noDefaultRules`   | `boolean`                              | `false`  |          | Disables built-in min/max/required rules                                                       |
+| `noLabel`          | `boolean`                              | `false`  |          | Hides the label area                                                                           |
+| `noMessages`       | `boolean`                              | `false`  |          | Hides the message area                                                                         |
+| `placeholder`      | `string`                               | `''`     |          | Placeholder text                                                                               |
+| `focusPlaceholder` | `string`                               | `''`     |          | Placeholder shown while the textarea is focused. Falls back to `placeholder` when not focused. |
+| `readonly`         | `boolean`                              | `false`  |          | Makes the textarea read-only                                                                   |
+| `required`         | `boolean`                              | `false`  |          | Marks the field as required                                                                    |
+| `rules`            | `Rule[]`                               | `[]`     |          | Custom validation rules                                                                        |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`   |          | Font size and padding                                                                          |
+| `state`            | `UIState`                              | `'idle'` |          | UI state (`idle`, `success`, `warning`, `error`)                                               |
+| `valid`            | `boolean`                              | `false`  |          | Read-only `v-model:valid` (output only). Externally set values are ignored.                    |
+| `width`            | `string \| number \| Breakpoints`      |          |          | Component width                                                                                |
 
 ## Types
 
@@ -149,32 +149,32 @@ interface VsTextareaStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `update:modelValue` | `string \| null` | Emitted when the value changes |
-| `update:changed` | `boolean` | Emitted when the changed state updates |
-| `update:valid` | `boolean` | Emitted when the valid state updates |
-| `change` | `string` | Emitted on value change |
-| `focus` | `FocusEvent` | Emitted on focus |
-| `blur` | `FocusEvent` | Emitted on blur |
-| `clear` | `string` | Emitted with the previous value when the value is cleared |
+| Event               | Payload          | Description                                               |
+| ------------------- | ---------------- | --------------------------------------------------------- |
+| `update:modelValue` | `string \| null` | Emitted when the value changes                            |
+| `update:changed`    | `boolean`        | Emitted when the changed state updates                    |
+| `update:valid`      | `boolean`        | Emitted when the valid state updates                      |
+| `change`            | `string`         | Emitted on value change                                   |
+| `focus`             | `FocusEvent`     | Emitted on focus                                          |
+| `blur`              | `FocusEvent`     | Emitted on blur                                           |
+| `clear`             | `string`         | Emitted with the previous value when the value is cleared |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `label` | Custom label content |
-| `header` | Content displayed above the textarea, inside the box |
-| `footer` | Content displayed below the textarea, inside the box |
-| `messages` | Custom message content |
+| Slot       | Description                                          |
+| ---------- | ---------------------------------------------------- |
+| `label`    | Custom label content                                 |
+| `header`   | Content displayed above the textarea, inside the box |
+| `footer`   | Content displayed below the textarea, inside the box |
+| `messages` | Custom message content                               |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `focus` | | Focuses the textarea |
-| `blur` | | Blurs the textarea |
-| `validate` | | Triggers validation |
-| `clear` | | Clears the value |
-| `reset` | | Resets the value to its initial value |
-| `select` | | Selects all text in the textarea |
+| Method     | Parameters | Description                           |
+| ---------- | ---------- | ------------------------------------- |
+| `focus`    |            | Focuses the textarea                  |
+| `blur`     |            | Blurs the textarea                    |
+| `validate` |            | Triggers validation                   |
+| `clear`    |            | Clears the value                      |
+| `reset`    |            | Resets the value to its initial value |
+| `select`   |            | Selects all text in the textarea      |

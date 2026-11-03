@@ -130,8 +130,3 @@ interface VsImageStyleSet extends CSSProperties {
 | ---------- | ------------------------------------------------------------ |
 | `skeleton` | Custom content displayed inside the skeleton state.          |
 | `fallback` | Custom fallback UI used when no `fallback` prop is provided. |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

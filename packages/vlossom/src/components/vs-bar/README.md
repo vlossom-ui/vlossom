@@ -45,13 +45,13 @@ A full-width horizontal bar component typically used as a header, footer, or too
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
-| `styleSet` | `string \| VsBarStyleSet` | | | Custom style set |
-| `position` | `CssPosition` | | | CSS position value (`static`, `relative`, `absolute`, `fixed`, `sticky`) |
-| `primary` | `boolean` | `false` | | Applies primary color scheme |
-| `tag` | `string` | `'div'` | | HTML tag to render |
+| Prop          | Type                      | Default | Required | Description                                                              |
+| ------------- | ------------------------- | ------- | -------- | ------------------------------------------------------------------------ |
+| `colorScheme` | `ColorScheme`             |         |          | Color scheme for the component                                           |
+| `styleSet`    | `string \| VsBarStyleSet` |         |          | Custom style set                                                         |
+| `position`    | `CssPosition`             |         |          | CSS position value (`static`, `relative`, `absolute`, `fixed`, `sticky`) |
+| `primary`     | `boolean`                 | `false` |          | Applies primary color scheme                                             |
+| `tag`         | `string`                  | `'div'` |          | HTML tag to render                                                       |
 
 ## Types
 
@@ -76,18 +76,8 @@ interface VsBarStyleSet extends CSSProperties {}
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description |
+| --------- | ----------- |
 | `default` | Bar content |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

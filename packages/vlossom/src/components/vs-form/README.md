@@ -77,13 +77,13 @@ const value = ref('');
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `gridSize` | `number \| string` | | | Number of grid columns (default: 12) |
-| `columnGap` | `number \| string` | | | Gap between grid columns |
-| `rowGap` | `number \| string` | | | Gap between grid rows |
-| `disabled` | `boolean` | `false` | | Disable all child form inputs |
-| `readonly` | `boolean` | `false` | | Make all child form inputs read-only |
+| Prop        | Type               | Default | Required | Description                          |
+| ----------- | ------------------ | ------- | -------- | ------------------------------------ |
+| `gridSize`  | `number \| string` |         |          | Number of grid columns (default: 12) |
+| `columnGap` | `number \| string` |         |          | Gap between grid columns             |
+| `rowGap`    | `number \| string` |         |          | Gap between grid rows                |
+| `disabled`  | `boolean`          | `false` |          | Disable all child form inputs        |
+| `readonly`  | `boolean`          | `false` |          | Make all child form inputs read-only |
 
 ## Types
 
@@ -95,22 +95,22 @@ VsForm does not use a `styleSet` prop. Use `VsGrid` props (`gridSize`, `columnGa
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event   | Payload    | Description                                                                                     |
+| ------- | ---------- | ----------------------------------------------------------------------------------------------- |
 | `error` | `string[]` | Emitted after `validate()` when the form is invalid. Payload contains the ids of invalid fields |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description                                        |
+| --------- | -------------------------------------------------- |
 | `default` | Form content — place Vlossom input components here |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `validate` | - | Triggers validation for all child inputs. Returns `Promise<boolean>` indicating whether the form is valid |
-| `clear` | - | Empties all child inputs |
-| `reset` | - | Restores all child inputs to the values captured at initialization (so `changed` becomes `false`) |
-| `valid` | - | Computed property (`ComputedRef<boolean>`) — `true` when all child inputs are valid |
-| `changed` | - | Computed property (`ComputedRef<boolean>`) — `true` when any child input has been changed |
+| Method     | Parameters | Description                                                                                               |
+| ---------- | ---------- | --------------------------------------------------------------------------------------------------------- |
+| `validate` | -          | Triggers validation for all child inputs. Returns `Promise<boolean>` indicating whether the form is valid |
+| `clear`    | -          | Empties all child inputs                                                                                  |
+| `reset`    | -          | Restores all child inputs to the values captured at initialization (so `changed` becomes `false`)         |
+| `valid`    | -          | Computed property (`ComputedRef<boolean>`) — `true` when all child inputs are valid                       |
+| `changed`  | -          | Computed property (`ComputedRef<boolean>`) — `true` when any child input has been changed                 |

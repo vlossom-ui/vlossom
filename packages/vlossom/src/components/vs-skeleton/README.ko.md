@@ -45,10 +45,10 @@
 
 ## Props
 
-| Prop          | Type                           | Default | Required | 설명                               |
-| ------------- | ------------------------------ | ------- | -------- | ---------------------------------- |
-| `colorScheme` | `string`                       | -       | -        | 컴포넌트의 색상 스킴               |
-| `styleSet`    | `string \| VsSkeletonStyleSet`  | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트 |
+| Prop          | Type                           | Default | Required | 설명                                 |
+| ------------- | ------------------------------ | ------- | -------- | ------------------------------------ |
+| `colorScheme` | `string`                       | -       | -        | 컴포넌트의 색상 스킴                 |
+| `styleSet`    | `string \| VsSkeletonStyleSet` | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트 |
 
 ## Types
 
@@ -75,18 +75,8 @@ interface VsSkeletonStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | 설명 |
-| ----- | ------- | ---- |
-
 ## Slots
 
 | Slot      | 설명                                             |
 | --------- | ------------------------------------------------ |
 | `default` | 스켈레톤 배경 위에 중앙 정렬되어 표시되는 콘텐츠 |
-
-## Methods
-
-| Method | Parameters | 설명 |
-| ------ | ---------- | ---- |

@@ -55,18 +55,18 @@ const outlinePage = ref(0);
 
 ## Props
 
-| Prop            | Type                            | Default | Required | 설명                                                   |
-| --------------- | ------------------------------- | ------- | -------- | ------------------------------------------------------ |
-| `colorScheme`   | `string`                        | -       | -        | 컴포넌트의 색상 스킴                                   |
-| `styleSet`      | `string \| VsPaginationStyleSet` | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트                   |
-| `disabled`      | `boolean`                       | `false` | -        | 모든 페이지네이션 버튼을 비활성화                      |
-| `edgeButtons`   | `boolean`                       | `false` | -        | 첫 페이지 및 마지막 페이지 이동 버튼 표시              |
-| `ghost`         | `boolean`                       | `false` | -        | 버튼에 ghost 스타일 적용                               |
-| `length`        | `number`                        | `1`     | Yes      | 전체 페이지 수 (0보다 커야 함)                         |
-| `outline`       | `boolean`                       | `false` | -        | 버튼에 outline 스타일 적용                             |
-| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -      | 버튼 높이 · 폰트 · 아이콘 크기 제어                    |
-| `showingLength` | `number`                        | `10`    | -        | 한 번에 표시할 페이지 버튼 수                          |
-| `modelValue`    | `number`                        | `0`     | -        | 현재 페이지 인덱스 (0-based), `v-model`과 함께 사용   |
+| Prop            | Type                                   | Default | Required | 설명                                                |
+| --------------- | -------------------------------------- | ------- | -------- | --------------------------------------------------- |
+| `colorScheme`   | `string`                               | -       | -        | 컴포넌트의 색상 스킴                                |
+| `styleSet`      | `string \| VsPaginationStyleSet`       | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트                |
+| `disabled`      | `boolean`                              | `false` | -        | 모든 페이지네이션 버튼을 비활성화                   |
+| `edgeButtons`   | `boolean`                              | `false` | -        | 첫 페이지 및 마지막 페이지 이동 버튼 표시           |
+| `ghost`         | `boolean`                              | `false` | -        | 버튼에 ghost 스타일 적용                            |
+| `length`        | `number`                               | `1`     | Yes      | 전체 페이지 수 (0보다 커야 함)                      |
+| `outline`       | `boolean`                              | `false` | -        | 버튼에 outline 스타일 적용                          |
+| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | 버튼 높이 · 폰트 · 아이콘 크기 제어                 |
+| `showingLength` | `number`                               | `10`    | -        | 한 번에 표시할 페이지 버튼 수                       |
+| `modelValue`    | `number`                               | `0`     | -        | 현재 페이지 인덱스 (0-based), `v-model`과 함께 사용 |
 
 ## Types
 
@@ -104,27 +104,27 @@ interface VsPaginationStyleSet extends CSSProperties {
 
 ## Events
 
-| Event               | Payload  | 설명                               |
-| ------------------- | -------- | ---------------------------------- |
-| `update:modelValue` | `number` | 현재 페이지가 변경될 때 발생       |
-| `change`            | `number` | 현재 페이지가 변경될 때 발생       |
+| Event               | Payload  | 설명                         |
+| ------------------- | -------- | ---------------------------- |
+| `update:modelValue` | `number` | 현재 페이지가 변경될 때 발생 |
+| `change`            | `number` | 현재 페이지가 변경될 때 발생 |
 
 ## Slots
 
-| Slot    | 설명                                             |
-| ------- | ------------------------------------------------ |
-| `first` | "첫 페이지" 버튼 커스텀 아이콘                  |
-| `last`  | "마지막 페이지" 버튼 커스텀 아이콘              |
-| `prev`  | "이전 페이지" 버튼 커스텀 아이콘                |
-| `next`  | "다음 페이지" 버튼 커스텀 아이콘                |
+| Slot    | 설명                                                  |
+| ------- | ----------------------------------------------------- |
+| `first` | "첫 페이지" 버튼 커스텀 아이콘                        |
+| `last`  | "마지막 페이지" 버튼 커스텀 아이콘                    |
+| `prev`  | "이전 페이지" 버튼 커스텀 아이콘                      |
+| `next`  | "다음 페이지" 버튼 커스텀 아이콘                      |
 | `page`  | 각 페이지 버튼 커스텀 콘텐츠; `{ page: number }` 수신 |
 
 ## Methods
 
-| Method      | Parameters         | 설명                               |
-| ----------- | ------------------ | ---------------------------------- |
-| `goFirst`   | -                  | 첫 번째 페이지로 이동              |
-| `goLast`    | -                  | 마지막 페이지로 이동               |
-| `goPrev`    | -                  | 이전 페이지로 이동                 |
-| `goNext`    | -                  | 다음 페이지로 이동                 |
-| `setPage`   | `page: number`     | 지정한 페이지 인덱스로 이동        |
+| Method    | Parameters     | 설명                        |
+| --------- | -------------- | --------------------------- |
+| `goFirst` | -              | 첫 번째 페이지로 이동       |
+| `goLast`  | -              | 마지막 페이지로 이동        |
+| `goPrev`  | -              | 이전 페이지로 이동          |
+| `goNext`  | -              | 다음 페이지로 이동          |
+| `setPage` | `page: number` | 지정한 페이지 인덱스로 이동 |

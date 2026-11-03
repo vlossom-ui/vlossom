@@ -81,13 +81,13 @@ When `items` has more than 100 entries, only the rows near the visible area are 
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `styleSet` | `string \| VsGroupedListStyleSet` | | | Custom style set for the component |
-| `items` | `OptionItem[]` | `[]` | | Array of items to display |
-| `groupBy` | `(item: any, index: number) => string` | | | Function that returns the group name for each item |
-| `groupOrder` | `string[]` | | | Order in which groups should appear |
-| `noVirtual` | `boolean` | `false` | | Disable automatic virtual scrolling and render every item |
+| Prop         | Type                                   | Default | Required | Description                                               |
+| ------------ | -------------------------------------- | ------- | -------- | --------------------------------------------------------- |
+| `styleSet`   | `string \| VsGroupedListStyleSet`      |         |          | Custom style set for the component                        |
+| `items`      | `OptionItem[]`                         | `[]`    |          | Array of items to display                                 |
+| `groupBy`    | `(item: any, index: number) => string` |         |          | Function that returns the group name for each item        |
+| `groupOrder` | `string[]`                             |         |          | Order in which groups should appear                       |
+| `noVirtual`  | `boolean`                              | `false` |          | Disable automatic virtual scrolling and render every item |
 
 ## Types
 
@@ -119,23 +119,23 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event        | Payload                                                                                | Description                     |
+| ------------ | -------------------------------------------------------------------------------------- | ------------------------------- |
 | `click-item` | `OptionItem & { groupedIndex: number; group: VsGroupedListGroup; groupIndex: number }` | Emitted when an item is clicked |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `header` | Content for the scrollable list header |
-| `footer` | Content for the scrollable list footer |
-| `empty` | Content shown in the list body when `items` is empty |
-| `group` | Custom render for a group header. Receives `{ group: string, groupIndex: number, items: OptionItem[] }` |
-| `item` | Custom render for an item. Receives the `OptionItem` fields plus `{ groupedIndex, group, groupIndex }` |
+| Slot     | Description                                                                                             |
+| -------- | ------------------------------------------------------------------------------------------------------- |
+| `header` | Content for the scrollable list header                                                                  |
+| `footer` | Content for the scrollable list footer                                                                  |
+| `empty`  | Content shown in the list body when `items` is empty                                                    |
+| `group`  | Custom render for a group header. Receives `{ group: string, groupIndex: number, items: OptionItem[] }` |
+| `item`   | Custom render for an item. Receives the `OptionItem` fields plus `{ groupedIndex, group, groupIndex }`  |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Method         | Parameters                    | Description                                                                                                                                                                     |
+| -------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `scrollToItem` | `id: string, offset?: number` | Scroll the list to the item with the given id, including items not yet rendered by virtual scrolling. `offset` shifts the scroll position up by the given pixels (default: `0`) |
-| `hasScroll` | - | Returns `boolean` — `true` if the list has a scrollbar |
+| `hasScroll`    | -                             | Returns `boolean` — `true` if the list has a scrollbar                                                                                                                          |

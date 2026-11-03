@@ -40,13 +40,13 @@ A progress bar component that displays the completion status of a task.
 
 ## Props
 
-| Prop          | Type                          | Default | Required | Description                                         |
-| ------------- | ----------------------------- | ------- | -------- | --------------------------------------------------- |
-| `colorScheme` | `string`                      | -       | -        | Color scheme for the component                      |
-| `styleSet`    | `string \| VsProgressStyleSet` | -       | -        | Custom style set for the component                  |
-| `max`         | `number \| string`            | `1`     | -        | Maximum value of the progress bar (must be > 0)     |
-| `value`       | `number \| string`            | `0`     | -        | Current value of the progress bar (must be >= 0)    |
-| `label`       | `string`                      | `''`    | -        | Text label displayed over the progress bar          |
+| Prop          | Type                           | Default | Required | Description                                      |
+| ------------- | ------------------------------ | ------- | -------- | ------------------------------------------------ |
+| `colorScheme` | `string`                       | -       | -        | Color scheme for the component                   |
+| `styleSet`    | `string \| VsProgressStyleSet` | -       | -        | Custom style set for the component               |
+| `max`         | `number \| string`             | `1`     | -        | Maximum value of the progress bar (must be > 0)  |
+| `value`       | `number \| string`             | `0`     | -        | Current value of the progress bar (must be >= 0) |
+| `label`       | `string`                       | `''`    | -        | Text label displayed over the progress bar       |
 
 ## Types
 
@@ -58,7 +58,6 @@ interface VsProgressStyleSet extends CSSProperties {
     $valueBackgroundColor?: string;
     $labelTextShadow?: string;
     $labelFontColor?: string;
-
 }
 ```
 
@@ -81,18 +80,3 @@ interface VsProgressStyleSet extends CSSProperties {
     />
 </template>
 ```
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

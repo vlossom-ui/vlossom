@@ -127,8 +127,3 @@ interface VsChipStyleSet extends CSSProperties {
 | --------- | --------------------------------------- |
 | `default` | Chip label content                      |
 | `icon`    | Leading icon displayed before the label |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

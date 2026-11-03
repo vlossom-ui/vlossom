@@ -127,8 +127,3 @@ interface VsChipStyleSet extends CSSProperties {
 | --------- | ------------------------------ |
 | `default` | Chip 라벨 콘텐츠               |
 | `icon`    | 라벨 앞에 표시되는 선행 아이콘 |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

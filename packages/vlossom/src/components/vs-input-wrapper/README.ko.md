@@ -82,21 +82,21 @@
 
 ## Props
 
-| Prop         | Type                                | Default | Required | Description                                                  |
-| ------------ | ----------------------------------- | ------- | -------- | ------------------------------------------------------------ |
-| `styleSet`   | `string \| VsInputWrapperStyleSet`  | -       | -        | 컴포넌트의 커스텀 스타일 셋.                                 |
-| `width`      | `string \| number \| Breakpoints`   | -       | -        | 컴포넌트 너비.                                               |
-| `grid`       | `string \| number \| Breakpoints`   | -       | -        | 레이아웃의 그리드 열 span.                                   |
-| `disabled`   | `boolean`                           | `false` | -        | 라벨 및 메시지에 비활성화 스타일을 적용합니다.               |
-| `hidden`     | `boolean`                           | `false` | -        | 전체 컴포넌트를 숨깁니다.                                    |
-| `id`         | `string`                            | `''`    | -        | 라벨의 `for` 속성과 연결되는 `id`.                           |
-| `label`      | `string`                            | `''`    | -        | 입력 위에 표시되는 라벨 텍스트.                              |
-| `noLabel`    | `boolean`                           | `false` | -        | 라벨 영역을 숨깁니다.                                        |
-| `noMessages` | `boolean`                           | `false` | -        | 메시지 영역을 숨깁니다.                                      |
-| `required`   | `boolean`                           | `false` | -        | 라벨 옆에 필수 표시(*) 인디케이터를 보여줍니다.              |
-| `groupLabel` | `boolean`                           | `false` | -        | 그룹 입력을 위해 `fieldset`/`legend`로 렌더링합니다.         |
-| `messages`   | `StateMessage[]`                    | `[]`    | -        | 입력 아래에 표시되는 상태+텍스트 메시지 배열.                |
-| `shake`      | `boolean`                           | `false` | -        | 수평 흔들기 애니메이션을 트리거합니다 (유효성 검사 실패 등). |
+| Prop         | Type                               | Default | Required | Description                                                  |
+| ------------ | ---------------------------------- | ------- | -------- | ------------------------------------------------------------ |
+| `styleSet`   | `string \| VsInputWrapperStyleSet` | -       | -        | 컴포넌트의 커스텀 스타일 셋.                                 |
+| `width`      | `string \| number \| Breakpoints`  | -       | -        | 컴포넌트 너비.                                               |
+| `grid`       | `string \| number \| Breakpoints`  | -       | -        | 레이아웃의 그리드 열 span.                                   |
+| `disabled`   | `boolean`                          | `false` | -        | 라벨 및 메시지에 비활성화 스타일을 적용합니다.               |
+| `hidden`     | `boolean`                          | `false` | -        | 전체 컴포넌트를 숨깁니다.                                    |
+| `id`         | `string`                           | `''`    | -        | 라벨의 `for` 속성과 연결되는 `id`.                           |
+| `label`      | `string`                           | `''`    | -        | 입력 위에 표시되는 라벨 텍스트.                              |
+| `noLabel`    | `boolean`                          | `false` | -        | 라벨 영역을 숨깁니다.                                        |
+| `noMessages` | `boolean`                          | `false` | -        | 메시지 영역을 숨깁니다.                                      |
+| `required`   | `boolean`                          | `false` | -        | 라벨 옆에 필수 표시(*) 인디케이터를 보여줍니다.              |
+| `groupLabel` | `boolean`                          | `false` | -        | 그룹 입력을 위해 `fieldset`/`legend`로 렌더링합니다.         |
+| `messages`   | `StateMessage[]`                   | `[]`    | -        | 입력 아래에 표시되는 상태+텍스트 메시지 배열.                |
+| `shake`      | `boolean`                          | `false` | -        | 수평 흔들기 애니메이션을 트리거합니다 (유효성 검사 실패 등). |
 
 ## Types
 
@@ -133,20 +133,10 @@ interface VsInputWrapperStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-
 ## Slots
 
-| 슬롯       | 설명                                              |
-| ---------- | ------------------------------------------------- |
-| `default`  | 감쌀 폼 입력 또는 콘텐츠.                         |
-| `label`    | 기본 라벨 텍스트를 대체하는 커스텀 라벨 콘텐츠.   |
-| `messages` | 기본 메시지를 대체하는 커스텀 메시지 콘텐츠.      |
-
-## Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
+| 슬롯       | 설명                                            |
+| ---------- | ----------------------------------------------- |
+| `default`  | 감쌀 폼 입력 또는 콘텐츠.                       |
+| `label`    | 기본 라벨 텍스트를 대체하는 커스텀 라벨 콘텐츠. |
+| `messages` | 기본 메시지를 대체하는 커스텀 메시지 콘텐츠.    |

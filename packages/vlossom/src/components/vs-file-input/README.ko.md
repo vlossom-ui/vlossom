@@ -72,35 +72,37 @@ const files = ref([]);
 
 ## Props
 
-| Prop             | Type                                                    | Default  | Required | 설명                                                            |
-| ---------------- | ------------------------------------------------------- | -------- | -------- | --------------------------------------------------------------- |
-| `colorScheme`    | `string`                                                | -        | -        | 컴포넌트의 색상 스킴                                            |
-| `styleSet`       | `string \| VsFileInputStyleSet`                         | -        | -        | 컴포넌트에 적용할 커스텀 스타일 세트                            |
-| `disabled`       | `boolean`                                               | `false`  | -        | 컴포넌트 비활성화                                               |
-| `hidden`         | `boolean`                                               | `false`  | -        | 컴포넌트 숨김                                                   |
-| `id`             | `string`                                                | `''`     | -        | HTML id 속성                                                    |
-| `label`          | `string`                                                | `''`     | -        | 레이블 텍스트                                                   |
-| `noLabel`        | `boolean`                                               | `false`  | -        | 레이블 숨김                                                     |
-| `noMessages`     | `boolean`                                               | `false`  | -        | 유효성 검사 메시지 숨김                                         |
-| `required`       | `boolean`                                               | `false`  | -        | 필수 입력 필드로 지정                                           |
-| `messages`       | `Message[]`                                             | `[]`     | -        | 유효성 검사 메시지                                              |
-| `name`           | `string`                                                | `''`     | -        | HTML name 속성                                                  |
-| `noDefaultRules` | `boolean`                                               | `false`  | -        | 내장 유효성 검사 규칙 비활성화                                  |
-| `placeholder`    | `string`                                                | `''`     | -        | 파일이 없을 때 표시되는 플레이스홀더                            |
-| `readonly`       | `boolean`                                               | `false`  | -        | 읽기 전용으로 설정                                              |
-| `rules`          | `Rule[]`                                                | `[]`     | -        | 커스텀 유효성 검사 규칙                                         |
-| `state`          | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | -        | 유효성 검사 상태                                                |
-| `width`          | `string \| number \| Breakpoints`                       | -        | -        | 반응형 너비                                                     |
-| `grid`           | `string \| number \| Breakpoints`                       | -        | -        | 그리드 컬럼 스팬                                                |
-| `accept`         | `string`                                                | `''`     | -        | 허용 파일 타입 (native accept 속성)                             |
-| `max`            | `number \| string`                                      | -        | -        | 최대 파일 수                                                    |
-| `min`            | `number \| string`                                      | -        | -        | 최소 파일 수                                                    |
-| `collapseChips`  | `boolean`                                               | `false`  | -        | 파일이 2개 이상일 때 첫 번째 칩만 표시하고 나머지는 +N으로 축약 |
-| `directory`      | `boolean`                                               | `false`  | -        | 폴더 선택 모드 활성화 (webkitdirectory)                         |
-| `multiple`       | `boolean`                                               | `false`  | -        | 복수 파일 선택 허용                                             |
-| `noClear`        | `boolean`                                               | `false`  | -        | 전체 클리어 버튼 숨김                                           |
-| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                  | `'md'`   | -        | 컴포넌트 크기                                                   |
-| `modelValue`     | `File[]`                                                | `[]`     | -        | 선택된 파일 목록 (v-model)                                      |
+| Prop             | Type                                                    | Default  | Required | 설명                                                                      |
+| ---------------- | ------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                                | -        | -        | 컴포넌트의 색상 스킴                                                      |
+| `styleSet`       | `string \| VsFileInputStyleSet`                         | -        | -        | 컴포넌트에 적용할 커스텀 스타일 세트                                      |
+| `disabled`       | `boolean`                                               | `false`  | -        | 컴포넌트 비활성화                                                         |
+| `hidden`         | `boolean`                                               | `false`  | -        | 컴포넌트 숨김                                                             |
+| `id`             | `string`                                                | `''`     | -        | HTML id 속성                                                              |
+| `label`          | `string`                                                | `''`     | -        | 레이블 텍스트                                                             |
+| `noLabel`        | `boolean`                                               | `false`  | -        | 레이블 숨김                                                               |
+| `noMessages`     | `boolean`                                               | `false`  | -        | 유효성 검사 메시지 숨김                                                   |
+| `required`       | `boolean`                                               | `false`  | -        | 필수 입력 필드로 지정                                                     |
+| `messages`       | `Message[]`                                             | `[]`     | -        | 유효성 검사 메시지                                                        |
+| `name`           | `string`                                                | `''`     | -        | HTML name 속성                                                            |
+| `noDefaultRules` | `boolean`                                               | `false`  | -        | 내장 유효성 검사 규칙 비활성화                                            |
+| `placeholder`    | `string`                                                | `''`     | -        | 파일이 없을 때 표시되는 플레이스홀더                                      |
+| `readonly`       | `boolean`                                               | `false`  | -        | 읽기 전용으로 설정                                                        |
+| `rules`          | `Rule[]`                                                | `[]`     | -        | 커스텀 유효성 검사 규칙                                                   |
+| `state`          | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | -        | 유효성 검사 상태                                                          |
+| `width`          | `string \| number \| Breakpoints`                       | -        | -        | 반응형 너비                                                               |
+| `grid`           | `string \| number \| Breakpoints`                       | -        | -        | 그리드 컬럼 스팬                                                          |
+| `accept`         | `string`                                                | `''`     | -        | 허용 파일 타입 (native accept 속성)                                       |
+| `max`            | `number \| string`                                      | -        | -        | 최대 파일 수                                                              |
+| `min`            | `number \| string`                                      | -        | -        | 최소 파일 수                                                              |
+| `collapseChips`  | `boolean`                                               | `false`  | -        | 파일이 2개 이상일 때 첫 번째 칩만 표시하고 나머지는 +N으로 축약           |
+| `directory`      | `boolean`                                               | `false`  | -        | 폴더 선택 모드 활성화 (webkitdirectory)                                   |
+| `multiple`       | `boolean`                                               | `false`  | -        | 복수 파일 선택 허용                                                       |
+| `noClear`        | `boolean`                                               | `false`  | -        | 전체 클리어 버튼 숨김                                                     |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                  | `'md'`   | -        | 컴포넌트 크기                                                             |
+| `modelValue`     | `File[]`                                                | `[]`     | -        | 선택된 파일 목록 (v-model). [주의사항](#주의사항) 참고.                                                                       |
+| `changed`        | `boolean`                                               | `false`  | -        | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
+| `valid`          | `boolean`                                               | `false`  | -        | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.   |
 
 ## Types
 
@@ -158,3 +160,7 @@ interface VsFileInputStyleSet extends CSSProperties {
 | `validate` | -          | 유효성 검사 실행                |
 | `clear`    | -          | 선택 파일 전체 클리어           |
 | `reset`    | -          | 선택 파일을 초기값으로 되돌리기 |
+
+## 주의사항
+
+`v-model`에 비어있지 않은 `File[]`을 쓰면 Vlossom UI와 validation에는 반영되지만, 브라우저가 네이티브 `<input type="file">`에 `File` 객체 주입을 허용하지 않아 네이티브 폼 submit에는 포함되지 않습니다. `[]`로 비우는 것은 네이티브까지 반영됩니다.

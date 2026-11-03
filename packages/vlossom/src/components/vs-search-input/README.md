@@ -121,11 +121,6 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 | `update:caseSensitive` | `boolean` | Emitted when the case-sensitive toggle changes                                              |
 | `update:regex`         | `boolean` | Emitted when the regex toggle changes                                                       |
 
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
 ## Methods
 
 | Method   | Parameters     | Description                                                 |

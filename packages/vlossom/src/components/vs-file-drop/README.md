@@ -79,35 +79,37 @@ Show a different hint while a file is being dragged over the area or the file di
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsFileDropStyleSet` | | | Custom style set for the component |
-| `disabled` | `boolean` | `false` | | Disable the file drop area |
-| `hidden` | `boolean` | `false` | | Hide the component |
-| `id` | `string` | `''` | | HTML id attribute |
-| `label` | `string` | `''` | | Label text displayed above the file drop area |
-| `noLabel` | `boolean` | `false` | | Hide the label |
-| `noMessages` | `boolean` | `false` | | Hide the messages area |
-| `required` | `boolean` | `false` | | Mark the field as required |
-| `messages` | `Message[]` | `[]` | | State messages to display |
-| `name` | `string` | `''` | | HTML name attribute for the input |
-| `noDefaultRules` | `boolean` | `false` | | Disable default validation rules |
-| `placeholder` | `string` | `''` | | Placeholder text shown in the drop area |
-| `focusPlaceholder` | `string` | `''` | | Placeholder shown while a file is dragged over the area or the file dialog is open; falls back to `placeholder` otherwise |
-| `readonly` | `boolean` | `false` | | Make the component read-only |
-| `rules` | `Rule[]` | `[]` | | Custom validation rules |
-| `state` | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | | Current validation state |
-| `width` | `string \| number \| Breakpoints` | | | Width of the component |
-| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
-| `accept` | `string` | `''` | | Accepted file types (e.g. `image/*`, `.pdf`) |
-| `height` | `string \| number \| Breakpoints` | `'auto'` | | Height of the drop area |
-| `directory` | `boolean` | `false` | | Enable folder selection mode (webkitdirectory) |
-| `noClear` | `boolean` | `false` | | Hide the clear button |
-| `multiple` | `boolean` | `false` | | Allow multiple file selection. When false, only the first dropped or selected file is kept |
-| `min` | `number \| string` | `0` | | Minimum number of files required |
-| `max` | `number \| string` | `Number.MAX_SAFE_INTEGER` | | Maximum number of files allowed |
-| `modelValue` | `File[]` | `[]` | | v-model binding for selected files |
+| Prop               | Type                                                    | Default                   | Required | Description                                                                                                               |
+| ------------------ | ------------------------------------------------------- | ------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                                                |                           |          | Color scheme for the component                                                                                            |
+| `styleSet`         | `string \| VsFileDropStyleSet`                          |                           |          | Custom style set for the component                                                                                        |
+| `disabled`         | `boolean`                                               | `false`                   |          | Disable the file drop area                                                                                                |
+| `hidden`           | `boolean`                                               | `false`                   |          | Hide the component                                                                                                        |
+| `id`               | `string`                                                | `''`                      |          | HTML id attribute                                                                                                         |
+| `label`            | `string`                                                | `''`                      |          | Label text displayed above the file drop area                                                                             |
+| `noLabel`          | `boolean`                                               | `false`                   |          | Hide the label                                                                                                            |
+| `noMessages`       | `boolean`                                               | `false`                   |          | Hide the messages area                                                                                                    |
+| `required`         | `boolean`                                               | `false`                   |          | Mark the field as required                                                                                                |
+| `messages`         | `Message[]`                                             | `[]`                      |          | State messages to display                                                                                                 |
+| `name`             | `string`                                                | `''`                      |          | HTML name attribute for the input                                                                                         |
+| `noDefaultRules`   | `boolean`                                               | `false`                   |          | Disable default validation rules                                                                                          |
+| `placeholder`      | `string`                                                | `''`                      |          | Placeholder text shown in the drop area                                                                                   |
+| `focusPlaceholder` | `string`                                                | `''`                      |          | Placeholder shown while a file is dragged over the area or the file dialog is open; falls back to `placeholder` otherwise |
+| `readonly`         | `boolean`                                               | `false`                   |          | Make the component read-only                                                                                              |
+| `rules`            | `Rule[]`                                                | `[]`                      |          | Custom validation rules                                                                                                   |
+| `state`            | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'`                  |          | Current validation state                                                                                                  |
+| `width`            | `string \| number \| Breakpoints`                       |                           |          | Width of the component                                                                                                    |
+| `grid`             | `string \| number \| Breakpoints`                       |                           |          | Grid column span                                                                                                          |
+| `accept`           | `string`                                                | `''`                      |          | Accepted file types (e.g. `image/*`, `.pdf`)                                                                              |
+| `height`           | `string \| number \| Breakpoints`                       | `'auto'`                  |          | Height of the drop area                                                                                                   |
+| `directory`        | `boolean`                                               | `false`                   |          | Enable folder selection mode (webkitdirectory)                                                                            |
+| `noClear`          | `boolean`                                               | `false`                   |          | Hide the clear button                                                                                                     |
+| `multiple`         | `boolean`                                               | `false`                   |          | Allow multiple file selection. When false, only the first dropped or selected file is kept                                |
+| `min`              | `number \| string`                                      | `0`                       |          | Minimum number of files required                                                                                          |
+| `max`              | `number \| string`                                      | `Number.MAX_SAFE_INTEGER` |          | Maximum number of files allowed                                                                                           |
+| `modelValue`       | `File[]`                                                | `[]`                      |          | v-model binding for selected files. See [Caution](#caution).                                                               |
+| `changed`          | `File[]`                                                | `[]`                      |          | Read-only `v-model:changed` (output only). Externally set values are ignored.                                             |
+| `valid`            | `boolean`                                               | `false`                   |          | Read-only `v-model:valid` (output only). Externally set values are ignored.                                               |
 
 ## Types
 
@@ -145,31 +147,35 @@ interface VsFileDropStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `update:modelValue` | `File[]` | Emitted when the selected files change |
-| `update:changed` | `File[]` | Emitted when files are changed |
-| `update:valid` | `boolean` | Emitted when the validation state changes |
-| `change` | `File[]` | Emitted on file selection change |
-| `clear` | `File[]` | Emitted with the previously selected files when all files are cleared |
-| `drop` | `File[]` | Emitted when files are dropped |
-| `focus` | `FocusEvent` | Emitted when the file drop area gains focus |
-| `blur` | `FocusEvent` | Emitted when the file drop area loses focus |
+| Event               | Payload      | Description                                                           |
+| ------------------- | ------------ | --------------------------------------------------------------------- |
+| `update:modelValue` | `File[]`     | Emitted when the selected files change                                |
+| `update:changed`    | `File[]`     | Emitted when files are changed                                        |
+| `update:valid`      | `boolean`    | Emitted when the validation state changes                             |
+| `change`            | `File[]`     | Emitted on file selection change                                      |
+| `clear`             | `File[]`     | Emitted with the previously selected files when all files are cleared |
+| `drop`              | `File[]`     | Emitted when files are dropped                                        |
+| `focus`             | `FocusEvent` | Emitted when the file drop area gains focus                           |
+| `blur`              | `FocusEvent` | Emitted when the file drop area loses focus                           |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | Custom content for the drop area. Receives `{ dragging: boolean }` as slot props |
-| `label` | Custom label content |
-| `messages` | Custom messages content |
+| Slot       | Description                                                                      |
+| ---------- | -------------------------------------------------------------------------------- |
+| `default`  | Custom content for the drop area. Receives `{ dragging: boolean }` as slot props |
+| `label`    | Custom label content                                                             |
+| `messages` | Custom messages content                                                          |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `focus` | - | Set focus to the file input |
-| `blur` | - | Remove focus from the file input |
-| `validate` | - | Trigger validation and return the result |
-| `clear` | - | Clear the selected files |
-| `reset` | - | Reset the selected files to their initial value |
+| Method     | Parameters | Description                                     |
+| ---------- | ---------- | ----------------------------------------------- |
+| `focus`    | -          | Set focus to the file input                     |
+| `blur`     | -          | Remove focus from the file input                |
+| `validate` | -          | Trigger validation and return the result        |
+| `clear`    | -          | Clear the selected files                        |
+| `reset`    | -          | Reset the selected files to their initial value |
+
+## Caution
+
+Writing a non-empty `File[]` to `v-model` updates the Vlossom UI and validation, but the browser does not allow injecting `File` objects into the native `<input type="file">` — those files are not included in a native form submit. Writing `[]` (clear) does propagate.

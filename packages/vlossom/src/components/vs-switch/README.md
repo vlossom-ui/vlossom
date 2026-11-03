@@ -61,33 +61,35 @@ async function confirmChange(from, to) {
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsSwitchStyleSet` | | | Custom style set for the component |
-| `beforeChange` | `(from: any, to: any) => Promise<boolean> \| null` | `null` | | Async hook called before the switch changes. Return `false` to cancel |
-| `checked` | `boolean` | `false` | | Initial checked state |
-| `disabled` | `boolean` | `false` | | Disables the switch |
-| `falseLabel` | `string` | `'OFF'` | | Label displayed when the switch is OFF |
-| `falseValue` | `any` | `false` | | Value used when switch is OFF |
-| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
-| `hidden` | `boolean` | `false` | | Hides the component |
-| `id` | `string` | `''` | | HTML `id` attribute |
-| `label` | `string` | `''` | | Label text above the switch |
-| `messages` | `Message[]` | `[]` | | Validation messages |
-| `modelValue` | `any` | `false` | | v-model value |
-| `multiple` | `boolean` | `false` | | Enables multiple-value binding mode |
-| `name` | `string` | `''` | | HTML `name` attribute |
-| `noDefaultRules` | `boolean` | `false` | | Disables default validation rules |
-| `noMessages` | `boolean` | `false` | | Hides the message area |
-| `readonly` | `boolean` | `false` | | Makes the switch read-only |
-| `required` | `boolean` | `false` | | Marks the field as required |
-| `rules` | `Rule[]` | `[]` | | Custom validation rules |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Switch height, handle size, and font |
-| `state` | `UIState` | `'idle'` | | UI state (`idle`, `success`, `warning`, `error`) |
-| `trueLabel` | `string` | `'ON'` | | Label displayed when the switch is ON |
-| `trueValue` | `any` | `true` | | Value used when switch is ON |
-| `width` | `string \| number \| Breakpoints` | | | Component width |
+| Prop             | Type                                               | Default  | Required | Description                                                                   |
+| ---------------- | -------------------------------------------------- | -------- | -------- | ----------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                           |          |          | Color scheme for the component                                                |
+| `styleSet`       | `string \| VsSwitchStyleSet`                       |          |          | Custom style set for the component                                            |
+| `beforeChange`   | `(from: any, to: any) => Promise<boolean> \| null` | `null`   |          | Async hook called before the switch changes. Return `false` to cancel         |
+| `checked`        | `boolean`                                          | `false`  |          | Initial checked state                                                         |
+| `disabled`       | `boolean`                                          | `false`  |          | Disables the switch                                                           |
+| `falseLabel`     | `string`                                           | `'OFF'`  |          | Label displayed when the switch is OFF                                        |
+| `falseValue`     | `any`                                              | `false`  |          | Value used when switch is OFF                                                 |
+| `grid`           | `string \| number \| Breakpoints`                  |          |          | Grid column span                                                              |
+| `hidden`         | `boolean`                                          | `false`  |          | Hides the component                                                           |
+| `id`             | `string`                                           | `''`     |          | HTML `id` attribute                                                           |
+| `label`          | `string`                                           | `''`     |          | Label text above the switch                                                   |
+| `messages`       | `Message[]`                                        | `[]`     |          | Validation messages                                                           |
+| `modelValue`     | `any`                                              | `false`  |          | v-model value                                                                 |
+| `multiple`       | `boolean`                                          | `false`  |          | Enables multiple-value binding mode                                           |
+| `name`           | `string`                                           | `''`     |          | HTML `name` attribute                                                         |
+| `noDefaultRules` | `boolean`                                          | `false`  |          | Disables default validation rules                                             |
+| `noMessages`     | `boolean`                                          | `false`  |          | Hides the message area                                                        |
+| `readonly`       | `boolean`                                          | `false`  |          | Makes the switch read-only                                                    |
+| `required`       | `boolean`                                          | `false`  |          | Marks the field as required                                                   |
+| `rules`          | `Rule[]`                                           | `[]`     |          | Custom validation rules                                                       |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`             | `'md'`   |          | Switch height, handle size, and font                                          |
+| `state`          | `UIState`                                          | `'idle'` |          | UI state (`idle`, `success`, `warning`, `error`)                              |
+| `trueLabel`      | `string`                                           | `'ON'`   |          | Label displayed when the switch is ON                                         |
+| `trueValue`      | `any`                                              | `true`   |          | Value used when switch is ON                                                  |
+| `width`          | `string \| number \| Breakpoints`                  |          |          | Component width                                                               |
+| `changed`        | `boolean`                                          | `false`  |          | Read-only `v-model:changed` (output only). Externally set values are ignored. |
+| `valid`          | `boolean`                                          | `false`  |          | Read-only `v-model:valid` (output only). Externally set values are ignored.   |
 
 ## Types
 
@@ -126,31 +128,31 @@ interface VsSwitchStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `update:modelValue` | `any` | Emitted when the switch value changes |
-| `update:changed` | `boolean` | Emitted when the changed state updates |
-| `update:valid` | `boolean` | Emitted when the valid state updates |
-| `change` | `any` | Emitted on value change |
-| `focus` | `FocusEvent` | Emitted on focus |
-| `blur` | `FocusEvent` | Emitted on blur |
-| `clear` | `any` | Emitted with the previous value when the value is cleared |
+| Event               | Payload      | Description                                               |
+| ------------------- | ------------ | --------------------------------------------------------- |
+| `update:modelValue` | `any`        | Emitted when the switch value changes                     |
+| `update:changed`    | `boolean`    | Emitted when the changed state updates                    |
+| `update:valid`      | `boolean`    | Emitted when the valid state updates                      |
+| `change`            | `any`        | Emitted on value change                                   |
+| `focus`             | `FocusEvent` | Emitted on focus                                          |
+| `blur`              | `FocusEvent` | Emitted on blur                                           |
+| `clear`             | `any`        | Emitted with the previous value when the value is cleared |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `label` | Custom label content |
-| `true-label` | Custom content shown when the switch is ON |
+| Slot          | Description                                 |
+| ------------- | ------------------------------------------- |
+| `label`       | Custom label content                        |
+| `true-label`  | Custom content shown when the switch is ON  |
 | `false-label` | Custom content shown when the switch is OFF |
-| `messages` | Custom message content |
+| `messages`    | Custom message content                      |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `focus` | | Focuses the switch input |
-| `blur` | | Blurs the switch input |
-| `validate` | | Triggers validation |
-| `clear` | | Clears the value |
-| `reset` | | Resets the value to its initial value |
+| Method     | Parameters | Description                           |
+| ---------- | ---------- | ------------------------------------- |
+| `focus`    |            | Focuses the switch input              |
+| `blur`     |            | Blurs the switch input                |
+| `validate` |            | Triggers validation                   |
+| `clear`    |            | Clears the value                      |
+| `reset`    |            | Resets the value to its initial value |

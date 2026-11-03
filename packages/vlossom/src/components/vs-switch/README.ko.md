@@ -61,33 +61,35 @@ async function confirmChange(from, to) {
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
-| `styleSet` | `string \| VsSwitchStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `beforeChange` | `(from: any, to: any) => Promise<boolean> \| null` | `null` | | 스위치 변경 전 호출되는 비동기 훅. `false` 반환 시 취소 |
-| `checked` | `boolean` | `false` | | 초기 체크 상태 |
-| `disabled` | `boolean` | `false` | | 스위치 비활성화 |
-| `falseLabel` | `string` | `'OFF'` | | 스위치가 OFF일 때 표시되는 레이블 |
-| `falseValue` | `any` | `false` | | 스위치가 OFF일 때 사용되는 값 |
-| `grid` | `string \| number \| Breakpoints` | | | 그리드 열 스팬 |
-| `hidden` | `boolean` | `false` | | 컴포넌트 숨김 |
-| `id` | `string` | `''` | | HTML `id` 속성 |
-| `label` | `string` | `''` | | 스위치 위에 표시되는 레이블 텍스트 |
-| `messages` | `Message[]` | `[]` | | 유효성 검사 메시지 |
-| `modelValue` | `any` | `false` | | v-model 값 |
-| `multiple` | `boolean` | `false` | | 다중 값 바인딩 모드 활성화 |
-| `name` | `string` | `''` | | HTML `name` 속성 |
-| `noDefaultRules` | `boolean` | `false` | | 기본 유효성 검사 규칙 비활성화 |
-| `noMessages` | `boolean` | `false` | | 메시지 영역 숨김 |
-| `readonly` | `boolean` | `false` | | 읽기 전용 모드 |
-| `required` | `boolean` | `false` | | 필수 입력 필드로 표시 |
-| `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 스위치 높이 · 핸들 크기 · 폰트 제어 |
-| `state` | `UIState` | `'idle'` | | UI 상태 (`idle`, `success`, `warning`, `error`) |
-| `trueLabel` | `string` | `'ON'` | | 스위치가 ON일 때 표시되는 레이블 |
-| `trueValue` | `any` | `true` | | 스위치가 ON일 때 사용되는 값 |
-| `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
+| Prop             | 타입                                               | 기본값   | 필수 | 설명                                                                      |
+| ---------------- | -------------------------------------------------- | -------- | ---- | ------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                           |          |      | 컴포넌트 색상 스키마                                                      |
+| `styleSet`       | `string \| VsSwitchStyleSet`                       |          |      | 컴포넌트 커스텀 스타일 세트                                               |
+| `beforeChange`   | `(from: any, to: any) => Promise<boolean> \| null` | `null`   |      | 스위치 변경 전 호출되는 비동기 훅. `false` 반환 시 취소                   |
+| `checked`        | `boolean`                                          | `false`  |      | 초기 체크 상태                                                            |
+| `disabled`       | `boolean`                                          | `false`  |      | 스위치 비활성화                                                           |
+| `falseLabel`     | `string`                                           | `'OFF'`  |      | 스위치가 OFF일 때 표시되는 레이블                                         |
+| `falseValue`     | `any`                                              | `false`  |      | 스위치가 OFF일 때 사용되는 값                                             |
+| `grid`           | `string \| number \| Breakpoints`                  |          |      | 그리드 열 스팬                                                            |
+| `hidden`         | `boolean`                                          | `false`  |      | 컴포넌트 숨김                                                             |
+| `id`             | `string`                                           | `''`     |      | HTML `id` 속성                                                            |
+| `label`          | `string`                                           | `''`     |      | 스위치 위에 표시되는 레이블 텍스트                                        |
+| `messages`       | `Message[]`                                        | `[]`     |      | 유효성 검사 메시지                                                        |
+| `modelValue`     | `any`                                              | `false`  |      | v-model 값                                                                |
+| `multiple`       | `boolean`                                          | `false`  |      | 다중 값 바인딩 모드 활성화                                                |
+| `name`           | `string`                                           | `''`     |      | HTML `name` 속성                                                          |
+| `noDefaultRules` | `boolean`                                          | `false`  |      | 기본 유효성 검사 규칙 비활성화                                            |
+| `noMessages`     | `boolean`                                          | `false`  |      | 메시지 영역 숨김                                                          |
+| `readonly`       | `boolean`                                          | `false`  |      | 읽기 전용 모드                                                            |
+| `required`       | `boolean`                                          | `false`  |      | 필수 입력 필드로 표시                                                     |
+| `rules`          | `Rule[]`                                           | `[]`     |      | 커스텀 유효성 검사 규칙                                                   |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`             | `'md'`   |      | 스위치 높이 · 핸들 크기 · 폰트 제어                                       |
+| `state`          | `UIState`                                          | `'idle'` |      | UI 상태 (`idle`, `success`, `warning`, `error`)                           |
+| `trueLabel`      | `string`                                           | `'ON'`   |      | 스위치가 ON일 때 표시되는 레이블                                          |
+| `trueValue`      | `any`                                              | `true`   |      | 스위치가 ON일 때 사용되는 값                                              |
+| `width`          | `string \| number \| Breakpoints`                  |          |      | 컴포넌트 너비                                                             |
+| `changed`        | `boolean`                                          | `false`  |      | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
+| `valid`          | `boolean`                                          | `false`  |      | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.   |
 
 ## 타입
 
@@ -126,31 +128,31 @@ interface VsSwitchStyleSet extends CSSProperties {
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-| `update:modelValue` | `any` | 스위치 값이 변경될 때 발생 |
-| `update:changed` | `boolean` | changed 상태 업데이트 시 발생 |
-| `update:valid` | `boolean` | valid 상태 업데이트 시 발생 |
-| `change` | `any` | 값 변경 시 발생 |
-| `focus` | `FocusEvent` | 포커스 시 발생 |
-| `blur` | `FocusEvent` | 포커스 해제 시 발생 |
-| `clear` | `any` | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
+| 이벤트              | 페이로드     | 설명                                        |
+| ------------------- | ------------ | ------------------------------------------- |
+| `update:modelValue` | `any`        | 스위치 값이 변경될 때 발생                  |
+| `update:changed`    | `boolean`    | changed 상태 업데이트 시 발생               |
+| `update:valid`      | `boolean`    | valid 상태 업데이트 시 발생                 |
+| `change`            | `any`        | 값 변경 시 발생                             |
+| `focus`             | `FocusEvent` | 포커스 시 발생                              |
+| `blur`              | `FocusEvent` | 포커스 해제 시 발생                         |
+| `clear`             | `any`        | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
-| `label` | 커스텀 레이블 내용 |
-| `true-label` | 스위치가 ON일 때 표시되는 커스텀 내용 |
+| 슬롯          | 설명                                   |
+| ------------- | -------------------------------------- |
+| `label`       | 커스텀 레이블 내용                     |
+| `true-label`  | 스위치가 ON일 때 표시되는 커스텀 내용  |
 | `false-label` | 스위치가 OFF일 때 표시되는 커스텀 내용 |
-| `messages` | 커스텀 메시지 내용 |
+| `messages`    | 커스텀 메시지 내용                     |
 
 ## 메서드
 
-| 메서드 | 매개변수 | 설명 |
-| ------ | -------- | ---- |
-| `focus` | | 스위치 입력에 포커스 |
-| `blur` | | 스위치 입력의 포커스 해제 |
-| `validate` | | 유효성 검사 실행 |
-| `clear` | | 값 비우기 |
-| `reset` | | 값을 초기값으로 되돌리기 |
+| 메서드     | 매개변수 | 설명                      |
+| ---------- | -------- | ------------------------- |
+| `focus`    |          | 스위치 입력에 포커스      |
+| `blur`     |          | 스위치 입력의 포커스 해제 |
+| `validate` |          | 유효성 검사 실행          |
+| `clear`    |          | 값 비우기                 |
+| `reset`    |          | 값을 초기값으로 되돌리기  |

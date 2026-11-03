@@ -72,12 +72,12 @@ Preserve component state when switching between views.
 
 ## Props
 
-| Prop         | Type                                     | Default | Required | Description                                              |
-| ------------ | ---------------------------------------- | ------- | -------- | -------------------------------------------------------- |
-| `modelValue` | `number`                                 | `0`     | -        | The index of the currently displayed child (v-model).    |
-| `keepAlive`  | `boolean`                                | `false` | -        | Wraps children in `<KeepAlive>` to preserve their state. |
-| `width`      | `string \| number \| Breakpoints`        | -       | -        | Width of the component (responsive breakpoints allowed). |
-| `grid`       | `string \| number \| Breakpoints`        | -       | -        | Grid column span for layout (responsive breakpoints).    |
+| Prop         | Type                              | Default | Required | Description                                              |
+| ------------ | --------------------------------- | ------- | -------- | -------------------------------------------------------- |
+| `modelValue` | `number`                          | `0`     | -        | The index of the currently displayed child (v-model).    |
+| `keepAlive`  | `boolean`                         | `false` | -        | Wraps children in `<KeepAlive>` to preserve their state. |
+| `width`      | `string \| number \| Breakpoints` | -       | -        | Width of the component (responsive breakpoints allowed). |
+| `grid`       | `string \| number \| Breakpoints` | -       | -        | Grid column span for layout (responsive breakpoints).    |
 
 ## Types
 
@@ -87,18 +87,18 @@ Preserve component state when switching between views.
 
 ## Events
 
-| Event               | Payload  | Description                          |
-| ------------------- | -------- | ------------------------------------ |
+| Event               | Payload  | Description                               |
+| ------------------- | -------- | ----------------------------------------- |
 | `update:modelValue` | `number` | Emitted when the displayed index changes. |
 
 ## Slots
 
-| Slot      | Description                                   |
-| --------- | --------------------------------------------- |
-| `default` | Child elements to switch between by index.    |
+| Slot      | Description                                |
+| --------- | ------------------------------------------ |
+| `default` | Child elements to switch between by index. |
 
 ## Methods
 
-| Method        | Parameters       | Description                              |
-| ------------- | ---------------- | ---------------------------------------- |
-| `updateIndex` | `index: number`  | Programmatically sets the current index. |
+| Method        | Parameters      | Description                              |
+| ------------- | --------------- | ---------------------------------------- |
+| `updateIndex` | `index: number` | Programmatically sets the current index. |

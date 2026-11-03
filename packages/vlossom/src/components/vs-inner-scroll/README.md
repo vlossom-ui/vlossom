@@ -54,10 +54,10 @@ A layout component that provides a scrollable content area with optional sticky 
 
 ## Props
 
-| Prop         | Type                                | Default | Required | Description                                    |
-| ------------ | ----------------------------------- | ------- | -------- | ---------------------------------------------- |
-| `styleSet`   | `string \| VsInnerScrollStyleSet`   | -       | -        | Custom style set for the component.            |
-| `hideScroll` | `boolean`                           | `false` | -        | Hides the scrollbar while keeping scrollability. |
+| Prop         | Type                              | Default | Required | Description                                      |
+| ------------ | --------------------------------- | ------- | -------- | ------------------------------------------------ |
+| `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | Custom style set for the component.              |
+| `hideScroll` | `boolean`                         | `false` | -        | Hides the scrollbar while keeping scrollability. |
 
 ## Types
 
@@ -94,21 +94,16 @@ interface VsInnerScrollStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot      | Description                                      |
-| --------- | ------------------------------------------------ |
-| `default` | Scrollable content area.                         |
-| `header`  | Sticky header displayed above the scroll area.   |
-| `footer`  | Sticky footer displayed below the scroll area.   |
+| Slot      | Description                                    |
+| --------- | ---------------------------------------------- |
+| `default` | Scrollable content area.                       |
+| `header`  | Sticky header displayed above the scroll area. |
+| `footer`  | Sticky footer displayed below the scroll area. |
 
 ## Methods
 
-| Method      | Parameters | Description                                         |
-| ----------- | ---------- | --------------------------------------------------- |
+| Method      | Parameters | Description                                            |
+| ----------- | ---------- | ------------------------------------------------------ |
 | `hasScroll` | -          | Returns `true` if the content overflows the container. |

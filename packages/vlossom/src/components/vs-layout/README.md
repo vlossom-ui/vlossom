@@ -29,32 +29,17 @@ Descendants must explicitly opt in with the `layout` prop to participate in layo
 </template>
 ```
 
-## Props
-
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-
 ## Types
 
 ```typescript
 // No StyleSet interface — this component does not accept a styleSet prop.
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot      | Description                          |
-| --------- | ------------------------------------ |
+| Slot      | Description                              |
+| --------- | ---------------------------------------- |
 | `default` | The content to render inside the layout. |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Caution
 

@@ -141,8 +141,8 @@ value = '2026-05';
 | `state`          | `UIState`                                         | `'idle'`    | -        | 외부 유효성 상태.                                                                      |
 | `width`          | `string \| number \| Breakpoints`                 | -           | -        | 너비.                                                                                  |
 | `grid`           | `string \| number \| Breakpoints`                 | -           | -        | 그리드 컬럼 span.                                                                      |
-| `changed`        | `boolean`                                         | `false`     | -        | v-model — changed 플래그.                                                              |
-| `valid`          | `boolean`                                         | `false`     | -        | v-model — valid 플래그.                                                                |
+| `changed`        | `boolean`                                         | `false`     | -        | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다.              |
+| `valid`          | `boolean`                                         | `false`     | -        | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.                |
 
 ## Types
 
@@ -165,16 +165,16 @@ interface VsDatePickerStyleSet extends CSSProperties {
 
 ## Events
 
-| Event               | Payload             | Description                                      |
-| ------------------- | ------------------- | ------------------------------------------------ |
-| `update:modelValue` | `string`            | modelValue 변경 시 emit.                         |
-| `update:changed`    | `boolean`           | changed 플래그 변경 시 emit.                     |
-| `update:valid`      | `boolean`           | valid 플래그 변경 시 emit.                       |
-| `change`            | `string`            | 값이 commit된 후 emit.                           |
-| `focus`             | `FocusEvent`        | 포커스 시 emit.                                  |
-| `blur`              | `FocusEvent`        | 블러 시 emit.                                    |
-| `clear`             | `string`            | 값이 초기화될 때 초기화 직전 값과 함께 emit.     |
-| `invalid`           | `{ input: string }` | format 불일치 시 emit.                           |
+| Event               | Payload             | Description                                  |
+| ------------------- | ------------------- | -------------------------------------------- |
+| `update:modelValue` | `string`            | modelValue 변경 시 emit.                     |
+| `update:changed`    | `boolean`           | changed 플래그 변경 시 emit.                 |
+| `update:valid`      | `boolean`           | valid 플래그 변경 시 emit.                   |
+| `change`            | `string`            | 값이 commit된 후 emit.                       |
+| `focus`             | `FocusEvent`        | 포커스 시 emit.                              |
+| `blur`              | `FocusEvent`        | 블러 시 emit.                                |
+| `clear`             | `string`            | 값이 초기화될 때 초기화 직전 값과 함께 emit. |
+| `invalid`           | `{ input: string }` | format 불일치 시 emit.                       |
 
 ## Slots
 
@@ -187,11 +187,11 @@ interface VsDatePickerStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                                                               |
-| ---------- | ---------- | ------------------------------------------------------------------------- |
-| `focus`    | -          | 입력 요소에 포커스를 둡니다.                                              |
-| `blur`     | -          | 입력 요소의 포커스를 해제합니다.                                          |
-| `validate` | -          | 유효성 검사를 트리거하고 결과를 반환합니다.                               |
-| `clear`    | -          | 값을 비웁니다 (modelValue → `''`).                                        |
-| `reset`    | -          | 값을 초기값으로 되돌립니다.                                               |
+| Method     | Parameters | Description                                                                        |
+| ---------- | ---------- | ---------------------------------------------------------------------------------- |
+| `focus`    | -          | 입력 요소에 포커스를 둡니다.                                                       |
+| `blur`     | -          | 입력 요소의 포커스를 해제합니다.                                                   |
+| `validate` | -          | 유효성 검사를 트리거하고 결과를 반환합니다.                                        |
+| `clear`    | -          | 값을 비웁니다 (modelValue → `''`).                                                 |
+| `reset`    | -          | 값을 초기값으로 되돌립니다.                                                        |
 | `open`     | -          | `showPicker()`로 네이티브 picker를 엽니다. 사용자 제스처 핸들러 안에서 호출하세요. |

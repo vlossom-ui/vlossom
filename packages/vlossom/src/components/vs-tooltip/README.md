@@ -92,22 +92,22 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsTooltipStyleSet` | | | Custom style set for the component |
-| `target` | `string` | `''` | | CSS selector of the trigger element. If omitted, the default slot is wrapped and used as the trigger |
-| `tag` | `string` | `'span'` | | Tag name of the wrapper element rendered around the default slot (slot mode only) |
-| `align` | `Alignment` | `'center'` | | Alignment of the tooltip relative to the target (`start`, `center`, `end`) |
-| `clickable` | `boolean` | `false` | | Requires a click on the target to open |
-| `contentsHover` | `boolean` | `false` | | Keeps the tooltip open while hovering its contents |
-| `disabled` | `boolean` | `false` | | Disables the tooltip |
-| `enterDelay` | `string \| number` | `0` | | Delay (ms) before the tooltip appears |
-| `escClose` | `boolean` | `true` | | Closes the tooltip when Escape is pressed |
-| `leaveDelay` | `string \| number` | `0` | | Delay (ms) before the tooltip disappears |
-| `margin` | `string \| number` | `10` | | Gap (px) between the target and the tooltip |
-| `noAnimation` | `boolean` | `false` | | Disables the open/close animation |
-| `placement` | `Placement` | `'top'` | | Placement of the tooltip (`top`, `bottom`, `left`, `right`) |
+| Prop            | Type                          | Default    | Required | Description                                                                                          |
+| --------------- | ----------------------------- | ---------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `colorScheme`   | `string`                      |            |          | Color scheme for the component                                                                       |
+| `styleSet`      | `string \| VsTooltipStyleSet` |            |          | Custom style set for the component                                                                   |
+| `target`        | `string`                      | `''`       |          | CSS selector of the trigger element. If omitted, the default slot is wrapped and used as the trigger |
+| `tag`           | `string`                      | `'span'`   |          | Tag name of the wrapper element rendered around the default slot (slot mode only)                    |
+| `align`         | `Alignment`                   | `'center'` |          | Alignment of the tooltip relative to the target (`start`, `center`, `end`)                           |
+| `clickable`     | `boolean`                     | `false`    |          | Requires a click on the target to open                                                               |
+| `contentsHover` | `boolean`                     | `false`    |          | Keeps the tooltip open while hovering its contents                                                   |
+| `disabled`      | `boolean`                     | `false`    |          | Disables the tooltip                                                                                 |
+| `enterDelay`    | `string \| number`            | `0`        |          | Delay (ms) before the tooltip appears                                                                |
+| `escClose`      | `boolean`                     | `true`     |          | Closes the tooltip when Escape is pressed                                                            |
+| `leaveDelay`    | `string \| number`            | `0`        |          | Delay (ms) before the tooltip disappears                                                             |
+| `margin`        | `string \| number`            | `10`       |          | Gap (px) between the target and the tooltip                                                          |
+| `noAnimation`   | `boolean`                     | `false`    |          | Disables the open/close animation                                                                    |
+| `placement`     | `Placement`                   | `'top'`    |          | Placement of the tooltip (`top`, `bottom`, `left`, `right`)                                          |
 
 ## Types
 
@@ -143,19 +143,9 @@ interface VsTooltipStyleSet {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------- |
 | `default` | Trigger content (rendered only when `target` is not provided; wrapped by the `tag` element) |
-| `tooltip` | Tooltip content shown in the floating panel |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| `tooltip` | Tooltip content shown in the floating panel                                                 |

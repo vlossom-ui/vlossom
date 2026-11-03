@@ -40,12 +40,12 @@ An animated loading indicator composed of five vertical bars with a wave animati
 
 ## Props
 
-| Prop          | Type                          | Default | Required | Description                                         |
-| ------------- | ----------------------------- | ------- | -------- | --------------------------------------------------- |
-| `colorScheme` | `string`                      | -       | -        | Color scheme for the loading bars.                  |
-| `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | Custom style set for the component.                 |
-| `width`       | `string \| number`            | -       | -        | Width of the loading container.                     |
-| `height`      | `string \| number`            | -       | -        | Height of the loading container.                    |
+| Prop          | Type                          | Default | Required | Description                         |
+| ------------- | ----------------------------- | ------- | -------- | ----------------------------------- |
+| `colorScheme` | `string`                      | -       | -        | Color scheme for the loading bars.  |
+| `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | Custom style set for the component. |
+| `width`       | `string \| number`            | -       | -        | Width of the loading container.     |
+| `height`      | `string \| number`            | -       | -        | Height of the loading container.    |
 
 ## Types
 
@@ -69,18 +69,3 @@ interface VsLoadingStyleSet extends CSSProperties {
     />
 </template>
 ```
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

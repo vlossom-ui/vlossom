@@ -60,26 +60,11 @@ import Greeting from './Greeting.vue';
 
 ## Props
 
-| Prop             | Type                        | Default | Required | Description                                           |
-| ---------------- | --------------------------- | ------- | -------- | ----------------------------------------------------- |
-| `content`        | `string \| Component`       | -       | Yes      | Content to render: a string, HTML string, or Vue component |
-| `componentProps` | `Record<string, any>`       | `{}`    | -        | Props forwarded to the rendered component. Ignored when `content` is a string. |
+| Prop             | Type                  | Default | Required | Description                                                                    |
+| ---------------- | --------------------- | ------- | -------- | ------------------------------------------------------------------------------ |
+| `content`        | `string \| Component` | -       | Yes      | Content to render: a string, HTML string, or Vue component                     |
+| `componentProps` | `Record<string, any>` | `{}`    | -        | Props forwarded to the rendered component. Ignored when `content` is a string. |
 
 ## Types
 
 No custom StyleSet interface for this component.
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

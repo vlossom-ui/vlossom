@@ -121,11 +121,6 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 | `update:caseSensitive` | `boolean` | 대소문자 구분 토글이 변경될 때 발생                                                       |
 | `update:regex`         | `boolean` | 정규식 토글이 변경될 때 발생                                                              |
 
-## Slots
-
-| Slot | 설명 |
-| ---- | ---- |
-
 ## Methods
 
 | Method   | Parameters     | 설명                                           |

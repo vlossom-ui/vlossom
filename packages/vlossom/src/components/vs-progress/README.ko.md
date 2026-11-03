@@ -40,13 +40,13 @@
 
 ## Props
 
-| Prop          | Type                          | Default | Required | 설명                                                |
-| ------------- | ----------------------------- | ------- | -------- | --------------------------------------------------- |
-| `colorScheme` | `string`                      | -       | -        | 컴포넌트의 색상 스킴                                |
-| `styleSet`    | `string \| VsProgressStyleSet` | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트                |
-| `max`         | `number \| string`            | `1`     | -        | 프로그레스 바의 최대값 (0보다 커야 함)              |
-| `value`       | `number \| string`            | `0`     | -        | 프로그레스 바의 현재 값 (0 이상이어야 함)           |
-| `label`       | `string`                      | `''`    | -        | 프로그레스 바 위에 표시되는 텍스트 레이블           |
+| Prop          | Type                           | Default | Required | 설명                                      |
+| ------------- | ------------------------------ | ------- | -------- | ----------------------------------------- |
+| `colorScheme` | `string`                       | -       | -        | 컴포넌트의 색상 스킴                      |
+| `styleSet`    | `string \| VsProgressStyleSet` | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트      |
+| `max`         | `number \| string`             | `1`     | -        | 프로그레스 바의 최대값 (0보다 커야 함)    |
+| `value`       | `number \| string`             | `0`     | -        | 프로그레스 바의 현재 값 (0 이상이어야 함) |
+| `label`       | `string`                       | `''`    | -        | 프로그레스 바 위에 표시되는 텍스트 레이블 |
 
 ## Types
 
@@ -58,7 +58,6 @@ interface VsProgressStyleSet extends CSSProperties {
     $valueBackgroundColor?: string;
     $labelTextShadow?: string;
     $labelFontColor?: string;
-
 }
 ```
 
@@ -81,18 +80,3 @@ interface VsProgressStyleSet extends CSSProperties {
     />
 </template>
 ```
-
-## Events
-
-| Event | Payload | 설명 |
-| ----- | ------- | ---- |
-
-## Slots
-
-| Slot | 설명 |
-| ---- | ---- |
-
-## Methods
-
-| Method | Parameters | 설명 |
-| ------ | ---------- | ---- |

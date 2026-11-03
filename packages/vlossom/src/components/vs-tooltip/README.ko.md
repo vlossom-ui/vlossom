@@ -92,22 +92,22 @@
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
-| `styleSet` | `string \| VsTooltipStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `target` | `string` | `''` | | 트리거 요소의 CSS 선택자. 생략 시 default slot이 wrapper로 감싸져 trigger로 사용됨 |
-| `tag` | `string` | `'span'` | | default slot을 감싸는 wrapper 엘리먼트의 태그 (slot 모드 전용) |
-| `align` | `Alignment` | `'center'` | | 대상에 대한 툴팁 정렬 (`start`, `center`, `end`) |
-| `clickable` | `boolean` | `false` | | 열기 위해 대상 클릭 필요 |
-| `contentsHover` | `boolean` | `false` | | 콘텐츠에 마우스를 올리는 동안 툴팁 유지 |
-| `disabled` | `boolean` | `false` | | 툴팁 비활성화 |
-| `enterDelay` | `string \| number` | `0` | | 툴팁 표시 전 딜레이 (ms) |
-| `escClose` | `boolean` | `true` | | Escape 키 누를 때 툴팁 닫기 |
-| `leaveDelay` | `string \| number` | `0` | | 툴팁 숨김 전 딜레이 (ms) |
-| `margin` | `string \| number` | `10` | | 대상과 툴팁 사이의 간격 (px) |
-| `noAnimation` | `boolean` | `false` | | 열기/닫기 애니메이션 비활성화 |
-| `placement` | `Placement` | `'top'` | | 툴팁 배치 (`top`, `bottom`, `left`, `right`) |
+| Prop            | 타입                          | 기본값     | 필수 | 설명                                                                               |
+| --------------- | ----------------------------- | ---------- | ---- | ---------------------------------------------------------------------------------- |
+| `colorScheme`   | `string`                      |            |      | 컴포넌트 색상 스키마                                                               |
+| `styleSet`      | `string \| VsTooltipStyleSet` |            |      | 컴포넌트 커스텀 스타일 세트                                                        |
+| `target`        | `string`                      | `''`       |      | 트리거 요소의 CSS 선택자. 생략 시 default slot이 wrapper로 감싸져 trigger로 사용됨 |
+| `tag`           | `string`                      | `'span'`   |      | default slot을 감싸는 wrapper 엘리먼트의 태그 (slot 모드 전용)                     |
+| `align`         | `Alignment`                   | `'center'` |      | 대상에 대한 툴팁 정렬 (`start`, `center`, `end`)                                   |
+| `clickable`     | `boolean`                     | `false`    |      | 열기 위해 대상 클릭 필요                                                           |
+| `contentsHover` | `boolean`                     | `false`    |      | 콘텐츠에 마우스를 올리는 동안 툴팁 유지                                            |
+| `disabled`      | `boolean`                     | `false`    |      | 툴팁 비활성화                                                                      |
+| `enterDelay`    | `string \| number`            | `0`        |      | 툴팁 표시 전 딜레이 (ms)                                                           |
+| `escClose`      | `boolean`                     | `true`     |      | Escape 키 누를 때 툴팁 닫기                                                        |
+| `leaveDelay`    | `string \| number`            | `0`        |      | 툴팁 숨김 전 딜레이 (ms)                                                           |
+| `margin`        | `string \| number`            | `10`       |      | 대상과 툴팁 사이의 간격 (px)                                                       |
+| `noAnimation`   | `boolean`                     | `false`    |      | 열기/닫기 애니메이션 비활성화                                                      |
+| `placement`     | `Placement`                   | `'top'`    |      | 툴팁 배치 (`top`, `bottom`, `left`, `right`)                                       |
 
 ## 타입
 
@@ -143,19 +143,9 @@ interface VsTooltipStyleSet {
 </template>
 ```
 
-## 이벤트
-
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
+| 슬롯      | 설명                                                                  |
+| --------- | --------------------------------------------------------------------- |
 | `default` | Trigger 내용 (target이 없을 때만 렌더링되며, `tag` 엘리먼트로 감싸짐) |
-| `tooltip` | 플로팅 패널에 표시되는 툴팁 내용 |
-
-## 메서드
-
-| 메서드 | 매개변수 | 설명 |
-| ------ | -------- | ---- |
+| `tooltip` | 플로팅 패널에 표시되는 툴팁 내용                                      |

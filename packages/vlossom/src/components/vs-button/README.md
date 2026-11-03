@@ -76,19 +76,19 @@ async function submit() {
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
-| `styleSet` | `string \| VsButtonStyleSet` | | | Custom style set |
-| `circle` | `boolean` | `false` | | Renders the button as a circle |
-| `disabled` | `boolean` | `false` | | Disables the button |
-| `ghost` | `boolean` | `false` | | Applies ghost (transparent background) style |
-| `loading` | `boolean` | `false` | | Shows a loading spinner and disables interaction |
-| `outline` | `boolean` | `false` | | Applies outlined style |
-| `primary` | `boolean` | `false` | | Applies primary color scheme |
-| `responsive` | `boolean` | `false` | | Stretches button to fill container width |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Button size |
-| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML button type attribute |
+| Prop          | Type                                   | Default    | Required | Description                                      |
+| ------------- | -------------------------------------- | ---------- | -------- | ------------------------------------------------ |
+| `colorScheme` | `ColorScheme`                          |            |          | Color scheme for the component                   |
+| `styleSet`    | `string \| VsButtonStyleSet`           |            |          | Custom style set                                 |
+| `circle`      | `boolean`                              | `false`    |          | Renders the button as a circle                   |
+| `disabled`    | `boolean`                              | `false`    |          | Disables the button                              |
+| `ghost`       | `boolean`                              | `false`    |          | Applies ghost (transparent background) style     |
+| `loading`     | `boolean`                              | `false`    |          | Shows a loading spinner and disables interaction |
+| `outline`     | `boolean`                              | `false`    |          | Applies outlined style                           |
+| `primary`     | `boolean`                              | `false`    |          | Applies primary color scheme                     |
+| `responsive`  | `boolean`                              | `false`    |          | Stretches button to fill container width         |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`     |          | Button size                                      |
+| `type`        | `'button' \| 'submit' \| 'reset'`      | `'button'` |          | HTML button type attribute                       |
 
 ## Types
 
@@ -124,18 +124,8 @@ interface VsButtonStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description          |
+| --------- | -------------------- |
 | `default` | Button label content |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

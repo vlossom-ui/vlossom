@@ -42,30 +42,20 @@
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `layout` | `boolean` | `false` | | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다 |
-| `tag` | `string` | `'div'` | | 렌더링할 HTML 태그 |
+| Prop     | Type      | Default | Required | Description                                                                  |
+| -------- | --------- | ------- | -------- | ---------------------------------------------------------------------------- |
+| `layout` | `boolean` | `false` |          | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다 |
+| `tag`    | `string`  | `'div'` |          | 렌더링할 HTML 태그                                                           |
 
 ## Types
 
 VsContainer는 StyleSet 인터페이스가 없습니다.
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description            |
+| --------- | ---------------------- |
 | `default` | 컨테이너의 메인 콘텐츠 |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Caution
 

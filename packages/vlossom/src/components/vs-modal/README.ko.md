@@ -216,11 +216,6 @@ interface VsModalNodeStyleSet extends CSSProperties {
 | --------- | --------------------------------------- |
 | `default` | 모달 다이얼로그 내부에 렌더링할 콘텐츠. |
 
-## Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
-
 ## Caution
 
 `VsModal`은 Vue 애플리케이션에 Vlossom 플러그인이 설치되어 있어야 합니다. 모달 콘텐츠는 `$vs.modal.open()`을 통해 마운트되고 `container` 요소로 텔레포트됩니다.

@@ -50,15 +50,15 @@
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `styleSet` | `string \| VsGridStyleSet` | | | 컴포넌트의 사용자 정의 스타일 셋 |
-| `gridSize` | `number \| string` | | | 그리드 열 수. 기본값은 12 |
-| `columnGap` | `number \| string` | | | 그리드 열 사이의 간격 |
-| `rowGap` | `number \| string` | | | 그리드 행 사이의 간격 |
-| `width` | `string \| number` | | | 그리드 컨테이너의 너비 |
-| `height` | `string \| number` | | | 그리드 컨테이너의 높이 |
-| `tag` | `string` | `'div'` | | 렌더링할 HTML 태그 |
+| Prop        | 타입                       | 기본값  | 필수 | 설명                             |
+| ----------- | -------------------------- | ------- | ---- | -------------------------------- |
+| `styleSet`  | `string \| VsGridStyleSet` |         |      | 컴포넌트의 사용자 정의 스타일 셋 |
+| `gridSize`  | `number \| string`         |         |      | 그리드 열 수. 기본값은 12        |
+| `columnGap` | `number \| string`         |         |      | 그리드 열 사이의 간격            |
+| `rowGap`    | `number \| string`         |         |      | 그리드 행 사이의 간격            |
+| `width`     | `string \| number`         |         |      | 그리드 컨테이너의 너비           |
+| `height`    | `string \| number`         |         |      | 그리드 컨테이너의 높이           |
+| `tag`       | `string`                   | `'div'` |      | 렌더링할 HTML 태그               |
 
 ## 타입
 
@@ -84,18 +84,8 @@ interface VsGridStyleSet extends CSSProperties {
 </template>
 ```
 
-## 이벤트
-
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
+| 슬롯      | 설명          |
+| --------- | ------------- |
 | `default` | 그리드 항목들 |
-
-## 메서드
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |

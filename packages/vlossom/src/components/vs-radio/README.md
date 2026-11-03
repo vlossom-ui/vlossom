@@ -79,63 +79,67 @@ async function confirmChange(from, to) {
 
 ### VsRadio
 
-| Prop           | Type                                                              | Default  | Required | Description                                       |
-| -------------- | ----------------------------------------------------------------- | -------- | -------- | ------------------------------------------------- |
-| `colorScheme`  | `string`                                                          | -        | -        | Color scheme for the component                    |
-| `styleSet`     | `string \| VsRadioStyleSet`                                       | -        | -        | Custom style set for the component                |
-| `disabled`     | `boolean`                                                         | `false`  | -        | Disables the radio input                          |
-| `hidden`       | `boolean`                                                         | `false`  | -        | Hides the component                               |
-| `id`           | `string`                                                          | `''`     | -        | HTML id attribute                                 |
-| `label`        | `string`                                                          | `''`     | -        | Label text for the input wrapper                  |
-| `noLabel`      | `boolean`                                                         | `false`  | -        | Hides the label                                   |
-| `noMessages`   | `boolean`                                                         | `false`  | -        | Hides validation messages                         |
-| `required`     | `boolean`                                                         | `false`  | -        | Marks the field as required                       |
-| `messages`     | `Message[]`                                                       | `[]`     | -        | Validation messages                               |
-| `name`         | `string`                                                          | `''`     | -        | HTML name attribute for grouping radio buttons    |
-| `noDefaultRules` | `boolean`                                                       | `false`  | -        | Disables built-in validation rules                |
-| `readonly`     | `boolean`                                                         | `false`  | -        | Makes the radio read-only                         |
-| `rules`        | `Rule[]`                                                          | `[]`     | -        | Custom validation rules                           |
-| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                            | `'md'`   | -        | Radio size and label font size                    |
-| `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | Validation state                                  |
-| `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | Async callback called before value changes        |
-| `checked`      | `boolean`                                                         | `false`  | -        | Pre-selects this radio on mount                   |
-| `emptyValue`   | `any`                                                             | `null`   | -        | Value set when the radio is cleared               |
-| `radioLabel`   | `string`                                                          | `''`     | -        | Label displayed next to the radio circle          |
-| `radioValue`   | `any`                                                             | -        | Yes      | The value this radio represents                   |
-| `modelValue`   | `any`                                                             | `null`   | -        | Currently selected value (v-model)                |
-| `width`        | `string \| number \| Breakpoints`                                 | -        | -        | Width of the component                            |
-| `grid`         | `string \| number \| Breakpoints`                                 | -        | -        | Grid column span                                  |
+| Prop             | Type                                                                 | Default  | Required | Description                                                                   |
+| ---------------- | -------------------------------------------------------------------- | -------- | -------- | ----------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                                             | -        | -        | Color scheme for the component                                                |
+| `styleSet`       | `string \| VsRadioStyleSet`                                          | -        | -        | Custom style set for the component                                            |
+| `disabled`       | `boolean`                                                            | `false`  | -        | Disables the radio input                                                      |
+| `hidden`         | `boolean`                                                            | `false`  | -        | Hides the component                                                           |
+| `id`             | `string`                                                             | `''`     | -        | HTML id attribute                                                             |
+| `label`          | `string`                                                             | `''`     | -        | Label text for the input wrapper                                              |
+| `noLabel`        | `boolean`                                                            | `false`  | -        | Hides the label                                                               |
+| `noMessages`     | `boolean`                                                            | `false`  | -        | Hides validation messages                                                     |
+| `required`       | `boolean`                                                            | `false`  | -        | Marks the field as required                                                   |
+| `messages`       | `Message[]`                                                          | `[]`     | -        | Validation messages                                                           |
+| `name`           | `string`                                                             | `''`     | -        | HTML name attribute for grouping radio buttons                                |
+| `noDefaultRules` | `boolean`                                                            | `false`  | -        | Disables built-in validation rules                                            |
+| `readonly`       | `boolean`                                                            | `false`  | -        | Makes the radio read-only                                                     |
+| `rules`          | `Rule[]`                                                             | `[]`     | -        | Custom validation rules                                                       |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                               | `'md'`   | -        | Radio size and label font size                                                |
+| `state`          | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`              | `'idle'` | -        | Validation state                                                              |
+| `beforeChange`   | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null`   | -        | Async callback called before value changes                                    |
+| `checked`        | `boolean`                                                            | `false`  | -        | Pre-selects this radio on mount                                               |
+| `emptyValue`     | `any`                                                                | `null`   | -        | Value set when the radio is cleared                                           |
+| `radioLabel`     | `string`                                                             | `''`     | -        | Label displayed next to the radio circle                                      |
+| `radioValue`     | `any`                                                                | -        | Yes      | The value this radio represents                                               |
+| `modelValue`     | `any`                                                                | `null`   | -        | Currently selected value (v-model)                                            |
+| `width`          | `string \| number \| Breakpoints`                                    | -        | -        | Width of the component                                                        |
+| `grid`           | `string \| number \| Breakpoints`                                    | -        | -        | Grid column span                                                              |
+| `changed`        | `boolean`                                                            | `false`  | -        | Read-only `v-model:changed` (output only). Externally set values are ignored. |
+| `valid`          | `boolean`                                                            | `false`  | -        | Read-only `v-model:valid` (output only). Externally set values are ignored.   |
 
 ### VsRadioSet
 
-| Prop           | Type                                                              | Default  | Required | Description                                       |
-| -------------- | ----------------------------------------------------------------- | -------- | -------- | ------------------------------------------------- |
-| `colorScheme`  | `string`                                                          | -        | -        | Color scheme for the component                    |
-| `styleSet`     | `string \| VsRadioSetStyleSet`                                    | -        | -        | Custom style set for the component                |
-| `disabled`     | `boolean`                                                         | `false`  | -        | Disables all radio buttons                        |
-| `hidden`       | `boolean`                                                         | `false`  | -        | Hides the component                               |
-| `id`           | `string`                                                          | `''`     | -        | HTML id attribute                                 |
-| `label`        | `string`                                                          | `''`     | -        | Label text for the group                          |
-| `noLabel`      | `boolean`                                                         | `false`  | -        | Hides the label                                   |
-| `noMessages`   | `boolean`                                                         | `false`  | -        | Hides validation messages                         |
-| `required`     | `boolean`                                                         | `false`  | -        | Marks the field as required                       |
-| `messages`     | `Message[]`                                                       | `[]`     | -        | Validation messages                               |
-| `name`         | `string`                                                          | `''`     | -        | HTML name attribute shared by all radios          |
-| `noDefaultRules` | `boolean`                                                       | `false`  | -        | Disables built-in validation rules                |
-| `readonly`     | `boolean`                                                         | `false`  | -        | Makes all radios read-only                        |
-| `rules`        | `Rule[]`                                                          | `[]`     | -        | Custom validation rules                           |
-| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                            | `'md'`   | -        | Size propagated to each `VsRadio`                 |
-| `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | Validation state                                  |
-| `options`      | `any[]`                                                           | `[]`     | -        | Array of option values or objects                 |
-| `optionLabel`  | `string`                                                          | -        | -        | Key name for the label when options are objects   |
-| `optionValue`  | `string`                                                          | -        | -        | Key name for the value when options are objects   |
-| `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | Async callback called before value changes        |
-| `emptyValue`   | `any`                                                             | `null`   | -        | Value used when nothing is selected               |
-| `loading`      | `boolean`                                                         | `false`  | -        | Shows a skeleton instead of radio buttons         |
-| `vertical`     | `boolean`                                                         | `false`  | -        | Displays radio buttons in a vertical layout       |
-| `modelValue`   | `any`                                                             | `null`   | -        | Currently selected value (v-model)                |
-| `width`        | `string \| number \| Breakpoints`                                 | -        | -        | Width of the component                            |
-| `grid`         | `string \| number \| Breakpoints`                                 | -        | -        | Grid column span                                  |
+| Prop             | Type                                                                 | Default  | Required | Description                                                                   |
+| ---------------- | -------------------------------------------------------------------- | -------- | -------- | ----------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                                             | -        | -        | Color scheme for the component                                                |
+| `styleSet`       | `string \| VsRadioSetStyleSet`                                       | -        | -        | Custom style set for the component                                            |
+| `disabled`       | `boolean`                                                            | `false`  | -        | Disables all radio buttons                                                    |
+| `hidden`         | `boolean`                                                            | `false`  | -        | Hides the component                                                           |
+| `id`             | `string`                                                             | `''`     | -        | HTML id attribute                                                             |
+| `label`          | `string`                                                             | `''`     | -        | Label text for the group                                                      |
+| `noLabel`        | `boolean`                                                            | `false`  | -        | Hides the label                                                               |
+| `noMessages`     | `boolean`                                                            | `false`  | -        | Hides validation messages                                                     |
+| `required`       | `boolean`                                                            | `false`  | -        | Marks the field as required                                                   |
+| `messages`       | `Message[]`                                                          | `[]`     | -        | Validation messages                                                           |
+| `name`           | `string`                                                             | `''`     | -        | HTML name attribute shared by all radios                                      |
+| `noDefaultRules` | `boolean`                                                            | `false`  | -        | Disables built-in validation rules                                            |
+| `readonly`       | `boolean`                                                            | `false`  | -        | Makes all radios read-only                                                    |
+| `rules`          | `Rule[]`                                                             | `[]`     | -        | Custom validation rules                                                       |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                               | `'md'`   | -        | Size propagated to each `VsRadio`                                             |
+| `state`          | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`              | `'idle'` | -        | Validation state                                                              |
+| `options`        | `any[]`                                                              | `[]`     | -        | Array of option values or objects                                             |
+| `optionLabel`    | `string`                                                             | -        | -        | Key name for the label when options are objects                               |
+| `optionValue`    | `string`                                                             | -        | -        | Key name for the value when options are objects                               |
+| `beforeChange`   | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null`   | -        | Async callback called before value changes                                    |
+| `emptyValue`     | `any`                                                                | `null`   | -        | Value used when nothing is selected                                           |
+| `loading`        | `boolean`                                                            | `false`  | -        | Shows a skeleton instead of radio buttons                                     |
+| `vertical`       | `boolean`                                                            | `false`  | -        | Displays radio buttons in a vertical layout                                   |
+| `modelValue`     | `any`                                                                | `null`   | -        | Currently selected value (v-model)                                            |
+| `width`          | `string \| number \| Breakpoints`                                    | -        | -        | Width of the component                                                        |
+| `grid`           | `string \| number \| Breakpoints`                                    | -        | -        | Grid column span                                                              |
+| `changed`        | `boolean`                                                            | `false`  | -        | Read-only `v-model:changed` (output only). Externally set values are ignored. |
+| `valid`          | `boolean`                                                            | `false`  | -        | Read-only `v-model:valid` (output only). Externally set values are ignored.   |
 
 ## Types
 
@@ -179,67 +183,67 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 ### VsRadio
 
-| Event               | Payload                   | Description                              |
-| ------------------- | ------------------------- | ---------------------------------------- |
-| `update:modelValue` | `any`                     | Emitted when the selected value changes  |
-| `update:changed`    | `boolean`                 | Emitted when the changed state updates   |
-| `update:valid`      | `boolean`                 | Emitted when the validation state updates |
-| `change`            | `Event`                   | Emitted when the radio selection changes |
-| `toggle`            | `boolean`                 | Emitted when the radio is toggled        |
-| `focus`             | `FocusEvent`              | Emitted when the radio receives focus    |
-| `blur`              | `FocusEvent`              | Emitted when the radio loses focus       |
-| `clear`             | `any`                     | Emitted with the previous value when the value is cleared |
+| Event               | Payload      | Description                                               |
+| ------------------- | ------------ | --------------------------------------------------------- |
+| `update:modelValue` | `any`        | Emitted when the selected value changes                   |
+| `update:changed`    | `boolean`    | Emitted when the changed state updates                    |
+| `update:valid`      | `boolean`    | Emitted when the validation state updates                 |
+| `change`            | `Event`      | Emitted when the radio selection changes                  |
+| `toggle`            | `boolean`    | Emitted when the radio is toggled                         |
+| `focus`             | `FocusEvent` | Emitted when the radio receives focus                     |
+| `blur`              | `FocusEvent` | Emitted when the radio loses focus                        |
+| `clear`             | `any`        | Emitted with the previous value when the value is cleared |
 
 ### VsRadioSet
 
-| Event               | Payload                   | Description                              |
-| ------------------- | ------------------------- | ---------------------------------------- |
-| `update:modelValue` | `any`                     | Emitted when the selected value changes  |
-| `update:changed`    | `boolean`                 | Emitted when the changed state updates   |
-| `update:valid`      | `boolean`                 | Emitted when the validation state updates |
-| `change`            | `any`                     | Emitted when the selection changes       |
-| `focus`             | `(option: any, event: FocusEvent)` | Emitted when a radio receives focus |
-| `blur`              | `(option: any, event: FocusEvent)` | Emitted when a radio loses focus   |
-| `clear`             | `any`                     | Emitted with the previous value when the value is cleared |
+| Event               | Payload                            | Description                                               |
+| ------------------- | ---------------------------------- | --------------------------------------------------------- |
+| `update:modelValue` | `any`                              | Emitted when the selected value changes                   |
+| `update:changed`    | `boolean`                          | Emitted when the changed state updates                    |
+| `update:valid`      | `boolean`                          | Emitted when the validation state updates                 |
+| `change`            | `any`                              | Emitted when the selection changes                        |
+| `focus`             | `(option: any, event: FocusEvent)` | Emitted when a radio receives focus                       |
+| `blur`              | `(option: any, event: FocusEvent)` | Emitted when a radio loses focus                          |
+| `clear`             | `any`                              | Emitted with the previous value when the value is cleared |
 
 ## Slots
 
 ### VsRadio
 
-| Slot           | Description                                   |
-| -------------- | --------------------------------------------- |
-| `label`        | Custom label content                          |
-| `radio-label`  | Custom label displayed next to the radio      |
-| `messages`     | Custom validation messages                    |
+| Slot          | Description                              |
+| ------------- | ---------------------------------------- |
+| `label`       | Custom label content                     |
+| `radio-label` | Custom label displayed next to the radio |
+| `messages`    | Custom validation messages               |
 
 ### VsRadioSet
 
-| Slot           | Description                                                          |
-| -------------- | -------------------------------------------------------------------- |
-| `label`        | Custom label content                                                 |
-| `radio-label`  | Custom label for each radio; receives `{ option, value, label }`     |
-| `messages`     | Custom validation messages                                           |
+| Slot          | Description                                                      |
+| ------------- | ---------------------------------------------------------------- |
+| `label`       | Custom label content                                             |
+| `radio-label` | Custom label for each radio; receives `{ option, value, label }` |
+| `messages`    | Custom validation messages                                       |
 
 ## Methods
 
 ### VsRadio
 
-| Method     | Parameters | Description                  |
-| ---------- | ---------- | ---------------------------- |
-| `clear`    | -          | Clears the selected value    |
+| Method     | Parameters | Description                                    |
+| ---------- | ---------- | ---------------------------------------------- |
+| `clear`    | -          | Clears the selected value                      |
 | `reset`    | -          | Resets the selected value to its initial value |
-| `validate` | -          | Triggers validation          |
-| `focus`    | -          | Focuses the radio input      |
-| `blur`     | -          | Blurs the radio input        |
+| `validate` | -          | Triggers validation                            |
+| `focus`    | -          | Focuses the radio input                        |
+| `blur`     | -          | Blurs the radio input                          |
 
 ### VsRadioSet
 
-| Method     | Parameters | Description                      |
-| ---------- | ---------- | -------------------------------- |
-| `focus`    | -          | Focuses the first radio input    |
-| `blur`     | -          | Blurs the first radio input      |
-| `validate` | -          | Triggers validation              |
-| `clear`    | -          | Clears the selected value        |
+| Method     | Parameters | Description                                    |
+| ---------- | ---------- | ---------------------------------------------- |
+| `focus`    | -          | Focuses the first radio input                  |
+| `blur`     | -          | Blurs the first radio input                    |
+| `validate` | -          | Triggers validation                            |
+| `clear`    | -          | Clears the selected value                      |
 | `reset`    | -          | Resets the selected value to its initial value |
 
 ## Cautions
@@ -247,6 +251,6 @@ interface VsRadioSetStyleSet extends CSSProperties {
 - If `modelValue` of `VsRadioSet` is set to a value not present in `options` — either on mount or programmatically — the value is reset to `emptyValue` and a console warning is printed.
 - If `options` changes and the current `modelValue` is no longer present, the value is reset to `emptyValue` and a console warning is printed.
 - While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Use `loading` (or `disabled`) while options are loading if users should not interact with it. `loading` only affects display and interaction; it does not change when values are cleaned up.
-  - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
-  - In the meantime, validation treats no option as selected, so `required` of `VsRadioSet` fails.
+    - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
+    - In the meantime, validation treats no option as selected, so `required` of `VsRadioSet` fails.
 - In `VsRadioSet`, if an option has the same value as `emptyValue`, that value selects the option. `required` passes whenever an option is selected, including options such as `''` or `0`.

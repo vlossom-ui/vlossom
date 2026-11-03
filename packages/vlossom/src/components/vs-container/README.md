@@ -42,30 +42,20 @@ A layout container component that automatically adjusts its padding when opted i
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `layout` | `boolean` | `false` | | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect |
-| `tag` | `string` | `'div'` | | HTML tag to render |
+| Prop     | Type      | Default | Required | Description                                                                                           |
+| -------- | --------- | ------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| `layout` | `boolean` | `false` |          | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect |
+| `tag`    | `string`  | `'div'` |          | HTML tag to render                                                                                    |
 
 ## Types
 
 VsContainer does not have a StyleSet interface.
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description                   |
+| --------- | ----------------------------- |
 | `default` | Main content of the container |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Caution
 

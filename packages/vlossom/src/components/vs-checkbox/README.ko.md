@@ -78,66 +78,70 @@ async function confirmChange(from, to) {
 
 ### VsCheckbox Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | 컴포넌트 색상 테마 |
-| `styleSet` | `string \| VsCheckboxStyleSet` | | | 커스텀 스타일 세트 |
-| `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
-| `grid` | `string \| number \| Breakpoints` | | | 그리드 컬럼 스팬 |
-| `beforeChange` | `(from, to, optionValue) => Promise<boolean> \| null` | `null` | | 값 변경 전 호출되는 비동기 훅 |
-| `checked` | `boolean` | `false` | | 초기 체크 상태 |
-| `checkLabel` | `string` | `''` | | 체크박스 옆에 표시되는 라벨 |
-| `disabled` | `boolean` | `false` | | 체크박스 비활성화 |
-| `hidden` | `boolean` | `false` | | 컴포넌트 숨김 |
-| `id` | `string` | `''` | | HTML id 속성 |
-| `indeterminate` | `boolean` | `false` | | 불확정 상태 표시 |
-| `label` | `string` | `''` | | 필드 라벨 |
-| `messages` | `Message[]` | `[]` | | 유효성 검사 메시지 |
-| `modelValue` | `any` | `false` | | v-model 값 |
-| `multiple` | `boolean` | `false` | | 다중 선택 모드 활성화 |
-| `name` | `string` | `''` | | HTML name 속성 |
-| `noDefaultRules` | `boolean` | `false` | | 기본 유효성 검사 규칙 비활성화 |
-| `noLabel` | `boolean` | `false` | | 라벨 숨김 |
-| `noMessages` | `boolean` | `false` | | 유효성 검사 메시지 숨김 |
-| `readonly` | `boolean` | `false` | | 읽기 전용으로 설정 |
-| `required` | `boolean` | `false` | | 필수 항목으로 표시 |
-| `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 체크박스 박스 크기 및 라벨 폰트 크기 |
-| `state` | `UIState` | `'idle'` | | 유효성 검사 상태 |
-| `trueValue` | `any` | `true` | | 체크 시 값 |
-| `falseValue` | `any` | `false` | | 미체크 시 값 |
+| Prop             | Type                                                  | Default  | Required | Description                                                               |
+| ---------------- | ----------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------- |
+| `colorScheme`    | `ColorScheme`                                         |          |          | 컴포넌트 색상 테마                                                        |
+| `styleSet`       | `string \| VsCheckboxStyleSet`                        |          |          | 커스텀 스타일 세트                                                        |
+| `width`          | `string \| number \| Breakpoints`                     |          |          | 컴포넌트 너비                                                             |
+| `grid`           | `string \| number \| Breakpoints`                     |          |          | 그리드 컬럼 스팬                                                          |
+| `beforeChange`   | `(from, to, optionValue) => Promise<boolean> \| null` | `null`   |          | 값 변경 전 호출되는 비동기 훅                                             |
+| `checked`        | `boolean`                                             | `false`  |          | 초기 체크 상태                                                            |
+| `checkLabel`     | `string`                                              | `''`     |          | 체크박스 옆에 표시되는 라벨                                               |
+| `disabled`       | `boolean`                                             | `false`  |          | 체크박스 비활성화                                                         |
+| `hidden`         | `boolean`                                             | `false`  |          | 컴포넌트 숨김                                                             |
+| `id`             | `string`                                              | `''`     |          | HTML id 속성                                                              |
+| `indeterminate`  | `boolean`                                             | `false`  |          | 불확정 상태 표시                                                          |
+| `label`          | `string`                                              | `''`     |          | 필드 라벨                                                                 |
+| `messages`       | `Message[]`                                           | `[]`     |          | 유효성 검사 메시지                                                        |
+| `modelValue`     | `any`                                                 | `false`  |          | v-model 값                                                                |
+| `multiple`       | `boolean`                                             | `false`  |          | 다중 선택 모드 활성화                                                     |
+| `name`           | `string`                                              | `''`     |          | HTML name 속성                                                            |
+| `noDefaultRules` | `boolean`                                             | `false`  |          | 기본 유효성 검사 규칙 비활성화                                            |
+| `noLabel`        | `boolean`                                             | `false`  |          | 라벨 숨김                                                                 |
+| `noMessages`     | `boolean`                                             | `false`  |          | 유효성 검사 메시지 숨김                                                   |
+| `readonly`       | `boolean`                                             | `false`  |          | 읽기 전용으로 설정                                                        |
+| `required`       | `boolean`                                             | `false`  |          | 필수 항목으로 표시                                                        |
+| `rules`          | `Rule[]`                                              | `[]`     |          | 커스텀 유효성 검사 규칙                                                   |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                | `'md'`   |          | 체크박스 박스 크기 및 라벨 폰트 크기                                      |
+| `state`          | `UIState`                                             | `'idle'` |          | 유효성 검사 상태                                                          |
+| `trueValue`      | `any`                                                 | `true`   |          | 체크 시 값                                                                |
+| `falseValue`     | `any`                                                 | `false`  |          | 미체크 시 값                                                              |
+| `changed`        | `boolean`                                             | `false`  |          | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
+| `valid`          | `boolean`                                             | `false`  |          | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.   |
 
 ### VsCheckboxSet Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | 컴포넌트 색상 테마 |
-| `styleSet` | `string \| VsCheckboxSetStyleSet` | | | 커스텀 스타일 세트 |
-| `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
-| `grid` | `string \| number \| Breakpoints` | | | 그리드 컬럼 스팬 |
-| `beforeChange` | `(from, to, optionValue) => Promise<boolean> \| null` | `null` | | 값 변경 전 호출되는 비동기 훅 |
-| `disabled` | `boolean` | `false` | | 세트 내 모든 체크박스 비활성화 |
-| `hidden` | `boolean` | `false` | | 컴포넌트 숨김 |
-| `id` | `string` | `''` | | HTML id 속성 |
-| `label` | `string` | `''` | | 필드 라벨 |
-| `loading` | `boolean` | `false` |  | 체크박스 대신 스켈레톤을 표시 |
-| `max` | `number \| null` | `null` | | 선택 가능한 최대 항목 수 |
-| `messages` | `Message[]` | `[]` | | 유효성 검사 메시지 |
-| `min` | `number \| null` | `null` | | 선택해야 하는 최소 항목 수 |
-| `modelValue` | `any[]` | `[]` | | v-model 바인딩 (선택된 값의 배열) |
-| `name` | `string` | `''` | | HTML name 속성 |
-| `noDefaultRules` | `boolean` | `false` | | 기본 유효성 검사 규칙 비활성화 |
-| `noLabel` | `boolean` | `false` | | 라벨 숨김 |
-| `noMessages` | `boolean` | `false` | | 유효성 검사 메시지 숨김 |
-| `options` | `any[]` | `[]` | | 체크박스로 표시할 옵션 배열 |
-| `optionLabel` | `string` | `'label'` | | 각 옵션의 라벨로 사용할 키 |
-| `optionValue` | `string` | `'value'` | | 각 옵션의 값으로 사용할 키 |
-| `readonly` | `boolean` | `false` | | 모든 체크박스를 읽기 전용으로 설정 |
-| `required` | `boolean` | `false` | | 필수 항목으로 표시 |
-| `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 각 `VsCheckbox`로 전달되는 사이즈 |
-| `state` | `UIState` | `'idle'` | | 유효성 검사 상태 |
-| `vertical` | `boolean` | `false` | | 체크박스를 수직으로 배치 |
+| Prop             | Type                                                  | Default   | Required | Description                                                               |
+| ---------------- | ----------------------------------------------------- | --------- | -------- | ------------------------------------------------------------------------- |
+| `colorScheme`    | `ColorScheme`                                         |           |          | 컴포넌트 색상 테마                                                        |
+| `styleSet`       | `string \| VsCheckboxSetStyleSet`                     |           |          | 커스텀 스타일 세트                                                        |
+| `width`          | `string \| number \| Breakpoints`                     |           |          | 컴포넌트 너비                                                             |
+| `grid`           | `string \| number \| Breakpoints`                     |           |          | 그리드 컬럼 스팬                                                          |
+| `beforeChange`   | `(from, to, optionValue) => Promise<boolean> \| null` | `null`    |          | 값 변경 전 호출되는 비동기 훅                                             |
+| `disabled`       | `boolean`                                             | `false`   |          | 세트 내 모든 체크박스 비활성화                                            |
+| `hidden`         | `boolean`                                             | `false`   |          | 컴포넌트 숨김                                                             |
+| `id`             | `string`                                              | `''`      |          | HTML id 속성                                                              |
+| `label`          | `string`                                              | `''`      |          | 필드 라벨                                                                 |
+| `loading`        | `boolean`                                             | `false`   |          | 체크박스 대신 스켈레톤을 표시                                             |
+| `max`            | `number \| null`                                      | `null`    |          | 선택 가능한 최대 항목 수                                                  |
+| `messages`       | `Message[]`                                           | `[]`      |          | 유효성 검사 메시지                                                        |
+| `min`            | `number \| null`                                      | `null`    |          | 선택해야 하는 최소 항목 수                                                |
+| `modelValue`     | `any[]`                                               | `[]`      |          | v-model 바인딩 (선택된 값의 배열)                                         |
+| `name`           | `string`                                              | `''`      |          | HTML name 속성                                                            |
+| `noDefaultRules` | `boolean`                                             | `false`   |          | 기본 유효성 검사 규칙 비활성화                                            |
+| `noLabel`        | `boolean`                                             | `false`   |          | 라벨 숨김                                                                 |
+| `noMessages`     | `boolean`                                             | `false`   |          | 유효성 검사 메시지 숨김                                                   |
+| `options`        | `any[]`                                               | `[]`      |          | 체크박스로 표시할 옵션 배열                                               |
+| `optionLabel`    | `string`                                              | `'label'` |          | 각 옵션의 라벨로 사용할 키                                                |
+| `optionValue`    | `string`                                              | `'value'` |          | 각 옵션의 값으로 사용할 키                                                |
+| `readonly`       | `boolean`                                             | `false`   |          | 모든 체크박스를 읽기 전용으로 설정                                        |
+| `required`       | `boolean`                                             | `false`   |          | 필수 항목으로 표시                                                        |
+| `rules`          | `Rule[]`                                              | `[]`      |          | 커스텀 유효성 검사 규칙                                                   |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                | `'md'`    |          | 각 `VsCheckbox`로 전달되는 사이즈                                         |
+| `state`          | `UIState`                                             | `'idle'`  |          | 유효성 검사 상태                                                          |
+| `vertical`       | `boolean`                                             | `false`   |          | 체크박스를 수직으로 배치                                                  |
+| `changed`        | `boolean`                                             | `false`   |          | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
+| `valid`          | `boolean`                                             | `false`   |          | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.   |
 
 ## Types
 
@@ -183,41 +187,41 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `update:modelValue` | `any` | 값이 변경될 때 발생 |
-| `update:changed` | `boolean` | 변경 상태 업데이트 시 발생 |
-| `update:valid` | `boolean` | 유효성 검사 상태 업데이트 시 발생 |
-| `change` | `any` | 값 변경 시 발생 |
-| `focus` | `FocusEvent` | 체크박스가 포커스를 받을 때 발생 |
-| `blur` | `FocusEvent` | 체크박스가 포커스를 잃을 때 발생 |
-| `toggle` | `boolean, MouseEvent` | 토글 후 발생; 새로운 체크 상태와 마우스 이벤트가 페이로드 |
-| `clear` | `any` | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
+| Event               | Payload               | Description                                               |
+| ------------------- | --------------------- | --------------------------------------------------------- |
+| `update:modelValue` | `any`                 | 값이 변경될 때 발생                                       |
+| `update:changed`    | `boolean`             | 변경 상태 업데이트 시 발생                                |
+| `update:valid`      | `boolean`             | 유효성 검사 상태 업데이트 시 발생                         |
+| `change`            | `any`                 | 값 변경 시 발생                                           |
+| `focus`             | `FocusEvent`          | 체크박스가 포커스를 받을 때 발생                          |
+| `blur`              | `FocusEvent`          | 체크박스가 포커스를 잃을 때 발생                          |
+| `toggle`            | `boolean, MouseEvent` | 토글 후 발생; 새로운 체크 상태와 마우스 이벤트가 페이로드 |
+| `clear`             | `any`                 | 값이 초기화될 때 초기화 직전 값과 함께 발생               |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | — |
-| `label` | 커스텀 라벨 콘텐츠 |
-| `check-label` | 체크박스 옆의 커스텀 콘텐츠 |
-| `messages` | 커스텀 유효성 검사 메시지 콘텐츠 |
+| Slot          | Description                      |
+| ------------- | -------------------------------- |
+| `default`     | —                                |
+| `label`       | 커스텀 라벨 콘텐츠               |
+| `check-label` | 체크박스 옆의 커스텀 콘텐츠      |
+| `messages`    | 커스텀 유효성 검사 메시지 콘텐츠 |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `clear` | — | 체크박스 값을 비웁니다 |
-| `reset` | — | 체크박스 값을 초기값으로 되돌립니다 |
-| `validate` | — | 유효성 검사를 실행하고 결과를 반환합니다 |
-| `focus` | — | 체크박스 입력 요소에 포커스를 줍니다 |
-| `blur` | — | 체크박스 입력 요소의 포커스를 제거합니다 |
-| `toggle` | — | 체크 상태를 전환하고 값이 변경됐는지 반환합니다 |
+| Method     | Parameters | Description                                     |
+| ---------- | ---------- | ----------------------------------------------- |
+| `clear`    | —          | 체크박스 값을 비웁니다                          |
+| `reset`    | —          | 체크박스 값을 초기값으로 되돌립니다             |
+| `validate` | —          | 유효성 검사를 실행하고 결과를 반환합니다        |
+| `focus`    | —          | 체크박스 입력 요소에 포커스를 줍니다            |
+| `blur`     | —          | 체크박스 입력 요소의 포커스를 제거합니다        |
+| `toggle`   | —          | 체크 상태를 전환하고 값이 변경됐는지 반환합니다 |
 
 ## Cautions
 
 - `VsCheckboxSet`의 `modelValue`에 `options`에 없는 값이 포함되면 (마운트 시 또는 프로그래매틱하게) 해당 값들은 제거되고 콘솔 경고가 출력됩니다.
 - `options`가 변경되어 현재 선택된 일부 값이 더 이상 존재하지 않으면 해당 항목이 제거되고 콘솔 경고가 출력됩니다.
 - `options`가 비어 있는 동안에는 값을 정리하지 않으므로, 비동기로 불러오는 options보다 먼저 설정된 값이 유지됩니다. `options`가 들어오면 위 규칙대로 없는 값이 정리됩니다. 불러오는 동안 사용자가 조작하지 못하게 하려면 `loading`(또는 `disabled`)을 사용하세요. `loading`은 표시와 조작에만 영향을 주며, 값을 정리하는 시점은 바꾸지 않습니다.
-  - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
-  - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `required`와 `min`은 실패합니다.
+    - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
+    - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `required`와 `min`은 실패합니다.
