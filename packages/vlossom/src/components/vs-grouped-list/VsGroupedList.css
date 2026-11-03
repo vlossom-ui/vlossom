@@ -8,6 +8,14 @@
     width: auto;
     max-height: auto;
 
+    &.vs-inner-scroll {
+        .vs-inner-scroll-header,
+        .vs-inner-scroll-body,
+        .vs-inner-scroll-footer {
+            padding: 0;
+        }
+    }
+
     .vs-grouped-list-list {
         @apply flex flex-col;
 

@@ -11,6 +11,7 @@
 - 사용 가능한 높이를 채우는 수직 스크롤 가능한 본문 영역을 제공합니다.
 - 스크롤 영역 밖에 선택적인 고정 `header` 및 `footer` 슬롯을 지원합니다.
 - `v-scroll-shadow` 디렉티브를 통해 스크롤 섀도우 스타일을 적용합니다.
+- `header`, 본문, `footer` 영역에 약간의 기본 padding을 적용하며, `styleSet`으로 덮어쓸 수 있습니다.
 - `hideScroll` prop으로 스크롤바를 숨길 수 있습니다.
 - `hasScroll`을 통해 콘텐츠 오버플로우를 프로그래밍 방식으로 확인할 수 있습니다.
 
@@ -30,13 +31,13 @@
 <template>
     <vs-inner-scroll style="height: 400px;">
         <template #header>
-            <div class="p-4 font-bold">헤더</div>
+            <div class="font-bold">헤더</div>
         </template>
 
         <p v-for="i in 20" :key="i">라인 {{ i }}</p>
 
         <template #footer>
-            <div class="p-4">푸터</div>
+            <div>푸터</div>
         </template>
     </vs-inner-scroll>
 </template>

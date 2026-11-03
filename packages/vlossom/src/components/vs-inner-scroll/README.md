@@ -11,6 +11,7 @@ A layout component that provides a scrollable content area with optional sticky 
 - Provides a vertically scrollable body area that fills available height.
 - Supports optional sticky `header` and `footer` slots outside the scroll area.
 - Applies scroll shadow styling via the `v-scroll-shadow` directive.
+- Applies a small default padding to the `header`, body, and `footer` areas; override it with `styleSet`.
 - Can hide the scrollbar with the `hideScroll` prop.
 - Exposes `hasScroll` to programmatically check if content overflows.
 
@@ -30,13 +31,13 @@ A layout component that provides a scrollable content area with optional sticky 
 <template>
     <vs-inner-scroll style="height: 400px;">
         <template #header>
-            <div class="p-4 font-bold">Header</div>
+            <div class="font-bold">Header</div>
         </template>
 
         <p v-for="i in 20" :key="i">Line {{ i }}</p>
 
         <template #footer>
-            <div class="p-4">Footer</div>
+            <div>Footer</div>
         </template>
     </vs-inner-scroll>
 </template>

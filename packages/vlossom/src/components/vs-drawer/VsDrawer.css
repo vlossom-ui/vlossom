@@ -16,6 +16,12 @@
         background-color: var(--vs-cs-surface);
         padding: 0;
 
+        .vs-inner-scroll-header,
+        .vs-inner-scroll-body,
+        .vs-inner-scroll-footer {
+            padding: 0;
+        }
+
         &.vs-drawer-left {
             @apply top-0 left-0;
 
