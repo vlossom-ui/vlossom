@@ -36,14 +36,14 @@ const { formDisabled, formReadonly } = useInputForm(id, valid, changed, validate
 
 ## Args
 
-| Arg        | Type               | Default | Required | Description                                                          |
-| ---------- | ------------------ | ------- | -------- | -------------------------------------------------------------------- |
-| `id`       | `Ref<string>`      | —       | Yes      | Reactive ref holding the input's unique id used to register in the form. |
-| `valid`    | `Ref<boolean>`     | —       | Yes      | Reactive validity state of the input.                                |
-| `changed`  | `Ref<boolean>`     | —       | Yes      | Reactive ref indicating whether the user has changed the value.      |
-| `validate` | `() => boolean`    | —       | Yes      | Validation function called when the form triggers validation.        |
-| `clear`    | `() => void`       | —       | Yes      | Clear function called when the form triggers a clear.                |
-| `reset`    | `() => void`       | —       | Yes      | Reset function called when the form triggers a reset.                |
+| Arg        | Type            | Default | Required | Description                                                              |
+| ---------- | --------------- | ------- | -------- | ------------------------------------------------------------------------ |
+| `id`       | `Ref<string>`   | —       | Yes      | Reactive ref holding the input's unique id used to register in the form. |
+| `valid`    | `Ref<boolean>`  | —       | Yes      | Reactive validity state of the input.                                    |
+| `changed`  | `Ref<boolean>`  | —       | Yes      | Reactive ref indicating whether the user has changed the value.          |
+| `validate` | `() => boolean` | —       | Yes      | Validation function called when the form triggers validation.            |
+| `clear`    | `() => void`    | —       | Yes      | Clear function called when the form triggers a clear.                    |
+| `reset`    | `() => void`    | —       | Yes      | Reset function called when the form triggers a reset.                    |
 
 ## Types
 
@@ -51,22 +51,17 @@ No additional exported types.
 
 ## Return Refs
 
-| RefType        | Type           | Description                                                        |
-| -------------- | -------------- | ------------------------------------------------------------------ |
-| `formDisabled` | `Ref<boolean>` | `true` when the parent form sets all inputs to disabled.           |
-| `formReadonly` | `Ref<boolean>` | `true` when the parent form sets all inputs to readonly.           |
-
-## Return Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| RefType        | Type           | Description                                              |
+| -------------- | -------------- | -------------------------------------------------------- |
+| `formDisabled` | `Ref<boolean>` | `true` when the parent form sets all inputs to disabled. |
+| `formReadonly` | `Ref<boolean>` | `true` when the parent form sets all inputs to readonly. |
 
 ## Hooks
 
-| Hook              | Description                                                                 |
-| ----------------- | --------------------------------------------------------------------------- |
-| `onMounted`       | Registers the input's current `changed` and `valid` state with the form.    |
-| `onBeforeUnmount` | Removes the input from the form store.                                      |
+| Hook              | Description                                                                                                    |
+| ----------------- | -------------------------------------------------------------------------------------------------------------- |
+| `onMounted`       | Registers the input's current `changed` and `valid` state with the form.                                       |
+| `onBeforeUnmount` | Removes the input from the form store.                                                                         |
 | `watch`           | Watches `changed`, `valid`, `validateFlag`, `clearFlag`, `resetFlag`, and `id` to keep the form store in sync. |
 
 ## Cautions

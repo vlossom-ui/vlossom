@@ -50,19 +50,9 @@ type ColorScheme = string; // 색상 스킴 식별자, 예: 'blue', 'red'
 
 ## Return Refs
 
-| RefType               | 타입                                     | 설명                                                                      |
-| --------------------- | ---------------------------------------- | ------------------------------------------------------------------------- |
-| `computedColorScheme` | `ComputedRef<ColorScheme \| undefined>`  | 결정된 색상 스킴: prop → 컴포넌트 전역 → 기본 전역 순으로 우선 적용.     |
-| `colorSchemeClass`    | `ComputedRef<string>`                    | `vs-cs-{scheme}` 형식의 CSS 클래스 문자열 (예: `vs-cs-blue`).            |
-
-## Return Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
-
-## Hooks
-
-| Hook | 설명 |
-| ---- | ---- |
+| RefType               | 타입                                    | 설명                                                                 |
+| --------------------- | --------------------------------------- | -------------------------------------------------------------------- |
+| `computedColorScheme` | `ComputedRef<ColorScheme \| undefined>` | 결정된 색상 스킴: prop → 컴포넌트 전역 → 기본 전역 순으로 우선 적용. |
+| `colorSchemeClass`    | `ComputedRef<string>`                   | `vs-cs-{scheme}` 형식의 CSS 클래스 문자열 (예: `vs-cs-blue`).        |
 
 ## Cautions

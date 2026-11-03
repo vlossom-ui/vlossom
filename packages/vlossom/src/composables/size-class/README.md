@@ -36,8 +36,8 @@ const classObj = computed(() => ({
 
 ## Args
 
-| Arg    | Type                     | Default | Required | Description                                            |
-| ------ | ------------------------ | ------- | -------- | ------------------------------------------------------ |
+| Arg    | Type                     | Default | Required | Description                                             |
+| ------ | ------------------------ | ------- | -------- | ------------------------------------------------------- |
 | `size` | `Ref<Size \| undefined>` | —       | Yes      | Reactive ref holding the current size of the component. |
 
 ## Types
@@ -48,18 +48,8 @@ type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 ## Return Refs
 
-| RefType     | Type                  | Description                                                                |
-| ----------- | --------------------- | -------------------------------------------------------------------------- |
-| `sizeClass` | `ComputedRef<string>` | `vs-{size}` when a size is provided, otherwise an empty string.            |
-
-## Return Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| RefType     | Type                  | Description                                                     |
+| ----------- | --------------------- | --------------------------------------------------------------- |
+| `sizeClass` | `ComputedRef<string>` | `vs-{size}` when a size is provided, otherwise an empty string. |
 
 ## Cautions

@@ -47,40 +47,30 @@ const { computedOptions } = useOptionList(options, optionLabel, optionValue, dis
 
 ## Args
 
-| 인자          | 타입                                                                           | 기본값 | 필수 | 설명                                                                        |
-| ------------- | ------------------------------------------------------------------------------ | ------ | ---- | --------------------------------------------------------------------------- |
-| `options`     | `Ref<any[]>`                                                                   | —      | Yes  | 옵션 항목의 원시 배열.                                                       |
-| `optionLabel` | `Ref<string>`                                                                  | —      | Yes  | 표시 레이블을 추출하는 키 경로.                                              |
-| `optionValue` | `Ref<string>`                                                                  | —      | Yes  | 값을 추출하는 키 경로.                                                       |
-| `disabled`    | `Ref<boolean \| ((option: any, index: number, options: any[]) => boolean)>`    | —      | Yes  | 옵션이 비활성화되는지 결정하는 전역 boolean 또는 항목별 함수.                |
+| 인자          | 타입                                                                        | 기본값 | 필수 | 설명                                                          |
+| ------------- | --------------------------------------------------------------------------- | ------ | ---- | ------------------------------------------------------------- |
+| `options`     | `Ref<any[]>`                                                                | —      | Yes  | 옵션 항목의 원시 배열.                                        |
+| `optionLabel` | `Ref<string>`                                                               | —      | Yes  | 표시 레이블을 추출하는 키 경로.                               |
+| `optionValue` | `Ref<string>`                                                               | —      | Yes  | 값을 추출하는 키 경로.                                        |
+| `disabled`    | `Ref<boolean \| ((option: any, index: number, options: any[]) => boolean)>` | —      | Yes  | 옵션이 비활성화되는지 결정하는 전역 boolean 또는 항목별 함수. |
 
 ## Types
 
 ```typescript
 interface ComputedOption {
-    id: string;      // 레이블 + 인덱스 기반의 안정적인 해시
-    item: any;       // 원래 옵션 객체
-    label: string;   // 추출된 표시 레이블
-    value: any;      // 추출된 값
-    index: number;   // options 배열에서의 원래 인덱스
+    id: string; // 레이블 + 인덱스 기반의 안정적인 해시
+    item: any; // 원래 옵션 객체
+    label: string; // 추출된 표시 레이블
+    value: any; // 추출된 값
+    index: number; // options 배열에서의 원래 인덱스
     disabled: boolean;
 }
 ```
 
 ## Return Refs
 
-| RefType           | 타입                            | 설명                              |
-| ----------------- | ------------------------------- | --------------------------------- |
-| `computedOptions` | `ComputedRef<ComputedOption[]>` | 정규화된 반응형 옵션 목록.        |
-
-## Return Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
-
-## Hooks
-
-| Hook | 설명 |
-| ---- | ---- |
+| RefType           | 타입                            | 설명                       |
+| ----------------- | ------------------------------- | -------------------------- |
+| `computedOptions` | `ComputedRef<ComputedOption[]>` | 정규화된 반응형 옵션 목록. |
 
 ## Cautions

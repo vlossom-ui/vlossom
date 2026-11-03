@@ -37,10 +37,10 @@ const { computedColorScheme, colorSchemeClass } = useColorScheme('VsButton', col
 
 ## Args
 
-| Arg           | Type                          | Default | Required | Description                                               |
-| ------------- | ----------------------------- | ------- | -------- | --------------------------------------------------------- |
-| `component`   | `VsComponent \| string`       | —       | Yes      | Component name used to look up the component-specific global color scheme. |
-| `colorScheme` | `Ref<ColorScheme \| undefined>` | —     | Yes      | Reactive ref holding the color scheme passed as a prop.   |
+| Arg           | Type                            | Default | Required | Description                                                                |
+| ------------- | ------------------------------- | ------- | -------- | -------------------------------------------------------------------------- |
+| `component`   | `VsComponent \| string`         | —       | Yes      | Component name used to look up the component-specific global color scheme. |
+| `colorScheme` | `Ref<ColorScheme \| undefined>` | —       | Yes      | Reactive ref holding the color scheme passed as a prop.                    |
 
 ## Types
 
@@ -50,19 +50,9 @@ type ColorScheme = string; // color scheme identifier e.g. 'blue', 'red'
 
 ## Return Refs
 
-| RefType               | Type                                     | Description                                                               |
-| --------------------- | ---------------------------------------- | ------------------------------------------------------------------------- |
-| `computedColorScheme` | `ComputedRef<ColorScheme \| undefined>`  | The resolved color scheme: prop → component global → default global.      |
-| `colorSchemeClass`    | `ComputedRef<string>`                    | CSS class string in the form `vs-cs-{scheme}` (e.g. `vs-cs-blue`).       |
-
-## Return Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| RefType               | Type                                    | Description                                                          |
+| --------------------- | --------------------------------------- | -------------------------------------------------------------------- |
+| `computedColorScheme` | `ComputedRef<ColorScheme \| undefined>` | The resolved color scheme: prop → component global → default global. |
+| `colorSchemeClass`    | `ComputedRef<string>`                   | CSS class string in the form `vs-cs-{scheme}` (e.g. `vs-cs-blue`).   |
 
 ## Cautions

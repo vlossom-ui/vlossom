@@ -31,37 +31,32 @@ const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, o
 
 ## Args
 
-| Arg           | Type                | Default     | Required | Description                                                              |
-| ------------- | ------------------- | ----------- | -------- | ------------------------------------------------------------------------ |
-| `inputValue`  | `Ref<any>`          | —           | Yes      | The current selected value (or array of values when `multiple` is true). |
-| `options`     | `Ref<any[]>`        | —           | Yes      | The full list of available options.                                      |
-| `optionLabel` | `Ref<string>`       | —           | Yes      | Key path to extract the display label from an option object.             |
-| `optionValue` | `Ref<string>`       | —           | Yes      | Key path to extract the value from an option object.                     |
-| `multiple`    | `Ref<boolean>`      | `ref(false)` | No      | When `true`, `inputValue` is treated as an array and filtered on change. |
-| `emptyValue`  | `Ref<any>`          | `null` / `[]` | No      | Value set when no selected value remains in options. Defaults to `[]` when `multiple` is `true`. |
+| Arg           | Type           | Default       | Required | Description                                                                                      |
+| ------------- | -------------- | ------------- | -------- | ------------------------------------------------------------------------------------------------ |
+| `inputValue`  | `Ref<any>`     | —             | Yes      | The current selected value (or array of values when `multiple` is true).                         |
+| `options`     | `Ref<any[]>`   | —             | Yes      | The full list of available options.                                                              |
+| `optionLabel` | `Ref<string>`  | —             | Yes      | Key path to extract the display label from an option object.                                     |
+| `optionValue` | `Ref<string>`  | —             | Yes      | Key path to extract the value from an option object.                                             |
+| `multiple`    | `Ref<boolean>` | `ref(false)`  | No       | When `true`, `inputValue` is treated as an array and filtered on change.                         |
+| `emptyValue`  | `Ref<any>`     | `null` / `[]` | No       | Value set when no selected value remains in options. Defaults to `[]` when `multiple` is `true`. |
 
 ## Types
 
 No additional exported types.
 
-## Return Refs
-
-| RefType | Type | Description |
-| ------- | ---- | ----------- |
-
 ## Return Methods
 
-| Method           | Parameters     | Description                                                         |
-| ---------------- | -------------- | ------------------------------------------------------------------- |
-| `getOptionLabel` | `option: any`  | Returns the display label string for a given option.                |
-| `getOptionValue` | `option: any`  | Returns the value for a given option using `optionValue` key path.  |
-| `isOptionValue`  | `value: any`   | Returns whether the value exists in the current options.            |
+| Method           | Parameters    | Description                                                        |
+| ---------------- | ------------- | ------------------------------------------------------------------ |
+| `getOptionLabel` | `option: any` | Returns the display label string for a given option.               |
+| `getOptionValue` | `option: any` | Returns the value for a given option using `optionValue` key path. |
+| `isOptionValue`  | `value: any`  | Returns whether the value exists in the current options.           |
 
 ## Hooks
 
-| Hook    | Description                                                                              |
-| ------- | ---------------------------------------------------------------------------------------- |
-| `watch` | Watches `options` and clears or filters `inputValue` when the options list changes.      |
+| Hook    | Description                                                                         |
+| ------- | ----------------------------------------------------------------------------------- |
+| `watch` | Watches `options` and clears or filters `inputValue` when the options list changes. |
 
 ## Cautions
 

@@ -43,11 +43,11 @@ const { groupedItems } = useGroupedItems(computedOptions, groupBy, groupOrder);
 
 ## Args
 
-| Arg          | Type                                                    | Default | Required | Description                                                                 |
-| ------------ | ------------------------------------------------------- | ------- | -------- | --------------------------------------------------------------------------- |
-| `items`      | `Ref<OptionItem[]>`                                     | —       | Yes      | Normalized option list, e.g. `computedOptions` from `useOptionList`.        |
-| `groupBy`    | `Ref<((item: any, index: number) => string \| null) \| null>` | — | Yes      | Returns the group name of each item. Receives the original option (`item.item`). |
-| `groupOrder` | `Ref<string[]>`                                         | —       | Yes      | Group names to place first, in order.                                       |
+| Arg          | Type                                                          | Default | Required | Description                                                                      |
+| ------------ | ------------------------------------------------------------- | ------- | -------- | -------------------------------------------------------------------------------- |
+| `items`      | `Ref<OptionItem[]>`                                           | —       | Yes      | Normalized option list, e.g. `computedOptions` from `useOptionList`.             |
+| `groupBy`    | `Ref<((item: any, index: number) => string \| null) \| null>` | —       | Yes      | Returns the group name of each item. Receives the original option (`item.item`). |
+| `groupOrder` | `Ref<string[]>`                                               | —       | Yes      | Group names to place first, in order.                                            |
 
 ## Types
 
@@ -63,16 +63,6 @@ interface GroupedItem {
 | RefType        | Type                         | Description                     |
 | -------------- | ---------------------------- | ------------------------------- |
 | `groupedItems` | `ComputedRef<GroupedItem[]>` | Ordered groups and their items. |
-
-## Return Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
 
 ## Cautions
 

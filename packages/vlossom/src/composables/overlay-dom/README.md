@@ -46,21 +46,11 @@ interface OverlayStyle {
 }
 ```
 
-## Return Refs
-
-| RefType | Type | Description |
-| ------- | ---- | ----------- |
-
 ## Return Methods
 
-| Method             | Parameters                                                          | Description                                                                                   |
-| ------------------ | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Method             | Parameters                                                               | Description                                                                                                              |
+| ------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
 | `appendOverlayDom` | `targetElement: Element, overlayId: string, overlayStyle?: OverlayStyle` | Appends a new overlay `<div>` to `targetElement` using `overlayId` as its DOM id. Returns the element (new or existing). |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
 
 ## Cautions
 

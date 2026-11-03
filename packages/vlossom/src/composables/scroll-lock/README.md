@@ -35,9 +35,9 @@ function closeModal() {
 
 ## Args
 
-| Arg         | Type     | Default   | Required | Description                                        |
-| ----------- | -------- | --------- | -------- | -------------------------------------------------- |
-| `container` | `string` | `'body'`  | No       | CSS selector for the element to lock scrolling on. |
+| Arg         | Type     | Default  | Required | Description                                        |
+| ----------- | -------- | -------- | -------- | -------------------------------------------------- |
+| `container` | `string` | `'body'` | No       | CSS selector for the element to lock scrolling on. |
 
 ## Types
 
@@ -51,21 +51,16 @@ interface ScrollLockState {
 
 ## Return Refs
 
-| RefType    | Type           | Description                                         |
-| ---------- | -------------- | --------------------------------------------------- |
-| `isLocked` | `Ref<boolean>` | `true` while the container scroll is locked.        |
+| RefType    | Type           | Description                                  |
+| ---------- | -------------- | -------------------------------------------- |
+| `isLocked` | `Ref<boolean>` | `true` while the container scroll is locked. |
 
 ## Return Methods
 
-| Method   | Parameters | Description                                                                                       |
-| -------- | ---------- | ------------------------------------------------------------------------------------------------- |
+| Method   | Parameters | Description                                                                                          |
+| -------- | ---------- | ---------------------------------------------------------------------------------------------------- |
 | `lock`   | —          | Saves the current overflow/padding state and applies scroll-lock styles via `requestAnimationFrame`. |
-| `unlock` | —          | Restores the saved overflow/padding state via `requestAnimationFrame`.                            |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| `unlock` | —          | Restores the saved overflow/padding state via `requestAnimationFrame`.                               |
 
 ## Cautions
 

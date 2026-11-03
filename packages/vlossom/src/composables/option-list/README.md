@@ -47,40 +47,30 @@ const { computedOptions } = useOptionList(options, optionLabel, optionValue, dis
 
 ## Args
 
-| Arg           | Type                                                                           | Default | Required | Description                                                                     |
-| ------------- | ------------------------------------------------------------------------------ | ------- | -------- | ------------------------------------------------------------------------------- |
-| `options`     | `Ref<any[]>`                                                                   | —       | Yes      | Raw array of option items.                                                      |
-| `optionLabel` | `Ref<string>`                                                                  | —       | Yes      | Key path for extracting the display label.                                      |
-| `optionValue` | `Ref<string>`                                                                  | —       | Yes      | Key path for extracting the value.                                              |
-| `disabled`    | `Ref<boolean \| ((option: any, index: number, options: any[]) => boolean)>`    | —       | Yes      | Global boolean or per-item function determining whether the option is disabled.  |
+| Arg           | Type                                                                        | Default | Required | Description                                                                     |
+| ------------- | --------------------------------------------------------------------------- | ------- | -------- | ------------------------------------------------------------------------------- |
+| `options`     | `Ref<any[]>`                                                                | —       | Yes      | Raw array of option items.                                                      |
+| `optionLabel` | `Ref<string>`                                                               | —       | Yes      | Key path for extracting the display label.                                      |
+| `optionValue` | `Ref<string>`                                                               | —       | Yes      | Key path for extracting the value.                                              |
+| `disabled`    | `Ref<boolean \| ((option: any, index: number, options: any[]) => boolean)>` | —       | Yes      | Global boolean or per-item function determining whether the option is disabled. |
 
 ## Types
 
 ```typescript
 interface ComputedOption {
-    id: string;      // stable hash based on label + index
-    item: any;       // original option object
-    label: string;   // extracted display label
-    value: any;      // extracted value
-    index: number;   // original index in the options array
+    id: string; // stable hash based on label + index
+    item: any; // original option object
+    label: string; // extracted display label
+    value: any; // extracted value
+    index: number; // original index in the options array
     disabled: boolean;
 }
 ```
 
 ## Return Refs
 
-| RefType           | Type                         | Description                                    |
-| ----------------- | ---------------------------- | ---------------------------------------------- |
-| `computedOptions` | `ComputedRef<ComputedOption[]>` | Normalized and reactive option list.         |
-
-## Return Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| RefType           | Type                            | Description                          |
+| ----------------- | ------------------------------- | ------------------------------------ |
+| `computedOptions` | `ComputedRef<ComputedOption[]>` | Normalized and reactive option list. |
 
 ## Cautions

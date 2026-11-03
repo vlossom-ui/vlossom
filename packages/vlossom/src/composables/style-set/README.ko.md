@@ -18,8 +18,8 @@
 import type { CSSProperties } from 'vue';
 
 export interface VsButtonStyleSet extends CSSProperties {
-    $content?: CSSProperties;        // 슬롯
-    $loading?: VsLoadingStyleSet;    // 하위 컴포넌트
+    $content?: CSSProperties; // 슬롯
+    $loading?: VsLoadingStyleSet; // 하위 컴포넌트
 }
 ```
 
@@ -59,12 +59,12 @@ const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleS
 
 ## Args
 
-| 인자                 | 타입                            | 기본값    | 필수 | 설명                                                                  |
-| -------------------- | ------------------------------- | --------- | ---- | --------------------------------------------------------------------- |
-| `component`          | `VsComponent \| string`         | —         | Yes  | CSS 변수 접두사와 전역 style-set 조회에 사용되는 컴포넌트 이름.       |
-| `styleSet`           | `Ref<string \| T \| undefined>` | —         | Yes  | `styleSet` prop 값. 문자열은 명명된 전역 style-set으로 해석됩니다.    |
-| `baseStyleSet`       | `Ref<Partial<T>>`               | `ref({})` | No   | 사용자 prop 이전에 적용되는 기본 style-set (가장 낮은 우선순위).      |
-| `additionalStyleSet` | `Ref<Partial<T>>`               | `ref({})` | No   | 다른 컴포넌트 prop에서 파생된 동적 오버라이드 (가장 높은 우선순위).   |
+| 인자                 | 타입                            | 기본값    | 필수 | 설명                                                                |
+| -------------------- | ------------------------------- | --------- | ---- | ------------------------------------------------------------------- |
+| `component`          | `VsComponent \| string`         | —         | Yes  | CSS 변수 접두사와 전역 style-set 조회에 사용되는 컴포넌트 이름.     |
+| `styleSet`           | `Ref<string \| T \| undefined>` | —         | Yes  | `styleSet` prop 값. 문자열은 명명된 전역 style-set으로 해석됩니다.  |
+| `baseStyleSet`       | `Ref<Partial<T>>`               | `ref({})` | No   | 사용자 prop 이전에 적용되는 기본 style-set (가장 낮은 우선순위).    |
+| `additionalStyleSet` | `Ref<Partial<T>>`               | `ref({})` | No   | 다른 컴포넌트 prop에서 파생된 동적 오버라이드 (가장 높은 우선순위). |
 
 ## Types
 
@@ -72,29 +72,19 @@ const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleS
 // 제네릭 T는 { [key: string]: any }를 확장해야 합니다
 // 일반적인 StyleSet 구조 (루트에서 CSSProperties 상속):
 interface ExampleStyleSet extends CSSProperties {
-    $primitiveVar?: string;         // --vs-example-primitiveVar로 변환
-    $element?: CSSProperties;       // 슬롯/요소 스타일
+    $primitiveVar?: string; // --vs-example-primitiveVar로 변환
+    $element?: CSSProperties; // 슬롯/요소 스타일
     $childComponent?: ChildStyleSet; // 하위 컴포넌트 style-set
 }
 ```
 
 ## Return Refs
 
-| RefType                | 타입                                  | 설명                                                                                            |
-| ---------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `componentStyleSet`    | `ComputedRef<Partial<T>>`             | 완전히 병합된 style-set 객체. `$X` 슬롯 키와 하위 style-set 접근에 사용합니다.                 |
-| `styleSetVariables`    | `ComputedRef<Record<string, string>>` | 루트 레벨의 `$X` primitive 항목에서 파생된 CSS 커스텀 속성 맵.                                 |
+| RefType                | 타입                                  | 설명                                                                                         |
+| ---------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `componentStyleSet`    | `ComputedRef<Partial<T>>`             | 완전히 병합된 style-set 객체. `$X` 슬롯 키와 하위 style-set 접근에 사용합니다.               |
+| `styleSetVariables`    | `ComputedRef<Record<string, string>>` | 루트 레벨의 `$X` primitive 항목에서 파생된 CSS 커스텀 속성 맵.                               |
 | `componentInlineStyle` | `ComputedRef<CSSProperties>`          | 루트 레벨의 non-`$` 키에서 파생된 inline CSSProperties. 루트 요소의 `:style`에 spread하세요. |
-
-## Return Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
-
-## Hooks
-
-| Hook | 설명 |
-| ---- | ---- |
 
 ## Cautions
 

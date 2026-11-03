@@ -43,10 +43,10 @@ const { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = us
 
 ## Args
 
-| Arg        | Type                                                                     | Default     | Required | Description                                                                      |
-| ---------- | ------------------------------------------------------------------------ | ----------- | -------- | -------------------------------------------------------------------------------- |
-| `list`     | `Ref<any[]>`                                                             | —           | Yes      | Reactive array of items to select from.                                          |
-| `disabled` | `Ref<boolean \| ((item: any, index: number) => boolean) \| undefined>`   | `undefined` | No       | Global boolean or per-item function. When a function, receives `(item, index)`.  |
+| Arg        | Type                                                                   | Default     | Required | Description                                                                     |
+| ---------- | ---------------------------------------------------------------------- | ----------- | -------- | ------------------------------------------------------------------------------- |
+| `list`     | `Ref<any[]>`                                                           | —           | Yes      | Reactive array of items to select from.                                         |
+| `disabled` | `Ref<boolean \| ((item: any, index: number) => boolean) \| undefined>` | `undefined` | No       | Global boolean or per-item function. When a function, receives `(item, index)`. |
 
 ## Types
 
@@ -54,28 +54,23 @@ No additional exported types. Uses `NOT_SELECTED` constant (`-1`) for the unsele
 
 ## Return Refs
 
-| RefType         | Type                   | Description                                                          |
-| --------------- | ---------------------- | -------------------------------------------------------------------- |
+| RefType         | Type                   | Description                                                               |
+| --------------- | ---------------------- | ------------------------------------------------------------------------- |
 | `selectedIndex` | `Ref<number>`          | Currently selected index. `NOT_SELECTED` (`-1`) when nothing is selected. |
-| `isFirstEdge`   | `ComputedRef<boolean>` | `true` when the selected index is the first active (non-disabled) item. |
-| `isLastEdge`    | `ComputedRef<boolean>` | `true` when the selected index is the last active (non-disabled) item.  |
+| `isFirstEdge`   | `ComputedRef<boolean>` | `true` when the selected index is the first active (non-disabled) item.   |
+| `isLastEdge`    | `ComputedRef<boolean>` | `true` when the selected index is the last active (non-disabled) item.    |
 
 ## Return Methods
 
-| Method                         | Parameters                                | Description                                                                      |
-| ------------------------------ | ----------------------------------------- | -------------------------------------------------------------------------------- |
-| `isSelected`                   | `index: number`                           | Returns `true` if `selectedIndex` equals `index`.                                |
-| `isDisabled`                   | `index: number`                           | Returns `true` if the item at `index` is disabled.                               |
-| `isPrevious`                   | `index: number`                           | Returns `true` if `index` is before `selectedIndex`.                             |
-| `findActiveIndexForwardFrom`   | `targetIndex: number`                     | Finds the first non-disabled index at or after `targetIndex`.                    |
-| `findActiveIndexBackwardFrom`  | `targetIndex: number`                     | Finds the first non-disabled index at or before `targetIndex`.                   |
-| `selectIndex`                  | `index: number`                           | Sets `selectedIndex` to `index` if valid and not disabled. Out-of-range clears to `NOT_SELECTED`; disabled is a no-op (current selection is preserved). |
-| `handleKeydown`                | `e: KeyboardEvent, isVertical: boolean`   | Handles Arrow, Home, and End keys. Uses vertical/horizontal key mapping based on `isVertical`. |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| Method                        | Parameters                              | Description                                                                                                                                             |
+| ----------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `isSelected`                  | `index: number`                         | Returns `true` if `selectedIndex` equals `index`.                                                                                                       |
+| `isDisabled`                  | `index: number`                         | Returns `true` if the item at `index` is disabled.                                                                                                      |
+| `isPrevious`                  | `index: number`                         | Returns `true` if `index` is before `selectedIndex`.                                                                                                    |
+| `findActiveIndexForwardFrom`  | `targetIndex: number`                   | Finds the first non-disabled index at or after `targetIndex`.                                                                                           |
+| `findActiveIndexBackwardFrom` | `targetIndex: number`                   | Finds the first non-disabled index at or before `targetIndex`.                                                                                          |
+| `selectIndex`                 | `index: number`                         | Sets `selectedIndex` to `index` if valid and not disabled. Out-of-range clears to `NOT_SELECTED`; disabled is a no-op (current selection is preserved). |
+| `handleKeydown`               | `e: KeyboardEvent, isVertical: boolean` | Handles Arrow, Home, and End keys. Uses vertical/horizontal key mapping based on `isVertical`.                                                          |
 
 ## Cautions
 
