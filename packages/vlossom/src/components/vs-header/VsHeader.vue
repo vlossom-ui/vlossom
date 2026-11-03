@@ -1,5 +1,11 @@
 <template>
-    <vs-bar :tag :class="['vs-header', colorSchemeClass, classObj]" :style-set="componentStyleSet" :position>
+    <vs-bar
+        :tag
+        :class="['vs-header', classObj]"
+        :color-scheme="computedColorScheme"
+        :style-set="componentStyleSet"
+        :position
+    >
         <slot />
     </vs-bar>
 </template>
@@ -31,7 +37,7 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet, primary, position, height, layout } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { computedColorScheme } = useColorScheme(componentName, colorScheme);
 
         const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
 
@@ -73,7 +79,7 @@ export default defineComponent({
             layoutStore.setHeader(headerLayout);
         });
 
-        return { colorSchemeClass, componentStyleSet, classObj, isLayoutChild, position };
+        return { computedColorScheme, componentStyleSet, classObj, isLayoutChild, position };
     },
 });
 </script>

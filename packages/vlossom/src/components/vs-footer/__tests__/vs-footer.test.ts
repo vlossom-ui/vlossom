@@ -30,6 +30,24 @@ describe('VsFooter', () => {
             // then
             expect(wrapper.findComponent({ name: 'VsBar' }).exists()).toBe(true);
         });
+
+        it('colorScheme을 vs-bar에 전달해 color scheme 클래스가 하나만 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsFooter, { props: { colorScheme: 'red' } });
+
+            // then
+            expect(wrapper.findComponent({ name: 'VsBar' }).props('colorScheme')).toBe('red');
+            expect(wrapper.classes().filter((c) => c.startsWith('vs-cs-'))).toEqual(['vs-cs-red']);
+        });
+
+        it('colorScheme이 none이면 vs-bar에 none을 전달하고 vs-cs-default 클래스가 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsFooter, { props: { colorScheme: 'none' } });
+
+            // then
+            expect(wrapper.findComponent({ name: 'VsBar' }).props('colorScheme')).toBe('none');
+            expect(wrapper.classes().filter((c) => c.startsWith('vs-cs-'))).toEqual(['vs-cs-default']);
+        });
     });
 
     describe('props', () => {

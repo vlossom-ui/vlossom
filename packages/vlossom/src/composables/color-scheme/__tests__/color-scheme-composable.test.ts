@@ -63,7 +63,7 @@ describe('useColorScheme', () => {
             expect(computedColorScheme.value).toBe('green');
         });
 
-        it('colorScheme.value가 none일 때 undefined를 반환해야 함', () => {
+        it('colorScheme.value가 none일 때 none을 반환해야 함', () => {
             // given
             const colorScheme: Ref<ColorScheme> = ref('none');
             const component = VsComponent.VsButton;
@@ -72,10 +72,10 @@ describe('useColorScheme', () => {
             const { computedColorScheme } = useColorScheme(component, colorScheme);
 
             // then
-            expect(computedColorScheme.value).toBe(undefined);
+            expect(computedColorScheme.value).toBe('none');
         });
 
-        it('colorScheme.value가 none일 때 옵션 스토어 값이 있어도 undefined를 반환해야 함', () => {
+        it('colorScheme.value가 none일 때 옵션 스토어 값이 있어도 none을 반환해야 함', () => {
             // given
             const colorScheme: Ref<ColorScheme> = ref('none');
             const component = VsComponent.VsButton;
@@ -88,7 +88,40 @@ describe('useColorScheme', () => {
             const { computedColorScheme } = useColorScheme(component, colorScheme);
 
             // then
-            expect(computedColorScheme.value).toBe(undefined);
+            expect(computedColorScheme.value).toBe('none');
+        });
+
+        it('옵션 스토어의 컴포넌트별 값이 none일 때 default 값이 있어도 none을 반환해야 함', () => {
+            // given
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
+            const component = VsComponent.VsModalNode;
+            optionsStore.setColorScheme({
+                [component]: 'none',
+                default: 'violet',
+            });
+
+            // when
+            const { computedColorScheme, colorSchemeClass } = useColorScheme(component, colorScheme);
+
+            // then
+            expect(computedColorScheme.value).toBe('none');
+            expect(colorSchemeClass.value).toBe('vs-cs-default');
+        });
+
+        it('옵션 스토어의 default 값이 none일 때 none을 반환해야 함', () => {
+            // given
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
+            const component = VsComponent.VsButton;
+            optionsStore.setColorScheme({
+                default: 'none',
+            });
+
+            // when
+            const { computedColorScheme, colorSchemeClass } = useColorScheme(component, colorScheme);
+
+            // then
+            expect(computedColorScheme.value).toBe('none');
+            expect(colorSchemeClass.value).toBe('vs-cs-default');
         });
 
         it('colorScheme.value와 옵션 스토어 값이 모두 없을 때 undefined를 반환해야 함', () => {
@@ -103,7 +136,7 @@ describe('useColorScheme', () => {
             expect(computedColorScheme.value).toBe(undefined);
         });
 
-        it('colorScheme.value가 none으로 변경될 때 반응적으로 undefined를 반환해야 함', () => {
+        it('colorScheme.value가 none으로 변경될 때 반응적으로 none을 반환해야 함', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref('red');
             const component = VsComponent.VsButton;
@@ -115,7 +148,7 @@ describe('useColorScheme', () => {
             // when
             colorScheme.value = 'none';
             // then
-            expect(computedColorScheme.value).toBe(undefined);
+            expect(computedColorScheme.value).toBe('none');
 
             // when
             colorScheme.value = 'blue';

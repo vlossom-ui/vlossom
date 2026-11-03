@@ -65,7 +65,12 @@
                             ]"
                             :data-focusable="SELECT_FOCUS_KEY.search"
                         >
-                            <vs-search-input ref="searchInputRef" v-bind="searchProps" :size />
+                            <vs-search-input
+                                ref="searchInputRef"
+                                v-bind="searchProps"
+                                :color-scheme="computedColorScheme"
+                                :size
+                            />
                         </div>
                         <div
                             v-if="isUsingSelectAll"
