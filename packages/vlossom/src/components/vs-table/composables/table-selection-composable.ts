@@ -1,4 +1,4 @@
-import { computed, shallowRef, toRaw, watch, type Ref } from 'vue';
+import { computed, ref, shallowRef, toRaw, watch, type Ref } from 'vue';
 import { functionUtil } from '@/utils';
 import type { VsTableItem } from './../types';
 
@@ -8,13 +8,30 @@ export function useTableSelectionComposable(
     items: Ref<VsTableItem[]>,
     visibleItems: Ref<VsTableItem[]>,
     getItemKey: (item: VsTableItem) => string | number,
+    serverMode: Ref<boolean> = ref(false),
 ) {
     const isSelectable = computed(() =>
         functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], boolean>(rawSelectable.value),
     );
 
+    // server mode의 items는 현재 페이지뿐이므로 items에 없는 key의 선택은 지우지 않는다
+    function reconcile(list: VsTableItem[]): VsTableItem[] {
+        const itemsByKey = new Map(items.value.map((item) => [getItemKey(item), item]));
+        return list.flatMap((selectedItem) => {
+            const latestItem = itemsByKey.get(getItemKey(selectedItem));
+            if (!latestItem) {
+                return serverMode.value ? [selectedItem] : [];
+            }
+            return toRaw(latestItem) === toRaw(selectedItem) ? [selectedItem] : [latestItem];
+        });
+    }
+
+    function isSameItems(a: VsTableItem[], b: VsTableItem[]): boolean {
+        return a.length === b.length && a.every((item, index) => item === b[index]);
+    }
+
     // 사용자 객체를 프록시로 감싸지 않은 채 그대로 emit하기 위해 shallowRef를 쓴다
-    const selectedItems = shallowRef<VsTableItem[]>([...rawSelectedItems.value]);
+    const selectedItems = shallowRef<VsTableItem[]>(reconcile(rawSelectedItems.value));
     const selectedKeys = computed(() => new Set(selectedItems.value.map(getItemKey)));
 
     // selectable이 boolean이면 아이템을 순회하지 않는다 (대량 items에서는 갱신마다 전체 스캔이 된다)
@@ -56,35 +73,29 @@ export function useTableSelectionComposable(
         selectedItems.value = selected ? [...rest, ...selectableVisibleItems.value] : rest;
     }
 
-    // server mode의 items는 현재 페이지뿐이므로 items에 없는 key의 선택은 지우지 않는다
-    watch(items, (nextItems) => {
-        if (!selectedItems.value.length) {
-            return;
-        }
-        const itemsByKey = new Map(nextItems.map((item) => [getItemKey(item), item]));
-        let changed = false;
-        const nextSelectedItems = selectedItems.value.map((selectedItem) => {
-            const latestItem = itemsByKey.get(getItemKey(selectedItem));
-            if (!latestItem || toRaw(latestItem) === toRaw(selectedItem)) {
-                return selectedItem;
+    // splice 같은 제자리 변경도 잡도록 배열 원소까지만 추적한다
+    watch(
+        items,
+        () => {
+            const current = selectedItems.value;
+            if (!current.length) {
+                return;
             }
-            changed = true;
-            return latestItem;
-        });
-        if (changed) {
-            selectedItems.value = nextSelectedItems;
-        }
-    });
+            const next = reconcile(current);
+            if (!isSameItems(next, current)) {
+                selectedItems.value = next;
+            }
+        },
+        { deep: 1 },
+    );
 
+    // 정리된 결과가 입력과 다르면 내부 값이 그대로여도 다시 할당해 부모의 v-model을 맞춘다
     watch(rawSelectedItems, (nextSelectedItems) => {
-        const current = selectedItems.value;
-        if (
-            nextSelectedItems.length === current.length &&
-            nextSelectedItems.every((item, index) => item === current[index])
-        ) {
+        const next = reconcile(nextSelectedItems);
+        if (isSameItems(next, nextSelectedItems) && isSameItems(next, selectedItems.value)) {
             return;
         }
-        selectedItems.value = [...nextSelectedItems];
+        selectedItems.value = next;
     });
 
     return {
@@ -96,5 +107,6 @@ export function useTableSelectionComposable(
         isSelected,
         selectItem,
         selectAll,
+        isSameItems,
     };
 }
