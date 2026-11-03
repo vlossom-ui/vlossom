@@ -72,35 +72,37 @@ const files = ref([]);
 
 ## Props
 
-| Prop             | Type                                                    | Default  | Required | Description                                            |
-| ---------------- | ------------------------------------------------------- | -------- | -------- | ------------------------------------------------------ |
-| `colorScheme`    | `string`                                                | -        | -        | Color scheme for the component                         |
-| `styleSet`       | `string \| VsFileInputStyleSet`                         | -        | -        | Custom style set for the component                     |
-| `disabled`       | `boolean`                                               | `false`  | -        | Disables the component                                 |
-| `hidden`         | `boolean`                                               | `false`  | -        | Hides the component                                    |
-| `id`             | `string`                                                | `''`     | -        | HTML id attribute                                      |
-| `label`          | `string`                                                | `''`     | -        | Label text                                             |
-| `noLabel`        | `boolean`                                               | `false`  | -        | Hides the label                                        |
-| `noMessages`     | `boolean`                                               | `false`  | -        | Hides validation messages                              |
-| `required`       | `boolean`                                               | `false`  | -        | Marks the field as required                            |
-| `messages`       | `Message[]`                                             | `[]`     | -        | Validation messages                                    |
-| `name`           | `string`                                                | `''`     | -        | HTML name attribute                                    |
-| `noDefaultRules` | `boolean`                                               | `false`  | -        | Disables built-in validation rules                     |
-| `placeholder`    | `string`                                                | `''`     | -        | Placeholder shown when no file is selected             |
-| `readonly`       | `boolean`                                               | `false`  | -        | Makes the component read-only                          |
-| `rules`          | `Rule[]`                                                | `[]`     | -        | Custom validation rules                                |
-| `state`          | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | -        | Validation state                                       |
-| `width`          | `string \| number \| Breakpoints`                       | -        | -        | Responsive width                                       |
-| `grid`           | `string \| number \| Breakpoints`                       | -        | -        | Grid column span                                       |
-| `accept`         | `string`                                                | `''`     | -        | Accepted file types (native accept attribute)          |
-| `max`            | `number \| string`                                      | -        | -        | Maximum number of files                                |
-| `min`            | `number \| string`                                      | -        | -        | Minimum number of files                                |
-| `collapseChips`  | `boolean`                                               | `false`  | -        | Show only the first chip and abbreviate the rest as +N |
-| `directory`      | `boolean`                                               | `false`  | -        | Enables folder selection mode (webkitdirectory)        |
-| `multiple`       | `boolean`                                               | `false`  | -        | Allows multiple file selection                         |
-| `noClear`        | `boolean`                                               | `false`  | -        | Hides the clear-all button                             |
-| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                  | `'md'`   | -        | Component size                                         |
-| `modelValue`     | `File[]`                                                | `[]`     | -        | Selected files (v-model)                               |
+| Prop             | Type                                                    | Default  | Required | Description                                                                   |
+| ---------------- | ------------------------------------------------------- | -------- | -------- | ----------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                                | -        | -        | Color scheme for the component                                                |
+| `styleSet`       | `string \| VsFileInputStyleSet`                         | -        | -        | Custom style set for the component                                            |
+| `disabled`       | `boolean`                                               | `false`  | -        | Disables the component                                                        |
+| `hidden`         | `boolean`                                               | `false`  | -        | Hides the component                                                           |
+| `id`             | `string`                                                | `''`     | -        | HTML id attribute                                                             |
+| `label`          | `string`                                                | `''`     | -        | Label text                                                                    |
+| `noLabel`        | `boolean`                                               | `false`  | -        | Hides the label                                                               |
+| `noMessages`     | `boolean`                                               | `false`  | -        | Hides validation messages                                                     |
+| `required`       | `boolean`                                               | `false`  | -        | Marks the field as required                                                   |
+| `messages`       | `Message[]`                                             | `[]`     | -        | Validation messages                                                           |
+| `name`           | `string`                                                | `''`     | -        | HTML name attribute                                                           |
+| `noDefaultRules` | `boolean`                                               | `false`  | -        | Disables built-in validation rules                                            |
+| `placeholder`    | `string`                                                | `''`     | -        | Placeholder shown when no file is selected                                    |
+| `readonly`       | `boolean`                                               | `false`  | -        | Makes the component read-only                                                 |
+| `rules`          | `Rule[]`                                                | `[]`     | -        | Custom validation rules                                                       |
+| `state`          | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | -        | Validation state                                                              |
+| `width`          | `string \| number \| Breakpoints`                       | -        | -        | Responsive width                                                              |
+| `grid`           | `string \| number \| Breakpoints`                       | -        | -        | Grid column span                                                              |
+| `accept`         | `string`                                                | `''`     | -        | Accepted file types (native accept attribute)                                 |
+| `max`            | `number \| string`                                      | -        | -        | Maximum number of files                                                       |
+| `min`            | `number \| string`                                      | -        | -        | Minimum number of files                                                       |
+| `collapseChips`  | `boolean`                                               | `false`  | -        | Show only the first chip and abbreviate the rest as +N                        |
+| `directory`      | `boolean`                                               | `false`  | -        | Enables folder selection mode (webkitdirectory)                               |
+| `multiple`       | `boolean`                                               | `false`  | -        | Allows multiple file selection                                                |
+| `noClear`        | `boolean`                                               | `false`  | -        | Hides the clear-all button                                                    |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                  | `'md'`   | -        | Component size                                                                |
+| `modelValue`     | `File[]`                                                | `[]`     | -        | Selected files (v-model). See [Caution](#caution).                                                                            |
+| `changed`        | `boolean`                                               | `false`  | -        | Read-only `v-model:changed` (output only). Externally set values are ignored. |
+| `valid`          | `boolean`                                               | `false`  | -        | Read-only `v-model:valid` (output only). Externally set values are ignored.   |
 
 ## Types
 
@@ -158,3 +160,7 @@ interface VsFileInputStyleSet extends CSSProperties {
 | `validate` | -          | Triggers validation                        |
 | `clear`    | -          | Clears all selected files                  |
 | `reset`    | -          | Resets selected files to the initial value |
+
+## Caution
+
+Writing a non-empty `File[]` to `v-model` updates the Vlossom UI and validation, but the browser does not allow injecting `File` objects into the native `<input type="file">` — those files are not included in a native form submit. Writing `[]` (clear) does propagate.

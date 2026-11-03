@@ -60,11 +60,11 @@ A layout wrapper component that applies responsive width and grid column setting
 
 ## Props
 
-| Prop    | Type                                 | Default | Required | Description                                           |
-| ------- | ------------------------------------ | ------- | -------- | ----------------------------------------------------- |
-| `width` | `string \| number \| Breakpoints`    | -       | -        | Responsive width; can be a fixed value or breakpoint object |
-| `grid`  | `string \| number \| Breakpoints`    | -       | -        | Grid column span; can be a fixed value or breakpoint object |
-| `tag`   | `string`                             | `'div'` | -        | HTML tag used as the root element                     |
+| Prop    | Type                              | Default | Required | Description                                                 |
+| ------- | --------------------------------- | ------- | -------- | ----------------------------------------------------------- |
+| `width` | `string \| number \| Breakpoints` | -       | -        | Responsive width; can be a fixed value or breakpoint object |
+| `grid`  | `string \| number \| Breakpoints` | -       | -        | Grid column span; can be a fixed value or breakpoint object |
+| `tag`   | `string`                          | `'div'` | -        | HTML tag used as the root element                           |
 
 ## Types
 
@@ -81,18 +81,8 @@ type Breakpoints = {
 };
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot      | Description      |
-| --------- | ---------------- |
-| `default` | Content to wrap  |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Slot      | Description     |
+| --------- | --------------- |
+| `default` | Content to wrap |

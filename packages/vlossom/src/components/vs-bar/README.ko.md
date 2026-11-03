@@ -45,13 +45,13 @@
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | 컴포넌트 색상 테마 |
-| `styleSet` | `string \| VsBarStyleSet` | | | 커스텀 스타일 세트 |
-| `position` | `CssPosition` | | | CSS position 값 (`static`, `relative`, `absolute`, `fixed`, `sticky`) |
-| `primary` | `boolean` | `false` | | Primary 색상 테마 적용 |
-| `tag` | `string` | `'div'` | | 렌더링할 HTML 태그 |
+| Prop          | Type                      | Default | Required | Description                                                           |
+| ------------- | ------------------------- | ------- | -------- | --------------------------------------------------------------------- |
+| `colorScheme` | `ColorScheme`             |         |          | 컴포넌트 색상 테마                                                    |
+| `styleSet`    | `string \| VsBarStyleSet` |         |          | 커스텀 스타일 세트                                                    |
+| `position`    | `CssPosition`             |         |          | CSS position 값 (`static`, `relative`, `absolute`, `fixed`, `sticky`) |
+| `primary`     | `boolean`                 | `false` |          | Primary 색상 테마 적용                                                |
+| `tag`         | `string`                  | `'div'` |          | 렌더링할 HTML 태그                                                    |
 
 ## Types
 
@@ -76,18 +76,8 @@ interface VsBarStyleSet extends CSSProperties {}
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | 바 콘텐츠 |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Slot      | Description |
+| --------- | ----------- |
+| `default` | 바 콘텐츠   |

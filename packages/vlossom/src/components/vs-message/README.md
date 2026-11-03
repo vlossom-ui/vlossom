@@ -36,11 +36,11 @@ When no state is specified, the `idle` state is used (default color).
 
 ## Props
 
-| Prop       | Type                                                          | Default  | Required | Description                                                   |
-| ---------- | ------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------- |
-| `styleSet` | `string \| VsMessageStyleSet`                                 | -        | -        | Custom style set for the component.                           |
-| `state`    | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`      | `'idle'` | -        | The UI state that determines the icon and color.              |
-| `text`     | `string`                                                      | `''`     | -        | The message text to display.                                  |
+| Prop       | Type                                                    | Default  | Required | Description                                      |
+| ---------- | ------------------------------------------------------- | -------- | -------- | ------------------------------------------------ |
+| `styleSet` | `string \| VsMessageStyleSet`                           | -        | -        | Custom style set for the component.              |
+| `state`    | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | -        | The UI state that determines the icon and color. |
+| `text`     | `string`                                                | `''`     | -        | The message text to display.                     |
 
 ## Types
 
@@ -64,18 +64,3 @@ interface VsMessageStyleSet extends CSSProperties {
     />
 </template>
 ```
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

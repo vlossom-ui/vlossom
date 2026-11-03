@@ -68,19 +68,19 @@ const dropdownOpen = ref(false);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `target` | `string` | `''` | ✓ | CSS selector for the target element to position against |
-| `align` | `'start' \| 'center' \| 'end'` | `'start'` | | Alignment along the cross axis |
-| `disabled` | `boolean` | `false` | | Prevent the floating element from showing |
-| `enterDelay` | `string \| number` | `0` | | Delay in milliseconds before showing |
-| `leaveDelay` | `string \| number` | `0` | | Delay in milliseconds before hiding |
-| `margin` | `string \| number` | `5` | | Gap in pixels between the target and the floating element |
-| `noAnimation` | `boolean` | `false` | | Disable the fade-in/out animation |
-| `placement` | `'top' \| 'bottom' \| 'left' \| 'right' \| 'middle'` | `'bottom'` | | Preferred placement of the floating element |
-| `followWidth` | `boolean` | `false` | | Match the floating element width to the target element width |
-| `overlayId` | `string` | `'#vs-floating-overlay'` | | CSS selector for the teleport container |
-| `modelValue` | `boolean` | `false` | | v-model binding to show/hide the floating element |
+| Prop          | Type                                                 | Default                  | Required | Description                                                  |
+| ------------- | ---------------------------------------------------- | ------------------------ | -------- | ------------------------------------------------------------ |
+| `target`      | `string`                                             | `''`                     | ✓        | CSS selector for the target element to position against      |
+| `align`       | `'start' \| 'center' \| 'end'`                       | `'start'`                |          | Alignment along the cross axis                               |
+| `disabled`    | `boolean`                                            | `false`                  |          | Prevent the floating element from showing                    |
+| `enterDelay`  | `string \| number`                                   | `0`                      |          | Delay in milliseconds before showing                         |
+| `leaveDelay`  | `string \| number`                                   | `0`                      |          | Delay in milliseconds before hiding                          |
+| `margin`      | `string \| number`                                   | `5`                      |          | Gap in pixels between the target and the floating element    |
+| `noAnimation` | `boolean`                                            | `false`                  |          | Disable the fade-in/out animation                            |
+| `placement`   | `'top' \| 'bottom' \| 'left' \| 'right' \| 'middle'` | `'bottom'`               |          | Preferred placement of the floating element                  |
+| `followWidth` | `boolean`                                            | `false`                  |          | Match the floating element width to the target element width |
+| `overlayId`   | `string`                                             | `'#vs-floating-overlay'` |          | CSS selector for the teleport container                      |
+| `modelValue`  | `boolean`                                            | `false`                  |          | v-model binding to show/hide the floating element            |
 
 ## Types
 
@@ -92,17 +92,12 @@ VsFloating does not use a `styleSet` prop. Style the content via the default slo
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event               | Payload   | Description                     |
+| ------------------- | --------- | ------------------------------- |
 | `update:modelValue` | `boolean` | Emitted when visibility changes |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description                                                                                            |
+| --------- | ------------------------------------------------------------------------------------------------------ |
 | `default` | The floating content. Receives `{ placement: string }` as slot props reflecting the computed placement |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

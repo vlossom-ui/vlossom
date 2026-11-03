@@ -82,13 +82,13 @@ Toasts are typically triggered via the `$vs.toast` plugin API.
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsToastStyleSet` | | | Custom style set for the component |
-| `autoClose` | `boolean` | `true` | | Automatically closes after `timeout` ms |
-| `primary` | `boolean` | `true` | | Applies primary color to the toast |
-| `timeout` | `number` | `5000` | | Milliseconds before auto-close |
+| Prop          | Type                        | Default | Required | Description                             |
+| ------------- | --------------------------- | ------- | -------- | --------------------------------------- |
+| `colorScheme` | `string`                    |         |          | Color scheme for the component          |
+| `styleSet`    | `string \| VsToastStyleSet` |         |          | Custom style set for the component      |
+| `autoClose`   | `boolean`                   | `true`  |          | Automatically closes after `timeout` ms |
+| `primary`     | `boolean`                   | `true`  |          | Applies primary color to the toast      |
+| `timeout`     | `number`                    | `5000`  |          | Milliseconds before auto-close          |
 
 ## Types
 
@@ -133,17 +133,12 @@ const visible = ref(true);
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `close` | | Emitted when the toast should be closed (auto-close or close button click) |
+| Event   | Payload | Description                                                                |
+| ------- | ------- | -------------------------------------------------------------------------- |
+| `close` |         | Emitted when the toast should be closed (auto-close or close button click) |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description           |
+| --------- | --------------------- |
 | `default` | Toast message content |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

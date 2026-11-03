@@ -72,18 +72,8 @@ interface VsAvatarStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
 | Slot      | Description                               |
 | --------- | ----------------------------------------- |
 | `default` | Avatar content — image, initials, or icon |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

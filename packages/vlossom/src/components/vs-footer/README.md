@@ -61,15 +61,15 @@ Set the `layout` prop to register the footer with the layout store so `VsContain
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsFooterStyleSet` | | | Custom style set for the component |
-| `position` | `'static' \| 'relative' \| 'absolute' \| 'fixed' \| 'sticky'` | | | CSS position value for the footer |
-| `height` | `string` | | | Height of the footer. Defaults to `3rem` |
-| `primary` | `boolean` | `false` | | Apply the primary color scheme |
-| `layout` | `boolean` | `false` | | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect |
-| `tag` | `string` | `'footer'` | | HTML tag to render as |
+| Prop          | Type                                                          | Default    | Required | Description                                                                                           |
+| ------------- | ------------------------------------------------------------- | ---------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| `colorScheme` | `string`                                                      |            |          | Color scheme for the component                                                                        |
+| `styleSet`    | `string \| VsFooterStyleSet`                                  |            |          | Custom style set for the component                                                                    |
+| `position`    | `'static' \| 'relative' \| 'absolute' \| 'fixed' \| 'sticky'` |            |          | CSS position value for the footer                                                                     |
+| `height`      | `string`                                                      |            |          | Height of the footer. Defaults to `3rem`                                                              |
+| `primary`     | `boolean`                                                     | `false`    |          | Apply the primary color scheme                                                                        |
+| `layout`      | `boolean`                                                     | `false`    |          | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect |
+| `tag`         | `string`                                                      | `'footer'` |          | HTML tag to render as                                                                                 |
 
 ## Types
 
@@ -100,18 +100,8 @@ interface VsBarStyleSet extends CSSProperties {}
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description    |
+| --------- | -------------- |
 | `default` | Footer content |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

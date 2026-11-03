@@ -51,10 +51,10 @@ const dimmedRef = ref(null);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `styleSet` | `string \| VsDimmedStyleSet` | | | 커스텀 스타일 세트 |
-| `modelValue` | `boolean` | `false` | | 가시성을 위한 v-model 바인딩 |
+| Prop         | Type                         | Default | Required | Description                  |
+| ------------ | ---------------------------- | ------- | -------- | ---------------------------- |
+| `styleSet`   | `string \| VsDimmedStyleSet` |         |          | 커스텀 스타일 세트           |
+| `modelValue` | `boolean`                    | `false` |          | 가시성을 위한 v-model 바인딩 |
 
 ## Types
 
@@ -83,21 +83,16 @@ interface VsDimmedStyleSet extends CSSProperties {}
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event               | Payload   | Description             |
+| ------------------- | --------- | ----------------------- |
 | `update:modelValue` | `boolean` | 가시성이 변경될 때 발생 |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `show` | — | 딤드 오버레이를 표시합니다 |
-| `hide` | — | 딤드 오버레이를 숨깁니다 |
+| Method | Parameters | Description                |
+| ------ | ---------- | -------------------------- |
+| `show` | —          | 딤드 오버레이를 표시합니다 |
+| `hide` | —          | 딤드 오버레이를 숨깁니다   |
 
 ## Caution
 

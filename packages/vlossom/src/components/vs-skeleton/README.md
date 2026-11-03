@@ -45,10 +45,10 @@ A skeleton loading placeholder component that displays an animated background wh
 
 ## Props
 
-| Prop          | Type                           | Default | Required | Description                          |
-| ------------- | ------------------------------ | ------- | -------- | ------------------------------------ |
-| `colorScheme` | `string`                       | -       | -        | Color scheme for the component       |
-| `styleSet`    | `string \| VsSkeletonStyleSet`  | -       | -        | Custom style set for the component   |
+| Prop          | Type                           | Default | Required | Description                        |
+| ------------- | ------------------------------ | ------- | -------- | ---------------------------------- |
+| `colorScheme` | `string`                       | -       | -        | Color scheme for the component     |
+| `styleSet`    | `string \| VsSkeletonStyleSet` | -       | -        | Custom style set for the component |
 
 ## Types
 
@@ -75,18 +75,8 @@ interface VsSkeletonStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot      | Description                                          |
-| --------- | ---------------------------------------------------- |
+| Slot      | Description                                             |
+| --------- | ------------------------------------------------------- |
 | `default` | Content displayed centered over the skeleton background |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

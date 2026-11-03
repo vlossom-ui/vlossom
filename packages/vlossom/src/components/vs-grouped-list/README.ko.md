@@ -81,13 +81,13 @@ function onClickItem(item) {
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `styleSet` | `string \| VsGroupedListStyleSet` | | | 컴포넌트의 사용자 정의 스타일 셋 |
-| `items` | `OptionItem[]` | `[]` | | 표시할 항목 배열 |
-| `groupBy` | `(item: any, index: number) => string` | | | 각 항목의 그룹 이름을 반환하는 함수 |
-| `groupOrder` | `string[]` | | | 그룹이 표시될 순서 |
-| `noVirtual` | `boolean` | `false` | | 자동 가상 스크롤을 끄고 모든 항목을 렌더링 |
+| Prop         | 타입                                   | 기본값  | 필수 | 설명                                       |
+| ------------ | -------------------------------------- | ------- | ---- | ------------------------------------------ |
+| `styleSet`   | `string \| VsGroupedListStyleSet`      |         |      | 컴포넌트의 사용자 정의 스타일 셋           |
+| `items`      | `OptionItem[]`                         | `[]`    |      | 표시할 항목 배열                           |
+| `groupBy`    | `(item: any, index: number) => string` |         |      | 각 항목의 그룹 이름을 반환하는 함수        |
+| `groupOrder` | `string[]`                             |         |      | 그룹이 표시될 순서                         |
+| `noVirtual`  | `boolean`                              | `false` |      | 자동 가상 스크롤을 끄고 모든 항목을 렌더링 |
 
 ## 타입
 
@@ -119,23 +119,23 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
+| 이벤트       | 페이로드                                                                               | 설명                  |
+| ------------ | -------------------------------------------------------------------------------------- | --------------------- |
 | `click-item` | `OptionItem & { groupedIndex: number; group: VsGroupedListGroup; groupIndex: number }` | 항목이 클릭될 때 발생 |
 
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
-| `header` | 스크롤 가능한 목록 헤더의 콘텐츠 |
-| `footer` | 스크롤 가능한 목록 푸터의 콘텐츠 |
-| `empty` | `items`가 비어 있을 때 목록 본문에 표시되는 콘텐츠 |
-| `group` | 그룹 헤더의 사용자 정의 렌더링. `{ group: string, groupIndex: number, items: OptionItem[] }` 제공 |
-| `item` | 항목의 사용자 정의 렌더링. `OptionItem` 필드와 `{ groupedIndex, group, groupIndex }` 제공 |
+| 슬롯     | 설명                                                                                              |
+| -------- | ------------------------------------------------------------------------------------------------- |
+| `header` | 스크롤 가능한 목록 헤더의 콘텐츠                                                                  |
+| `footer` | 스크롤 가능한 목록 푸터의 콘텐츠                                                                  |
+| `empty`  | `items`가 비어 있을 때 목록 본문에 표시되는 콘텐츠                                                |
+| `group`  | 그룹 헤더의 사용자 정의 렌더링. `{ group: string, groupIndex: number, items: OptionItem[] }` 제공 |
+| `item`   | 항목의 사용자 정의 렌더링. `OptionItem` 필드와 `{ groupedIndex, group, groupIndex }` 제공         |
 
 ## 메서드
 
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
+| 메서드         | 파라미터                      | 설명                                                                                                                                                  |
+| -------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `scrollToItem` | `id: string, offset?: number` | 주어진 id를 가진 항목으로 목록 스크롤. 가상 스크롤로 아직 렌더링되지 않은 항목도 지원. `offset`만큼 스크롤 위치를 위로 당겨 여백을 확보 (기본값: `0`) |
-| `hasScroll` | - | `boolean` 반환 — 목록에 스크롤바가 있으면 `true` |
+| `hasScroll`    | -                             | `boolean` 반환 — 목록에 스크롤바가 있으면 `true`                                                                                                      |

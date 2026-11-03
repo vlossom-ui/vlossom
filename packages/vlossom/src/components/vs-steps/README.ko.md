@@ -59,18 +59,18 @@ const steps = ['1단계', '2단계', '3단계', '4단계'];
 
 ## Props
 
-| Prop          | Type                                                          | Default  | Required | 설명                                                    |
-| ------------- | ------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------- |
-| `colorScheme` | `string`                                                      | -        | -        | 컴포넌트의 색상 스킴                                    |
-| `styleSet`    | `string \| VsStepsStyleSet`                                   | -        | -        | 컴포넌트에 적용할 커스텀 스타일 세트                    |
-| `width`       | `string \| number \| Breakpoints`                             | -        | -        | 반응형 너비                                             |
-| `grid`        | `string \| number \| Breakpoints`                             | -        | -        | 그리드 컬럼 스팬                                        |
-| `height`      | `string`                                                      | -        | -        | 스텝 컨테이너의 높이 (수직 모드에서 사용)               |
-| `disabled`    | `boolean \| ((step: string, index: number) => boolean)`       | `false`  | -        | 단계 비활성화; 불리언 또는 단계별 함수 사용 가능        |
-| `noLabel`     | `boolean`                                                     | `false`  | -        | 단계 레이블 숨김                                        |
-| `steps`       | `string[]`                                                    | `[]`     | -        | 단계 레이블 문자열 배열                                 |
-| `vertical`    | `boolean`                                                     | `false`  | -        | 단계를 수직으로 표시                                    |
-| `modelValue`  | `number`                                                      | `0`      | -        | 현재 단계 인덱스 (v-model)                              |
+| Prop          | Type                                                    | Default | Required | 설명                                             |
+| ------------- | ------------------------------------------------------- | ------- | -------- | ------------------------------------------------ |
+| `colorScheme` | `string`                                                | -       | -        | 컴포넌트의 색상 스킴                             |
+| `styleSet`    | `string \| VsStepsStyleSet`                             | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트             |
+| `width`       | `string \| number \| Breakpoints`                       | -       | -        | 반응형 너비                                      |
+| `grid`        | `string \| number \| Breakpoints`                       | -       | -        | 그리드 컬럼 스팬                                 |
+| `height`      | `string`                                                | -       | -        | 스텝 컨테이너의 높이 (수직 모드에서 사용)        |
+| `disabled`    | `boolean \| ((step: string, index: number) => boolean)` | `false` | -        | 단계 비활성화; 불리언 또는 단계별 함수 사용 가능 |
+| `noLabel`     | `boolean`                                               | `false` | -        | 단계 레이블 숨김                                 |
+| `steps`       | `string[]`                                              | `[]`    | -        | 단계 레이블 문자열 배열                          |
+| `vertical`    | `boolean`                                               | `false` | -        | 단계를 수직으로 표시                             |
+| `modelValue`  | `number`                                                | `0`     | -        | 현재 단계 인덱스 (v-model)                       |
 
 ## Types
 
@@ -121,19 +121,14 @@ interface VsStepsStyleSet extends CSSProperties {
 
 ## Events
 
-| Event               | Payload  | 설명                               |
-| ------------------- | -------- | ---------------------------------- |
-| `update:modelValue` | `number` | 활성 단계가 변경될 때 발생         |
-| `change`            | `number` | 활성 단계가 변경될 때 발생         |
+| Event               | Payload  | 설명                       |
+| ------------------- | -------- | -------------------------- |
+| `update:modelValue` | `number` | 활성 단계가 변경될 때 발생 |
+| `change`            | `number` | 활성 단계가 변경될 때 발생 |
 
 ## Slots
 
-| Slot    | 설명                                                                              |
-| ------- | --------------------------------------------------------------------------------- |
-| `step`  | 각 단계 원의 커스텀 콘텐츠; `{ step, index, isSelected, isPrevious, isDisabled }` 수신 |
+| Slot    | 설명                                                                                       |
+| ------- | ------------------------------------------------------------------------------------------ |
+| `step`  | 각 단계 원의 커스텀 콘텐츠; `{ step, index, isSelected, isPrevious, isDisabled }` 수신     |
 | `label` | 각 단계 레이블의 커스텀 콘텐츠; `{ step, index, isSelected, isPrevious, isDisabled }` 수신 |
-
-## Methods
-
-| Method | Parameters | 설명 |
-| ------ | ---------- | ---- |

@@ -82,21 +82,21 @@ A layout wrapper for form inputs that provides a label, validation messages area
 
 ## Props
 
-| Prop         | Type                                | Default | Required | Description                                                           |
-| ------------ | ----------------------------------- | ------- | -------- | --------------------------------------------------------------------- |
-| `styleSet`   | `string \| VsInputWrapperStyleSet`  | -       | -        | Custom style set for the component.                                   |
-| `width`      | `string \| number \| Breakpoints`   | -       | -        | Width of the component.                                               |
-| `grid`       | `string \| number \| Breakpoints`   | -       | -        | Grid column span for layout.                                          |
-| `disabled`   | `boolean`                           | `false` | -        | Applies disabled styling to the label and messages.                   |
-| `hidden`     | `boolean`                           | `false` | -        | Hides the entire component.                                           |
-| `id`         | `string`                            | `''`    | -        | The `id` linked to the label's `for` attribute.                       |
-| `label`      | `string`                            | `''`    | -        | Label text displayed above the input.                                 |
-| `noLabel`    | `boolean`                           | `false` | -        | Hides the label area.                                                 |
-| `noMessages` | `boolean`                           | `false` | -        | Hides the messages area.                                              |
-| `required`   | `boolean`                           | `false` | -        | Shows a required star (*) indicator next to the label.                |
-| `groupLabel` | `boolean`                           | `false` | -        | Renders the wrapper as `fieldset`/`legend` for grouped inputs.        |
-| `messages`   | `StateMessage[]`                    | `[]`    | -        | Array of state+text messages displayed below the input.               |
-| `shake`      | `boolean`                           | `false` | -        | Triggers a horizontal shake animation (e.g., on validation failure).  |
+| Prop         | Type                               | Default | Required | Description                                                          |
+| ------------ | ---------------------------------- | ------- | -------- | -------------------------------------------------------------------- |
+| `styleSet`   | `string \| VsInputWrapperStyleSet` | -       | -        | Custom style set for the component.                                  |
+| `width`      | `string \| number \| Breakpoints`  | -       | -        | Width of the component.                                              |
+| `grid`       | `string \| number \| Breakpoints`  | -       | -        | Grid column span for layout.                                         |
+| `disabled`   | `boolean`                          | `false` | -        | Applies disabled styling to the label and messages.                  |
+| `hidden`     | `boolean`                          | `false` | -        | Hides the entire component.                                          |
+| `id`         | `string`                           | `''`    | -        | The `id` linked to the label's `for` attribute.                      |
+| `label`      | `string`                           | `''`    | -        | Label text displayed above the input.                                |
+| `noLabel`    | `boolean`                          | `false` | -        | Hides the label area.                                                |
+| `noMessages` | `boolean`                          | `false` | -        | Hides the messages area.                                             |
+| `required`   | `boolean`                          | `false` | -        | Shows a required star (*) indicator next to the label.               |
+| `groupLabel` | `boolean`                          | `false` | -        | Renders the wrapper as `fieldset`/`legend` for grouped inputs.       |
+| `messages`   | `StateMessage[]`                   | `[]`    | -        | Array of state+text messages displayed below the input.              |
+| `shake`      | `boolean`                          | `false` | -        | Triggers a horizontal shake animation (e.g., on validation failure). |
 
 ## Types
 
@@ -133,20 +133,10 @@ interface VsInputWrapperStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot       | Description                                              |
-| ---------- | -------------------------------------------------------- |
-| `default`  | The form input or content to wrap.                       |
-| `label`    | Custom label content replacing the default label text.   |
-| `messages` | Custom messages content replacing the default messages.  |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Slot       | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `default`  | The form input or content to wrap.                      |
+| `label`    | Custom label content replacing the default label text.  |
+| `messages` | Custom messages content replacing the default messages. |

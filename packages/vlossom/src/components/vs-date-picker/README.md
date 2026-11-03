@@ -115,34 +115,34 @@ Default rules can be turned off via `noDefaultRules`.
 
 ## Props
 
-| Prop             | Type                                              | Default     | Required | Description                                                                                                         |
-| ---------------- | ------------------------------------------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| `colorScheme`    | `string`                                          | -           | -        | Color scheme.                                                                                                       |
-| `styleSet`       | `string \| VsDatePickerStyleSet`                  | -           | -        | Custom style set.                                                                                                   |
-| `modelValue`     | `string`                                          | `''`        | -        | v-model — format-validated string.                                                                                  |
-| `type`           | `'date' \| 'datetime-local' \| 'time' \| 'month'` | `'date'`    | -        | Native input type; also determines the `modelValue` format.                                                         |
-| `min`            | `string \| undefined`                             | `undefined` | -        | Earliest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).                         |
-| `max`            | `string \| undefined`                             | `undefined` | -        | Latest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).                           |
-| `noClear`        | `boolean`                                         | `false`     | -        | Hides the clear button.                                                                                             |
-| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`      | -        | Input height, padding, font, and icon size.                                                                         |
-| `label`          | `string`                                          | `''`        | -        | Label text.                                                                                                         |
-| `placeholder`    | `string`                                          | `''`        | -        | Placeholder.                                                                                                        |
-| `disabled`       | `boolean`                                         | `false`     | -        | Disables the component.                                                                                             |
-| `readonly`       | `boolean`                                         | `false`     | -        | Makes the component read-only.                                                                                      |
-| `required`       | `boolean`                                         | `false`     | -        | Adds `required` rule.                                                                                               |
-| `noLabel`        | `boolean`                                         | `false`     | -        | Hide label slot.                                                                                                    |
-| `noMessages`     | `boolean`                                         | `false`     | -        | Hide messages slot.                                                                                                 |
-| `hidden`         | `boolean`                                         | `false`     | -        | Hide the whole component.                                                                                           |
-| `id`             | `string`                                          | `''`        | -        | `id` attribute for the input.                                                                                       |
-| `name`           | `string`                                          | `''`        | -        | `name` attribute for the input.                                                                                     |
-| `messages`       | `Message[]`                                       | `[]`        | -        | External messages.                                                                                                  |
-| `rules`          | `Rule[]`                                          | `[]`        | -        | Custom validation rules.                                                                                            |
-| `noDefaultRules` | `boolean`                                         | `false`     | -        | Disable built-in rules (required, min, max).                                                                        |
-| `state`          | `UIState`                                         | `'idle'`    | -        | External validation state.                                                                                          |
-| `width`          | `string \| number \| Breakpoints`                 | -           | -        | Width.                                                                                                              |
-| `grid`           | `string \| number \| Breakpoints`                 | -           | -        | Grid column span.                                                                                                   |
-| `changed`        | `boolean`                                         | `false`     | -        | v-model — changed flag.                                                                                             |
-| `valid`          | `boolean`                                         | `false`     | -        | v-model — valid flag.                                                                                               |
+| Prop             | Type                                              | Default     | Required | Description                                                                                 |
+| ---------------- | ------------------------------------------------- | ----------- | -------- | ------------------------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                          | -           | -        | Color scheme.                                                                               |
+| `styleSet`       | `string \| VsDatePickerStyleSet`                  | -           | -        | Custom style set.                                                                           |
+| `modelValue`     | `string`                                          | `''`        | -        | v-model — format-validated string.                                                          |
+| `type`           | `'date' \| 'datetime-local' \| 'time' \| 'month'` | `'date'`    | -        | Native input type; also determines the `modelValue` format.                                 |
+| `min`            | `string \| undefined`                             | `undefined` | -        | Earliest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`). |
+| `max`            | `string \| undefined`                             | `undefined` | -        | Latest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).   |
+| `noClear`        | `boolean`                                         | `false`     | -        | Hides the clear button.                                                                     |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`      | -        | Input height, padding, font, and icon size.                                                 |
+| `label`          | `string`                                          | `''`        | -        | Label text.                                                                                 |
+| `placeholder`    | `string`                                          | `''`        | -        | Placeholder.                                                                                |
+| `disabled`       | `boolean`                                         | `false`     | -        | Disables the component.                                                                     |
+| `readonly`       | `boolean`                                         | `false`     | -        | Makes the component read-only.                                                              |
+| `required`       | `boolean`                                         | `false`     | -        | Adds `required` rule.                                                                       |
+| `noLabel`        | `boolean`                                         | `false`     | -        | Hide label slot.                                                                            |
+| `noMessages`     | `boolean`                                         | `false`     | -        | Hide messages slot.                                                                         |
+| `hidden`         | `boolean`                                         | `false`     | -        | Hide the whole component.                                                                   |
+| `id`             | `string`                                          | `''`        | -        | `id` attribute for the input.                                                               |
+| `name`           | `string`                                          | `''`        | -        | `name` attribute for the input.                                                             |
+| `messages`       | `Message[]`                                       | `[]`        | -        | External messages.                                                                          |
+| `rules`          | `Rule[]`                                          | `[]`        | -        | Custom validation rules.                                                                    |
+| `noDefaultRules` | `boolean`                                         | `false`     | -        | Disable built-in rules (required, min, max).                                                |
+| `state`          | `UIState`                                         | `'idle'`    | -        | External validation state.                                                                  |
+| `width`          | `string \| number \| Breakpoints`                 | -           | -        | Width.                                                                                      |
+| `grid`           | `string \| number \| Breakpoints`                 | -           | -        | Grid column span.                                                                           |
+| `changed`        | `boolean`                                         | `false`     | -        | Read-only `v-model:changed` (output only). Externally set values are ignored.               |
+| `valid`          | `boolean`                                         | `false`     | -        | Read-only `v-model:valid` (output only). Externally set values are ignored.                 |
 
 ## Types
 
@@ -165,16 +165,16 @@ interface VsDatePickerStyleSet extends CSSProperties {
 
 ## Events
 
-| Event               | Payload             | Description                                                           |
-| ------------------- | ------------------- | --------------------------------------------------------------------- |
-| `update:modelValue` | `string`            | Emitted when modelValue changes.                                      |
-| `update:changed`    | `boolean`           | Emitted when the changed flag updates.                                |
-| `update:valid`      | `boolean`           | Emitted when the valid flag updates.                                  |
-| `change`            | `string`            | Emitted after the value is committed.                                 |
-| `focus`             | `FocusEvent`        | Emitted when the input receives focus.                                |
-| `blur`              | `FocusEvent`        | Emitted when the input loses focus.                                   |
-| `clear`             | `string`            | Emitted with the previous value when the value is cleared.             |
-| `invalid`           | `{ input: string }` | Emitted on format mismatch.                                           |
+| Event               | Payload             | Description                                                |
+| ------------------- | ------------------- | ---------------------------------------------------------- |
+| `update:modelValue` | `string`            | Emitted when modelValue changes.                           |
+| `update:changed`    | `boolean`           | Emitted when the changed flag updates.                     |
+| `update:valid`      | `boolean`           | Emitted when the valid flag updates.                       |
+| `change`            | `string`            | Emitted after the value is committed.                      |
+| `focus`             | `FocusEvent`        | Emitted when the input receives focus.                     |
+| `blur`              | `FocusEvent`        | Emitted when the input loses focus.                        |
+| `clear`             | `string`            | Emitted with the previous value when the value is cleared. |
+| `invalid`           | `{ input: string }` | Emitted on format mismatch.                                |
 
 ## Slots
 
@@ -187,11 +187,11 @@ interface VsDatePickerStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                                                           |
-| ---------- | ---------- | --------------------------------------------------------------------- |
-| `focus`    | -          | Focuses the date input element.                                       |
-| `blur`     | -          | Blurs the date input element.                                         |
-| `validate` | -          | Triggers validation and returns the result.                           |
-| `clear`    | -          | Clears the value (modelValue → `''`).                                 |
-| `reset`    | -          | Resets the value to its initial value.                                |
+| Method     | Parameters | Description                                                                          |
+| ---------- | ---------- | ------------------------------------------------------------------------------------ |
+| `focus`    | -          | Focuses the date input element.                                                      |
+| `blur`     | -          | Blurs the date input element.                                                        |
+| `validate` | -          | Triggers validation and returns the result.                                          |
+| `clear`    | -          | Clears the value (modelValue → `''`).                                                |
+| `reset`    | -          | Resets the value to its initial value.                                               |
 | `open`     | -          | Opens the native picker via `showPicker()`. Call from within a user-gesture handler. |

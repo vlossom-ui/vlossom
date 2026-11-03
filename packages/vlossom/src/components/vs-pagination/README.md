@@ -55,18 +55,18 @@ const outlinePage = ref(0);
 
 ## Props
 
-| Prop            | Type                            | Default | Required | Description                                              |
-| --------------- | ------------------------------- | ------- | -------- | -------------------------------------------------------- |
-| `colorScheme`   | `string`                        | -       | -        | Color scheme for the component                           |
-| `styleSet`      | `string \| VsPaginationStyleSet` | -       | -        | Custom style set for the component                       |
-| `disabled`      | `boolean`                       | `false` | -        | Disables all pagination buttons                          |
-| `edgeButtons`   | `boolean`                       | `false` | -        | Shows first and last page navigation buttons             |
-| `ghost`         | `boolean`                       | `false` | -        | Applies ghost style to buttons                           |
-| `length`        | `number`                        | `1`     | Yes      | Total number of pages (must be greater than 0)           |
-| `outline`       | `boolean`                       | `false` | -        | Applies outline style to buttons                         |
-| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -      | Button height, font, and icon size                       |
-| `showingLength` | `number`                        | `10`    | -        | Number of page buttons to display at once                |
-| `modelValue`    | `number`                        | `0`     | -        | Current page index (0-based), used with `v-model`        |
+| Prop            | Type                                   | Default | Required | Description                                       |
+| --------------- | -------------------------------------- | ------- | -------- | ------------------------------------------------- |
+| `colorScheme`   | `string`                               | -       | -        | Color scheme for the component                    |
+| `styleSet`      | `string \| VsPaginationStyleSet`       | -       | -        | Custom style set for the component                |
+| `disabled`      | `boolean`                              | `false` | -        | Disables all pagination buttons                   |
+| `edgeButtons`   | `boolean`                              | `false` | -        | Shows first and last page navigation buttons      |
+| `ghost`         | `boolean`                              | `false` | -        | Applies ghost style to buttons                    |
+| `length`        | `number`                               | `1`     | Yes      | Total number of pages (must be greater than 0)    |
+| `outline`       | `boolean`                              | `false` | -        | Applies outline style to buttons                  |
+| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | Button height, font, and icon size                |
+| `showingLength` | `number`                               | `10`    | -        | Number of page buttons to display at once         |
+| `modelValue`    | `number`                               | `0`     | -        | Current page index (0-based), used with `v-model` |
 
 ## Types
 
@@ -104,27 +104,27 @@ interface VsPaginationStyleSet extends CSSProperties {
 
 ## Events
 
-| Event               | Payload  | Description                          |
-| ------------------- | -------- | ------------------------------------ |
+| Event               | Payload  | Description                           |
+| ------------------- | -------- | ------------------------------------- |
 | `update:modelValue` | `number` | Emitted when the current page changes |
 | `change`            | `number` | Emitted when the current page changes |
 
 ## Slots
 
-| Slot    | Description                             |
-| ------- | --------------------------------------- |
-| `first` | Custom icon for the "first page" button |
-| `last`  | Custom icon for the "last page" button  |
-| `prev`  | Custom icon for the "prev page" button  |
-| `next`  | Custom icon for the "next page" button  |
+| Slot    | Description                                                      |
+| ------- | ---------------------------------------------------------------- |
+| `first` | Custom icon for the "first page" button                          |
+| `last`  | Custom icon for the "last page" button                           |
+| `prev`  | Custom icon for the "prev page" button                           |
+| `next`  | Custom icon for the "next page" button                           |
 | `page`  | Custom content for each page button; receives `{ page: number }` |
 
 ## Methods
 
-| Method      | Parameters         | Description                          |
-| ----------- | ------------------ | ------------------------------------ |
-| `goFirst`   | -                  | Navigates to the first page          |
-| `goLast`    | -                  | Navigates to the last page           |
-| `goPrev`    | -                  | Navigates to the previous page       |
-| `goNext`    | -                  | Navigates to the next page           |
-| `setPage`   | `page: number`     | Navigates to the specified page index |
+| Method    | Parameters     | Description                           |
+| --------- | -------------- | ------------------------------------- |
+| `goFirst` | -              | Navigates to the first page           |
+| `goLast`  | -              | Navigates to the last page            |
+| `goPrev`  | -              | Navigates to the previous page        |
+| `goNext`  | -              | Navigates to the next page            |
+| `setPage` | `page: number` | Navigates to the specified page index |

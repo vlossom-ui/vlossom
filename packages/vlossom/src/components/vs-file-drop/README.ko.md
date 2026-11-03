@@ -79,35 +79,37 @@ const files = ref([]);
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트의 색상 스킴 |
-| `styleSet` | `string \| VsFileDropStyleSet` | | | 컴포넌트의 사용자 정의 스타일 셋 |
-| `disabled` | `boolean` | `false` | | 파일 드롭 영역 비활성화 |
-| `hidden` | `boolean` | `false` | | 컴포넌트 숨기기 |
-| `id` | `string` | `''` | | HTML id 속성 |
-| `label` | `string` | `''` | | 파일 드롭 영역 위에 표시되는 레이블 텍스트 |
-| `noLabel` | `boolean` | `false` | | 레이블 숨기기 |
-| `noMessages` | `boolean` | `false` | | 메시지 영역 숨기기 |
-| `required` | `boolean` | `false` | | 필수 필드로 표시 |
-| `messages` | `Message[]` | `[]` | | 표시할 상태 메시지 |
-| `name` | `string` | `''` | | 입력의 HTML name 속성 |
-| `noDefaultRules` | `boolean` | `false` | | 기본 유효성 검사 규칙 비활성화 |
-| `placeholder` | `string` | `''` | | 드롭 영역에 표시되는 플레이스홀더 텍스트 |
-| `focusPlaceholder` | `string` | `''` | | 파일을 영역 위로 드래그하거나 파일 다이얼로그가 열려 있는 동안 표시되는 플레이스홀더. 그 외에는 `placeholder`로 대체 |
-| `readonly` | `boolean` | `false` | | 컴포넌트를 읽기 전용으로 만들기 |
-| `rules` | `Rule[]` | `[]` | | 사용자 정의 유효성 검사 규칙 |
-| `state` | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | | 현재 유효성 검사 상태 |
-| `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
-| `grid` | `string \| number \| Breakpoints` | | | 그리드 열 범위 |
-| `accept` | `string` | `''` | | 허용되는 파일 타입 (예: `image/*`, `.pdf`) |
-| `height` | `string \| number \| Breakpoints` | `'auto'` | | 드롭 영역 높이 |
-| `directory` | `boolean` | `false` | | 폴더 선택 모드 활성화 (webkitdirectory) |
-| `noClear` | `boolean` | `false` | | 지우기 버튼 숨기기 |
-| `multiple` | `boolean` | `false` | | 다중 파일 선택 허용. false이면 여러 파일을 드롭/선택해도 첫 번째 파일만 유지합니다 |
-| `min` | `number \| string` | `0` | | 필요한 최소 파일 수 |
-| `max` | `number \| string` | `Number.MAX_SAFE_INTEGER` | | 허용되는 최대 파일 수 |
-| `modelValue` | `File[]` | `[]` | | 선택된 파일의 v-model 바인딩 |
+| Prop               | 타입                                                    | 기본값                    | 필수 | 설명                                                                                                                 |
+| ------------------ | ------------------------------------------------------- | ------------------------- | ---- | -------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                                                |                           |      | 컴포넌트의 색상 스킴                                                                                                 |
+| `styleSet`         | `string \| VsFileDropStyleSet`                          |                           |      | 컴포넌트의 사용자 정의 스타일 셋                                                                                     |
+| `disabled`         | `boolean`                                               | `false`                   |      | 파일 드롭 영역 비활성화                                                                                              |
+| `hidden`           | `boolean`                                               | `false`                   |      | 컴포넌트 숨기기                                                                                                      |
+| `id`               | `string`                                                | `''`                      |      | HTML id 속성                                                                                                         |
+| `label`            | `string`                                                | `''`                      |      | 파일 드롭 영역 위에 표시되는 레이블 텍스트                                                                           |
+| `noLabel`          | `boolean`                                               | `false`                   |      | 레이블 숨기기                                                                                                        |
+| `noMessages`       | `boolean`                                               | `false`                   |      | 메시지 영역 숨기기                                                                                                   |
+| `required`         | `boolean`                                               | `false`                   |      | 필수 필드로 표시                                                                                                     |
+| `messages`         | `Message[]`                                             | `[]`                      |      | 표시할 상태 메시지                                                                                                   |
+| `name`             | `string`                                                | `''`                      |      | 입력의 HTML name 속성                                                                                                |
+| `noDefaultRules`   | `boolean`                                               | `false`                   |      | 기본 유효성 검사 규칙 비활성화                                                                                       |
+| `placeholder`      | `string`                                                | `''`                      |      | 드롭 영역에 표시되는 플레이스홀더 텍스트                                                                             |
+| `focusPlaceholder` | `string`                                                | `''`                      |      | 파일을 영역 위로 드래그하거나 파일 다이얼로그가 열려 있는 동안 표시되는 플레이스홀더. 그 외에는 `placeholder`로 대체 |
+| `readonly`         | `boolean`                                               | `false`                   |      | 컴포넌트를 읽기 전용으로 만들기                                                                                      |
+| `rules`            | `Rule[]`                                                | `[]`                      |      | 사용자 정의 유효성 검사 규칙                                                                                         |
+| `state`            | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'`                  |      | 현재 유효성 검사 상태                                                                                                |
+| `width`            | `string \| number \| Breakpoints`                       |                           |      | 컴포넌트 너비                                                                                                        |
+| `grid`             | `string \| number \| Breakpoints`                       |                           |      | 그리드 열 범위                                                                                                       |
+| `accept`           | `string`                                                | `''`                      |      | 허용되는 파일 타입 (예: `image/*`, `.pdf`)                                                                           |
+| `height`           | `string \| number \| Breakpoints`                       | `'auto'`                  |      | 드롭 영역 높이                                                                                                       |
+| `directory`        | `boolean`                                               | `false`                   |      | 폴더 선택 모드 활성화 (webkitdirectory)                                                                              |
+| `noClear`          | `boolean`                                               | `false`                   |      | 지우기 버튼 숨기기                                                                                                   |
+| `multiple`         | `boolean`                                               | `false`                   |      | 다중 파일 선택 허용. false이면 여러 파일을 드롭/선택해도 첫 번째 파일만 유지합니다                                   |
+| `min`              | `number \| string`                                      | `0`                       |      | 필요한 최소 파일 수                                                                                                  |
+| `max`              | `number \| string`                                      | `Number.MAX_SAFE_INTEGER` |      | 허용되는 최대 파일 수                                                                                                |
+| `modelValue`       | `File[]`                                                | `[]`                      |      | 선택된 파일의 v-model 바인딩. [주의사항](#주의사항) 참고.                                                            |
+| `changed`          | `File[]`                                                | `[]`                      |      | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다.                                            |
+| `valid`            | `boolean`                                               | `false`                   |      | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.                                              |
 
 ## 타입
 
@@ -145,31 +147,35 @@ interface VsFileDropStyleSet extends CSSProperties {
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-| `update:modelValue` | `File[]` | 선택된 파일이 변경될 때 발생 |
-| `update:changed` | `File[]` | 파일이 변경될 때 발생 |
-| `update:valid` | `boolean` | 유효성 검사 상태가 변경될 때 발생 |
-| `change` | `File[]` | 파일 선택이 변경될 때 발생 |
-| `clear` | `File[]` | 모든 파일이 삭제될 때 삭제 직전의 파일 목록과 함께 발생 |
-| `drop` | `File[]` | 파일이 드롭될 때 발생 |
-| `focus` | `FocusEvent` | 파일 드롭 영역이 포커스를 받을 때 발생 |
-| `blur` | `FocusEvent` | 파일 드롭 영역이 포커스를 잃을 때 발생 |
+| 이벤트              | 페이로드     | 설명                                                    |
+| ------------------- | ------------ | ------------------------------------------------------- |
+| `update:modelValue` | `File[]`     | 선택된 파일이 변경될 때 발생                            |
+| `update:changed`    | `File[]`     | 파일이 변경될 때 발생                                   |
+| `update:valid`      | `boolean`    | 유효성 검사 상태가 변경될 때 발생                       |
+| `change`            | `File[]`     | 파일 선택이 변경될 때 발생                              |
+| `clear`             | `File[]`     | 모든 파일이 삭제될 때 삭제 직전의 파일 목록과 함께 발생 |
+| `drop`              | `File[]`     | 파일이 드롭될 때 발생                                   |
+| `focus`             | `FocusEvent` | 파일 드롭 영역이 포커스를 받을 때 발생                  |
+| `blur`              | `FocusEvent` | 파일 드롭 영역이 포커스를 잃을 때 발생                  |
 
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
-| `default` | 드롭 영역의 사용자 정의 콘텐츠. 슬롯 props로 `{ dragging: boolean }` 제공 |
-| `label` | 사용자 정의 레이블 콘텐츠 |
-| `messages` | 사용자 정의 메시지 콘텐츠 |
+| 슬롯       | 설명                                                                      |
+| ---------- | ------------------------------------------------------------------------- |
+| `default`  | 드롭 영역의 사용자 정의 콘텐츠. 슬롯 props로 `{ dragging: boolean }` 제공 |
+| `label`    | 사용자 정의 레이블 콘텐츠                                                 |
+| `messages` | 사용자 정의 메시지 콘텐츠                                                 |
 
 ## 메서드
 
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
-| `focus` | - | 파일 입력에 포커스 설정 |
-| `blur` | - | 파일 입력에서 포커스 제거 |
-| `validate` | - | 유효성 검사를 트리거하고 결과 반환 |
-| `clear` | - | 선택된 파일 비우기 |
-| `reset` | - | 선택된 파일을 초기값으로 되돌리기 |
+| 메서드     | 파라미터 | 설명                               |
+| ---------- | -------- | ---------------------------------- |
+| `focus`    | -        | 파일 입력에 포커스 설정            |
+| `blur`     | -        | 파일 입력에서 포커스 제거          |
+| `validate` | -        | 유효성 검사를 트리거하고 결과 반환 |
+| `clear`    | -        | 선택된 파일 비우기                 |
+| `reset`    | -        | 선택된 파일을 초기값으로 되돌리기  |
+
+## 주의사항
+
+`v-model`에 비어있지 않은 `File[]`을 쓰면 Vlossom UI와 validation에는 반영되지만, 브라우저가 네이티브 `<input type="file">`에 `File` 객체 주입을 허용하지 않아 네이티브 폼 submit에는 포함되지 않습니다. `[]`로 비우는 것은 네이티브까지 반영됩니다.

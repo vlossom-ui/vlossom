@@ -48,9 +48,9 @@ const isModalOpen = ref(true);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `disabled` | `boolean` | `false` | | Disable focus trapping without unmounting |
+| Prop       | Type      | Default | Required | Description                               |
+| ---------- | --------- | ------- | -------- | ----------------------------------------- |
+| `disabled` | `boolean` | `false` |          | Disable focus trapping without unmounting |
 
 ## Types
 
@@ -60,23 +60,18 @@ VsFocusTrap has no `StyleSet` interface.
 
 VsFocusTrap does not use a `styleSet` prop.
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description                                                                     |
+| --------- | ------------------------------------------------------------------------------- |
 | `default` | Must contain exactly one child element that will act as the focus trap boundary |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `focus` | - | Move focus into the focus trap anchor |
-| `blur` | - | Return focus to the element that was focused before the trap was activated |
+| Method  | Parameters | Description                                                                |
+| ------- | ---------- | -------------------------------------------------------------------------- |
+| `focus` | -          | Move focus into the focus trap anchor                                      |
+| `blur`  | -          | Return focus to the element that was focused before the trap was activated |
 
 ## Caution
 

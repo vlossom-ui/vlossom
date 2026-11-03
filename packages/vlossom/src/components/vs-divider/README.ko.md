@@ -51,12 +51,12 @@
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | 컴포넌트 색상 테마 |
-| `styleSet` | `string \| VsDividerStyleSet` | | | 커스텀 스타일 세트 |
-| `responsive` | `boolean` | `false` | | 작은 컨테이너 너비에서 수직 구분자를 수평으로 전환 |
-| `vertical` | `boolean` | `false` | | 수평 대신 수직 구분자 렌더링 |
+| Prop          | Type                          | Default | Required | Description                                        |
+| ------------- | ----------------------------- | ------- | -------- | -------------------------------------------------- |
+| `colorScheme` | `ColorScheme`                 |         |          | 컴포넌트 색상 테마                                 |
+| `styleSet`    | `string \| VsDividerStyleSet` |         |          | 커스텀 스타일 세트                                 |
+| `responsive`  | `boolean`                     | `false` |          | 작은 컨테이너 너비에서 수직 구분자를 수평으로 전환 |
+| `vertical`    | `boolean`                     | `false` |          | 수평 대신 수직 구분자 렌더링                       |
 
 ## Types
 
@@ -67,7 +67,6 @@ interface VsDividerStyleSet extends CSSProperties {
     $horizontalMargin?: string;
     $verticalHeight?: string;
     $verticalMargin?: string;
-
 }
 ```
 
@@ -84,18 +83,3 @@ interface VsDividerStyleSet extends CSSProperties {
     />
 </template>
 ```
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

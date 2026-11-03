@@ -65,17 +65,17 @@ const isOpen = ref(false);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
-| `styleSet` | `string \| VsAccordionStyleSet` | | | Custom style set |
-| `width` | `string \| number \| Breakpoints` | | | Width of the component |
-| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
-| `disabled` | `boolean` | `false` | | Disables toggle interaction |
-| `open` | `boolean` | `false` | | Initial open state |
-| `primary` | `boolean` | `false` | | Applies primary color scheme |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Title height, padding, font, and arrow size |
-| `modelValue` | `boolean` | `false` | | v-model binding for open state |
+| Prop          | Type                                   | Default | Required | Description                                 |
+| ------------- | -------------------------------------- | ------- | -------- | ------------------------------------------- |
+| `colorScheme` | `ColorScheme`                          |         |          | Color scheme for the component              |
+| `styleSet`    | `string \| VsAccordionStyleSet`        |         |          | Custom style set                            |
+| `width`       | `string \| number \| Breakpoints`      |         |          | Width of the component                      |
+| `grid`        | `string \| number \| Breakpoints`      |         |          | Grid column span                            |
+| `disabled`    | `boolean`                              | `false` |          | Disables toggle interaction                 |
+| `open`        | `boolean`                              | `false` |          | Initial open state                          |
+| `primary`     | `boolean`                              | `false` |          | Applies primary color scheme                |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  |          | Title height, padding, font, and arrow size |
+| `modelValue`  | `boolean`                              | `false` |          | v-model binding for open state              |
 
 ## Types
 
@@ -115,23 +115,23 @@ interface VsAccordionStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `update:modelValue` | `boolean` | Emitted when the open state changes |
-| `toggle` | `boolean` | Emitted after toggling; payload is the new open state |
+| Event               | Payload   | Description                                           |
+| ------------------- | --------- | ----------------------------------------------------- |
+| `update:modelValue` | `boolean` | Emitted when the open state changes                   |
+| `toggle`            | `boolean` | Emitted after toggling; payload is the new open state |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | Main collapsible content |
-| `title` | Content rendered inside the title bar |
+| Slot      | Description                           |
+| --------- | ------------------------------------- |
+| `default` | Main collapsible content              |
+| `title`   | Content rendered inside the title bar |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `toggle` | — | Toggles the accordion open/closed state |
+| Method   | Parameters | Description                             |
+| -------- | ---------- | --------------------------------------- |
+| `toggle` | —          | Toggles the accordion open/closed state |
 
 ## Caution
 

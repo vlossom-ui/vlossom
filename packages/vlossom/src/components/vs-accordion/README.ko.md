@@ -65,17 +65,17 @@ const isOpen = ref(false);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | 컴포넌트 색상 테마 |
-| `styleSet` | `string \| VsAccordionStyleSet` | | | 커스텀 스타일 세트 |
-| `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
-| `grid` | `string \| number \| Breakpoints` | | | 그리드 컬럼 스팬 |
-| `disabled` | `boolean` | `false` | | 토글 비활성화 |
-| `open` | `boolean` | `false` | | 초기 열림 상태 |
-| `primary` | `boolean` | `false` | | Primary 색상 테마 적용 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 타이틀 영역 높이 · 패딩 · 폰트 · 화살표 크기 제어 |
-| `modelValue` | `boolean` | `false` | | 열림 상태에 대한 v-model 바인딩 |
+| Prop          | Type                                   | Default | Required | Description                                       |
+| ------------- | -------------------------------------- | ------- | -------- | ------------------------------------------------- |
+| `colorScheme` | `ColorScheme`                          |         |          | 컴포넌트 색상 테마                                |
+| `styleSet`    | `string \| VsAccordionStyleSet`        |         |          | 커스텀 스타일 세트                                |
+| `width`       | `string \| number \| Breakpoints`      |         |          | 컴포넌트 너비                                     |
+| `grid`        | `string \| number \| Breakpoints`      |         |          | 그리드 컬럼 스팬                                  |
+| `disabled`    | `boolean`                              | `false` |          | 토글 비활성화                                     |
+| `open`        | `boolean`                              | `false` |          | 초기 열림 상태                                    |
+| `primary`     | `boolean`                              | `false` |          | Primary 색상 테마 적용                            |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  |          | 타이틀 영역 높이 · 패딩 · 폰트 · 화살표 크기 제어 |
+| `modelValue`  | `boolean`                              | `false` |          | 열림 상태에 대한 v-model 바인딩                   |
 
 ## Types
 
@@ -115,23 +115,23 @@ interface VsAccordionStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `update:modelValue` | `boolean` | 열림 상태가 변경될 때 발생 |
-| `toggle` | `boolean` | 토글 후 발생; 페이로드는 새로운 열림 상태 |
+| Event               | Payload   | Description                               |
+| ------------------- | --------- | ----------------------------------------- |
+| `update:modelValue` | `boolean` | 열림 상태가 변경될 때 발생                |
+| `toggle`            | `boolean` | 토글 후 발생; 페이로드는 새로운 열림 상태 |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | 접히는 메인 콘텐츠 |
-| `title` | 타이틀 바 안에 렌더링되는 콘텐츠 |
+| Slot      | Description                      |
+| --------- | -------------------------------- |
+| `default` | 접히는 메인 콘텐츠               |
+| `title`   | 타이틀 바 안에 렌더링되는 콘텐츠 |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `toggle` | — | 아코디언의 열림/닫힘 상태를 전환합니다 |
+| Method   | Parameters | Description                            |
+| -------- | ---------- | -------------------------------------- |
+| `toggle` | —          | 아코디언의 열림/닫힘 상태를 전환합니다 |
 
 ## Caution
 

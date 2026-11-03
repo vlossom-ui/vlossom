@@ -143,6 +143,8 @@ When there is no option to show — because `options` is empty or the search key
 | `selectAll`        | `boolean`                                                              | `false`                   | -        | Shows a select-all checkbox (multiple mode)                                                         |
 | `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                 | `'md'`                    | -        | Trigger height, padding, font, border-radius, and the options dropdown (padding/font/border-radius) |
 | `modelValue`       | `any`                                                                  | `null`                    | -        | Selected value (v-model)                                                                            |
+| `changed`          | `boolean`                                                              | `false`                   | -        | Read-only `v-model:changed` (output only). Externally set values are ignored.                       |
+| `valid`            | `boolean`                                                              | `false`                   | -        | Read-only `v-model:valid` (output only). Externally set values are ignored.                         |
 
 ## Types
 
@@ -225,6 +227,6 @@ interface VsSelectStyleSet extends CSSProperties {
 - If `modelValue` is set to a value not present in `options` — either on mount or programmatically — the invalid value is reset to `emptyValue` (single) or the invalid entries are removed (multiple; `emptyValue` if none remain), and a console warning is printed.
 - If `options` changes and the current `modelValue` is no longer present, the value is reset to `emptyValue` (single) or the missing entries are removed (multiple; `emptyValue` if none remain), and a console warning is printed.
 - While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Use `loading` (or `disabled`) while options are loading if users should not interact with it. `loading` only affects display and interaction; it does not change when values are cleaned up.
-  - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
-  - In the meantime, validation treats no option as selected, so `required` and `min` fail.
+    - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
+    - In the meantime, validation treats no option as selected, so `required` and `min` fail.
 - If an option has the same value as `emptyValue`, that value selects the option. `required` passes whenever an option is selected, including options such as `''` or `0`.

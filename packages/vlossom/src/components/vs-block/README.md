@@ -48,13 +48,13 @@ A content block component with an optional title area and a scrollable content r
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
-| `styleSet` | `string \| VsBlockStyleSet` | | | Custom style set |
-| `width` | `string \| number \| Breakpoints` | | | Width of the component |
-| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
-| `height` | `string \| number` | | | Height of the block |
+| Prop          | Type                              | Default | Required | Description                    |
+| ------------- | --------------------------------- | ------- | -------- | ------------------------------ |
+| `colorScheme` | `ColorScheme`                     |         |          | Color scheme for the component |
+| `styleSet`    | `string \| VsBlockStyleSet`       |         |          | Custom style set               |
+| `width`       | `string \| number \| Breakpoints` |         |          | Width of the component         |
+| `grid`        | `string \| number \| Breakpoints` |         |          | Grid column span               |
+| `height`      | `string \| number`                |         |          | Height of the block            |
 
 ## Types
 
@@ -91,19 +91,9 @@ interface VsBlockStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | Main content of the block |
-| `title` | Content rendered in the title header area |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Slot      | Description                               |
+| --------- | ----------------------------------------- |
+| `default` | Main content of the block                 |
+| `title`   | Content rendered in the title header area |

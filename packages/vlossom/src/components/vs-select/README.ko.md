@@ -138,11 +138,13 @@ const options = [
 | `loading`          | `boolean`                                                              | `false`                   | -        | 트리거에 로딩 표시를 보여 주고 옵션 목록이 열리지 않게 함                                      |
 | `multiple`         | `boolean`                                                              | `false`                   | -        | 다중 선택 모드 활성화                                                                          |
 | `noClear`          | `boolean`                                                              | `false`                   | -        | 초기화 버튼 숨김                                                                               |
-| `noVirtual`        | `boolean`                                                              | `false`                   | -        | 옵션 목록의 자동 가상 스크롤 비활성화                                                                   |
+| `noVirtual`        | `boolean`                                                              | `false`                   | -        | 옵션 목록의 자동 가상 스크롤 비활성화                                                          |
 | `optionsDisabled`  | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`                   | -        | 개별 옵션 비활성화                                                                             |
 | `selectAll`        | `boolean`                                                              | `false`                   | -        | 전체 선택 체크박스 표시 (다중 선택 모드)                                                       |
 | `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                 | `'md'`                    | -        | 트리거 높이 · 패딩 · 폰트 · 모서리 반경 및 옵션 드롭다운(패딩 · 폰트 · 모서리 반경) 제어       |
 | `modelValue`       | `any`                                                                  | `null`                    | -        | 선택된 값 (v-model)                                                                            |
+| `changed`          | `boolean`                                                              | `false`                   | -        | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다.                      |
+| `valid`            | `boolean`                                                              | `false`                   | -        | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.                        |
 
 ## Types
 
@@ -225,6 +227,6 @@ interface VsSelectStyleSet extends CSSProperties {
 - `modelValue`에 `options`에 없는 값을 설정하면 (마운트 시 또는 프로그래매틱하게) 해당 값은 `emptyValue`로 초기화되거나 (단일 선택) 유효하지 않은 항목이 제거되며 (다중 선택, 남는 항목이 없으면 `emptyValue`) 콘솔 경고가 출력됩니다.
 - `options`가 변경되어 현재 `modelValue`가 더 이상 존재하지 않으면, 단일 선택 모드에서는 `emptyValue`로 초기화되고 다중 선택 모드에서는 없어진 항목이 제거되며 (남는 항목이 없으면 `emptyValue`) 콘솔 경고가 출력됩니다.
 - `options`가 비어 있는 동안에는 값을 정리하지 않으므로, 비동기로 불러오는 options보다 먼저 설정된 값이 유지됩니다. `options`가 들어오면 위 규칙대로 없는 값이 정리됩니다. 불러오는 동안 사용자가 조작하지 못하게 하려면 `loading`(또는 `disabled`)을 사용하세요. `loading`은 표시와 조작에만 영향을 주며, 값을 정리하는 시점은 바꾸지 않습니다.
-  - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
-  - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `required`와 `min`은 실패합니다.
+    - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
+    - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `required`와 `min`은 실패합니다.
 - `emptyValue`와 같은 값의 옵션이 있으면 그 값은 해당 옵션을 선택합니다. `required`는 옵션이 선택되어 있으면 `''`나 `0` 같은 값이어도 통과합니다.

@@ -216,11 +216,6 @@ interface VsModalNodeStyleSet extends CSSProperties {
 | --------- | --------------------------------------------- |
 | `default` | The content rendered inside the modal dialog. |
 
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-
 ## Caution
 
 `VsModal` requires the Vlossom plugin to be installed in your Vue application. The modal content is mounted via `$vs.modal.open()` and teleported to the `container` element.

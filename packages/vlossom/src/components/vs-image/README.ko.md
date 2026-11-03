@@ -130,8 +130,3 @@ interface VsImageStyleSet extends CSSProperties {
 | ---------- | ------------------------------------------------------ |
 | `skeleton` | 스켈레톤 상태에서 표시할 커스텀 콘텐츠.                |
 | `fallback` | `fallback` prop이 없을 때 사용하는 커스텀 fallback UI. |
-
-## Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |

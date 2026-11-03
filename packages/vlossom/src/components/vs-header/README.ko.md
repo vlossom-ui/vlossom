@@ -61,15 +61,15 @@
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트의 색상 스킴 |
-| `styleSet` | `string \| VsHeaderStyleSet` | | | 컴포넌트의 사용자 정의 스타일 셋 |
-| `position` | `'static' \| 'relative' \| 'absolute' \| 'fixed' \| 'sticky'` | | | 헤더의 CSS position 값 |
-| `height` | `string` | | | 헤더의 높이. 기본값은 `3rem` |
-| `primary` | `boolean` | `false` | | 기본 색상 스킴 적용 |
-| `layout` | `boolean` | `false` | | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다 |
-| `tag` | `string` | `'header'` | | 렌더링할 HTML 태그 |
+| Prop          | 타입                                                          | 기본값     | 필수 | 설명                                                                         |
+| ------------- | ------------------------------------------------------------- | ---------- | ---- | ---------------------------------------------------------------------------- |
+| `colorScheme` | `string`                                                      |            |      | 컴포넌트의 색상 스킴                                                         |
+| `styleSet`    | `string \| VsHeaderStyleSet`                                  |            |      | 컴포넌트의 사용자 정의 스타일 셋                                             |
+| `position`    | `'static' \| 'relative' \| 'absolute' \| 'fixed' \| 'sticky'` |            |      | 헤더의 CSS position 값                                                       |
+| `height`      | `string`                                                      |            |      | 헤더의 높이. 기본값은 `3rem`                                                 |
+| `primary`     | `boolean`                                                     | `false`    |      | 기본 색상 스킴 적용                                                          |
+| `layout`      | `boolean`                                                     | `false`    |      | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다 |
+| `tag`         | `string`                                                      | `'header'` |      | 렌더링할 HTML 태그                                                           |
 
 ## 타입
 
@@ -100,18 +100,8 @@ interface VsBarStyleSet extends CSSProperties {}
 </template>
 ```
 
-## 이벤트
-
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
+| 슬롯      | 설명        |
+| --------- | ----------- |
 | `default` | 헤더 콘텐츠 |
-
-## 메서드
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |

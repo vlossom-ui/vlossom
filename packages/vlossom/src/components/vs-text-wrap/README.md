@@ -59,12 +59,12 @@ A container component that wraps text content and provides copy-to-clipboard and
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `styleSet` | `string \| VsTextWrapStyleSet` | | | Custom style set for the component |
-| `copy` | `boolean` | `false` | | Shows the copy-to-clipboard button |
-| `link` | `string` | `''` | | URL to open in a new tab when the link button is clicked |
-| `width` | `string \| number` | `''` | | Width of the component |
+| Prop       | Type                           | Default | Required | Description                                              |
+| ---------- | ------------------------------ | ------- | -------- | -------------------------------------------------------- |
+| `styleSet` | `string \| VsTextWrapStyleSet` |         |          | Custom style set for the component                       |
+| `copy`     | `boolean`                      | `false` |          | Shows the copy-to-clipboard button                       |
+| `link`     | `string`                       | `''`    |          | URL to open in a new tab when the link button is clicked |
+| `width`    | `string \| number`             | `''`    |          | Width of the component                                   |
 
 ## Types
 
@@ -94,21 +94,16 @@ interface VsTextWrapStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event    | Payload  | Description                                               |
+| -------- | -------- | --------------------------------------------------------- |
 | `copied` | `string` | Emitted when text is successfully copied to the clipboard |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | Main text content to display |
+| Slot      | Description                                                      |
+| --------- | ---------------------------------------------------------------- |
+| `default` | Main text content to display                                     |
 | `actions` | Additional action buttons displayed before the copy/link buttons |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Caution
 

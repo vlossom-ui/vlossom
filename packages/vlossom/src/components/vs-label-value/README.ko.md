@@ -75,16 +75,16 @@
 
 ## Props
 
-| Prop          | Type                             | Default | Required | Description                                          |
-| ------------- | -------------------------------- | ------- | -------- | ---------------------------------------------------- |
-| `colorScheme` | `string`                         | -       | -        | 컴포넌트의 색상 스킴.                                |
-| `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | 컴포넌트의 커스텀 스타일 셋.                         |
-| `width`       | `string \| number \| Breakpoints`| -       | -        | 컴포넌트 너비.                                       |
-| `grid`        | `string \| number \| Breakpoints`| -       | -        | 레이아웃의 그리드 열 span.                           |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | 컴포넌트 크기 (min-height · padding · font 제어).    |
-| `primary`     | `boolean`                        | `false` | -        | 라벨 셀에 기본 색상 스킴을 적용합니다.               |
-| `vertical`    | `boolean`                        | `false` | -        | 라벨과 값 셀을 세로로 쌓습니다.                      |
-| `responsive`  | `boolean`                        | `false` | -        | 좁은 컨테이너에서 자동으로 세로 레이아웃으로 전환.   |
+| Prop          | Type                                   | Default | Required | Description                                        |
+| ------------- | -------------------------------------- | ------- | -------- | -------------------------------------------------- |
+| `colorScheme` | `string`                               | -       | -        | 컴포넌트의 색상 스킴.                              |
+| `styleSet`    | `string \| VsLabelValueStyleSet`       | -       | -        | 컴포넌트의 커스텀 스타일 셋.                       |
+| `width`       | `string \| number \| Breakpoints`      | -       | -        | 컴포넌트 너비.                                     |
+| `grid`        | `string \| number \| Breakpoints`      | -       | -        | 레이아웃의 그리드 열 span.                         |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | 컴포넌트 크기 (min-height · padding · font 제어).  |
+| `primary`     | `boolean`                              | `false` | -        | 라벨 셀에 기본 색상 스킴을 적용합니다.             |
+| `vertical`    | `boolean`                              | `false` | -        | 라벨과 값 셀을 세로로 쌓습니다.                    |
+| `responsive`  | `boolean`                              | `false` | -        | 좁은 컨테이너에서 자동으로 세로 레이아웃으로 전환. |
 
 ## Types
 
@@ -114,19 +114,9 @@ interface VsLabelValueStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-
 ## Slots
 
-| 슬롯      | 설명             |
-| --------- | ---------------- |
-| `default` | 값 셀 콘텐츠.    |
-| `label`   | 라벨 셀 콘텐츠.  |
-
-## Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
+| 슬롯      | 설명            |
+| --------- | --------------- |
+| `default` | 값 셀 콘텐츠.   |
+| `label`   | 라벨 셀 콘텐츠. |

@@ -36,11 +36,11 @@ idle, info, success, warning, error 등 다양한 UI 상태에 맞는 아이콘�
 
 ## Props
 
-| Prop       | Type                                                          | Default  | Required | Description                                          |
-| ---------- | ------------------------------------------------------------- | -------- | -------- | ---------------------------------------------------- |
-| `styleSet` | `string \| VsMessageStyleSet`                                 | -        | -        | 컴포넌트의 커스텀 스타일 셋.                         |
-| `state`    | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`      | `'idle'` | -        | 아이콘과 색상을 결정하는 UI 상태.                    |
-| `text`     | `string`                                                      | `''`     | -        | 표시할 메시지 텍스트.                                |
+| Prop       | Type                                                    | Default  | Required | Description                       |
+| ---------- | ------------------------------------------------------- | -------- | -------- | --------------------------------- |
+| `styleSet` | `string \| VsMessageStyleSet`                           | -        | -        | 컴포넌트의 커스텀 스타일 셋.      |
+| `state`    | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | -        | 아이콘과 색상을 결정하는 UI 상태. |
+| `text`     | `string`                                                | `''`     | -        | 표시할 메시지 텍스트.             |
 
 ## Types
 
@@ -64,18 +64,3 @@ interface VsMessageStyleSet extends CSSProperties {
     />
 </template>
 ```
-
-## Events
-
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-
-## Slots
-
-| 슬롯 | 설명 |
-| ---- | ---- |
-
-## Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |

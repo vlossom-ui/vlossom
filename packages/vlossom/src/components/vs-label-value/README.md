@@ -75,16 +75,16 @@ Switch to vertical layout on small containers automatically.
 
 ## Props
 
-| Prop          | Type                             | Default | Required | Description                                                       |
-| ------------- | -------------------------------- | ------- | -------- | ----------------------------------------------------------------- |
-| `colorScheme` | `string`                         | -       | -        | Color scheme for the component.                                   |
-| `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | Custom style set for the component.                               |
-| `width`       | `string \| number \| Breakpoints`| -       | -        | Width of the component.                                           |
-| `grid`        | `string \| number \| Breakpoints`| -       | -        | Grid column span for layout.                                      |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | Component size (controls min-height, padding, and font size).     |
-| `primary`     | `boolean`                        | `false` | -        | Applies primary color scheme to the label cell.                   |
-| `vertical`    | `boolean`                        | `false` | -        | Stacks label and value cells vertically.                          |
-| `responsive`  | `boolean`                        | `false` | -        | Automatically switches to vertical layout in narrow containers.   |
+| Prop          | Type                                   | Default | Required | Description                                                     |
+| ------------- | -------------------------------------- | ------- | -------- | --------------------------------------------------------------- |
+| `colorScheme` | `string`                               | -       | -        | Color scheme for the component.                                 |
+| `styleSet`    | `string \| VsLabelValueStyleSet`       | -       | -        | Custom style set for the component.                             |
+| `width`       | `string \| number \| Breakpoints`      | -       | -        | Width of the component.                                         |
+| `grid`        | `string \| number \| Breakpoints`      | -       | -        | Grid column span for layout.                                    |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | Component size (controls min-height, padding, and font size).   |
+| `primary`     | `boolean`                              | `false` | -        | Applies primary color scheme to the label cell.                 |
+| `vertical`    | `boolean`                              | `false` | -        | Stacks label and value cells vertically.                        |
+| `responsive`  | `boolean`                              | `false` | -        | Automatically switches to vertical layout in narrow containers. |
 
 ## Types
 
@@ -114,19 +114,9 @@ interface VsLabelValueStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot      | Description                      |
-| --------- | -------------------------------- |
-| `default` | The value cell content.          |
-| `label`   | The label cell content.          |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Slot      | Description             |
+| --------- | ----------------------- |
+| `default` | The value cell content. |
+| `label`   | The label cell content. |

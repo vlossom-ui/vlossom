@@ -50,15 +50,15 @@ A responsive CSS grid container that supports a configurable number of columns, 
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `styleSet` | `string \| VsGridStyleSet` | | | Custom style set for the component |
-| `gridSize` | `number \| string` | | | Number of grid columns. Default is 12 |
-| `columnGap` | `number \| string` | | | Gap between grid columns |
-| `rowGap` | `number \| string` | | | Gap between grid rows |
-| `width` | `string \| number` | | | Width of the grid container |
-| `height` | `string \| number` | | | Height of the grid container |
-| `tag` | `string` | `'div'` | | HTML tag to render as |
+| Prop        | Type                       | Default | Required | Description                           |
+| ----------- | -------------------------- | ------- | -------- | ------------------------------------- |
+| `styleSet`  | `string \| VsGridStyleSet` |         |          | Custom style set for the component    |
+| `gridSize`  | `number \| string`         |         |          | Number of grid columns. Default is 12 |
+| `columnGap` | `number \| string`         |         |          | Gap between grid columns              |
+| `rowGap`    | `number \| string`         |         |          | Gap between grid rows                 |
+| `width`     | `string \| number`         |         |          | Width of the grid container           |
+| `height`    | `string \| number`         |         |          | Height of the grid container          |
+| `tag`       | `string`                   | `'div'` |          | HTML tag to render as                 |
 
 ## Types
 
@@ -84,18 +84,8 @@ interface VsGridStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | Grid items |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Slot      | Description |
+| --------- | ----------- |
+| `default` | Grid items  |

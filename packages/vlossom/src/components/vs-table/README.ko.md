@@ -217,7 +217,7 @@ const selectedItems = ref([]);
 | `loading`       | `boolean`                                      | `false`  | 로딩 상태 표시 및 검색/페이지네이션/드래그/선택 비활성화                                                           |
 | `page`          | `number`                                       |          | 현재 페이지 인덱스 (0부터 시작), v-model                                                                           |
 | `pageSize`      | `number`                                       |          | 페이지당 행 수, v-model. 기본값은 pageSizeOptions의 첫 번째 값                                                     |
-| `pagedItems`    | `VsTableItem[]`                                | `[]`     | 현재 페이지의 행, v-model (출력 전용)                                                                              |
+| `pagedItems`    | `VsTableItem[]`                                | `[]`     | 현재 페이지의 행. 읽기 전용 `v-model:paged-items` (출력 전용). 외부에서 설정한 값은 무시됩니다.                     |
 | `pagination`    | `boolean \| VsTablePaginationOptions`          | `false`  | 페이지네이션 활성화                                                                                                |
 | `primary`       | `boolean`                                      | `false`  | 헤더에 primary 색상 적용                                                                                           |
 | `responsive`    | `boolean`                                      | `false`  | 반응형(세로 적층) 레이아웃 활성화                                                                                  |
@@ -227,7 +227,7 @@ const selectedItems = ref([]);
 | `serverMode`    | `boolean`                                      | `false`  | 서버 사이드 페이지네이션 모드                                                                                      |
 | `state`         | `UIState \| (item, index?, items?) => UIState` | `'idle'` | 행 상태 스타일                                                                                                     |
 | `stickyHeader`  | `boolean`                                      | `false`  | 스크롤 시 헤더 고정                                                                                                |
-| `totalItems`    | `VsTableItem[]`                                | `[]`     | 검색과 정렬을 거친 전체 행(화면 순서), v-model (출력 전용)                                                         |
+| `totalItems`    | `VsTableItem[]`                                | `[]`     | 검색과 정렬을 거친 전체 행(화면 순서). 읽기 전용 `v-model:total-items` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
 
 `selectable`, `expandable`, `state`를 함수로 전달하면 `index`는 현재 화면에 표시된 행 중 위치이고 `items`는 그 표시된 행 목록이므로, `items[index]`는 항상 `item`입니다.
 
@@ -362,3 +362,4 @@ interface VsTablePaginationOptions {
 - 드래그는 테이블이 보여주는 순서만 바꿉니다. `items`가 갱신돼도 순서를 유지해야 한다면 `totalItems`나 `drag` 이벤트로 받아 직접 저장하세요.
 - `items`는 템플릿 안의 배열 리터럴이 아니라 `ref`, `computed`, API 응답처럼 참조가 유지되는 값으로 넘기세요. 템플릿 리터럴은 부모가 렌더될 때마다 새 행 객체를 만들기 때문에, `v-model:total-items`나 `v-model:paged-items`를 함께 바인딩하면 갱신이 무한 반복됩니다.
 - 저장해 둔 선택을 복원하려면 `items`가 로드된 뒤에 `selectedItems`를 넣으세요. 아직 `items`에 없는 행은 선택에서 제외됩니다.
+

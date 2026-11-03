@@ -40,12 +40,12 @@
 
 ## Props
 
-| Prop          | Type                          | Default | Required | Description                          |
-| ------------- | ----------------------------- | ------- | -------- | ------------------------------------ |
-| `colorScheme` | `string`                      | -       | -        | 로딩 바의 색상 스킴.                 |
-| `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | 컴포넌트의 커스텀 스타일 셋.         |
-| `width`       | `string \| number`            | -       | -        | 로딩 컨테이너의 너비.                |
-| `height`      | `string \| number`            | -       | -        | 로딩 컨테이너의 높이.                |
+| Prop          | Type                          | Default | Required | Description                  |
+| ------------- | ----------------------------- | ------- | -------- | ---------------------------- |
+| `colorScheme` | `string`                      | -       | -        | 로딩 바의 색상 스킴.         |
+| `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | 컴포넌트의 커스텀 스타일 셋. |
+| `width`       | `string \| number`            | -       | -        | 로딩 컨테이너의 너비.        |
+| `height`      | `string \| number`            | -       | -        | 로딩 컨테이너의 높이.        |
 
 ## Types
 
@@ -69,18 +69,3 @@ interface VsLoadingStyleSet extends CSSProperties {
     />
 </template>
 ```
-
-## Events
-
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-
-## Slots
-
-| 슬롯 | 설명 |
-| ---- | ---- |
-
-## Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |

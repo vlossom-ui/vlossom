@@ -51,10 +51,10 @@ const dimmedRef = ref(null);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `styleSet` | `string \| VsDimmedStyleSet` | | | Custom style set |
-| `modelValue` | `boolean` | `false` | | v-model binding for visibility |
+| Prop         | Type                         | Default | Required | Description                    |
+| ------------ | ---------------------------- | ------- | -------- | ------------------------------ |
+| `styleSet`   | `string \| VsDimmedStyleSet` |         |          | Custom style set               |
+| `modelValue` | `boolean`                    | `false` |          | v-model binding for visibility |
 
 ## Types
 
@@ -83,21 +83,16 @@ interface VsDimmedStyleSet extends CSSProperties {}
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event               | Payload   | Description                     |
+| ------------------- | --------- | ------------------------------- |
 | `update:modelValue` | `boolean` | Emitted when visibility changes |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `show` | — | Shows the dimmed overlay |
-| `hide` | — | Hides the dimmed overlay |
+| Method | Parameters | Description              |
+| ------ | ---------- | ------------------------ |
+| `show` | —          | Shows the dimmed overlay |
+| `hide` | —          | Hides the dimmed overlay |
 
 ## Caution
 

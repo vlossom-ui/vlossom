@@ -76,19 +76,19 @@ async function submit() {
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | 컴포넌트 색상 테마 |
-| `styleSet` | `string \| VsButtonStyleSet` | | | 커스텀 스타일 세트 |
-| `circle` | `boolean` | `false` | | 버튼을 원형으로 렌더링 |
-| `disabled` | `boolean` | `false` | | 버튼 비활성화 |
-| `ghost` | `boolean` | `false` | | 고스트(투명 배경) 스타일 적용 |
-| `loading` | `boolean` | `false` | | 로딩 스피너를 표시하고 상호작용 비활성화 |
-| `outline` | `boolean` | `false` | | 외곽선 스타일 적용 |
-| `primary` | `boolean` | `false` | | Primary 색상 테마 적용 |
-| `responsive` | `boolean` | `false` | | 컨테이너 너비에 맞게 늘림 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 버튼 크기 |
-| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML button type 속성 |
+| Prop          | Type                                   | Default    | Required | Description                              |
+| ------------- | -------------------------------------- | ---------- | -------- | ---------------------------------------- |
+| `colorScheme` | `ColorScheme`                          |            |          | 컴포넌트 색상 테마                       |
+| `styleSet`    | `string \| VsButtonStyleSet`           |            |          | 커스텀 스타일 세트                       |
+| `circle`      | `boolean`                              | `false`    |          | 버튼을 원형으로 렌더링                   |
+| `disabled`    | `boolean`                              | `false`    |          | 버튼 비활성화                            |
+| `ghost`       | `boolean`                              | `false`    |          | 고스트(투명 배경) 스타일 적용            |
+| `loading`     | `boolean`                              | `false`    |          | 로딩 스피너를 표시하고 상호작용 비활성화 |
+| `outline`     | `boolean`                              | `false`    |          | 외곽선 스타일 적용                       |
+| `primary`     | `boolean`                              | `false`    |          | Primary 색상 테마 적용                   |
+| `responsive`  | `boolean`                              | `false`    |          | 컨테이너 너비에 맞게 늘림                |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`     |          | 버튼 크기                                |
+| `type`        | `'button' \| 'submit' \| 'reset'`      | `'button'` |          | HTML button type 속성                    |
 
 ## Types
 
@@ -124,18 +124,8 @@ interface VsButtonStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description      |
+| --------- | ---------------- |
 | `default` | 버튼 라벨 콘텐츠 |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

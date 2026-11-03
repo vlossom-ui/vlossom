@@ -37,8 +37,8 @@ A layout component that provides a structured page container with title, descrip
 
 ## Props
 
-| Prop       | Type                      | Default | Required | Description                      |
-| ---------- | ------------------------- | ------- | -------- | -------------------------------- |
+| Prop       | Type                       | Default | Required | Description                        |
+| ---------- | -------------------------- | ------- | -------- | ---------------------------------- |
 | `styleSet` | `string \| VsPageStyleSet` | -       | -        | Custom style set for the component |
 
 ## Types
@@ -70,20 +70,10 @@ interface VsPageStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot          | Description                        |
-| ------------- | ---------------------------------- |
-| `default`     | Main content area                  |
-| `title`       | Page title area (optional)         |
-| `description` | Page description area (optional)   |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Slot          | Description                      |
+| ------------- | -------------------------------- |
+| `default`     | Main content area                |
+| `title`       | Page title area (optional)       |
+| `description` | Page description area (optional) |

@@ -48,13 +48,13 @@
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | 컴포넌트 색상 테마 |
-| `styleSet` | `string \| VsBlockStyleSet` | | | 커스텀 스타일 세트 |
-| `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
-| `grid` | `string \| number \| Breakpoints` | | | 그리드 컬럼 스팬 |
-| `height` | `string \| number` | | | 블록의 높이 |
+| Prop          | Type                              | Default | Required | Description        |
+| ------------- | --------------------------------- | ------- | -------- | ------------------ |
+| `colorScheme` | `ColorScheme`                     |         |          | 컴포넌트 색상 테마 |
+| `styleSet`    | `string \| VsBlockStyleSet`       |         |          | 커스텀 스타일 세트 |
+| `width`       | `string \| number \| Breakpoints` |         |          | 컴포넌트 너비      |
+| `grid`        | `string \| number \| Breakpoints` |         |          | 그리드 컬럼 스팬   |
+| `height`      | `string \| number`                |         |          | 블록의 높이        |
 
 ## Types
 
@@ -91,19 +91,9 @@ interface VsBlockStyleSet extends CSSProperties {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | 블록의 메인 콘텐츠 |
-| `title` | 타이틀 헤더 영역에 렌더링되는 콘텐츠 |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Slot      | Description                          |
+| --------- | ------------------------------------ |
+| `default` | 블록의 메인 콘텐츠                   |
+| `title`   | 타이틀 헤더 영역에 렌더링되는 콘텐츠 |

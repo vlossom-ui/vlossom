@@ -47,10 +47,10 @@ const isOpen = ref(false);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `styleSet` | `string \| VsExpandableStyleSet` | | | Custom style set for the component |
-| `open` | `boolean` | `false` | ✓ | Controls whether the content is expanded |
+| Prop       | Type                             | Default | Required | Description                              |
+| ---------- | -------------------------------- | ------- | -------- | ---------------------------------------- |
+| `styleSet` | `string \| VsExpandableStyleSet` |         |          | Custom style set for the component       |
+| `open`     | `boolean`                        | `false` | ✓        | Controls whether the content is expanded |
 
 ## Types
 
@@ -73,18 +73,8 @@ interface VsExpandableStyleSet extends CSSProperties {}
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description                       |
+| --------- | --------------------------------- |
 | `default` | The content to be shown or hidden |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

@@ -79,63 +79,67 @@ async function confirmChange(from, to) {
 
 ### VsRadio
 
-| Prop           | Type                                                              | Default  | Required | 설명                                               |
-| -------------- | ----------------------------------------------------------------- | -------- | -------- | -------------------------------------------------- |
-| `colorScheme`  | `string`                                                          | -        | -        | 컴포넌트의 색상 스킴                               |
-| `styleSet`     | `string \| VsRadioStyleSet`                                       | -        | -        | 컴포넌트에 적용할 커스텀 스타일 세트               |
-| `disabled`     | `boolean`                                                         | `false`  | -        | 라디오 입력 비활성화                               |
-| `hidden`       | `boolean`                                                         | `false`  | -        | 컴포넌트 숨김                                      |
-| `id`           | `string`                                                          | `''`     | -        | HTML id 속성                                       |
-| `label`        | `string`                                                          | `''`     | -        | 입력 래퍼의 레이블 텍스트                          |
-| `noLabel`      | `boolean`                                                         | `false`  | -        | 레이블 숨김                                        |
-| `noMessages`   | `boolean`                                                         | `false`  | -        | 유효성 검사 메시지 숨김                            |
-| `required`     | `boolean`                                                         | `false`  | -        | 필수 입력 필드로 지정                              |
-| `messages`     | `Message[]`                                                       | `[]`     | -        | 유효성 검사 메시지                                 |
-| `name`         | `string`                                                          | `''`     | -        | 라디오 버튼 그룹화를 위한 HTML name 속성           |
-| `noDefaultRules` | `boolean`                                                       | `false`  | -        | 내장 유효성 검사 규칙 비활성화                     |
-| `readonly`     | `boolean`                                                         | `false`  | -        | 읽기 전용으로 설정                                 |
-| `rules`        | `Rule[]`                                                          | `[]`     | -        | 커스텀 유효성 검사 규칙                            |
-| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                            | `'md'`   | -        | 라디오 크기 및 라벨 폰트 크기                      |
-| `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | 유효성 검사 상태                                   |
-| `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | 값 변경 전 호출되는 비동기 콜백                    |
-| `checked`      | `boolean`                                                         | `false`  | -        | 마운트 시 이 라디오를 미리 선택                    |
-| `emptyValue`   | `any`                                                             | `null`   | -        | clear 시 설정되는 값                               |
-| `radioLabel`   | `string`                                                          | `''`     | -        | 라디오 원 옆에 표시되는 레이블                     |
-| `radioValue`   | `any`                                                             | -        | Yes      | 이 라디오가 나타내는 값                            |
-| `modelValue`   | `any`                                                             | `null`   | -        | 현재 선택된 값 (v-model)                           |
-| `width`        | `string \| number \| Breakpoints`                                 | -        | -        | 컴포넌트의 너비                                    |
-| `grid`         | `string \| number \| Breakpoints`                                 | -        | -        | 그리드 컬럼 스팬                                   |
+| Prop             | Type                                                                 | Default  | Required | 설명                                                                      |
+| ---------------- | -------------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                                             | -        | -        | 컴포넌트의 색상 스킴                                                      |
+| `styleSet`       | `string \| VsRadioStyleSet`                                          | -        | -        | 컴포넌트에 적용할 커스텀 스타일 세트                                      |
+| `disabled`       | `boolean`                                                            | `false`  | -        | 라디오 입력 비활성화                                                      |
+| `hidden`         | `boolean`                                                            | `false`  | -        | 컴포넌트 숨김                                                             |
+| `id`             | `string`                                                             | `''`     | -        | HTML id 속성                                                              |
+| `label`          | `string`                                                             | `''`     | -        | 입력 래퍼의 레이블 텍스트                                                 |
+| `noLabel`        | `boolean`                                                            | `false`  | -        | 레이블 숨김                                                               |
+| `noMessages`     | `boolean`                                                            | `false`  | -        | 유효성 검사 메시지 숨김                                                   |
+| `required`       | `boolean`                                                            | `false`  | -        | 필수 입력 필드로 지정                                                     |
+| `messages`       | `Message[]`                                                          | `[]`     | -        | 유효성 검사 메시지                                                        |
+| `name`           | `string`                                                             | `''`     | -        | 라디오 버튼 그룹화를 위한 HTML name 속성                                  |
+| `noDefaultRules` | `boolean`                                                            | `false`  | -        | 내장 유효성 검사 규칙 비활성화                                            |
+| `readonly`       | `boolean`                                                            | `false`  | -        | 읽기 전용으로 설정                                                        |
+| `rules`          | `Rule[]`                                                             | `[]`     | -        | 커스텀 유효성 검사 규칙                                                   |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                               | `'md'`   | -        | 라디오 크기 및 라벨 폰트 크기                                             |
+| `state`          | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`              | `'idle'` | -        | 유효성 검사 상태                                                          |
+| `beforeChange`   | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null`   | -        | 값 변경 전 호출되는 비동기 콜백                                           |
+| `checked`        | `boolean`                                                            | `false`  | -        | 마운트 시 이 라디오를 미리 선택                                           |
+| `emptyValue`     | `any`                                                                | `null`   | -        | clear 시 설정되는 값                                                      |
+| `radioLabel`     | `string`                                                             | `''`     | -        | 라디오 원 옆에 표시되는 레이블                                            |
+| `radioValue`     | `any`                                                                | -        | Yes      | 이 라디오가 나타내는 값                                                   |
+| `modelValue`     | `any`                                                                | `null`   | -        | 현재 선택된 값 (v-model)                                                  |
+| `width`          | `string \| number \| Breakpoints`                                    | -        | -        | 컴포넌트의 너비                                                           |
+| `grid`           | `string \| number \| Breakpoints`                                    | -        | -        | 그리드 컬럼 스팬                                                          |
+| `changed`        | `boolean`                                                            | `false`  | -        | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
+| `valid`          | `boolean`                                                            | `false`  | -        | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.   |
 
 ### VsRadioSet
 
-| Prop           | Type                                                              | Default  | Required | 설명                                               |
-| -------------- | ----------------------------------------------------------------- | -------- | -------- | -------------------------------------------------- |
-| `colorScheme`  | `string`                                                          | -        | -        | 컴포넌트의 색상 스킴                               |
-| `styleSet`     | `string \| VsRadioSetStyleSet`                                    | -        | -        | 컴포넌트에 적용할 커스텀 스타일 세트               |
-| `disabled`     | `boolean`                                                         | `false`  | -        | 모든 라디오 버튼 비활성화                          |
-| `hidden`       | `boolean`                                                         | `false`  | -        | 컴포넌트 숨김                                      |
-| `id`           | `string`                                                          | `''`     | -        | HTML id 속성                                       |
-| `label`        | `string`                                                          | `''`     | -        | 그룹 레이블 텍스트                                 |
-| `noLabel`      | `boolean`                                                         | `false`  | -        | 레이블 숨김                                        |
-| `noMessages`   | `boolean`                                                         | `false`  | -        | 유효성 검사 메시지 숨김                            |
-| `required`     | `boolean`                                                         | `false`  | -        | 필수 입력 필드로 지정                              |
-| `messages`     | `Message[]`                                                       | `[]`     | -        | 유효성 검사 메시지                                 |
-| `name`         | `string`                                                          | `''`     | -        | 모든 라디오가 공유하는 HTML name 속성              |
-| `noDefaultRules` | `boolean`                                                       | `false`  | -        | 내장 유효성 검사 규칙 비활성화                     |
-| `readonly`     | `boolean`                                                         | `false`  | -        | 모든 라디오를 읽기 전용으로 설정                   |
-| `rules`        | `Rule[]`                                                          | `[]`     | -        | 커스텀 유효성 검사 규칙                            |
-| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                            | `'md'`   | -        | 각 `VsRadio`로 전달되는 사이즈                     |
-| `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | 유효성 검사 상태                                   |
-| `options`      | `any[]`                                                           | `[]`     | -        | 옵션 값 또는 객체의 배열                           |
-| `optionLabel`  | `string`                                                          | -        | -        | 옵션이 객체일 때 레이블에 사용할 키 이름           |
-| `optionValue`  | `string`                                                          | -        | -        | 옵션이 객체일 때 값에 사용할 키 이름               |
-| `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | 값 변경 전 호출되는 비동기 콜백                    |
-| `emptyValue`   | `any`                                                             | `null`   | -        | 선택이 없을 때 사용하는 값                         |
-| `loading`      | `boolean`                                                         | `false`  | -        | 라디오 버튼 대신 스켈레톤을 표시                   |
-| `vertical`     | `boolean`                                                         | `false`  | -        | 라디오 버튼을 수직으로 배치                        |
-| `modelValue`   | `any`                                                             | `null`   | -        | 현재 선택된 값 (v-model)                           |
-| `width`        | `string \| number \| Breakpoints`                                 | -        | -        | 컴포넌트의 너비                                    |
-| `grid`         | `string \| number \| Breakpoints`                                 | -        | -        | 그리드 컬럼 스팬                                   |
+| Prop             | Type                                                                 | Default  | Required | 설명                                                                      |
+| ---------------- | -------------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                                             | -        | -        | 컴포넌트의 색상 스킴                                                      |
+| `styleSet`       | `string \| VsRadioSetStyleSet`                                       | -        | -        | 컴포넌트에 적용할 커스텀 스타일 세트                                      |
+| `disabled`       | `boolean`                                                            | `false`  | -        | 모든 라디오 버튼 비활성화                                                 |
+| `hidden`         | `boolean`                                                            | `false`  | -        | 컴포넌트 숨김                                                             |
+| `id`             | `string`                                                             | `''`     | -        | HTML id 속성                                                              |
+| `label`          | `string`                                                             | `''`     | -        | 그룹 레이블 텍스트                                                        |
+| `noLabel`        | `boolean`                                                            | `false`  | -        | 레이블 숨김                                                               |
+| `noMessages`     | `boolean`                                                            | `false`  | -        | 유효성 검사 메시지 숨김                                                   |
+| `required`       | `boolean`                                                            | `false`  | -        | 필수 입력 필드로 지정                                                     |
+| `messages`       | `Message[]`                                                          | `[]`     | -        | 유효성 검사 메시지                                                        |
+| `name`           | `string`                                                             | `''`     | -        | 모든 라디오가 공유하는 HTML name 속성                                     |
+| `noDefaultRules` | `boolean`                                                            | `false`  | -        | 내장 유효성 검사 규칙 비활성화                                            |
+| `readonly`       | `boolean`                                                            | `false`  | -        | 모든 라디오를 읽기 전용으로 설정                                          |
+| `rules`          | `Rule[]`                                                             | `[]`     | -        | 커스텀 유효성 검사 규칙                                                   |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                               | `'md'`   | -        | 각 `VsRadio`로 전달되는 사이즈                                            |
+| `state`          | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`              | `'idle'` | -        | 유효성 검사 상태                                                          |
+| `options`        | `any[]`                                                              | `[]`     | -        | 옵션 값 또는 객체의 배열                                                  |
+| `optionLabel`    | `string`                                                             | -        | -        | 옵션이 객체일 때 레이블에 사용할 키 이름                                  |
+| `optionValue`    | `string`                                                             | -        | -        | 옵션이 객체일 때 값에 사용할 키 이름                                      |
+| `beforeChange`   | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null`   | -        | 값 변경 전 호출되는 비동기 콜백                                           |
+| `emptyValue`     | `any`                                                                | `null`   | -        | 선택이 없을 때 사용하는 값                                                |
+| `loading`        | `boolean`                                                            | `false`  | -        | 라디오 버튼 대신 스켈레톤을 표시                                          |
+| `vertical`       | `boolean`                                                            | `false`  | -        | 라디오 버튼을 수직으로 배치                                               |
+| `modelValue`     | `any`                                                                | `null`   | -        | 현재 선택된 값 (v-model)                                                  |
+| `width`          | `string \| number \| Breakpoints`                                    | -        | -        | 컴포넌트의 너비                                                           |
+| `grid`           | `string \| number \| Breakpoints`                                    | -        | -        | 그리드 컬럼 스팬                                                          |
+| `changed`        | `boolean`                                                            | `false`  | -        | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
+| `valid`          | `boolean`                                                            | `false`  | -        | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.   |
 
 ## Types
 
@@ -179,74 +183,74 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 ### VsRadio
 
-| Event               | Payload                   | 설명                               |
-| ------------------- | ------------------------- | ---------------------------------- |
-| `update:modelValue` | `any`                     | 선택 값이 변경될 때 발생           |
-| `update:changed`    | `boolean`                 | changed 상태가 업데이트될 때 발생  |
-| `update:valid`      | `boolean`                 | 유효성 검사 상태가 업데이트될 때 발생 |
-| `change`            | `Event`                   | 라디오 선택이 변경될 때 발생       |
-| `toggle`            | `boolean`                 | 라디오가 토글될 때 발생            |
-| `focus`             | `FocusEvent`              | 라디오가 포커스를 받을 때 발생     |
-| `blur`              | `FocusEvent`              | 라디오가 포커스를 잃을 때 발생     |
-| `clear`             | `any`                     | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
+| Event               | Payload      | 설명                                        |
+| ------------------- | ------------ | ------------------------------------------- |
+| `update:modelValue` | `any`        | 선택 값이 변경될 때 발생                    |
+| `update:changed`    | `boolean`    | changed 상태가 업데이트될 때 발생           |
+| `update:valid`      | `boolean`    | 유효성 검사 상태가 업데이트될 때 발생       |
+| `change`            | `Event`      | 라디오 선택이 변경될 때 발생                |
+| `toggle`            | `boolean`    | 라디오가 토글될 때 발생                     |
+| `focus`             | `FocusEvent` | 라디오가 포커스를 받을 때 발생              |
+| `blur`              | `FocusEvent` | 라디오가 포커스를 잃을 때 발생              |
+| `clear`             | `any`        | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ### VsRadioSet
 
-| Event               | Payload                   | 설명                               |
-| ------------------- | ------------------------- | ---------------------------------- |
-| `update:modelValue` | `any`                     | 선택 값이 변경될 때 발생           |
-| `update:changed`    | `boolean`                 | changed 상태가 업데이트될 때 발생  |
-| `update:valid`      | `boolean`                 | 유효성 검사 상태가 업데이트될 때 발생 |
-| `change`            | `any`                     | 선택이 변경될 때 발생              |
-| `focus`             | `(option: any, event: FocusEvent)` | 라디오가 포커스를 받을 때 발생 |
-| `blur`              | `(option: any, event: FocusEvent)` | 라디오가 포커스를 잃을 때 발생 |
-| `clear`             | `any`                     | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
+| Event               | Payload                            | 설명                                        |
+| ------------------- | ---------------------------------- | ------------------------------------------- |
+| `update:modelValue` | `any`                              | 선택 값이 변경될 때 발생                    |
+| `update:changed`    | `boolean`                          | changed 상태가 업데이트될 때 발생           |
+| `update:valid`      | `boolean`                          | 유효성 검사 상태가 업데이트될 때 발생       |
+| `change`            | `any`                              | 선택이 변경될 때 발생                       |
+| `focus`             | `(option: any, event: FocusEvent)` | 라디오가 포커스를 받을 때 발생              |
+| `blur`              | `(option: any, event: FocusEvent)` | 라디오가 포커스를 잃을 때 발생              |
+| `clear`             | `any`                              | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ## Slots
 
 ### VsRadio
 
-| Slot           | 설명                                   |
-| -------------- | -------------------------------------- |
-| `label`        | 커스텀 레이블 콘텐츠                   |
-| `radio-label`  | 라디오 옆에 표시되는 커스텀 레이블     |
-| `messages`     | 커스텀 유효성 검사 메시지              |
+| Slot          | 설명                               |
+| ------------- | ---------------------------------- |
+| `label`       | 커스텀 레이블 콘텐츠               |
+| `radio-label` | 라디오 옆에 표시되는 커스텀 레이블 |
+| `messages`    | 커스텀 유효성 검사 메시지          |
 
 ### VsRadioSet
 
-| Slot           | 설명                                                             |
-| -------------- | ---------------------------------------------------------------- |
-| `label`        | 커스텀 레이블 콘텐츠                                             |
-| `radio-label`  | 각 라디오의 커스텀 레이블; `{ option, value, label }` 수신       |
-| `messages`     | 커스텀 유효성 검사 메시지                                        |
+| Slot          | 설명                                                       |
+| ------------- | ---------------------------------------------------------- |
+| `label`       | 커스텀 레이블 콘텐츠                                       |
+| `radio-label` | 각 라디오의 커스텀 레이블; `{ option, value, label }` 수신 |
+| `messages`    | 커스텀 유효성 검사 메시지                                  |
 
 ## Methods
 
 ### VsRadio
 
-| Method     | Parameters | 설명                       |
-| ---------- | ---------- | -------------------------- |
-| `clear`    | -          | 선택 값 비우기            |
+| Method     | Parameters | 설명                          |
+| ---------- | ---------- | ----------------------------- |
+| `clear`    | -          | 선택 값 비우기                |
 | `reset`    | -          | 선택 값을 초기값으로 되돌리기 |
-| `validate` | -          | 유효성 검사 실행           |
-| `focus`    | -          | 라디오 입력에 포커스       |
-| `blur`     | -          | 라디오 입력에서 포커스 해제 |
+| `validate` | -          | 유효성 검사 실행              |
+| `focus`    | -          | 라디오 입력에 포커스          |
+| `blur`     | -          | 라디오 입력에서 포커스 해제   |
 
 ### VsRadioSet
 
-| Method     | Parameters | 설명                           |
-| ---------- | ---------- | ------------------------------ |
-| `focus`    | -          | 첫 번째 라디오 입력에 포커스   |
+| Method     | Parameters | 설명                            |
+| ---------- | ---------- | ------------------------------- |
+| `focus`    | -          | 첫 번째 라디오 입력에 포커스    |
 | `blur`     | -          | 첫 번째 라디오 입력 포커스 해제 |
-| `validate` | -          | 유효성 검사 실행               |
-| `clear`    | -          | 선택 값 비우기                |
-| `reset`    | -          | 선택 값을 초기값으로 되돌리기  |
+| `validate` | -          | 유효성 검사 실행                |
+| `clear`    | -          | 선택 값 비우기                  |
+| `reset`    | -          | 선택 값을 초기값으로 되돌리기   |
 
 ## Cautions
 
 - `VsRadioSet`의 `modelValue`에 `options`에 없는 값을 설정하면 (마운트 시 또는 프로그래매틱하게) 해당 값은 `emptyValue`로 초기화되고 콘솔 경고가 출력됩니다.
 - `options`가 변경되어 현재 `modelValue`가 더 이상 존재하지 않으면 값이 `emptyValue`로 초기화되고 콘솔 경고가 출력됩니다.
 - `options`가 비어 있는 동안에는 값을 정리하지 않으므로, 비동기로 불러오는 options보다 먼저 설정된 값이 유지됩니다. `options`가 들어오면 위 규칙대로 없는 값이 정리됩니다. 불러오는 동안 사용자가 조작하지 못하게 하려면 `loading`(또는 `disabled`)을 사용하세요. `loading`은 표시와 조작에만 영향을 주며, 값을 정리하는 시점은 바꾸지 않습니다.
-  - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
-  - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `VsRadioSet`의 `required`는 실패합니다.
+    - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
+    - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `VsRadioSet`의 `required`는 실패합니다.
 - `VsRadioSet`에서 `emptyValue`와 같은 값의 옵션이 있으면 그 값은 해당 옵션을 선택합니다. `required`는 옵션이 선택되어 있으면 `''`나 `0` 같은 값이어도 통과합니다.

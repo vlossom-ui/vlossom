@@ -79,36 +79,36 @@ const text = ref('');
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
-| `styleSet` | `string \| VsTextareaStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `autocomplete` | `boolean` | `false` | | 브라우저 자동완성 활성화 |
-| `changed` | `boolean` | `false` | | changed 상태의 v-model |
-| `disabled` | `boolean` | `false` | | textarea 비활성화 |
-| `emptyValue` | `string \| null` | `''` | | textarea가 비었을 때 사용하는 값 |
-| `grid` | `string \| number \| Breakpoints` | | | 그리드 열 스팬 |
-| `hidden` | `boolean` | `false` | | 컴포넌트 숨김 |
-| `id` | `string` | `''` | | HTML `id` 속성 |
-| `label` | `string` | `''` | | 레이블 텍스트 |
-| `max` | `number \| string` | | | 최대 글자 수 |
-| `messages` | `Message[]` | `[]` | | 유효성 검사 메시지 |
-| `min` | `number \| string` | | | 최소 글자 수 |
-| `modelValue` | `string \| null` | `''` | | v-model 값 |
-| `modelModifiers` | `StringModifiers` | `{}` | | 문자열 수정자 플래그 |
-| `name` | `string` | `''` | | HTML `name` 속성 |
-| `noDefaultRules` | `boolean` | `false` | | 내장 min/max/required 규칙 비활성화 |
-| `noLabel` | `boolean` | `false` | | 레이블 영역 숨김 |
-| `noMessages` | `boolean` | `false` | | 메시지 영역 숨김 |
-| `placeholder` | `string` | `''` | | 플레이스홀더 텍스트 |
-| `focusPlaceholder` | `string` | `''` | | textarea가 포커스된 동안 표시되는 플레이스홀더입니다. 포커스가 해제되면 `placeholder`로 대체됩니다. |
-| `readonly` | `boolean` | `false` | | 읽기 전용 모드 |
-| `required` | `boolean` | `false` | | 필수 입력 필드로 표시 |
-| `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 폰트 크기 및 패딩 |
-| `state` | `UIState` | `'idle'` | | UI 상태 (`idle`, `success`, `warning`, `error`) |
-| `valid` | `boolean` | `false` | | valid 상태의 v-model |
-| `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
+| Prop               | 타입                                   | 기본값   | 필수 | 설명                                                                                                |
+| ------------------ | -------------------------------------- | -------- | ---- | --------------------------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                               |          |      | 컴포넌트 색상 스키마                                                                                |
+| `styleSet`         | `string \| VsTextareaStyleSet`         |          |      | 컴포넌트 커스텀 스타일 세트                                                                         |
+| `autocomplete`     | `boolean`                              | `false`  |      | 브라우저 자동완성 활성화                                                                            |
+| `changed`          | `boolean`                              | `false`  |      | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다.                           |
+| `disabled`         | `boolean`                              | `false`  |      | textarea 비활성화                                                                                   |
+| `emptyValue`       | `string \| null`                       | `''`     |      | textarea가 비었을 때 사용하는 값                                                                    |
+| `grid`             | `string \| number \| Breakpoints`      |          |      | 그리드 열 스팬                                                                                      |
+| `hidden`           | `boolean`                              | `false`  |      | 컴포넌트 숨김                                                                                       |
+| `id`               | `string`                               | `''`     |      | HTML `id` 속성                                                                                      |
+| `label`            | `string`                               | `''`     |      | 레이블 텍스트                                                                                       |
+| `max`              | `number \| string`                     |          |      | 최대 글자 수                                                                                        |
+| `messages`         | `Message[]`                            | `[]`     |      | 유효성 검사 메시지                                                                                  |
+| `min`              | `number \| string`                     |          |      | 최소 글자 수                                                                                        |
+| `modelValue`       | `string \| null`                       | `''`     |      | v-model 값                                                                                          |
+| `modelModifiers`   | `StringModifiers`                      | `{}`     |      | 문자열 수정자 플래그                                                                                |
+| `name`             | `string`                               | `''`     |      | HTML `name` 속성                                                                                    |
+| `noDefaultRules`   | `boolean`                              | `false`  |      | 내장 min/max/required 규칙 비활성화                                                                 |
+| `noLabel`          | `boolean`                              | `false`  |      | 레이블 영역 숨김                                                                                    |
+| `noMessages`       | `boolean`                              | `false`  |      | 메시지 영역 숨김                                                                                    |
+| `placeholder`      | `string`                               | `''`     |      | 플레이스홀더 텍스트                                                                                 |
+| `focusPlaceholder` | `string`                               | `''`     |      | textarea가 포커스된 동안 표시되는 플레이스홀더입니다. 포커스가 해제되면 `placeholder`로 대체됩니다. |
+| `readonly`         | `boolean`                              | `false`  |      | 읽기 전용 모드                                                                                      |
+| `required`         | `boolean`                              | `false`  |      | 필수 입력 필드로 표시                                                                               |
+| `rules`            | `Rule[]`                               | `[]`     |      | 커스텀 유효성 검사 규칙                                                                             |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`   |      | 폰트 크기 및 패딩                                                                                   |
+| `state`            | `UIState`                              | `'idle'` |      | UI 상태 (`idle`, `success`, `warning`, `error`)                                                     |
+| `valid`            | `boolean`                              | `false`  |      | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.                             |
+| `width`            | `string \| number \| Breakpoints`      |          |      | 컴포넌트 너비                                                                                       |
 
 ## 타입
 
@@ -149,32 +149,32 @@ interface VsTextareaStyleSet extends CSSProperties {
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-| `update:modelValue` | `string \| null` | 값 변경 시 발생 |
-| `update:changed` | `boolean` | changed 상태 업데이트 시 발생 |
-| `update:valid` | `boolean` | valid 상태 업데이트 시 발생 |
-| `change` | `string` | 값 변경 시 발생 |
-| `focus` | `FocusEvent` | 포커스 시 발생 |
-| `blur` | `FocusEvent` | 포커스 해제 시 발생 |
-| `clear` | `string` | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
+| 이벤트              | 페이로드         | 설명                                        |
+| ------------------- | ---------------- | ------------------------------------------- |
+| `update:modelValue` | `string \| null` | 값 변경 시 발생                             |
+| `update:changed`    | `boolean`        | changed 상태 업데이트 시 발생               |
+| `update:valid`      | `boolean`        | valid 상태 업데이트 시 발생                 |
+| `change`            | `string`         | 값 변경 시 발생                             |
+| `focus`             | `FocusEvent`     | 포커스 시 발생                              |
+| `blur`              | `FocusEvent`     | 포커스 해제 시 발생                         |
+| `clear`             | `string`         | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
-| `label` | 커스텀 레이블 내용 |
-| `header` | 박스 안쪽, textarea 위에 표시되는 콘텐츠 |
-| `footer` | 박스 안쪽, textarea 아래에 표시되는 콘텐츠 |
-| `messages` | 커스텀 메시지 내용 |
+| 슬롯       | 설명                                       |
+| ---------- | ------------------------------------------ |
+| `label`    | 커스텀 레이블 내용                         |
+| `header`   | 박스 안쪽, textarea 위에 표시되는 콘텐츠   |
+| `footer`   | 박스 안쪽, textarea 아래에 표시되는 콘텐츠 |
+| `messages` | 커스텀 메시지 내용                         |
 
 ## 메서드
 
-| 메서드 | 매개변수 | 설명 |
-| ------ | -------- | ---- |
-| `focus` | | textarea에 포커스 |
-| `blur` | | textarea의 포커스 해제 |
-| `validate` | | 유효성 검사 실행 |
-| `clear` | | 값 비우기 |
-| `reset` | | 값을 초기값으로 되돌리기 |
-| `select` | | textarea의 모든 텍스트 선택 |
+| 메서드     | 매개변수 | 설명                        |
+| ---------- | -------- | --------------------------- |
+| `focus`    |          | textarea에 포커스           |
+| `blur`     |          | textarea의 포커스 해제      |
+| `validate` |          | 유효성 검사 실행            |
+| `clear`    |          | 값 비우기                   |
+| `reset`    |          | 값을 초기값으로 되돌리기    |
+| `select`   |          | textarea의 모든 텍스트 선택 |

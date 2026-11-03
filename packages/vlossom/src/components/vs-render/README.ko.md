@@ -60,26 +60,11 @@ import Greeting from './Greeting.vue';
 
 ## Props
 
-| Prop             | Type                        | Default | Required | 설명                                                    |
-| ---------------- | --------------------------- | ------- | -------- | ------------------------------------------------------- |
-| `content`        | `string \| Component`       | -       | Yes      | 렌더링할 콘텐츠: 문자열, HTML 문자열, 또는 Vue 컴포넌트 |
-| `componentProps` | `Record<string, any>`       | `{}`    | -        | 렌더링되는 컴포넌트에 전달할 props. `content`가 문자열인 경우 무시됩니다. |
+| Prop             | Type                  | Default | Required | 설명                                                                      |
+| ---------------- | --------------------- | ------- | -------- | ------------------------------------------------------------------------- |
+| `content`        | `string \| Component` | -       | Yes      | 렌더링할 콘텐츠: 문자열, HTML 문자열, 또는 Vue 컴포넌트                   |
+| `componentProps` | `Record<string, any>` | `{}`    | -        | 렌더링되는 컴포넌트에 전달할 props. `content`가 문자열인 경우 무시됩니다. |
 
 ## Types
 
 이 컴포넌트에는 커스텀 StyleSet 인터페이스가 없습니다.
-
-## Events
-
-| Event | Payload | 설명 |
-| ----- | ------- | ---- |
-
-## Slots
-
-| Slot | 설명 |
-| ---- | ---- |
-
-## Methods
-
-| Method | Parameters | 설명 |
-| ------ | ---------- | ---- |
