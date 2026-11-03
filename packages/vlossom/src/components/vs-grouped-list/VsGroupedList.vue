@@ -113,9 +113,16 @@ export default defineComponent({
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
         const listRef: TemplateRef<HTMLElement> = useTemplateRef('listRef');
 
+        const baseStyleSet: ComputedRef<VsGroupedListStyleSet> = computed(() => ({
+            $header: { padding: 0 },
+            $content: { padding: 0 },
+            $footer: { padding: 0 },
+        }));
+
         const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsGroupedListStyleSet>(
             componentName,
             styleSet,
+            baseStyleSet,
         );
 
         const { groupedItems } = useGroupedItems(items, groupBy, groupOrder);
@@ -209,8 +216,7 @@ export default defineComponent({
                     }
                     const containerRect = scrollContainer.getBoundingClientRect();
                     const targetRect = targetElement.getBoundingClientRect();
-                    const targetScrollTop =
-                        scrollContainer.scrollTop + targetRect.top - containerRect.top - offset;
+                    const targetScrollTop = scrollContainer.scrollTop + targetRect.top - containerRect.top - offset;
                     scrollContainer.scrollTo({ top: targetScrollTop, behavior: 'auto' });
                 });
             });

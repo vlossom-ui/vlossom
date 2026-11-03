@@ -5,7 +5,7 @@
         :grid
         :width
     >
-        <vs-inner-scroll>
+        <vs-inner-scroll :style-set="innerScrollStyleSet">
             <template #header v-if="$slots['title']">
                 <div class="vs-block-title" :style="componentStyleSet.$title">
                     <slot name="title" />
@@ -25,6 +25,7 @@ import { getColorSchemeProps, getResponsiveProps, getStyleSetProps } from '@/pro
 import { VsComponent } from '@/declaration';
 import { stringUtil, objectUtil } from '@/utils';
 import type { VsBlockStyleSet } from './types';
+import type { VsInnerScrollStyleSet } from '@/components/vs-inner-scroll/types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
@@ -58,7 +59,10 @@ export default defineComponent({
             additionalStyleSet,
         );
 
+        const innerScrollStyleSet: VsInnerScrollStyleSet = { $header: { padding: 0 }, $content: { padding: 0 } };
+
         return {
+            innerScrollStyleSet,
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,

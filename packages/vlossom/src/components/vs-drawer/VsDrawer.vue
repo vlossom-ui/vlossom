@@ -135,7 +135,11 @@ export default defineComponent({
             return stringUtil.toStringSize(size.value);
         });
 
-        const baseStyleSet: ComputedRef<VsDrawerStyleSet> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsDrawerStyleSet> = computed(() => ({
+            $header: { padding: 0 },
+            $content: { padding: 0 },
+            $footer: { padding: 0 },
+        }));
 
         const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
             return objectUtil.shake({
