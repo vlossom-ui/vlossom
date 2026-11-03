@@ -884,6 +884,86 @@ describe('VsTable', () => {
             expect(lastEmit(wrapper, 'update:pagedItems')).toEqual([items.slice(0, 2)]);
             expect(lastEmit(wrapper, 'update:totalItems')).toEqual([items]);
         });
+
+        it('v-model 없이 이벤트만 들어도 검색 결과가 비면 빈 배열을 내보낸다', async () => {
+            const wrapper = mountTable({ props: { search: true } });
+
+            await nextTick();
+            await wrapper.get('[data-testid="search-input"]').setValue('nobody');
+
+            expect(lastEmit(wrapper, 'update:totalItems')).toEqual([[]]);
+            expect(lastEmit(wrapper, 'update:pagedItems')).toEqual([[]]);
+        });
+
+        it('items에 없는 아이템을 selectedItems로 넘기면 제외하고 v-model을 갱신한다', async () => {
+            const Parent = {
+                components: { VsTable },
+                data: () => ({ items: [...tableItems], selected: [{ id: '99', name: 'Ghost' }, tableItems[1]] }),
+                template: '<vs-table :items="items" item-key="id" selectable v-model:selected-items="selected" />',
+            };
+            const wrapper = mount(Parent, { global: { stubs: defaultStubs } });
+            const vm = wrapper.vm as unknown as { selected: VsTableItem[] };
+            await nextTick();
+            expect(vm.selected).toEqual([tableItems[1]]);
+
+            vm.selected = [{ id: '98', name: 'Ghost' }];
+            await nextTick();
+            await nextTick();
+            expect(vm.selected).toEqual([]);
+        });
+
+        it('선택된 아이템이 items에서 제거되면 selectedItems에서도 빠지고, 같은 key가 다시 들어와도 선택되지 않는다', async () => {
+            const Parent = {
+                components: { VsTable },
+                data: () => ({ items: [...tableItems], selected: [tableItems[1]] }),
+                template: '<vs-table :items="items" item-key="id" selectable v-model:selected-items="selected" />',
+            };
+            const wrapper = mount(Parent, { global: { stubs: defaultStubs } });
+            const vm = wrapper.vm as unknown as { items: VsTableItem[]; selected: VsTableItem[] };
+            await nextTick();
+
+            vm.items = vm.items.filter((item) => item.id !== '2');
+            await nextTick();
+            expect(vm.selected).toEqual([]);
+
+            vm.items = [...vm.items, { id: '2', name: 'Bob', age: 31 }];
+            await nextTick();
+            expect(wrapper.findAll('tbody tr.vs-selected')).toHaveLength(0);
+        });
+
+        it('search/pagination을 인라인 객체로 넘겨도 v-model 갱신이 무한 반복되지 않는다', async () => {
+            const onUpdateTotalItems = vi.fn();
+            const onUpdatePagedItems = vi.fn();
+            const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            const Parent = {
+                components: { VsTable },
+                data: () => ({ items: tableItems, totalItems: [], pagedItems: [] }),
+                methods: { onUpdateTotalItems, onUpdatePagedItems },
+                template: `<vs-table
+                    :columns="['name', 'age']"
+                    :items="items"
+                    :search="{ extraKeys: ['id'] }"
+                    :pagination="{ showTotal: true }"
+                    v-model:total-items="totalItems"
+                    v-model:paged-items="pagedItems"
+                    @update:total-items="onUpdateTotalItems"
+                    @update:paged-items="onUpdatePagedItems"
+                />`,
+            };
+            const wrapper = mount(Parent, { global: { stubs: defaultStubs } });
+
+            await nextTick();
+            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            await nextTick();
+
+            expect(onUpdateTotalItems).toHaveBeenLastCalledWith([tableItems[1]]);
+            expect(onUpdateTotalItems.mock.calls.length).toBeLessThan(5);
+            expect(onUpdatePagedItems.mock.calls.length).toBeLessThan(5);
+            expect([...consoleSpy.mock.calls, ...errorSpy.mock.calls].flat().join(' ')).not.toMatch(
+                /Maximum recursive updates/,
+            );
+        });
     });
 
     describe('draggable', () => {

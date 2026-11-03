@@ -37,7 +37,7 @@ const items = [
 
 ### Row Identity
 
-`itemKey` decides what a row is. Pass a field name (dot paths allowed) or a function. Without it, rows fall back to the identity of the item object, so replacing items with newly created objects (a refetch, for example) drops selection and expansion state and remounts rows. With it, selection survives such a replacement, and `selectedItems` is updated to hold the new item objects. Selected items whose key is no longer in `items` are kept as they are.
+`itemKey` decides what a row is. Pass a field name (dot paths allowed) or a function. Without it, rows fall back to the identity of the item object, so replacing items with newly created objects (a refetch, for example) drops selection and expansion state and remounts rows. With it, selection survives such a replacement, and `selectedItems` is updated to hold the new item objects. `selectedItems` only holds rows whose key is in `items`: a selected row removed from `items` is deselected, and rows passed through `selectedItems` that are not in `items` are dropped. In `serverMode`, `items` holds only the current page, so selections on other pages are kept.
 
 ```html live
 <template>
@@ -360,3 +360,5 @@ The `select` slot replaces the selection column cell in the header and in every 
 - Row events carry the item, not cell objects. Read values from `item`, or use `click-cell` when you need the rendered cell value.
 - Clicking a header cell does not emit `click-cell`; sorting is triggered by the sort icon of a `sortable` column.
 - Dragging changes only what the table shows. Persist the order yourself from `totalItems` or the `drag` event if it has to survive an `items` update.
+- Pass `items` as a stable reference (`ref`, `computed`, API response), not an array literal in the template. A template literal creates new row objects on every parent render, so binding `v-model:total-items` or `v-model:paged-items` causes recursive updates.
+- To restore a saved selection, set `selectedItems` after `items` has loaded. Rows not in `items` yet are dropped from the selection.
