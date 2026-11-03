@@ -36,9 +36,9 @@ const { isStated, stateClasses, stateBoxClasses } = useStateClass(state);
 
 ## Args
 
-| 인자    | 타입           | 기본값 | 필수 | 설명                                                    |
-| ------- | -------------- | ------ | ---- | ------------------------------------------------------- |
-| `state` | `Ref<UIState>` | —      | Yes  | 컴포넌트의 현재 UI 상태를 담고 있는 반응형 ref.          |
+| 인자    | 타입           | 기본값 | 필수 | 설명                                            |
+| ------- | -------------- | ------ | ---- | ----------------------------------------------- |
+| `state` | `Ref<UIState>` | —      | Yes  | 컴포넌트의 현재 UI 상태를 담고 있는 반응형 ref. |
 
 ## Types
 
@@ -48,20 +48,10 @@ type UIState = 'idle' | 'info' | 'success' | 'warning' | 'error';
 
 ## Return Refs
 
-| RefType           | 타입                                   | 설명                                                                                |
-| ----------------- | -------------------------------------- | ----------------------------------------------------------------------------------- |
-| `isStated`        | `ComputedRef<boolean>`                 | 상태가 `info`, `success`, `error`, `warning` 중 하나일 때 `true`.                  |
+| RefType           | 타입                                   | 설명                                                                                  |
+| ----------------- | -------------------------------------- | ------------------------------------------------------------------------------------- |
+| `isStated`        | `ComputedRef<boolean>`                 | 상태가 `info`, `success`, `error`, `warning` 중 하나일 때 `true`.                     |
 | `stateClasses`    | `ComputedRef<Record<string, boolean>>` | 상태가 있을 때 `vs-stated`와 `vs-state-{state}`가 있는 클래스 객체, 아니면 비어 있음. |
-| `stateBoxClasses` | `ComputedRef<Record<string, boolean>>` | `vs-state-box`가 추가된 `stateClasses`의 확장. 상태가 `'idle'`일 때 비어 있음.     |
-
-## Return Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
-
-## Hooks
-
-| Hook | 설명 |
-| ---- | ---- |
+| `stateBoxClasses` | `ComputedRef<Record<string, boolean>>` | `vs-state-box`가 추가된 `stateClasses`의 확장. 상태가 `'idle'`일 때 비어 있음.        |
 
 ## Cautions

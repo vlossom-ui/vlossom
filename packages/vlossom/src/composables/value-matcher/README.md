@@ -43,12 +43,12 @@ function toggle(e) {
 
 ## Args
 
-| Arg          | Type          | Default | Required | Description                                                                     |
-| ------------ | ------------- | ------- | -------- | ------------------------------------------------------------------------------- |
-| `multiple`   | `Ref<boolean>` | —      | Yes      | When `true`, `inputValue` is treated as an array and `trueValue` is added/removed. |
-| `inputValue` | `Ref<any>`    | —       | Yes      | The reactive current value of the input (single value or array).                |
-| `trueValue`  | `Ref<any>`    | —       | Yes      | The value representing the "checked" / "on" state.                              |
-| `falseValue` | `Ref<any>`    | —       | Yes      | The value representing the "unchecked" / "off" state.                           |
+| Arg          | Type           | Default | Required | Description                                                                        |
+| ------------ | -------------- | ------- | -------- | ---------------------------------------------------------------------------------- |
+| `multiple`   | `Ref<boolean>` | —       | Yes      | When `true`, `inputValue` is treated as an array and `trueValue` is added/removed. |
+| `inputValue` | `Ref<any>`     | —       | Yes      | The reactive current value of the input (single value or array).                   |
+| `trueValue`  | `Ref<any>`     | —       | Yes      | The value representing the "checked" / "on" state.                                 |
+| `falseValue` | `Ref<any>`     | —       | Yes      | The value representing the "unchecked" / "off" state.                              |
 
 ## Types
 
@@ -56,23 +56,18 @@ No additional exported types.
 
 ## Return Refs
 
-| RefType     | Type                   | Description                                                                 |
-| ----------- | ---------------------- | --------------------------------------------------------------------------- |
+| RefType     | Type                   | Description                                                                     |
+| ----------- | ---------------------- | ------------------------------------------------------------------------------- |
 | `isMatched` | `ComputedRef<boolean>` | `true` when `inputValue` equals `trueValue` (single) or contains it (multiple). |
 
 ## Return Methods
 
-| Method            | Parameters           | Description                                                                                               |
-| ----------------- | -------------------- | --------------------------------------------------------------------------------------------------------- |
-| `getInitialValue` | —                    | Returns the appropriate initial value: the current array (multiple) or `trueValue`/`falseValue` (single). |
-| `addTrueValue`    | —                    | Pushes `trueValue` into the array when in multiple mode (no-op if already present or not an array).       |
-| `getUpdatedValue` | `isTruthy: boolean`  | Returns the new value after toggling: adds/removes `trueValue` (multiple) or returns `trueValue`/`falseValue` (single). |
-| `getClearedValue` | —                    | Returns the cleared value: empty array (multiple) or `falseValue` (single).                               |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| Method            | Parameters          | Description                                                                                                             |
+| ----------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `getInitialValue` | —                   | Returns the appropriate initial value: the current array (multiple) or `trueValue`/`falseValue` (single).               |
+| `addTrueValue`    | —                   | Pushes `trueValue` into the array when in multiple mode (no-op if already present or not an array).                     |
+| `getUpdatedValue` | `isTruthy: boolean` | Returns the new value after toggling: adds/removes `trueValue` (multiple) or returns `trueValue`/`falseValue` (single). |
+| `getClearedValue` | —                   | Returns the cleared value: empty array (multiple) or `falseValue` (single).                                             |
 
 ## Cautions
 

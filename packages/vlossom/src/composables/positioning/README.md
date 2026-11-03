@@ -40,19 +40,19 @@ function toggleDropdown() {
 
 ## Args
 
-| Arg          | Type                      | Default | Required | Description                                                             |
-| ------------ | ------------------------- | ------- | -------- | ----------------------------------------------------------------------- |
-| `target`     | `string`                  | —       | Yes      | CSS selector string identifying the target element to position against. |
-| `attachment` | `TemplateRef<HTMLElement>` | —      | Yes      | Template ref of the element to be positioned.                           |
+| Arg          | Type                       | Default | Required | Description                                                             |
+| ------------ | -------------------------- | ------- | -------- | ----------------------------------------------------------------------- |
+| `target`     | `string`                   | —       | Yes      | CSS selector string identifying the target element to position against. |
+| `attachment` | `TemplateRef<HTMLElement>` | —       | Yes      | Template ref of the element to be positioned.                           |
 
 ## Types
 
 ```typescript
 interface AttachInfo {
-    placement?: Placement;  // 'top' | 'right' | 'bottom' | 'left' | 'middle'
-    align?: Alignment;      // 'start' | 'center' | 'end'
-    margin?: number;        // gap in pixels between target and attachment
-    followWidth?: boolean;  // if true, attachment width matches target width
+    placement?: Placement; // 'top' | 'right' | 'bottom' | 'left' | 'middle'
+    align?: Alignment; // 'start' | 'center' | 'end'
+    margin?: number; // gap in pixels between target and attachment
+    followWidth?: boolean; // if true, attachment width matches target width
 }
 
 type Placement = 'top' | 'right' | 'bottom' | 'left' | 'middle';
@@ -61,22 +61,17 @@ type Alignment = 'start' | 'center' | 'end';
 
 ## Return Refs
 
-| RefType             | Type                          | Description                                                           |
-| ------------------- | ----------------------------- | --------------------------------------------------------------------- |
-| `isVisible`         | `Ref<boolean>`                | Whether the attachment is currently visible.                          |
-| `computedPlacement` | `Ref<Placement \| null>`      | The actual placement used after viewport-overflow correction.         |
+| RefType             | Type                     | Description                                                   |
+| ------------------- | ------------------------ | ------------------------------------------------------------- |
+| `isVisible`         | `Ref<boolean>`           | Whether the attachment is currently visible.                  |
+| `computedPlacement` | `Ref<Placement \| null>` | The actual placement used after viewport-overflow correction. |
 
 ## Return Methods
 
-| Method     | Parameters              | Description                                                                                    |
-| ---------- | ----------------------- | ---------------------------------------------------------------------------------------------- |
-| `appear`   | `attachInfo?: AttachInfo` | Shows the attachment and starts tracking scroll/resize to keep it positioned.                |
-| `disappear`| —                       | Hides the attachment and stops all scroll/resize/ResizeObserver listeners.                     |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| Method      | Parameters                | Description                                                                   |
+| ----------- | ------------------------- | ----------------------------------------------------------------------------- |
+| `appear`    | `attachInfo?: AttachInfo` | Shows the attachment and starts tracking scroll/resize to keep it positioned. |
+| `disappear` | —                         | Hides the attachment and stops all scroll/resize/ResizeObserver listeners.    |
 
 ## Cautions
 

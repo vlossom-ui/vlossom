@@ -43,11 +43,11 @@ const { groupedItems } = useGroupedItems(computedOptions, groupBy, groupOrder);
 
 ## Args
 
-| 인자         | 타입                                                    | 기본값 | 필수 | 설명                                                                    |
-| ------------ | ------------------------------------------------------- | ------ | ---- | ----------------------------------------------------------------------- |
-| `items`      | `Ref<OptionItem[]>`                                     | —      | Yes  | 정규화된 옵션 목록. 예: `useOptionList`의 `computedOptions`.            |
-| `groupBy`    | `Ref<((item: any, index: number) => string \| null) \| null>` | — | Yes  | 각 항목의 그룹 이름을 반환합니다. 원본 옵션(`item.item`)을 전달받습니다. |
-| `groupOrder` | `Ref<string[]>`                                         | —      | Yes  | 먼저 배치할 그룹 이름 순서.                                             |
+| 인자         | 타입                                                          | 기본값 | 필수 | 설명                                                                     |
+| ------------ | ------------------------------------------------------------- | ------ | ---- | ------------------------------------------------------------------------ |
+| `items`      | `Ref<OptionItem[]>`                                           | —      | Yes  | 정규화된 옵션 목록. 예: `useOptionList`의 `computedOptions`.             |
+| `groupBy`    | `Ref<((item: any, index: number) => string \| null) \| null>` | —      | Yes  | 각 항목의 그룹 이름을 반환합니다. 원본 옵션(`item.item`)을 전달받습니다. |
+| `groupOrder` | `Ref<string[]>`                                               | —      | Yes  | 먼저 배치할 그룹 이름 순서.                                              |
 
 ## Types
 
@@ -63,16 +63,6 @@ interface GroupedItem {
 | RefType        | 타입                         | 설명                         |
 | -------------- | ---------------------------- | ---------------------------- |
 | `groupedItems` | `ComputedRef<GroupedItem[]>` | 순서가 정해진 그룹과 항목들. |
-
-## Return Methods
-
-| 메서드 | 파라미터 | 설명 |
-| ------ | -------- | ---- |
-
-## Hooks
-
-| Hook | 설명 |
-| ---- | ---- |
 
 ## Cautions
 

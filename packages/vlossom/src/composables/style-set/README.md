@@ -18,8 +18,8 @@ A `VsXxxStyleSet` interface extends `CSSProperties`. Keys are split by prefix:
 import type { CSSProperties } from 'vue';
 
 export interface VsButtonStyleSet extends CSSProperties {
-    $content?: CSSProperties;        // element slot
-    $loading?: VsLoadingStyleSet;    // child component
+    $content?: CSSProperties; // element slot
+    $loading?: VsLoadingStyleSet; // child component
 }
 ```
 
@@ -59,12 +59,12 @@ const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleS
 
 ## Args
 
-| Arg                  | Type                                    | Default   | Required | Description                                                                             |
-| -------------------- | --------------------------------------- | --------- | -------- | --------------------------------------------------------------------------------------- |
-| `component`          | `VsComponent \| string`                 | —         | Yes      | Component name used for CSS variable prefix and global style-set lookup.                |
-| `styleSet`           | `Ref<string \| T \| undefined>`         | —         | Yes      | The `styleSet` prop value. A string resolves to a named global style-set.               |
-| `baseStyleSet`       | `Ref<Partial<T>>`                       | `ref({})` | No       | Default style-set applied before the user prop (lowest priority).                       |
-| `additionalStyleSet` | `Ref<Partial<T>>`                       | `ref({})` | No       | Dynamic overrides derived from other component props (highest priority).                |
+| Arg                  | Type                            | Default   | Required | Description                                                               |
+| -------------------- | ------------------------------- | --------- | -------- | ------------------------------------------------------------------------- |
+| `component`          | `VsComponent \| string`         | —         | Yes      | Component name used for CSS variable prefix and global style-set lookup.  |
+| `styleSet`           | `Ref<string \| T \| undefined>` | —         | Yes      | The `styleSet` prop value. A string resolves to a named global style-set. |
+| `baseStyleSet`       | `Ref<Partial<T>>`               | `ref({})` | No       | Default style-set applied before the user prop (lowest priority).         |
+| `additionalStyleSet` | `Ref<Partial<T>>`               | `ref({})` | No       | Dynamic overrides derived from other component props (highest priority).  |
 
 ## Types
 
@@ -72,29 +72,19 @@ const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleS
 // The generic T must extend { [key: string]: any }
 // Common StyleSet structure (extends CSSProperties at root):
 interface ExampleStyleSet extends CSSProperties {
-    $primitiveVar?: string;         // becomes --vs-example-primitiveVar
-    $element?: CSSProperties;       // slot/element style
+    $primitiveVar?: string; // becomes --vs-example-primitiveVar
+    $element?: CSSProperties; // slot/element style
     $childComponent?: ChildStyleSet; // nested child style-set
 }
 ```
 
 ## Return Refs
 
-| RefType                | Type                                  | Description                                                                                                |
-| ---------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `componentStyleSet`    | `ComputedRef<Partial<T>>`             | Fully merged style-set object. Use it to access `$X` slot keys or nested child style-sets.                 |
-| `styleSetVariables`    | `ComputedRef<Record<string, string>>` | Flat map of CSS custom properties derived from root-level `$X` primitive entries.                          |
-| `componentInlineStyle` | `ComputedRef<CSSProperties>`          | Inline CSSProperties derived from non-`$` root-level keys. Spread into the root element's `:style` prop.   |
-
-## Return Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| RefType                | Type                                  | Description                                                                                              |
+| ---------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `componentStyleSet`    | `ComputedRef<Partial<T>>`             | Fully merged style-set object. Use it to access `$X` slot keys or nested child style-sets.               |
+| `styleSetVariables`    | `ComputedRef<Record<string, string>>` | Flat map of CSS custom properties derived from root-level `$X` primitive entries.                        |
+| `componentInlineStyle` | `ComputedRef<CSSProperties>`          | Inline CSSProperties derived from non-`$` root-level keys. Spread into the root element's `:style` prop. |
 
 ## Cautions
 

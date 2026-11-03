@@ -43,10 +43,10 @@ const { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = us
 
 ## Args
 
-| 인자       | 타입                                                                     | 기본값      | 필수 | 설명                                                                      |
-| ---------- | ------------------------------------------------------------------------ | ----------- | ---- | ------------------------------------------------------------------------- |
-| `list`     | `Ref<any[]>`                                                             | —           | Yes  | 선택할 항목의 반응형 배열.                                                 |
-| `disabled` | `Ref<boolean \| ((item: any, index: number) => boolean) \| undefined>`   | `undefined` | No   | 전역 boolean 또는 항목별 함수. 함수일 경우 `(item, index)`를 받습니다.    |
+| 인자       | 타입                                                                   | 기본값      | 필수 | 설명                                                                   |
+| ---------- | ---------------------------------------------------------------------- | ----------- | ---- | ---------------------------------------------------------------------- |
+| `list`     | `Ref<any[]>`                                                           | —           | Yes  | 선택할 항목의 반응형 배열.                                             |
+| `disabled` | `Ref<boolean \| ((item: any, index: number) => boolean) \| undefined>` | `undefined` | No   | 전역 boolean 또는 항목별 함수. 함수일 경우 `(item, index)`를 받습니다. |
 
 ## Types
 
@@ -54,28 +54,23 @@ const { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = us
 
 ## Return Refs
 
-| RefType         | 타입                   | 설명                                                                   |
-| --------------- | ---------------------- | ---------------------------------------------------------------------- |
-| `selectedIndex` | `Ref<number>`          | 현재 선택된 인덱스. 아무것도 선택되지 않으면 `NOT_SELECTED`(`-1`).     |
-| `isFirstEdge`   | `ComputedRef<boolean>` | 선택된 인덱스가 첫 번째 활성(비비활성화) 항목일 때 `true`.             |
-| `isLastEdge`    | `ComputedRef<boolean>` | 선택된 인덱스가 마지막 활성(비비활성화) 항목일 때 `true`.              |
+| RefType         | 타입                   | 설명                                                               |
+| --------------- | ---------------------- | ------------------------------------------------------------------ |
+| `selectedIndex` | `Ref<number>`          | 현재 선택된 인덱스. 아무것도 선택되지 않으면 `NOT_SELECTED`(`-1`). |
+| `isFirstEdge`   | `ComputedRef<boolean>` | 선택된 인덱스가 첫 번째 활성(비비활성화) 항목일 때 `true`.         |
+| `isLastEdge`    | `ComputedRef<boolean>` | 선택된 인덱스가 마지막 활성(비비활성화) 항목일 때 `true`.          |
 
 ## Return Methods
 
-| 메서드                        | 파라미터                                  | 설명                                                                                   |
-| ----------------------------- | ----------------------------------------- | -------------------------------------------------------------------------------------- |
-| `isSelected`                  | `index: number`                           | `selectedIndex`가 `index`와 같으면 `true`를 반환합니다.                                |
-| `isDisabled`                  | `index: number`                           | `index`의 항목이 비활성화되어 있으면 `true`를 반환합니다.                              |
-| `isPrevious`                  | `index: number`                           | `index`가 `selectedIndex`보다 앞에 있으면 `true`를 반환합니다.                         |
-| `findActiveIndexForwardFrom`  | `targetIndex: number`                     | `targetIndex`부터 앞쪽으로 첫 번째 비비활성화 인덱스를 찾습니다.                       |
-| `findActiveIndexBackwardFrom` | `targetIndex: number`                     | `targetIndex`부터 뒤쪽으로 첫 번째 비비활성화 인덱스를 찾습니다.                       |
-| `selectIndex`                 | `index: number`                           | `index`가 유효하고 비활성화되지 않은 경우 `selectedIndex`를 설정합니다. 범위를 벗어나면 `NOT_SELECTED`로 초기화하고, 비활성화된 경우에는 현재 선택을 유지(no-op)합니다. |
-| `handleKeydown`               | `e: KeyboardEvent, isVertical: boolean`   | 화살표, Home, End 키를 처리합니다. `isVertical`에 따라 수직/수평 키 매핑을 사용합니다. |
-
-## Hooks
-
-| Hook | 설명 |
-| ---- | ---- |
+| 메서드                        | 파라미터                                | 설명                                                                                                                                                                    |
+| ----------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `isSelected`                  | `index: number`                         | `selectedIndex`가 `index`와 같으면 `true`를 반환합니다.                                                                                                                 |
+| `isDisabled`                  | `index: number`                         | `index`의 항목이 비활성화되어 있으면 `true`를 반환합니다.                                                                                                               |
+| `isPrevious`                  | `index: number`                         | `index`가 `selectedIndex`보다 앞에 있으면 `true`를 반환합니다.                                                                                                          |
+| `findActiveIndexForwardFrom`  | `targetIndex: number`                   | `targetIndex`부터 앞쪽으로 첫 번째 비비활성화 인덱스를 찾습니다.                                                                                                        |
+| `findActiveIndexBackwardFrom` | `targetIndex: number`                   | `targetIndex`부터 뒤쪽으로 첫 번째 비비활성화 인덱스를 찾습니다.                                                                                                        |
+| `selectIndex`                 | `index: number`                         | `index`가 유효하고 비활성화되지 않은 경우 `selectedIndex`를 설정합니다. 범위를 벗어나면 `NOT_SELECTED`로 초기화하고, 비활성화된 경우에는 현재 선택을 유지(no-op)합니다. |
+| `handleKeydown`               | `e: KeyboardEvent, isVertical: boolean` | 화살표, Home, End 키를 처리합니다. `isVertical`에 따라 수직/수평 키 매핑을 사용합니다.                                                                                  |
 
 ## Cautions
 

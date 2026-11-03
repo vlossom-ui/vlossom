@@ -40,19 +40,19 @@ function toggleDropdown() {
 
 ## Args
 
-| 인자         | 타입                       | 기본값 | 필수 | 설명                                                                 |
-| ------------ | -------------------------- | ------ | ---- | -------------------------------------------------------------------- |
-| `target`     | `string`                   | —      | Yes  | 위치를 기준으로 할 대상 요소를 식별하는 CSS 선택자 문자열.           |
-| `attachment` | `TemplateRef<HTMLElement>` | —      | Yes  | 위치시킬 요소의 템플릿 ref.                                          |
+| 인자         | 타입                       | 기본값 | 필수 | 설명                                                       |
+| ------------ | -------------------------- | ------ | ---- | ---------------------------------------------------------- |
+| `target`     | `string`                   | —      | Yes  | 위치를 기준으로 할 대상 요소를 식별하는 CSS 선택자 문자열. |
+| `attachment` | `TemplateRef<HTMLElement>` | —      | Yes  | 위치시킬 요소의 템플릿 ref.                                |
 
 ## Types
 
 ```typescript
 interface AttachInfo {
-    placement?: Placement;  // 'top' | 'right' | 'bottom' | 'left' | 'middle'
-    align?: Alignment;      // 'start' | 'center' | 'end'
-    margin?: number;        // 대상과 첨부 사이의 픽셀 간격
-    followWidth?: boolean;  // true이면 첨부 너비가 대상 너비와 일치
+    placement?: Placement; // 'top' | 'right' | 'bottom' | 'left' | 'middle'
+    align?: Alignment; // 'start' | 'center' | 'end'
+    margin?: number; // 대상과 첨부 사이의 픽셀 간격
+    followWidth?: boolean; // true이면 첨부 너비가 대상 너비와 일치
 }
 
 type Placement = 'top' | 'right' | 'bottom' | 'left' | 'middle';
@@ -61,22 +61,17 @@ type Alignment = 'start' | 'center' | 'end';
 
 ## Return Refs
 
-| RefType             | 타입                     | 설명                                                         |
-| ------------------- | ------------------------ | ------------------------------------------------------------ |
-| `isVisible`         | `Ref<boolean>`           | 현재 첨부가 표시되고 있는지 여부.                             |
-| `computedPlacement` | `Ref<Placement \| null>` | 뷰포트 오버플로 수정 후 실제로 사용된 배치.                   |
+| RefType             | 타입                     | 설명                                        |
+| ------------------- | ------------------------ | ------------------------------------------- |
+| `isVisible`         | `Ref<boolean>`           | 현재 첨부가 표시되고 있는지 여부.           |
+| `computedPlacement` | `Ref<Placement \| null>` | 뷰포트 오버플로 수정 후 실제로 사용된 배치. |
 
 ## Return Methods
 
-| 메서드      | 파라미터                | 설명                                                                                        |
-| ----------- | ----------------------- | ------------------------------------------------------------------------------------------- |
-| `appear`    | `attachInfo?: AttachInfo` | 첨부를 표시하고 위치를 유지하기 위해 스크롤/리사이즈 추적을 시작합니다.                  |
-| `disappear` | —                       | 첨부를 숨기고 모든 스크롤/리사이즈/ResizeObserver 리스너를 중지합니다.                     |
-
-## Hooks
-
-| Hook | 설명 |
-| ---- | ---- |
+| 메서드      | 파라미터                  | 설명                                                                    |
+| ----------- | ------------------------- | ----------------------------------------------------------------------- |
+| `appear`    | `attachInfo?: AttachInfo` | 첨부를 표시하고 위치를 유지하기 위해 스크롤/리사이즈 추적을 시작합니다. |
+| `disappear` | —                         | 첨부를 숨기고 모든 스크롤/리사이즈/ResizeObserver 리스너를 중지합니다.  |
 
 ## Cautions
 

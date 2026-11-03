@@ -46,31 +46,21 @@ onBeforeUnmount(removeClickOutsideListener);
 
 ## Args
 
-| Arg                 | Type         | Default | Required | Description                                                                                     |
-| ------------------- | ------------ | ------- | -------- | ----------------------------------------------------------------------------------------------- |
+| Arg                 | Type         | Default | Required | Description                                                                                               |
+| ------------------- | ------------ | ------- | -------- | --------------------------------------------------------------------------------------------------------- |
 | `excludedSelectors` | `string[]`   | —       | Yes      | Array of CSS selector strings. Clicks on elements matching any selector (or their ancestors) are ignored. |
-| `callback`          | `() => void` | —       | Yes      | Function called when a click occurs outside all excluded elements.                              |
+| `callback`          | `() => void` | —       | Yes      | Function called when a click occurs outside all excluded elements.                                        |
 
 ## Types
 
 No additional exported types.
 
-## Return Refs
-
-| RefType | Type | Description |
-| ------- | ---- | ----------- |
-
 ## Return Methods
 
-| Method                     | Parameters | Description                                                 |
-| -------------------------- | ---------- | ----------------------------------------------------------- |
-| `addClickOutsideListener`  | —          | Adds a capturing-phase `click` listener to `document`.      |
-| `removeClickOutsideListener` | —        | Removes the previously added `click` listener from `document`. |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| Method                       | Parameters | Description                                                    |
+| ---------------------------- | ---------- | -------------------------------------------------------------- |
+| `addClickOutsideListener`    | —          | Adds a capturing-phase `click` listener to `document`.         |
+| `removeClickOutsideListener` | —          | Removes the previously added `click` listener from `document`. |
 
 ## Cautions
 

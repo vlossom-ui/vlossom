@@ -34,31 +34,21 @@ console.log(getOptionValue(option)); // 1
 
 ## Args
 
-| Arg           | Type          | Default | Required | Description                                                      |
-| ------------- | ------------- | ------- | -------- | ---------------------------------------------------------------- |
-| `optionLabel` | `Ref<string>` | —       | Yes      | Key path used to extract the display label from an option object.|
-| `optionValue` | `Ref<string>` | —       | Yes      | Key path used to extract the value from an option object.        |
+| Arg           | Type          | Default | Required | Description                                                       |
+| ------------- | ------------- | ------- | -------- | ----------------------------------------------------------------- |
+| `optionLabel` | `Ref<string>` | —       | Yes      | Key path used to extract the display label from an option object. |
+| `optionValue` | `Ref<string>` | —       | Yes      | Key path used to extract the value from an option object.         |
 
 ## Types
 
 No additional exported types.
 
-## Return Refs
-
-| RefType | Type | Description |
-| ------- | ---- | ----------- |
-
 ## Return Methods
 
-| Method           | Parameters    | Description                                                                 |
-| ---------------- | ------------- | --------------------------------------------------------------------------- |
-| `getOptionLabel` | `option: any` | Returns the display label string for the given option.                      |
-| `getOptionValue` | `option: any` | Returns the value for the given option using the `optionValue` key path.    |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| Method           | Parameters    | Description                                                              |
+| ---------------- | ------------- | ------------------------------------------------------------------------ |
+| `getOptionLabel` | `option: any` | Returns the display label string for the given option.                   |
+| `getOptionValue` | `option: any` | Returns the value for the given option using the `optionValue` key path. |
 
 ## Cautions
 

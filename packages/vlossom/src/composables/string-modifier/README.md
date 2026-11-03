@@ -37,9 +37,9 @@ function onInput(e) {
 
 ## Args
 
-| Arg         | Type                    | Default | Required | Description                                              |
-| ----------- | ----------------------- | ------- | -------- | -------------------------------------------------------- |
-| `modifiers` | `Ref<StringModifiers>`  | —       | Yes      | Reactive object with optional boolean modifier flags.    |
+| Arg         | Type                   | Default | Required | Description                                           |
+| ----------- | ---------------------- | ------- | -------- | ----------------------------------------------------- |
+| `modifiers` | `Ref<StringModifiers>` | —       | Yes      | Reactive object with optional boolean modifier flags. |
 
 ## Types
 
@@ -51,21 +51,11 @@ interface StringModifiers {
 }
 ```
 
-## Return Refs
-
-| RefType | Type | Description |
-| ------- | ---- | ----------- |
-
 ## Return Methods
 
-| Method              | Parameters       | Description                                                              |
-| ------------------- | ---------------- | ------------------------------------------------------------------------ |
-| `modifyStringValue` | `value: string`  | Returns the transformed string based on the active modifiers.            |
-
-## Hooks
-
-| Hook | Description |
-| ---- | ----------- |
+| Method              | Parameters      | Description                                                   |
+| ------------------- | --------------- | ------------------------------------------------------------- |
+| `modifyStringValue` | `value: string` | Returns the transformed string based on the active modifiers. |
 
 ## Cautions
 
