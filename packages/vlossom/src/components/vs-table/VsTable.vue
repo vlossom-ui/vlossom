@@ -3,12 +3,12 @@
         <vs-grid v-if="search || $slots['toolbar']" class="vs-table-toolbar" :column-gap="'1rem'">
             <vs-responsive
                 class="vs-table-toolbar-start"
-                :grid="{ sm: 12, md: search ? 10 : 12 }"
+                :grid="{ sm: 12, md: search ? 9 : 12, lg: search ? 10 : 12 }"
                 :style="componentStyleSet.$toolbar"
             >
                 <slot name="toolbar" />
             </vs-responsive>
-            <vs-responsive v-if="search" class="vs-table-search-input" :grid="{ sm: 12, md: 2 }">
+            <vs-responsive v-if="search" class="vs-table-search-input" :grid="{ sm: 12, md: 3, lg: 2 }">
                 <vs-search-input
                     ref="searchInputRef"
                     v-bind="searchOptions"
