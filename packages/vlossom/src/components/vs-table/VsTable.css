@@ -8,7 +8,6 @@
     /* ── Containers ── */
     > .vs-table-toolbar {
         @apply mb-2 items-end;
-        height: auto;
 
         > .vs-table-toolbar-start {
             min-width: 0;
