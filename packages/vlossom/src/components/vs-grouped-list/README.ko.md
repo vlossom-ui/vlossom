@@ -81,13 +81,14 @@ function onClickItem(item) {
 
 ## Props
 
-| Prop         | 타입                                   | 기본값  | 필수 | 설명                                       |
-| ------------ | -------------------------------------- | ------- | ---- | ------------------------------------------ |
-| `styleSet`   | `string \| VsGroupedListStyleSet`      |         |      | 컴포넌트의 사용자 정의 스타일 셋           |
-| `items`      | `OptionItem[]`                         | `[]`    |      | 표시할 항목 배열                           |
-| `groupBy`    | `(item: any, index: number) => string` |         |      | 각 항목의 그룹 이름을 반환하는 함수        |
-| `groupOrder` | `string[]`                             |         |      | 그룹이 표시될 순서                         |
-| `noVirtual`  | `boolean`                              | `false` |      | 자동 가상 스크롤을 끄고 모든 항목을 렌더링 |
+| Prop          | 타입                                   | 기본값  | 필수 | 설명                                       |
+| ------------- | -------------------------------------- | ------- | ---- | ------------------------------------------ |
+| `colorScheme` | `ColorScheme`                          |         |      | 컴포넌트 색상 테마                         |
+| `styleSet`    | `string \| VsGroupedListStyleSet`      |         |      | 컴포넌트의 사용자 정의 스타일 셋           |
+| `items`       | `OptionItem[]`                         | `[]`    |      | 표시할 항목 배열                           |
+| `groupBy`     | `(item: any, index: number) => string` |         |      | 각 항목의 그룹 이름을 반환하는 함수        |
+| `groupOrder`  | `string[]`                             |         |      | 그룹이 표시될 순서                         |
+| `noVirtual`   | `boolean`                              | `false` |      | 자동 가상 스크롤을 끄고 모든 항목을 렌더링 |
 
 ## 타입
 
