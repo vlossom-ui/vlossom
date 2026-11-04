@@ -50,9 +50,7 @@ type ColorScheme = string; // color scheme identifier e.g. 'blue', 'red'
 
 ## Return Refs
 
-| RefType               | Type                                    | Description                                                          |
-| --------------------- | --------------------------------------- | -------------------------------------------------------------------- |
-| `computedColorScheme` | `ComputedRef<ColorScheme \| undefined>` | The resolved color scheme: prop → component global → default global. |
-| `colorSchemeClass`    | `ComputedRef<string>`                   | CSS class string in the form `vs-cs-{scheme}` (e.g. `vs-cs-blue`).   |
-
-## Cautions
+| RefType               | Type                                    | Description                                                                                                            |
+| --------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `computedColorScheme` | `ComputedRef<ColorScheme \| undefined>` | The resolved color scheme: prop → component global → default global.                                                   |
+| `colorSchemeClass`    | `ComputedRef<string>`                   | CSS class string in the form `vs-cs-{scheme}` (e.g. `vs-cs-blue`). `vs-cs-default` when the scheme is `none` or unset. |
