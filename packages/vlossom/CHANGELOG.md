@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.5](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.4...vlossom-v2.2.5) (2026-11-04)
+
+
+### Bug Fixes
+
+* **VsForm:** prevent default submit & add nativeSubmit prop ([#760](https://github.com/vlossom-ui/vlossom/issues/760)) ([b5f5420](https://github.com/vlossom-ui/vlossom/commit/b5f5420235da1866c1d58672bf156730a2e73458))
+* **VsSelect, VsSearchInput:** improve Enter key and focus handling ([#761](https://github.com/vlossom-ui/vlossom/issues/761)) ([8c584ae](https://github.com/vlossom-ui/vlossom/commit/8c584ae5db3983579211ddd7877ccd316679970d))
+
 ## [2.2.4](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.3...vlossom-v2.2.4) (2026-11-04)
 
 
