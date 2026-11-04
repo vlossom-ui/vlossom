@@ -15,6 +15,7 @@
 - 폼 수준 상태 확인을 위한 `valid` 및 `changed` 계산 속성
 - 모든 자식 폼 컴포넌트에 `disabled` 및 `readonly` 상태 전파
 - 반응형 레이아웃을 위해 내부적으로 `VsGrid`를 사용하여 `<form>` 요소로 렌더링
+- 기본적으로 브라우저의 폼 제출을 막으며, 필요하면 `native-submit`으로 기본 제출을 허용
 
 ## 기본 사용법
 
@@ -77,13 +78,14 @@ const value = ref('');
 
 ## Props
 
-| Prop        | 타입               | 기본값  | 필수 | 설명                                     |
-| ----------- | ------------------ | ------- | ---- | ---------------------------------------- |
-| `gridSize`  | `number \| string` |         |      | 그리드 열 수 (기본값: 12)                |
-| `columnGap` | `number \| string` |         |      | 그리드 열 사이의 간격                    |
-| `rowGap`    | `number \| string` |         |      | 그리드 행 사이의 간격                    |
-| `disabled`  | `boolean`          | `false` |      | 모든 자식 폼 입력 비활성화               |
-| `readonly`  | `boolean`          | `false` |      | 모든 자식 폼 입력을 읽기 전용으로 만들기 |
+| Prop           | 타입               | 기본값  | 필수 | 설명                                                                  |
+| -------------- | ------------------ | ------- | ---- | --------------------------------------------------------------------- |
+| `gridSize`     | `number \| string` |         |      | 그리드 열 수 (기본값: 12)                                             |
+| `columnGap`    | `number \| string` |         |      | 그리드 열 사이의 간격                                                 |
+| `rowGap`       | `number \| string` |         |      | 그리드 행 사이의 간격                                                 |
+| `disabled`     | `boolean`          | `false` |      | 모든 자식 폼 입력 비활성화                                            |
+| `nativeSubmit` | `boolean`          | `false` |      | `true`이면 Enter 또는 submit 버튼에 의한 브라우저 기본 폼 제출을 허용 |
+| `readonly`     | `boolean`          | `false` |      | 모든 자식 폼 입력을 읽기 전용으로 만들기                              |
 
 ## 타입
 

@@ -22,6 +22,22 @@ describe('VsForm', () => {
         });
     });
 
+    describe('submit 동작', () => {
+        it('기본적으로 브라우저 submit을 막는다', () => {
+            const wrapper = mount(VsForm);
+            const event = new Event('submit', { cancelable: true });
+            wrapper.find('form').element.dispatchEvent(event);
+            expect(event.defaultPrevented).toBe(true);
+        });
+
+        it('nativeSubmit이 true이면 브라우저 submit을 허용한다', () => {
+            const wrapper = mount(VsForm, { props: { nativeSubmit: true } });
+            const event = new Event('submit', { cancelable: true });
+            wrapper.find('form').element.dispatchEvent(event);
+            expect(event.defaultPrevented).toBe(false);
+        });
+    });
+
     describe('disabled', () => {
         it('disabled prop이 true로 설정되면 FormStore에 반영되어야 한다', () => {
             // given, when
