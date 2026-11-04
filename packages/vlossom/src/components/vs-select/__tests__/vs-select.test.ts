@@ -605,6 +605,28 @@ describe('VsSelect', () => {
                 placeholder: 'Search...',
             });
         });
+
+        it('search input에 colorScheme을 전달한다', async () => {
+            // given
+            vi.useFakeTimers();
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                props: { options: basicOptions, modelValue: null, search: true, colorScheme: 'none' },
+            });
+
+            // when
+            wrapper.vm.openOptions();
+            await nextTick();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+            await nextTick();
+
+            // then
+            expect(wrapper.findComponent({ name: 'VsSearchInput' }).props('colorScheme')).toBe('none');
+
+            wrapper.unmount();
+            vi.useRealTimers();
+        });
     });
 
     describe('validation', () => {
