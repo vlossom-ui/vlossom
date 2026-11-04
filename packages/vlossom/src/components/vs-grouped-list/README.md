@@ -81,13 +81,14 @@ When `items` has more than 100 entries, only the rows near the visible area are 
 
 ## Props
 
-| Prop         | Type                                   | Default | Required | Description                                               |
-| ------------ | -------------------------------------- | ------- | -------- | --------------------------------------------------------- |
-| `styleSet`   | `string \| VsGroupedListStyleSet`      |         |          | Custom style set for the component                        |
-| `items`      | `OptionItem[]`                         | `[]`    |          | Array of items to display                                 |
-| `groupBy`    | `(item: any, index: number) => string` |         |          | Function that returns the group name for each item        |
-| `groupOrder` | `string[]`                             |         |          | Order in which groups should appear                       |
-| `noVirtual`  | `boolean`                              | `false` |          | Disable automatic virtual scrolling and render every item |
+| Prop          | Type                                   | Default | Required | Description                                               |
+| ------------- | -------------------------------------- | ------- | -------- | --------------------------------------------------------- |
+| `colorScheme` | `ColorScheme`                          |         |          | Color scheme for the component                            |
+| `styleSet`    | `string \| VsGroupedListStyleSet`      |         |          | Custom style set for the component                        |
+| `items`       | `OptionItem[]`                         | `[]`    |          | Array of items to display                                 |
+| `groupBy`     | `(item: any, index: number) => string` |         |          | Function that returns the group name for each item        |
+| `groupOrder`  | `string[]`                             |         |          | Order in which groups should appear                       |
+| `noVirtual`   | `boolean`                              | `false` |          | Disable automatic virtual scrolling and render every item |
 
 ## Types
 

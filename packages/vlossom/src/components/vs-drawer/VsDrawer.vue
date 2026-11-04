@@ -15,6 +15,7 @@
             <vs-focus-trap ref="focusTrapRef" :disabled="!focusLock">
                 <vs-inner-scroll
                     :class="['vs-drawer-content', `vs-drawer-${placement}`]"
+                    :color-scheme="computedColorScheme"
                     :style="layoutStyles"
                     :style-set="{
                         $header: componentStyleSet.$header,
@@ -124,7 +125,7 @@ export default defineComponent({
             xl: '80%',
         };
 
-        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
         const drawerSize = computed(() => {
             if (!size.value) {
                 return DRAWER_SIZE.sm;
@@ -135,7 +136,11 @@ export default defineComponent({
             return stringUtil.toStringSize(size.value);
         });
 
-        const baseStyleSet: ComputedRef<VsDrawerStyleSet> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsDrawerStyleSet> = computed(() => ({
+            $header: { padding: 0 },
+            $content: { padding: 0 },
+            $footer: { padding: 0 },
+        }));
 
         const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
             return objectUtil.shake({
@@ -260,6 +265,7 @@ export default defineComponent({
             drawerRef,
             focusTrapRef,
             colorSchemeClass,
+            computedColorScheme,
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,

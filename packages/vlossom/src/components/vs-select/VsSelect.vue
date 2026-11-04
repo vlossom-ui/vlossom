@@ -46,7 +46,8 @@
                 <vs-grouped-list
                     ref="optionsListRef"
                     :id="optionsId"
-                    :class="['vs-select-options', colorSchemeClass, sizeClass]"
+                    :class="['vs-select-options', sizeClass]"
+                    :color-scheme="computedColorScheme"
                     :style="styleSetVariables"
                     :style-set="componentStyleSet.$options"
                     :items="filteredOptions"
