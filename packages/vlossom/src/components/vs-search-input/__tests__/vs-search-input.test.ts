@@ -252,6 +252,38 @@ describe('VsSearchInput', () => {
         });
     });
 
+    describe('Enter 키', () => {
+        it('Enter 키의 기본 동작(폼 암묵적 제출)을 막아야 한다', () => {
+            // given
+            const wrapper = mount(VsSearchInput);
+            const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
+
+            // when
+            wrapper.find('input').element.dispatchEvent(event);
+
+            // then
+            expect(event.defaultPrevented).toBe(true);
+        });
+
+        it('Enter keydown 이벤트는 상위로 전파되어야 한다', () => {
+            // given
+            const onKeydown = vi.fn();
+            const wrapper = mount(VsSearchInput, { attachTo: document.body });
+            document.addEventListener('keydown', onKeydown);
+
+            // when
+            wrapper
+                .find('input')
+                .element.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+
+            // then
+            expect(onKeydown).toHaveBeenCalledTimes(1);
+
+            document.removeEventListener('keydown', onKeydown);
+            wrapper.unmount();
+        });
+    });
+
     describe('toggle 버튼', () => {
         it('caseSensitive와 regex가 모두 true일 때 두 토글 버튼이 모두 표시되어야 한다', () => {
             // given

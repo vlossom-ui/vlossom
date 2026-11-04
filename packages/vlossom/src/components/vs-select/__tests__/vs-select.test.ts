@@ -1770,6 +1770,87 @@ describe('VsSelect', () => {
             wrapper.unmount();
         });
 
+        it('마우스를 옵션에 올려도 검색창에서 누른 Enter/Space는 옵션을 선택하지 않는다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
+            wrapper
+                .findAll('.vs-select-option-wrap')[2]
+                .element.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+            await nextTick();
+            const searchInput = wrapper.find('.vs-select-search input').element;
+            const spaceEvent = new KeyboardEvent('keydown', { code: 'Space', bubbles: true, cancelable: true });
+
+            // when
+            searchInput.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter', bubbles: true, cancelable: true }));
+            searchInput.dispatchEvent(spaceEvent);
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+            expect(wrapper.vm.isOpen).toBe(true);
+            expect(spaceEvent.defaultPrevented).toBe(false);
+            wrapper.unmount();
+        });
+
+        it('single 모드에서 Enter로 옵션을 선택하면 포커스가 트리거로 돌아온다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
+            expect(document.activeElement).toBe(wrapper.find('.vs-select-search input').element);
+
+            // when
+            await pressKey('ArrowDown');
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(false);
+            expect(document.activeElement).toBe(wrapper.find(`#${wrapper.vm.triggerId}`).element);
+            wrapper.unmount();
+        });
+
+        it('single 모드에서 옵션을 클릭해 선택하면 포커스가 트리거로 돌아온다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions });
+
+            // when
+            await wrapper.findAll('.vs-select-option-wrap')[2].trigger('click');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['Option 3']);
+            expect(document.activeElement).toBe(wrapper.find(`#${wrapper.vm.triggerId}`).element);
+            wrapper.unmount();
+        });
+
+        it('multiple 모드에서 검색창에 포커스가 있을 때 목록이 닫히면 포커스가 트리거로 돌아온다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions, search: true, multiple: true });
+            expect(document.activeElement).toBe(wrapper.find('.vs-select-search input').element);
+
+            // when
+            await pressKey('Escape');
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(false);
+            expect(document.activeElement).toBe(wrapper.find(`#${wrapper.vm.triggerId}`).element);
+            wrapper.unmount();
+        });
+
+        it('바깥의 다른 요소가 포커스를 가져간 뒤 목록이 닫히면 포커스를 빼앗지 않는다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
+            const otherInput = document.createElement('input');
+            document.body.appendChild(otherInput);
+
+            // when
+            otherInput.focus();
+            wrapper.vm.closeOptions();
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(false);
+            expect(document.activeElement).toBe(otherInput);
+            otherInput.remove();
+            wrapper.unmount();
+        });
+
         it('옵션 영역에 들어간 뒤 select-all에서 ArrowDown을 누르면 바로 아래 옵션으로 포커스가 이동한다', async () => {
             // given
             const wrapper = await mountOpenedSelect({

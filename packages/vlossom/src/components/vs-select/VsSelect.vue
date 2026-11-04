@@ -481,7 +481,6 @@ export default defineComponent({
             scrollToOption,
             openOptions,
             closeOptions,
-            focusTrigger: focus,
             toggleSelectAll,
             selectOptionItem,
         });
@@ -605,6 +604,17 @@ export default defineComponent({
             removeMouseMoveListener();
             isOpen.value = false;
             emit('close');
+
+            // 닫히는 목록(검색창) 안에 있거나 갈 곳 없이 body로 떨어진 포커스만 트리거로 되돌린다.
+            // 바깥 클릭으로 다른 요소가 포커스를 가져간 경우까지 빼앗으면 안 된다.
+            const activeElement = document.activeElement;
+            if (
+                !activeElement ||
+                activeElement === document.body ||
+                optionsListElement.value?.contains(activeElement)
+            ) {
+                focus();
+            }
 
             setTimeout(() => {
                 searchInputRef.value?.clear();

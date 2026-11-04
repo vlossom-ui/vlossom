@@ -19,7 +19,6 @@ interface UseSelectKeyboardParams {
     scrollToOption: (optionId: string) => void;
     openOptions: () => void;
     closeOptions: () => void;
-    focusTrigger: () => void;
     toggleSelectAll: () => void;
     selectOptionItem: (optionItem: OptionItem) => void;
 }
@@ -36,7 +35,6 @@ export function useSelectKeyboard({
     scrollToOption,
     openOptions,
     closeOptions,
-    focusTrigger,
     toggleSelectAll,
     selectOptionItem,
 }: UseSelectKeyboardParams) {
@@ -56,8 +54,13 @@ export function useSelectKeyboard({
         }
     });
 
-    function isSearchFocused() {
-        return focusedKey.value === SELECT_FOCUS_KEY.search;
+    // 마우스를 올리면 focusedKey는 옵션으로 옮겨가지만 실제 커서는 검색창에 남는다.
+    // 둘 중 하나라도 검색창이면 키 입력을 옵션 조작이 아니라 검색창 편집으로 넘긴다.
+    function isSearchActive(e: KeyboardEvent) {
+        if (!isOpen.value) {
+            return false;
+        }
+        return focusedKey.value === SELECT_FOCUS_KEY.search || !!searchInputRef.value?.$el.contains(e.target as Node);
     }
 
     function findFirstOptionFocusIndex() {
@@ -91,7 +94,7 @@ export function useSelectKeyboard({
             if (isOptionKey(focusedKey.value)) {
                 scrollToOption(focusedKey.value);
             }
-            if (isSearchFocused()) {
+            if (focusedKey.value === SELECT_FOCUS_KEY.search) {
                 searchInputRef.value?.focus();
             } else {
                 searchInputRef.value?.blur();
@@ -140,7 +143,7 @@ export function useSelectKeyboard({
                     return;
                 }
                 e.stopPropagation();
-                if (isSearchFocused()) {
+                if (isSearchActive(e)) {
                     return;
                 }
                 e.preventDefault();
@@ -151,28 +154,30 @@ export function useSelectKeyboard({
                     return;
                 }
                 e.stopPropagation();
-                if (isSearchFocused()) {
+                if (isSearchActive(e)) {
                     return;
                 }
                 e.preventDefault();
                 moveSelectFocus(findLastOptionFocusIndex());
             },
             'key-Enter': (e: KeyboardEvent) => {
-                if (!isSearchFocused()) {
-                    e.preventDefault();
-                }
                 e.stopPropagation();
+                if (isSearchActive(e)) {
+                    return;
+                }
+                e.preventDefault();
                 handleSelectionKey();
             },
             'key-Space': (e: KeyboardEvent) => {
-                if (!isSearchFocused()) {
-                    e.preventDefault();
-                }
                 e.stopPropagation();
+                if (isSearchActive(e)) {
+                    return;
+                }
+                e.preventDefault();
                 handleSelectionKey();
             },
-            'key-Tab': () => {
-                if (isSearchFocused()) {
+            'key-Tab': (e: KeyboardEvent) => {
+                if (isSearchActive(e)) {
                     return;
                 }
                 if (isOpen.value) {
@@ -183,7 +188,6 @@ export function useSelectKeyboard({
                 e.preventDefault();
                 e.stopPropagation();
                 closeOptions();
-                focusTrigger();
             },
         };
     });
