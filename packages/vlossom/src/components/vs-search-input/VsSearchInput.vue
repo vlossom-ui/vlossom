@@ -17,6 +17,7 @@
         no-messages
         no-label
         @change="onInputChange"
+        @keydown.enter.prevent
     >
         <template #append>
             <div v-if="useCaseSensitive || useRegex" class="vs-search-input-toggles">

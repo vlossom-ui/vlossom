@@ -9,6 +9,7 @@ A search input component with optional case-sensitive and regex toggle buttons.
 ## Feature
 
 - Debounced `search` event emission (400ms) to reduce unnecessary triggers
+- Prevents the Enter key from implicitly submitting a surrounding form; the keydown event still propagates
 - Optional case-sensitive toggle via `useCaseSensitive`
 - Optional regular expression toggle via `useRegex`
 - Built-in `match(text)` utility method for filtering lists
