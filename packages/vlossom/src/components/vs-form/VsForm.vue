@@ -1,5 +1,5 @@
 <template>
-    <vs-grid class="vs-form" tag="form" :grid-size :column-gap :row-gap>
+    <vs-grid class="vs-form" tag="form" :grid-size :column-gap :row-gap @submit="onSubmit">
         <slot />
     </vs-grid>
 </template>
@@ -19,12 +19,13 @@ export default defineComponent({
     props: {
         ...getGridProps(),
         disabled: { type: Boolean, default: false },
+        nativeSubmit: { type: Boolean, default: false },
         readonly: { type: Boolean, default: false },
     },
     emits: ['error'],
     // expose: ['valid', 'changed', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
-        const { disabled, readonly } = toRefs(props);
+        const { disabled, nativeSubmit, readonly } = toRefs(props);
 
         const formStore = FormStore.getDefaultFormStore();
         provide(FORM_STORE_KEY, formStore);
@@ -53,6 +54,12 @@ export default defineComponent({
             formStore.toggleResetFlag();
         }
 
+        function onSubmit(event: SubmitEvent) {
+            if (!nativeSubmit.value) {
+                event.preventDefault();
+            }
+        }
+
         watch(
             disabled,
             (value) => {
@@ -75,6 +82,7 @@ export default defineComponent({
             validate,
             clear,
             reset,
+            onSubmit,
         };
     },
 });
