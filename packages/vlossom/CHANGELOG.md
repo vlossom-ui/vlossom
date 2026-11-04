@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.4](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.3...vlossom-v2.2.4) (2026-11-04)
+
+
+### Bug Fixes
+
+* **color-scheme:** resolve global 'none' to default theme ([#754](https://github.com/vlossom-ui/vlossom/issues/754)) ([78e1253](https://github.com/vlossom-ui/vlossom/commit/78e125337c07bbe2ff4ae077f5d25cc35c30d746))
+* **VsGrid:** remove default height 100% ([#751](https://github.com/vlossom-ui/vlossom/issues/751)) ([4ed22d8](https://github.com/vlossom-ui/vlossom/commit/4ed22d8856dda22c76ca937bd1b74bac5cf66e56))
+* **VsInnerScroll:** add default padding and color scheme ([#756](https://github.com/vlossom-ui/vlossom/issues/756)) ([6e3d08e](https://github.com/vlossom-ui/vlossom/commit/6e3d08ed3bff9c7a89a71fbb434138273a1b7c58))
+* **VsSteps:** change step line contrast & scale outline ([#755](https://github.com/vlossom-ui/vlossom/issues/755)) ([761cd0a](https://github.com/vlossom-ui/vlossom/commit/761cd0a0735e6e08654eddeefb8791c7ad6d1775))
+* **VsTable:** sync selectedItems with items and prevent recursive v-model updates ([#750](https://github.com/vlossom-ui/vlossom/issues/750)) ([c8d1690](https://github.com/vlossom-ui/vlossom/commit/c8d169049d27bbfc05eaa167b86060d717015fda))
+
 ## [2.2.3](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.2...vlossom-v2.2.3) (2026-10-23)
 
 
