@@ -4,7 +4,7 @@
     --vs-steps-stepSize: initial;
 
     --step-size: var(--vs-steps-stepSize, 1.6rem);
-    --step-line-color: color-mix(in oklch, var(--vs-cs-primary) 20%, transparent 80%);
+    --step-line-color: color-mix(in oklch, var(--vs-cs-border-strong) 40%, transparent);
     --step-progress-color: var(--vs-cs-primary);
     --step-transition: 0.2s;
 
@@ -21,7 +21,7 @@
         background-color: var(--step-line-color);
 
         .vs-step-progress {
-            @apply h-1 opacity-80;
+            @apply h-1 opacity-70;
 
             transition: width var(--step-transition);
             background-color: var(--step-progress-color);
@@ -109,10 +109,10 @@
 
             &.vs-selected {
                 .vs-step-num {
-                    animation: vs-step-pulse 1.8s ease-out infinite;
+                    animation: vs-step-pulse 2s ease-out infinite;
                     transition-delay: 0.15s;
-                    outline: 3px solid var(--vs-cs-primary);
-                    outline-offset: 3px;
+                    outline: calc(var(--step-size) / 8) solid var(--vs-cs-primary);
+                    outline-offset: calc(var(--step-size) / 8);
                     border-color: var(--vs-cs-primary);
                     background-color: var(--vs-cs-primary);
                     color: var(--vs-cs-text-primary);
@@ -160,13 +160,10 @@
 
 @keyframes vs-step-pulse {
     0% {
-        box-shadow: 0 0 0 0 color-mix(in oklch, var(--vs-cs-primary) 50%, transparent);
-    }
-    70% {
-        box-shadow: 0 0 0 10px color-mix(in oklch, var(--vs-cs-primary) 0%, transparent);
+        box-shadow: 0 0 0 0 color-mix(in oklch, var(--vs-cs-primary) 80%, transparent);
     }
     100% {
-        box-shadow: 0 0 0 0 color-mix(in oklch, var(--vs-cs-primary) 0%, transparent);
+        box-shadow: 0 0 0 calc(var(--step-size) / 4) color-mix(in oklch, var(--vs-cs-primary) 0%, transparent);
     }
 }
 
