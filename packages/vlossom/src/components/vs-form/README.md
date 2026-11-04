@@ -15,6 +15,7 @@ A form container component that manages validation state and propagates `disable
 - `valid` and `changed` computed properties for form-level state inspection
 - Propagates `disabled` and `readonly` states to all child form components
 - Renders as a `<form>` element using `VsGrid` internally for responsive layout
+- Prevents native browser form submission by default; set `native-submit` to allow it when needed
 
 ## Basic Usage
 
@@ -77,13 +78,14 @@ const value = ref('');
 
 ## Props
 
-| Prop        | Type               | Default | Required | Description                          |
-| ----------- | ------------------ | ------- | -------- | ------------------------------------ |
-| `gridSize`  | `number \| string` |         |          | Number of grid columns (default: 12) |
-| `columnGap` | `number \| string` |         |          | Gap between grid columns             |
-| `rowGap`    | `number \| string` |         |          | Gap between grid rows                |
-| `disabled`  | `boolean`          | `false` |          | Disable all child form inputs        |
-| `readonly`  | `boolean`          | `false` |          | Make all child form inputs read-only |
+| Prop           | Type               | Default | Required | Description                                                           |
+| -------------- | ------------------ | ------- | -------- | --------------------------------------------------------------------- |
+| `gridSize`     | `number \| string` |         |          | Number of grid columns (default: 12)                                  |
+| `columnGap`    | `number \| string` |         |          | Gap between grid columns                                              |
+| `rowGap`       | `number \| string` |         |          | Gap between grid rows                                                 |
+| `disabled`     | `boolean`          | `false` |          | Disable all child form inputs                                         |
+| `nativeSubmit` | `boolean`          | `false` |          | Allow native browser submission on Enter or submit button when `true` |
+| `readonly`     | `boolean`          | `false` |          | Make all child form inputs read-only                                  |
 
 ## Types
 
