@@ -202,4 +202,40 @@ describe('useInputRules', () => {
         // then
         expect(ruleMessages.value.length).toBe(0);
     });
+
+    it('이전 값의 늦게 끝난 비동기 규칙 결과가 현재 값의 검증 결과에 섞이지 않아야 한다', async () => {
+        // given
+        const lengthRule: Rule<string> = (value) =>
+            new Promise<string>((resolve) =>
+                setTimeout(() => resolve(value.length < 3 ? 'too short' : ''), value.length < 3 ? 50 : 10),
+            );
+        rules.value = [lengthRule];
+        inputValue.value = 'a';
+        const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+
+        // when
+        const staleCheck = checkRules();
+        inputValue.value = 'abc';
+        await checkRules();
+        await staleCheck;
+
+        // then
+        expect(ruleMessages.value).toEqual([]);
+    });
+
+    it('연속 호출된 비동기 규칙이 모두 실패해도 에러 메시지가 중복되지 않아야 한다', async () => {
+        // given
+        const asyncErrorRule: Rule<string> = () =>
+            new Promise<string>((resolve) => setTimeout(() => resolve('async error'), 10));
+        rules.value = [asyncErrorRule];
+        const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+
+        // when
+        const staleCheck = checkRules();
+        await checkRules();
+        await staleCheck;
+
+        // then
+        expect(ruleMessages.value).toEqual([{ state: 'error', text: 'async error' }]);
+    });
 });
