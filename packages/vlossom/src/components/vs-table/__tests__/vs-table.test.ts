@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { mount, type VueWrapper } from '@vue/test-utils';
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { logUtil } from '@/utils';
+import VsPagination from '@/components/vs-pagination/VsPagination.vue';
 import VsTable from './../VsTable.vue';
 import type { VsTableCell, VsTableColumnDef, VsTableItem } from './../types';
 
@@ -836,6 +837,24 @@ describe('VsTable', () => {
 
                 expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(false);
             });
+        });
+
+        it('items가 줄어 page가 범위를 벗어나면 마지막 페이지로 맞춘다', async () => {
+            // 실제 VsPagination이 -1을 내보내던 경로를 재현하려면 stub 없이 마운트해야 한다
+            const items = manyItems.slice(0, 25);
+            const wrapper = mount(VsTable, {
+                props: { columns: ['name'], items, pagination: true, pageSize: 10, itemKey: 'id' },
+            });
+            await flushPromises();
+            wrapper.findComponent(VsPagination).vm.$emit('update:modelValue', 2);
+            await flushPromises();
+
+            await wrapper.setProps({ items: items.slice(0, 5) });
+            await flushPromises();
+
+            expect(wrapper.emitted('update:page')!.flat()).not.toContain(-1);
+            expect(lastEmit(wrapper, 'update:page')).toEqual([0]);
+            expect(wrapper.findAll('tbody tr')).toHaveLength(5);
         });
     });
 

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
 import VsPagination from './../VsPagination.vue';
 
 describe('VsPagination', () => {
@@ -143,6 +144,26 @@ describe('VsPagination', () => {
 
             // then
             expect(wrapper.vm.selectedIndex).toBe(2);
+        });
+
+        it('length가 줄어 현재 페이지가 범위를 벗어나면 마지막 페이지로 맞춘다', async () => {
+            // given
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    modelValue: 4,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ length: 2 });
+            await nextTick();
+
+            // then
+            const emitted = wrapper.emitted('update:modelValue')!;
+            expect(wrapper.vm.selectedIndex).toBe(1);
+            expect(emitted.flat()).not.toContain(-1);
+            expect(emitted[emitted.length - 1]).toEqual([1]);
         });
     });
 

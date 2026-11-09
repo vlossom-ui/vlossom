@@ -226,7 +226,12 @@ export default defineComponent({
 
         watch(modelValue, syncIndex, { immediate: true });
 
-        watch(selectedIndex, (index: number) => {
+        watch(selectedIndex, (index: number, prevIndex: number) => {
+            // useIndexSelector는 length가 줄어 선택이 범위를 벗어나면 -1로 바꾸므로, 페이지에서는 마지막 페이지로 되돌린다
+            if (index < 0 && prevIndex >= length.value && length.value > 0) {
+                syncIndex(length.value - 1);
+                return;
+            }
             emit('update:modelValue', index);
             emit('change', index);
         });
