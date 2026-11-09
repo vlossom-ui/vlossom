@@ -5,6 +5,7 @@ import { useOverlayCallbackStore } from '@/stores';
 import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE, VsComponent } from '@/declaration';
 import type { ModalPlugin } from '@/plugins';
 
+import { keyEventUtils } from './../utils/key-event-utils';
 import { vnodeUtils } from './../utils/vnode-utils';
 import type { ConfirmModalOptions, ConfirmPlugin, VsConfirmStyleSet } from './types';
 
@@ -81,7 +82,10 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                             resolve(false);
                             modalPlugin.closeWithId(modalId);
                         },
-                        'key-Enter': () => {
+                        'key-Enter': (event?: KeyboardEvent) => {
+                            if (keyEventUtils.isEnterOwnedByTarget(event)) {
+                                return;
+                            }
                             resolve(true);
                             modalPlugin.closeWithId(modalId);
                         },

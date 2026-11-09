@@ -123,5 +123,6 @@ interface PromptPlugin {
 
 - Prompt 플러그인은 Modal 플러그인에 의존합니다. Vlossom 플러그인 설정 시 두 플러그인 모두 등록되어 있는지 확인하세요.
 - 확인/Enter 시 입력의 유효성 검사가 실패하면 모달이 열린 상태로 유지되고 Promise는 아직 resolve되지 않습니다.
+- 입력창에서 Enter 키를 누르면 값을 확인합니다. 버튼, 링크, textarea에 포커스가 있으면 Enter 키는 확인하지 않습니다. 그 요소가 Enter 키를 직접 처리합니다. 예를 들어 포커스된 취소 버튼에서 Enter 키를 누르면 `null`로 resolve됩니다.
 - Escape 키를 누르거나 모달 외부를 클릭해도(`dimClose`가 활성화된 경우) Promise가 `null`로 resolve되고 입력이 초기화됩니다.
 - Escape 키 닫기는 기본적으로 활성화되어 있습니다. `escClose: false`를 전달하면 Escape 키를 눌러도 모달이 닫히지 않습니다.

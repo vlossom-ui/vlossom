@@ -5,6 +5,7 @@ import { useStyleSet, useMessages } from '@/composables';
 import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
 import type { ModalPlugin } from './../modal-plugin';
 import type { PromptModalOptions, PromptPlugin, VsPromptStyleSet } from './types';
+import { keyEventUtils } from './../utils/key-event-utils';
 import { vnodeUtils } from './../utils/vnode-utils';
 
 export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
@@ -104,7 +105,10 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                             resolve(null);
                             modalPlugin.closeWithId(modalId);
                         },
-                        'key-Enter': () => {
+                        'key-Enter': (event?: KeyboardEvent) => {
+                            if (keyEventUtils.isEnterOwnedByTarget(event)) {
+                                return;
+                            }
                             if (!inputRef.value?.validate()) {
                                 return;
                             }

@@ -120,5 +120,6 @@ interface ConfirmPlugin {
 
 - The confirm plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
 - Pressing Enter resolves the promise with `true`; pressing Escape resolves with `false`.
+- When a button, link, or textarea has focus, Enter does not resolve with `true`. That element handles Enter itself. For example, Enter on the focused Cancel button resolves with `false`.
 - Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.
 - Clicking outside the modal (if `dimClose` is enabled) resolves with `false`.

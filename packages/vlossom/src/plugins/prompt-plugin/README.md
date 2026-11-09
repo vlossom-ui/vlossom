@@ -123,5 +123,6 @@ interface PromptPlugin {
 
 - The prompt plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
 - If the input fails validation on OK/Enter, the modal remains open and the promise is not yet resolved.
+- Enter in the input field confirms the value. When a button, link, or textarea has focus, Enter does not confirm. That element handles Enter itself. For example, Enter on the focused Cancel button resolves with `null`.
 - Pressing Escape or clicking outside the modal (if `dimClose` is enabled) resolves the promise with `null` and clears the input.
 - Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.

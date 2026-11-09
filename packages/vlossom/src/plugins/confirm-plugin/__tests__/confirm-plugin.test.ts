@@ -55,6 +55,19 @@ describe('confirm-plugin', () => {
         expect(closeWithId).toHaveBeenCalledWith('modal-id');
     });
 
+    it('포커스된 버튼에서 Enter 키 콜백이 호출되면 버튼의 click에 처리를 맡기고 resolve하지 않는다', async () => {
+        const confirmPlugin = createConfirmPlugin(modalPlugin);
+        const promise = confirmPlugin.open('계속 진행하시겠습니까?');
+        const cancelButton = document.createElement('button');
+        const event = new KeyboardEvent('keydown', { code: 'Enter', bubbles: true });
+        cancelButton.addEventListener('keydown', (e) => registeredCallbacks['key-Enter']?.(e));
+
+        cancelButton.dispatchEvent(event);
+        registeredCallbacks[CONFIRM_CANCEL]?.();
+
+        await expect(promise).resolves.toBe(false);
+    });
+
     it('기본적으로 Escape 키 콜백이 등록되며, 호출되면 false로 resolve하고 모달을 닫는다', async () => {
         const confirmPlugin = createConfirmPlugin(modalPlugin);
         const promise = confirmPlugin.open('계속 진행하시겠습니까?');
