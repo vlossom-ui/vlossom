@@ -89,7 +89,15 @@ export function useIndexSelector(
         selectedIndex.value = index;
     }
 
+    // 목록이 비어 있는 동안 받은 인덱스: 비동기 로드 전에 -1로 바꾸면 부모 v-model이 덮어써지므로 채워질 때 적용한다
+    let pendingIndex: number | null = null;
+
     function syncIndex(index: number) {
+        if (list.value.length === 0) {
+            pendingIndex = index;
+            return;
+        }
+        pendingIndex = null;
         if (isOutOfRange(index)) {
             selectedIndex.value = NOT_SELECTED;
         } else {
@@ -139,6 +147,15 @@ export function useIndexSelector(
         () => {
             if (isOutOfRange(selectedIndex.value)) {
                 selectedIndex.value = NOT_SELECTED;
+            }
+        },
+    );
+
+    watch(
+        () => list.value.length,
+        (length) => {
+            if (length > 0 && pendingIndex !== null) {
+                syncIndex(pendingIndex);
             }
         },
     );

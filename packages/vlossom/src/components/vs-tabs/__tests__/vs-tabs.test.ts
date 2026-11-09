@@ -455,5 +455,25 @@ describe('VsTabs', () => {
             expect(tabItems).toHaveLength(4);
             expect(tabItems[1].classes()).toContain('vs-selected');
         });
+
+        it('빈 tabs로 마운트된 뒤 tabs가 채워지면 v-model을 -1로 덮어쓰지 않고 modelValue의 탭을 선택해야 한다', async () => {
+            // given
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: [],
+                    modelValue: 1,
+                },
+            });
+
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ tabs: ['A', 'B', 'C'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.flat() ?? []).not.toContain(-1);
+            expect(wrapper.findAll('.vs-tab-item')[1].classes()).toContain('vs-selected');
+        });
     });
 });

@@ -466,6 +466,26 @@ describe('VsSteps', () => {
             expect(stepItems).toHaveLength(4);
             expect(stepItems[1].classes()).toContain('vs-selected');
         });
+
+        it('빈 steps로 마운트된 뒤 steps가 채워지면 v-model을 -1로 덮어쓰지 않고 modelValue의 단계를 선택해야 한다', async () => {
+            // given
+            const wrapper = mount(VsSteps, {
+                props: {
+                    steps: [],
+                    modelValue: 1,
+                },
+            });
+
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ steps: ['A', 'B', 'C'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.flat() ?? []).not.toContain(-1);
+            expect(wrapper.findAll('.vs-step-item')[1].classes()).toContain('vs-selected');
+        });
     });
 
     describe('progress bar', () => {

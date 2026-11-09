@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { useIndexSelector } from './../list-index-selector-composable';
 
 describe('list-index-selector-composable', () => {
@@ -610,6 +610,34 @@ describe('list-index-selector-composable', () => {
 
             // then
             expect(isLastEdge.value).toBe(false);
+        });
+    });
+
+    describe('syncIndex', () => {
+        it('목록이 비어 있으면 selectedIndex를 NOT_SELECTED로 바꾸지 않아야 한다', () => {
+            // given
+            const list = ref<string[]>([]);
+            const { syncIndex, selectedIndex } = useIndexSelector(list);
+
+            // when
+            syncIndex(1);
+
+            // then
+            expect(selectedIndex.value).toBe(0);
+        });
+
+        it('빈 목록일 때 받은 인덱스를 목록이 채워지면 적용해야 한다', async () => {
+            // given
+            const list = ref<string[]>([]);
+            const { syncIndex, selectedIndex } = useIndexSelector(list);
+            syncIndex(1);
+
+            // when
+            list.value = ['item1', 'item2', 'item3'];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
         });
     });
 });
