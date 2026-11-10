@@ -706,7 +706,6 @@ export default defineComponent({
             }
         });
 
-        // 열린 채로 unmount되면 위 watch가 먼저 정리되어 리스너를 뗄 기회가 없다.
         onBeforeUnmount(() => {
             removeClickOutsideListener();
             removeMouseMoveListener();
