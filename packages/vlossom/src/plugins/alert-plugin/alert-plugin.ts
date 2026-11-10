@@ -40,6 +40,7 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
                 props: { colorScheme, styleSet: componentStyleSet.value.$okButton, primary: true },
                 content: okText,
                 onClickEvent: handleOk,
+                autofocus: true,
             });
 
             const contents = h(VsRender, { content, componentProps });
@@ -53,10 +54,6 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
                     callbacks: {
                         ...modalOptions.callbacks,
                         [ALERT_OK]: () => {
-                            resolve();
-                            modalPlugin.closeWithId(modalId);
-                        },
-                        'key-Enter': () => {
                             resolve();
                             modalPlugin.closeWithId(modalId);
                         },

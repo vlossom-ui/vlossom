@@ -11,7 +11,7 @@ Displays a modal alert dialog with a single OK button. Returns a `Promise<void>`
 - Opens a modal overlay with custom string or Vue component content
 - Provides a single OK button that resolves the returned promise
 - Supports custom OK button text, color scheme, and style set
-- Keyboard support: Enter and Escape keys also resolve the promise and close the dialog
+- Keyboard support: the OK button is focused on open, so Enter confirms it; Escape also resolves the promise and closes the dialog
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
 

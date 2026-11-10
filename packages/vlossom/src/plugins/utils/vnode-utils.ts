@@ -9,8 +9,9 @@ export const vnodeUtils = {
         props: PropsOf<VsComponent.VsButton>;
         content: string | Component;
         onClickEvent: VsButtonVNodeEventHandler;
+        autofocus?: boolean;
     }): VNode {
-        const { props, content, onClickEvent } = args;
+        const { props, content, onClickEvent, autofocus = false } = args;
 
         function onClick(event: Event) {
             event.preventDefault();
@@ -22,6 +23,7 @@ export const vnodeUtils = {
             {
                 ...props,
                 onClick,
+                autofocus: autofocus || undefined,
             },
             { default: () => h(VsRender, { content }) },
         );

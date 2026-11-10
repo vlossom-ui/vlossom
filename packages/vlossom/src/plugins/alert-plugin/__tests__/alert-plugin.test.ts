@@ -1,5 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { defineComponent } from 'vue';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { createApp, defineComponent, h, nextTick, type App } from 'vue';
+import { createVlossom, useVlossom } from '@/framework';
+import * as components from '@/components';
 import { ALERT_OK } from '@/declaration';
 import { createAlertPlugin } from './../alert-plugin';
 import type { ModalPlugin } from '@/plugins/modal-plugin';
@@ -30,16 +32,6 @@ describe('alert-plugin', () => {
         const promise = alertPlugin.open('알림입니다.');
 
         registeredCallbacks[ALERT_OK]?.();
-
-        await expect(promise).resolves.toBeUndefined();
-        expect(closeWithId).toHaveBeenCalledWith('modal-id');
-    });
-
-    it('Enter 키 콜백이 호출되면 resolve하고 모달을 닫는다', async () => {
-        const alertPlugin = createAlertPlugin(modalPlugin);
-        const promise = alertPlugin.open('알림입니다.', { container: '#root' });
-
-        registeredCallbacks['key-Enter']?.();
 
         await expect(promise).resolves.toBeUndefined();
         expect(closeWithId).toHaveBeenCalledWith('modal-id');
@@ -82,5 +74,57 @@ describe('alert-plugin', () => {
         expect(passedOptions.componentProps).toBeUndefined();
         expect(passedOptions.okText).toBeUndefined();
         expect(passedOptions.colorScheme).toBe('red');
+    });
+});
+
+describe('alert-plugin (실제 오버레이)', () => {
+    let app: App;
+
+    async function flush() {
+        for (let i = 0; i < 5; i++) {
+            await nextTick();
+            await new Promise((r) => setTimeout(r, 0));
+        }
+    }
+
+    function findButton(text: string) {
+        return Array.from(document.querySelectorAll<HTMLButtonElement>('.vs-modal-node button')).find((b) =>
+            b.textContent?.includes(text),
+        )!;
+    }
+
+    // 브라우저는 포커스된 button에서 Enter keydown이 버블링된 뒤 기본 동작으로 click을 발생시킨다
+    function pressEnter(target: HTMLElement) {
+        const keydown = new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true });
+        target.dispatchEvent(keydown);
+        if (target instanceof HTMLButtonElement && !keydown.defaultPrevented) {
+            target.click();
+        }
+    }
+
+    beforeEach(async () => {
+        const root = document.createElement('div');
+        document.body.appendChild(root);
+        app = createApp(defineComponent({ render: () => h('div') }));
+        app.use(createVlossom({ components: components as any }));
+        app.mount(root);
+        await flush();
+    });
+
+    afterEach(() => {
+        useVlossom().modal.clear();
+        app.unmount();
+    });
+
+    it('열리면 OK 버튼에 포커스가 가고, Enter를 누르면 resolve한다', async () => {
+        const promise = useVlossom().alert.open('알림입니다.');
+        await flush();
+
+        const ok = findButton('OK');
+        expect(document.activeElement).toBe(ok);
+
+        pressEnter(ok);
+
+        await expect(promise).resolves.toBeUndefined();
     });
 });

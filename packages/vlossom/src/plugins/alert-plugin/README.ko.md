@@ -11,7 +11,7 @@
 - 커스텀 문자열 또는 Vue 컴포넌트 콘텐츠가 포함된 모달 오버레이를 엽니다
 - Promise를 resolve하는 단일 확인 버튼을 제공합니다
 - 커스텀 확인 버튼 텍스트, 색상 스킴, 스타일 세트를 지원합니다
-- 키보드 지원: Enter 및 Escape 키도 Promise를 resolve하고 대화상자를 닫습니다
+- 열리면 확인 버튼에 포커스가 가므로 Enter 키로 확인할 수 있고, Escape 키로도 Promise를 resolve하고 대화상자를 닫을 수 있습니다
 - 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
 - Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
 

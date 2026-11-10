@@ -68,6 +68,15 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
             );
             const contents = h(VsRender, { content, componentProps });
 
+            function onInputKeydown(event: KeyboardEvent) {
+                if (event.key !== 'Enter' || !(event.target instanceof HTMLInputElement)) {
+                    return;
+                }
+                // NOTE. 모달이 닫히며 포커스가 트리거 버튼으로 돌아가므로, 기본 동작을 막지 않으면 트리거 버튼이 다시 눌린다
+                event.preventDefault();
+                handleButton(PROMPT_OK);
+            }
+
             // NOTE. 함수형 VNode를 사용하여 컴포넌트 인스턴스(`inputRef`)를 가져올 수 있도록 하기 위함
             const prompt = () => {
                 const input = h(VsInput, {
@@ -80,6 +89,8 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                     'onUpdate:modelValue': (value: VsInputValueType) => {
                         inputValue.value = value;
                     },
+                    onKeydown: onInputKeydown,
+                    autofocus: true,
                 });
 
                 const interactions = h('div', { class: interactsClass }, [input, buttons]);
@@ -102,13 +113,6 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                         [PROMPT_CANCEL]: () => {
                             inputRef.value?.clear();
                             resolve(null);
-                            modalPlugin.closeWithId(modalId);
-                        },
-                        'key-Enter': async () => {
-                            if (!(await inputRef.value?.validate())) {
-                                return;
-                            }
-                            resolve(inputValue.value);
                             modalPlugin.closeWithId(modalId);
                         },
                         ...(escClose && {
