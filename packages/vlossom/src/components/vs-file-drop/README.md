@@ -107,7 +107,7 @@ Show a different hint while a file is being dragged over the area or the file di
 | `multiple`         | `boolean`                                               | `false`                   |          | Allow multiple file selection. When false, only the first dropped or selected file is kept                                |
 | `min`              | `number \| string`                                      | `0`                       |          | Minimum number of files required                                                                                          |
 | `max`              | `number \| string`                                      | `Number.MAX_SAFE_INTEGER` |          | Maximum number of files allowed                                                                                           |
-| `modelValue`       | `File[]`                                                | `[]`                      |          | v-model binding for selected files. See [Caution](#caution).                                                               |
+| `modelValue`       | `File[]`                                                | `[]`                      |          | v-model binding for selected files. See [Caution](#caution).                                                              |
 | `changed`          | `File[]`                                                | `[]`                      |          | Read-only `v-model:changed` (output only). Externally set values are ignored.                                             |
 | `valid`            | `boolean`                                               | `false`                   |          | Read-only `v-model:valid` (output only). Externally set values are ignored.                                               |
 
@@ -168,13 +168,13 @@ interface VsFileDropStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                                     |
-| ---------- | ---------- | ----------------------------------------------- |
-| `focus`    | -          | Set focus to the file input                     |
-| `blur`     | -          | Remove focus from the file input                |
-| `validate` | -          | Trigger validation and return the result        |
-| `clear`    | -          | Clear the selected files                        |
-| `reset`    | -          | Reset the selected files to their initial value |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `focus`    | -          | Set focus to the file input                                                                    |
+| `blur`     | -          | Remove focus from the file input                                                               |
+| `validate` | -          | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `clear`    | -          | Clear the selected files                                                                       |
+| `reset`    | -          | Reset the selected files to their initial value                                                |
 
 ## Caution
 

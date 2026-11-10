@@ -228,23 +228,23 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 ### VsRadio
 
-| Method     | Parameters | Description                                    |
-| ---------- | ---------- | ---------------------------------------------- |
-| `clear`    | -          | Clears the selected value                      |
-| `reset`    | -          | Resets the selected value to its initial value |
-| `validate` | -          | Triggers validation                            |
-| `focus`    | -          | Focuses the radio input                        |
-| `blur`     | -          | Blurs the radio input                          |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `clear`    | -          | Clears the selected value                                                                      |
+| `reset`    | -          | Resets the selected value to its initial value                                                 |
+| `validate` | -          | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `focus`    | -          | Focuses the radio input                                                                        |
+| `blur`     | -          | Blurs the radio input                                                                          |
 
 ### VsRadioSet
 
-| Method     | Parameters | Description                                    |
-| ---------- | ---------- | ---------------------------------------------- |
-| `focus`    | -          | Focuses the first radio input                  |
-| `blur`     | -          | Blurs the first radio input                    |
-| `validate` | -          | Triggers validation                            |
-| `clear`    | -          | Clears the selected value                      |
-| `reset`    | -          | Resets the selected value to its initial value |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `focus`    | -          | Focuses the first radio input                                                                  |
+| `blur`     | -          | Blurs the first radio input                                                                    |
+| `validate` | -          | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `clear`    | -          | Clears the selected value                                                                      |
+| `reset`    | -          | Resets the selected value to its initial value                                                 |
 
 ## Cautions
 

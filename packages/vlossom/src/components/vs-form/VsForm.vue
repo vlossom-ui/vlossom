@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, provide, toRefs, watch } from 'vue';
+import { computed, defineComponent, provide, toRefs, watch } from 'vue';
 import { FORM_STORE_KEY, VsComponent } from '@/declaration';
 import { getGridProps } from '@/props';
 import { FormStore } from '@/stores';
@@ -34,16 +34,14 @@ export default defineComponent({
         const changed = computed(() => Object.values(formStore.changedObj.value).some((v) => v));
 
         async function validate() {
-            formStore.toggleValidateFlag();
-            await nextTick();
-
-            if (!valid.value) {
-                // on error callback with invalid labels
-                const invalidIds = Object.keys(formStore.validObj.value).filter((id) => !formStore.validObj.value[id]);
+            const results = await formStore.validate();
+            const invalidIds = Object.keys(results).filter((id) => !results[id]);
+            if (invalidIds.length > 0) {
+                // on error callback with invalid ids
                 emit('error', invalidIds);
             }
 
-            return valid.value;
+            return invalidIds.length === 0;
         }
 
         function clear() {

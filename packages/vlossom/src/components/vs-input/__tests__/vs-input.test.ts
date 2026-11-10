@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { nextTick } from 'vue';
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import VsInput from './../VsInput.vue';
 
 describe('VsInput', () => {
@@ -54,26 +54,26 @@ describe('VsInput', () => {
             expect(wrapper.find('input').element.value).toBe('');
         });
 
-        it('required일 때 emptyValue는 빈 값으로 검증된다', () => {
+        it('required일 때 emptyValue는 빈 값으로 검증된다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: { modelValue: null, emptyValue: null, required: true },
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
     });
 
     describe('number 타입 빈 값', () => {
-        it('required일 때 값이 비어 있으면 검증에 실패한다', () => {
+        it('required일 때 값이 비어 있으면 검증에 실패한다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: { type: 'number', modelValue: null, required: true },
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
 
         it('값이 0이면 clear 버튼을 렌더링한다', () => {
@@ -315,7 +315,7 @@ describe('VsInput', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -326,7 +326,7 @@ describe('VsInput', () => {
             expect(wrapper.vm.shake).toBe(true);
         });
 
-        it('validation 성공 시 메시지가 없고 에러 상태가 아니어야 한다', () => {
+        it('validation 성공 시 메시지가 없고 에러 상태가 아니어야 한다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -338,7 +338,7 @@ describe('VsInput', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
 
             // then
             expect(isValid).toBe(true);
@@ -362,7 +362,7 @@ describe('VsInput', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -375,7 +375,7 @@ describe('VsInput', () => {
     });
 
     describe('validate() 메서드', () => {
-        it('valid할 때 validate 함수를 호출하면 true를 반환한다', () => {
+        it('valid할 때 validate 함수를 호출하면 true를 반환한다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -385,10 +385,10 @@ describe('VsInput', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
 
-        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', () => {
+        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -398,7 +398,33 @@ describe('VsInput', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
+        });
+
+        it('async rule이 대기 중이면 결과가 나올 때까지 기다린 뒤 반환한다 (#764)', async () => {
+            // given
+            const resolvers: Record<string, (message: string) => void> = {};
+            const asyncRule = (value: unknown) =>
+                new Promise<string>((resolve) => {
+                    resolvers[String(value)] = resolve;
+                });
+            const wrapper = mount(VsInput, {
+                props: { modelValue: 'admin', rules: [asyncRule] },
+            });
+            await nextTick();
+
+            // when: value changes right before validate, while the old check is still pending
+            await wrapper.setProps({ modelValue: 'admin2' });
+            let result: boolean | undefined;
+            wrapper.vm.validate().then((value: boolean) => (result = value));
+            resolvers['admin']('Already taken');
+            await flushPromises();
+
+            // then: stale result ignored, still waiting for the latest check
+            expect(result).toBeUndefined();
+            resolvers['admin2']('Already taken');
+            await flushPromises();
+            expect(result).toBe(false);
         });
     });
 
@@ -468,7 +494,7 @@ describe('VsInput', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -490,7 +516,7 @@ describe('VsInput', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -512,7 +538,7 @@ describe('VsInput', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -534,7 +560,7 @@ describe('VsInput', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then

@@ -31,18 +31,18 @@ const rules = ref([
 const defaultRules = ref([]);
 const noDefaultRules = ref(false);
 
-const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+const { ruleMessages, checkRules, waitRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
 </script>
 ```
 
 ## Args
 
-| Arg              | Type                  | Default | Required | Description                                                              |
-| ---------------- | --------------------- | ------- | -------- | ------------------------------------------------------------------------ |
-| `inputValue`     | `Ref<T>`              | —       | Yes      | The current input value passed to each rule function.                    |
-| `rules`          | `Ref<Rule<T>[]>`      | —       | Yes      | User-supplied validation rules.                                          |
-| `defaultRules`   | `Ref<Rule<T>[]>`      | —       | Yes      | Built-in rules provided by the component (e.g. required, type checks).   |
-| `noDefaultRules` | `Ref<boolean>`        | —       | Yes      | When `true`, only `rules` are applied; `defaultRules` are ignored.       |
+| Arg              | Type             | Default | Required | Description                                                            |
+| ---------------- | ---------------- | ------- | -------- | ---------------------------------------------------------------------- |
+| `inputValue`     | `Ref<T>`         | —       | Yes      | The current input value passed to each rule function.                  |
+| `rules`          | `Ref<Rule<T>[]>` | —       | Yes      | User-supplied validation rules.                                        |
+| `defaultRules`   | `Ref<Rule<T>[]>` | —       | Yes      | Built-in rules provided by the component (e.g. required, type checks). |
+| `noDefaultRules` | `Ref<boolean>`   | —       | Yes      | When `true`, only `rules` are applied; `defaultRules` are ignored.     |
 
 ## Types
 
@@ -57,21 +57,22 @@ interface StateMessage {
 
 ## Return Refs
 
-| RefType        | Type                    | Description                                               |
-| -------------- | ----------------------- | --------------------------------------------------------- |
-| `ruleMessages` | `Ref<StateMessage[]>`   | List of error messages produced by failing rules.         |
+| RefType        | Type                  | Description                                       |
+| -------------- | --------------------- | ------------------------------------------------- |
+| `ruleMessages` | `Ref<StateMessage[]>` | List of error messages produced by failing rules. |
 
 ## Return Methods
 
-| Method       | Parameters | Description                                                                             |
-| ------------ | ---------- | --------------------------------------------------------------------------------------- |
-| `checkRules` | —          | Runs all computed rules against `inputValue` and updates `ruleMessages` synchronously or after async resolution. |
+| Method       | Parameters | Description                                                                                                                   |
+| ------------ | ---------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `checkRules` | —          | Runs all computed rules against `inputValue` and updates `ruleMessages` synchronously or after async resolution.              |
+| `waitRules`  | —          | Returns a `Promise<void>` that resolves once the latest `checkRules` call, including any started while waiting, has finished. |
 
 ## Hooks
 
-| Hook    | Description                                                              |
-| ------- | ------------------------------------------------------------------------ |
-| `watch` | Watches `computedRules` deeply and re-runs `checkRules` on any change.   |
+| Hook    | Description                                                            |
+| ------- | ---------------------------------------------------------------------- |
+| `watch` | Watches `computedRules` deeply and re-runs `checkRules` on any change. |
 
 ## Cautions
 

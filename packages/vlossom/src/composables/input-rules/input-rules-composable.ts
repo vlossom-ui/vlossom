@@ -17,7 +17,22 @@ export function useInputRules<T>(
 
     const ruleMessages: Ref<StateMessage[]> = ref([]);
     let checkId = 0;
-    async function checkRules() {
+    let latestCheck: Promise<void> = Promise.resolve();
+    function checkRules() {
+        latestCheck = runRules();
+        return latestCheck;
+    }
+
+    // resolves once the latest check (including any started while waiting) has finished
+    async function waitRules() {
+        let check: Promise<void>;
+        do {
+            check = latestCheck;
+            await check;
+        } while (check !== latestCheck);
+    }
+
+    async function runRules() {
         const id = ++checkId;
         const syncMessages: StateMessage[] = [];
         const pendingRules: PromiseLike<string>[] = [];
@@ -49,5 +64,5 @@ export function useInputRules<T>(
     }
     watch(computedRules, checkRules, { deep: true });
 
-    return { ruleMessages, checkRules };
+    return { ruleMessages, checkRules, waitRules };
 }

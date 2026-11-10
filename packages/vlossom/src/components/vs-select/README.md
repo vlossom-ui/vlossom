@@ -212,15 +212,15 @@ interface VsSelectStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method         | Parameters | Description                                    |
-| -------------- | ---------- | ---------------------------------------------- |
-| `focus`        | -          | Focuses the select trigger                     |
-| `blur`         | -          | Blurs the select trigger                       |
-| `openOptions`  | -          | Opens the options dropdown                     |
-| `closeOptions` | -          | Closes the options dropdown                    |
-| `validate`     | -          | Triggers validation                            |
-| `clear`        | -          | Clears the selected value                      |
-| `reset`        | -          | Resets the selected value to its initial value |
+| Method         | Parameters | Description                                                                                    |
+| -------------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `focus`        | -          | Focuses the select trigger                                                                     |
+| `blur`         | -          | Blurs the select trigger                                                                       |
+| `openOptions`  | -          | Opens the options dropdown                                                                     |
+| `closeOptions` | -          | Closes the options dropdown                                                                    |
+| `validate`     | -          | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `clear`        | -          | Clears the selected value                                                                      |
+| `reset`        | -          | Resets the selected value to its initial value                                                 |
 
 ## Cautions
 

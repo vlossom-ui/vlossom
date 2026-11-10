@@ -112,14 +112,14 @@ describe('VsRadioSet', () => {
             warnSpy.mockRestore();
         });
 
-        it('required일 때 emptyValue는 빈 값으로 검증된다', () => {
+        it('required일 때 emptyValue는 빈 값으로 검증된다', async () => {
             // given
             const wrapper = mount(VsRadioSet, {
                 props: { options: ['A', 'B'], modelValue: '', emptyValue: '', required: true },
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
 
         it('VsForm clear 시 자식 radio도 같은 emptyValue를 써서 다른 값을 emit하지 않는다', async () => {
@@ -147,14 +147,14 @@ describe('VsRadioSet', () => {
             expect(values).toEqual([]);
         });
 
-        it('required일 때 빈 문자열 옵션을 선택하면 통과한다', () => {
+        it('required일 때 빈 문자열 옵션을 선택하면 통과한다', async () => {
             // given
             const wrapper = mount(VsRadioSet, {
                 props: { options: ['', 'A'], modelValue: '', required: true },
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
     });
 
@@ -259,7 +259,7 @@ describe('VsRadioSet', () => {
             });
 
             // when
-            const result = wrapper.vm.validate();
+            const result = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -268,7 +268,7 @@ describe('VsRadioSet', () => {
             expect(wrapper.html()).toContain('required');
         });
 
-        it('값이 존재하는 경우, validate 함수를 호출하면 true를 반환한다', () => {
+        it('값이 존재하는 경우, validate 함수를 호출하면 true를 반환한다', async () => {
             // given
             const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
                 props: {
@@ -279,7 +279,7 @@ describe('VsRadioSet', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
     });
 

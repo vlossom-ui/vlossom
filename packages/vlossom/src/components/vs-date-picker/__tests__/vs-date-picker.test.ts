@@ -80,7 +80,7 @@ describe('VsDatePicker', () => {
             expect(input.attributes('min')).toBeUndefined();
             expect(input.attributes('max')).toBeUndefined();
 
-            expect((wrapper.vm as unknown as { validate: () => boolean }).validate()).toBe(false);
+            expect(await (wrapper.vm as unknown as { validate: () => Promise<boolean> }).validate()).toBe(false);
             await nextTick();
             expect(wrapper.text()).toContain('Must be on or after 2026-01-01');
         });

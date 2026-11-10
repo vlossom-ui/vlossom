@@ -178,11 +178,11 @@ interface VsInputStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                                  |
-| ---------- | ---------- | -------------------------------------------- |
-| `focus`    | -          | Focuses the input element.                   |
-| `blur`     | -          | Blurs the input element.                     |
-| `validate` | -          | Triggers validation and returns the result.  |
-| `clear`    | -          | Clears the input value.                      |
-| `reset`    | -          | Resets the input value to its initial value. |
-| `select`   | -          | Selects all text in the input element.       |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `focus`    | -          | Focuses the input element.                                                                     |
+| `blur`     | -          | Blurs the input element.                                                                       |
+| `validate` | -          | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `clear`    | -          | Clears the input value.                                                                        |
+| `reset`    | -          | Resets the input value to its initial value.                                                   |
+| `select`   | -          | Selects all text in the input element.                                                         |
