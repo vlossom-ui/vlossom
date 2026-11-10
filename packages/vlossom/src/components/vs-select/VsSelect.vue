@@ -150,6 +150,7 @@ import {
     computed,
     defineComponent,
     nextTick,
+    onBeforeUnmount,
     ref,
     toRefs,
     useTemplateRef,
@@ -703,6 +704,11 @@ export default defineComponent({
             } else {
                 removeClickOutsideListener();
             }
+        });
+
+        onBeforeUnmount(() => {
+            removeClickOutsideListener();
+            removeMouseMoveListener();
         });
 
         return {
