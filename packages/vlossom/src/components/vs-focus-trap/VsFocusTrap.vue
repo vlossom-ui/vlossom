@@ -17,6 +17,9 @@ import { VsComponent } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
 
 const componentName = VsComponent.VsFocusTrap;
+const FOCUSABLE_SELECTOR = `button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]),
+    select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])`;
+
 export default defineComponent({
     name: componentName,
     props: {
@@ -83,10 +86,7 @@ export default defineComponent({
                 return;
             }
 
-            const focusables = wrapperElement.value.querySelectorAll<HTMLElement>(
-                `button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]),
-                select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])`,
-            );
+            const focusables = wrapperElement.value.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
 
             const shownFocusables = Array.from(focusables).filter(
                 (focusable) => focusable.style.display !== 'none' || !focusable.hasAttribute('disabled'),
@@ -102,12 +102,27 @@ export default defineComponent({
             lastFocusable = shownFocusables[shownFocusables.length - 1];
         }
 
+        function findAutofocusTarget(): HTMLElement | null {
+            const autofocusElement = Array.from(
+                wrapperElement.value?.querySelectorAll<HTMLElement>('[autofocus]') ?? [],
+            ).find((element) => element.closest('.vs-focus-trap') === focusTrapRef.value);
+
+            if (!autofocusElement || autofocusElement.matches(FOCUSABLE_SELECTOR)) {
+                return autofocusElement ?? null;
+            }
+            return autofocusElement.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+        }
+
         function focus() {
             nextTick(() => {
                 const isChildOfFocusTrap = document.activeElement?.closest('.vs-focus-trap') === focusTrapRef.value;
-                if (!isChildOfFocusTrap) {
-                    focusTrapAnchorRef.value?.focus({ preventScroll: true });
+                if (isChildOfFocusTrap) {
+                    return;
                 }
+
+                // autofocus 대상이 disabled이거나 숨겨져 포커스를 받지 못해도 포커스가 앵커에 남도록 앵커를 먼저 포커스한다
+                focusTrapAnchorRef.value?.focus({ preventScroll: true });
+                findAutofocusTarget()?.focus({ focusVisible: true });
             });
         }
 

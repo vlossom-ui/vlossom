@@ -45,6 +45,79 @@ describe('VsFocusTrap', () => {
         expect(wrapper.find('#vs-focus-trap-anchor').element).toBe(document.activeElement);
     });
 
+    describe('autofocus', () => {
+        it('autofocus 속성을 가진 요소가 있으면, 마운트 시 앵커 대신 그 요소에 focus를 준다', async () => {
+            // given, when
+            const wrapper = mountWith({
+                default: defineComponent({ template: '<div><input /><button autofocus>OK</button></div>' }),
+            });
+            await nextTick();
+
+            // then
+            expect(document.activeElement).toBe(wrapper.find('button').element);
+        });
+
+        it('autofocus 속성을 가진 요소가 focusable이 아니면, 그 안의 첫번째 포커스 가능한 요소에 focus를 준다', async () => {
+            // given, when
+            const wrapper = mountWith({
+                default: defineComponent({
+                    template: '<div><button>Cancel</button><div autofocus><input /></div></div>',
+                }),
+            });
+            await nextTick();
+
+            // then
+            expect(document.activeElement).toBe(wrapper.find('input').element);
+        });
+
+        it('autofocus 요소가 focus를 받을 수 없으면, 앵커에 focus가 남는다', async () => {
+            // given, when
+            const wrapper = mountWith({
+                default: defineComponent({ template: '<div><input disabled autofocus /><button>OK</button></div>' }),
+            });
+            await nextTick();
+
+            // then
+            expect(document.activeElement).toBe(wrapper.find('#vs-focus-trap-anchor').element);
+        });
+
+        it('중첩된 focus trap 안의 autofocus 요소는 바깥 focus trap의 autofocus 대상에서 제외한다', async () => {
+            // given, when
+            mountWith({
+                default: defineComponent({
+                    components: { VsFocusTrap },
+                    template: `
+                        <div>
+                            <vs-focus-trap><div><button autofocus>inner</button></div></vs-focus-trap>
+                            <button autofocus>outer</button>
+                        </div>
+                    `,
+                }),
+            });
+            await nextTick();
+            await nextTick();
+
+            // then
+            expect(document.activeElement?.textContent).toBe('outer');
+        });
+
+        it('마운트 시점에 이미 내부 요소에 focus가 있으면, autofocus 요소로 focus를 옮기지 않는다', async () => {
+            // given, when
+            const wrapper = mountWith({
+                default: defineComponent({
+                    template: '<div><textarea ref="textareaRef" /><button autofocus>OK</button></div>',
+                    mounted() {
+                        (this.$refs.textareaRef as HTMLTextAreaElement).focus();
+                    },
+                }),
+            });
+            await nextTick();
+
+            // then
+            expect(document.activeElement).toBe(wrapper.find('textarea').element);
+        });
+    });
+
     describe('cycle tab focus', () => {
         it('포커스 가능한 마지막 요소에서 tab 이벤트가 동작하면, 첫번째 포커스 가능한 요소에 focus를 준다', async () => {
             // given
