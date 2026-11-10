@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ref, type Ref, nextTick } from 'vue';
+import { flushPromises } from '@vue/test-utils';
 import type { Rule } from '@/declaration';
 import { useInputRules } from './../input-rules-composable';
 
@@ -271,6 +272,35 @@ describe('useInputRules', () => {
                 { state: 'error', text: 'sync error' },
                 { state: 'error', text: 'async error' },
             ]);
+        });
+
+        it('waitRules는 기다리는 도중 새로 시작된 검사까지 끝나야 resolve되어야 한다', async () => {
+            // given
+            const { rule, resolvers } = createDeferredRule();
+            rules.value = [rule];
+            const { ruleMessages, checkRules, waitRules } = useInputRules(
+                inputValue,
+                rules,
+                defaultRules,
+                noDefaultRules,
+            );
+            inputValue.value = 'a';
+            checkRules();
+            let done = false;
+            waitRules().then(() => (done = true));
+
+            // when: a newer check starts while waiting, then the old one resolves
+            inputValue.value = 'abc';
+            checkRules();
+            resolvers['a']('stale error');
+            await flushPromises();
+
+            // then
+            expect(done).toBe(false);
+            resolvers['abc']('latest error');
+            await flushPromises();
+            expect(done).toBe(true);
+            expect(ruleMessages.value).toEqual([{ state: 'error', text: 'latest error' }]);
         });
 
         it('Promise가 아닌 thenable 결과도 비동기 규칙으로 처리되어야 한다', async () => {

@@ -24,12 +24,12 @@ export function useInputRules<T>(
     }
 
     // resolves once the latest check (including any started while waiting) has finished
-    async function waitRules() {
-        let check: Promise<void>;
-        do {
-            check = latestCheck;
-            await check;
-        } while (check !== latestCheck);
+    async function waitRules(): Promise<void> {
+        const check = latestCheck;
+        await check;
+        if (check !== latestCheck) {
+            return waitRules();
+        }
     }
 
     async function runRules() {
