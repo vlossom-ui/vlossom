@@ -10,7 +10,7 @@ Evaluates an array of synchronous and asynchronous validation rules against the 
 
 - Combines `defaultRules` and `rules`, with `defaultRules` prepended unless `noDefaultRules` is `true`
 - Supports synchronous rules returning a string error message or falsy value
-- Supports asynchronous rules returning `Promise<string>`
+- Supports asynchronous rules returning `Promise<string>`; only the result of the latest check is applied, so late results from outdated checks are ignored
 - Re-runs validation automatically whenever the computed rule list changes
 
 ## Basic Usage

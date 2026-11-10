@@ -16,37 +16,36 @@ export function useInputRules<T>(
     });
 
     const ruleMessages: Ref<StateMessage[]> = ref([]);
+    let checkId = 0;
     async function checkRules() {
-        ruleMessages.value = [];
-        const pendingRules: Promise<string>[] = [];
+        const id = ++checkId;
+        const syncMessages: StateMessage[] = [];
+        const pendingRules: PromiseLike<string>[] = [];
 
         computedRules.value.forEach((rule) => {
             const result = rule(inputValue.value);
             if (!result) {
                 return;
             }
-            if (result instanceof Promise) {
-                pendingRules.push(result);
+            if (typeof (result as PromiseLike<string>).then === 'function') {
+                pendingRules.push(result as PromiseLike<string>);
             } else {
-                ruleMessages.value.push({ state: 'error', text: result as string });
+                syncMessages.push({ state: 'error', text: result as string });
             }
         });
 
+        ruleMessages.value = syncMessages;
         if (pendingRules.length === 0) {
             return;
         }
-        const resolvedMessages = (await Promise.all(pendingRules)).reduce((acc: StateMessage[], resolved) => {
-            if (resolved) {
-                acc.push({
-                    state: 'error',
-                    text: resolved,
-                });
-            }
 
-            return acc;
-        }, []);
-
-        ruleMessages.value.push(...resolvedMessages);
+        const resolved = await Promise.all(pendingRules);
+        // drop results of outdated calls (value or rules changed while pending)
+        if (id !== checkId) {
+            return;
+        }
+        const asyncMessages: StateMessage[] = resolved.filter(Boolean).map((text) => ({ state: 'error', text }));
+        ruleMessages.value = [...syncMessages, ...asyncMessages];
     }
     watch(computedRules, checkRules, { deep: true });
 

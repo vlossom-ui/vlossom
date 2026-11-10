@@ -10,7 +10,7 @@
 
 - `defaultRules`와 `rules`를 결합하며, `noDefaultRules`가 `true`가 아닌 한 `defaultRules`가 앞에 추가됩니다
 - 문자열 오류 메시지 또는 falsy 값을 반환하는 동기 규칙을 지원합니다
-- `Promise<string>`을 반환하는 비동기 규칙을 지원합니다
+- `Promise<string>`을 반환하는 비동기 규칙을 지원하며, 가장 마지막 검사 결과만 반영되어 이전 검사의 늦은 결과는 무시됩니다
 - 계산된 규칙 목록이 변경될 때마다 유효성 검사를 자동으로 재실행합니다
 
 ## Basic Usage

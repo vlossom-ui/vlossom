@@ -202,4 +202,90 @@ describe('useInputRules', () => {
         // then
         expect(ruleMessages.value.length).toBe(0);
     });
+
+    describe('비동기 규칙 경쟁 상태 (#764)', () => {
+        function createDeferredRule() {
+            const resolvers: Record<string, (message: string) => void> = {};
+            const rule: Rule<string> = (value) =>
+                new Promise<string>((resolve) => {
+                    resolvers[value] = resolve;
+                });
+            return { rule, resolvers };
+        }
+
+        it('이전 호출의 결과가 늦게 도착하면 버려져야 한다', async () => {
+            // given
+            const { rule, resolvers } = createDeferredRule();
+            rules.value = [rule];
+            const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+
+            // when
+            inputValue.value = 'a';
+            const first = checkRules();
+            inputValue.value = 'abc';
+            const second = checkRules();
+            resolvers['a']('too short');
+            await first;
+            resolvers['abc']('');
+            await second;
+
+            // then
+            expect(ruleMessages.value).toEqual([]);
+        });
+
+        it('응답 순서가 뒤바뀌어도 최신 호출의 결과만 남아야 한다', async () => {
+            // given
+            const { rule, resolvers } = createDeferredRule();
+            rules.value = [rule];
+            const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+
+            // when
+            inputValue.value = 'a';
+            const first = checkRules();
+            inputValue.value = 'ab';
+            const second = checkRules();
+            resolvers['ab']('latest error');
+            await second;
+            resolvers['a']('stale error');
+            await first;
+
+            // then
+            expect(ruleMessages.value).toEqual([{ state: 'error', text: 'latest error' }]);
+        });
+
+        it('비동기 규칙 대기 중에도 동기 규칙 결과는 즉시 반영되어야 한다', async () => {
+            // given
+            const { rule, resolvers } = createDeferredRule();
+            rules.value = [(value) => (value.length < 3 ? 'sync error' : ''), rule];
+            const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+
+            // when
+            const pending = checkRules();
+
+            // then
+            expect(ruleMessages.value).toEqual([{ state: 'error', text: 'sync error' }]);
+
+            resolvers['ab']('async error');
+            await pending;
+            expect(ruleMessages.value).toEqual([
+                { state: 'error', text: 'sync error' },
+                { state: 'error', text: 'async error' },
+            ]);
+        });
+
+        it('Promise가 아닌 thenable 결과도 비동기 규칙으로 처리되어야 한다', async () => {
+            // given
+            const thenable = {
+                then: (resolve: (value: string) => void) => resolve('thenable error'),
+            } as PromiseLike<string>;
+            rules.value = [() => thenable];
+            const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+
+            // when
+            await checkRules();
+
+            // then
+            expect(ruleMessages.value).toEqual([{ state: 'error', text: 'thenable error' }]);
+        });
+    });
 });

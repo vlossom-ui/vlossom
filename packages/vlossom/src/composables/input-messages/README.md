@@ -9,7 +9,7 @@ Evaluates static and function-based messages for an input value and combines the
 ## Feature
 
 - Supports static `StateMessage` objects and synchronous/asynchronous message functions
-- Resolves all pending async message functions in parallel with `Promise.all`
+- Resolves all pending async message functions in parallel with `Promise.all`; only the result of the latest check is applied
 - Toggles rule message visibility via the `showRuleMessages` ref
 - Re-evaluates messages reactively whenever the `messages` array changes
 
