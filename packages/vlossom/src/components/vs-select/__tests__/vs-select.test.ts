@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import VsSelect from './../VsSelect.vue';
 
@@ -1023,6 +1023,31 @@ describe('VsSelect', () => {
 
             wrapper.unmount();
             vi.useRealTimers();
+        });
+
+        it('옵션 목록이 열린 상태로 unmount되면 document click 리스너를 해제한다', async () => {
+            // given
+            const addSpy = vi.spyOn(document, 'addEventListener');
+            const removeSpy = vi.spyOn(document, 'removeEventListener');
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                props: { options: basicOptions, modelValue: null },
+            });
+            wrapper.vm.openOptions();
+            await flushPromises();
+            const clickAdds = addSpy.mock.calls.filter((call) => call[0] === 'click' && call[2] === true);
+            expect(clickAdds).toHaveLength(1);
+            const handler = clickAdds[0][1];
+
+            // when
+            wrapper.unmount();
+            await flushPromises();
+
+            // then
+            expect(removeSpy.mock.calls.some((call) => call[0] === 'click' && call[1] === handler)).toBe(true);
+
+            addSpy.mockRestore();
+            removeSpy.mockRestore();
         });
     });
 
