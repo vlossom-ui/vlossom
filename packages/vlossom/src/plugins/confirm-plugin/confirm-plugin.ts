@@ -45,6 +45,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 props: { colorScheme, styleSet: componentStyleSet.value.$okButton, primary: true },
                 content: okText,
                 onClickEvent: () => handleButton(CONFIRM_OK),
+                autofocus: true,
             });
 
             const cancelButton = vnodeUtils.createVsButton({
@@ -79,10 +80,6 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                         },
                         [CONFIRM_CANCEL]: () => {
                             resolve(false);
-                            modalPlugin.closeWithId(modalId);
-                        },
-                        'key-Enter': () => {
-                            resolve(true);
                             modalPlugin.closeWithId(modalId);
                         },
                         ...(escClose && {

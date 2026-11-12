@@ -10,7 +10,7 @@ Displays a modal confirmation dialog with OK and Cancel buttons. Returns a `Prom
 
 - Opens a modal overlay with custom string or Vue component content
 - Provides OK and Cancel buttons with configurable labels and styles
-- Resolves `true` on OK (or Enter key) and `false` on Cancel (or Escape key)
+- Resolves `true` on OK and `false` on Cancel (or Escape key)
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
 - Supports swapping the button order via `swapButtons`
 - Supports custom button container styling via `$buttons` CSSProperties
@@ -119,6 +119,6 @@ interface ConfirmPlugin {
 ## Caution
 
 - The confirm plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
-- Pressing Enter resolves the promise with `true`; pressing Escape resolves with `false`.
+- The OK button is focused on open. Enter presses the focused button, so it resolves with `true` on OK and `false` on Cancel. Pressing Escape resolves with `false`.
 - Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.
 - Clicking outside the modal (if `dimClose` is enabled) resolves with `false`.

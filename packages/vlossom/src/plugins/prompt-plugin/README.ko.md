@@ -10,7 +10,7 @@
 
 - 커스텀 문자열 또는 Vue 컴포넌트 콘텐츠가 포함된 모달 오버레이를 엽니다
 - 구성 가능한 입력 props가 있는 `VsInput` 필드를 렌더링합니다
-- 확인(또는 Enter 키) 시 입력 값을 반환하고, 취소(또는 Escape 키) 시 `null`을 반환합니다
+- 확인(또는 입력창에서 Enter 키) 시 입력 값을 반환하고, 취소(또는 Escape 키) 시 `null`을 반환합니다
 - resolve 전에 입력의 유효성을 검사합니다 — 유효성 검사 실패 시 모달이 열린 상태로 유지됩니다
 - 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
 - 커스텀 버튼 텍스트, 버튼 순서 교체, `$buttons` CSSProperties로 버튼 컨테이너 스타일링을 지원합니다
@@ -122,6 +122,7 @@ interface PromptPlugin {
 ## 주의사항
 
 - Prompt 플러그인은 Modal 플러그인에 의존합니다. Vlossom 플러그인 설정 시 두 플러그인 모두 등록되어 있는지 확인하세요.
+- 열리면 입력창에 포커스가 갑니다. 입력창에서 Enter 키를 누르면 확인과 같이 동작하고, 버튼에 포커스가 있으면 Enter 키는 그 버튼을 누릅니다.
 - 확인/Enter 시 입력의 유효성 검사가 실패하면 모달이 열린 상태로 유지되고 Promise는 아직 resolve되지 않습니다.
 - Escape 키를 누르거나 모달 외부를 클릭해도(`dimClose`가 활성화된 경우) Promise가 `null`로 resolve되고 입력이 초기화됩니다.
 - Escape 키 닫기는 기본적으로 활성화되어 있습니다. `escClose: false`를 전달하면 Escape 키를 눌러도 모달이 닫히지 않습니다.
