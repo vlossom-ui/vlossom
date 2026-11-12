@@ -92,8 +92,8 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                     escClose: false,
                     callbacks: {
                         ...modalOptions.callbacks,
-                        [PROMPT_OK]: () => {
-                            if (!inputRef.value?.validate()) {
+                        [PROMPT_OK]: async () => {
+                            if (!(await inputRef.value?.validate())) {
                                 return;
                             }
                             resolve(inputValue.value);
@@ -104,8 +104,8 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                             resolve(null);
                             modalPlugin.closeWithId(modalId);
                         },
-                        'key-Enter': () => {
-                            if (!inputRef.value?.validate()) {
+                        'key-Enter': async () => {
+                            if (!(await inputRef.value?.validate())) {
                                 return;
                             }
                             resolve(inputValue.value);

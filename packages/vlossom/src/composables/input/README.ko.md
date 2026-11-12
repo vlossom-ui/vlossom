@@ -57,9 +57,9 @@ const { computedId, computedDisabled, computedReadonly, computedMessages, comput
 
 ## Args
 
-| 인자          | 타입                      | 기본값 | 필수 | 설명                                              |
-| ------------- | ------------------------- | ------ | ---- | ------------------------------------------------- |
-| `ctx`         | `{ emit: Function }`      | —      | Yes  | `emit` 함수를 제공하는 컴포넌트 컨텍스트.         |
+| 인자          | 타입                      | 기본값 | 필수 | 설명                                                    |
+| ------------- | ------------------------- | ------ | ---- | ------------------------------------------------------- |
+| `ctx`         | `{ emit: Function }`      | —      | Yes  | `emit` 함수를 제공하는 컴포넌트 컨텍스트.               |
 | `inputParams` | `InputComponentParams<T>` | —      | Yes  | 입력의 반응형 상태와 콜백을 설명하는 객체 (Types 참고). |
 
 ## Types
@@ -89,34 +89,34 @@ interface InputComponentParams<T> {
 
 ## Return Refs
 
-| RefType            | 타입                          | 설명                                                                        |
-| ------------------ | ----------------------------- | --------------------------------------------------------------------------- |
+| RefType            | 타입                          | 설명                                                                                                    |
+| ------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `changed`          | `ComputedRef<boolean>`        | 현재 값이 초기화 시점의 기준값과 다르면(dirty) `true`입니다. 초기값으로 되돌리면 다시 `false`가 됩니다. |
-| `valid`            | `ComputedRef<boolean>`        | 활성 규칙 메시지가 없으면 `true`.                                            |
-| `shake`            | `Ref<boolean>`                | `validate()` 실패 시마다 토글됩니다 — 흔들기 CSS 클래스에 바인딩하세요.     |
-| `computedMessages` | `ComputedRef<StateMessage[]>` | 표시할 정적 및 규칙 메시지의 통합 목록.                                      |
-| `showRuleMessages` | `Ref<boolean>`                | 현재 규칙 메시지가 표시되는지 여부.                                          |
-| `computedId`       | `ComputedRef<string>`         | 요소 id (prop 값 또는 자동 생성).                                            |
-| `computedDisabled` | `ComputedRef<boolean>`        | prop 또는 부모 폼이 입력을 비활성화할 때 `true`.                             |
-| `computedReadonly` | `ComputedRef<boolean>`        | prop 또는 부모 폼이 읽기 전용으로 설정할 때 `true`.                          |
-| `computedState`    | `ComputedRef<UIState>`        | 규칙 메시지가 표시되고 유효하지 않으면 `'error'`; 그 외에는 prop 상태.      |
+| `valid`            | `ComputedRef<boolean>`        | 활성 규칙 메시지가 없으면 `true`.                                                                       |
+| `shake`            | `Ref<boolean>`                | `validate()` 실패 시마다 토글됩니다 — 흔들기 CSS 클래스에 바인딩하세요.                                 |
+| `computedMessages` | `ComputedRef<StateMessage[]>` | 표시할 정적 및 규칙 메시지의 통합 목록.                                                                 |
+| `showRuleMessages` | `Ref<boolean>`                | 현재 규칙 메시지가 표시되는지 여부.                                                                     |
+| `computedId`       | `ComputedRef<string>`         | 요소 id (prop 값 또는 자동 생성).                                                                       |
+| `computedDisabled` | `ComputedRef<boolean>`        | prop 또는 부모 폼이 입력을 비활성화할 때 `true`.                                                        |
+| `computedReadonly` | `ComputedRef<boolean>`        | prop 또는 부모 폼이 읽기 전용으로 설정할 때 `true`.                                                     |
+| `computedState`    | `ComputedRef<UIState>`        | 규칙 메시지가 표시되고 유효하지 않으면 `'error'`; 그 외에는 prop 상태.                                  |
 
 ## Return Methods
 
-| 메서드     | 파라미터 | 설명                                                                        |
-| ---------- | -------- | --------------------------------------------------------------------------- |
-| `validate` | —        | 규칙 메시지를 표시하고 유효하지 않으면 `shake`를 토글합니다. 유효하면 `true`를 반환합니다. |
-| `clear`    | —        | `onClear` 콜백을 호출하고 규칙 메시지를 숨깁니다. `changed`는 비워진 값과 초기값의 diff로 결정됩니다(값이 있던 입력을 clear하면 `true`). |
-| `reset`    | —        | `inputValue`를 초기화 시점의 기준값으로 되돌리고 규칙 메시지를 숨겨 `changed`를 `false`로 만듭니다. clear와 달리 빈 값이 아니라 기준값으로 복원합니다. |
+| 메서드     | 파라미터 | 설명                                                                                                                                                           |
+| ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validate` | —        | 규칙 메시지를 표시하고 대기 중인 비동기 규칙을 기다린 뒤, 유효하지 않으면 `shake`를 토글합니다. 유효하면 `true`로 resolve되는 `Promise<boolean>`을 반환합니다. |
+| `clear`    | —        | `onClear` 콜백을 호출하고 규칙 메시지를 숨깁니다. `changed`는 비워진 값과 초기값의 diff로 결정됩니다(값이 있던 입력을 clear하면 `true`).                       |
+| `reset`    | —        | `inputValue`를 초기화 시점의 기준값으로 되돌리고 규칙 메시지를 숨겨 `changed`를 `false`로 만듭니다. clear와 달리 빈 값이 아니라 기준값으로 복원합니다.         |
 
 ## Hooks
 
-| Hook              | 설명                                                                     |
-| ----------------- | ------------------------------------------------------------------------ |
-| `onBeforeMount`   | 제공된 경우 `callbacks.onBeforeMount`를 호출합니다.                       |
-| `onMounted`       | `callbacks.onMounted`를 호출하고, 초기 `checkMessages` / `checkRules`를 실행합니다. |
-| `onBeforeUnmount` | 제공된 경우 `callbacks.onBeforeUnmount`를 호출합니다.                     |
-| `onUnmounted`     | 제공된 경우 `callbacks.onUnmounted`를 호출합니다.                         |
+| Hook              | 설명                                                                                          |
+| ----------------- | --------------------------------------------------------------------------------------------- |
+| `onBeforeMount`   | 제공된 경우 `callbacks.onBeforeMount`를 호출합니다.                                           |
+| `onMounted`       | `callbacks.onMounted`를 호출하고, 초기 `checkMessages` / `checkRules`를 실행합니다.           |
+| `onBeforeUnmount` | 제공된 경우 `callbacks.onBeforeUnmount`를 호출합니다.                                         |
+| `onUnmounted`     | 제공된 경우 `callbacks.onUnmounted`를 호출합니다.                                             |
 | `watch`           | 변경 시 `inputValue` ↔ `modelValue`를 동기화하고, 이벤트를 발생시키며 재유효성 검사를 합니다. |
 
 ## Cautions

@@ -363,7 +363,7 @@ describe('useInput composable', () => {
             });
 
             // when
-            const result = wrapper.vm.validate();
+            const result = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -388,7 +388,7 @@ describe('useInput composable', () => {
                 await nextTick();
 
                 // when
-                const result = wrapper.vm.validate();
+                const result = await wrapper.vm.validate();
                 await nextTick();
 
                 // then
@@ -406,7 +406,7 @@ describe('useInput composable', () => {
                 const oldShake = wrapper.vm.shake;
 
                 // when
-                const result = wrapper.vm.validate();
+                const result = await wrapper.vm.validate();
                 await nextTick();
 
                 // then
@@ -510,7 +510,7 @@ describe('useInput composable', () => {
 
             // when
             await nextTick();
-            const result = wrapper.vm.validate();
+            const result = await wrapper.vm.validate();
             await nextTick();
 
             // then

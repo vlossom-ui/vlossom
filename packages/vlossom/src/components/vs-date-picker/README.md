@@ -187,11 +187,11 @@ interface VsDatePickerStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                                                                          |
-| ---------- | ---------- | ------------------------------------------------------------------------------------ |
-| `focus`    | -          | Focuses the date input element.                                                      |
-| `blur`     | -          | Blurs the date input element.                                                        |
-| `validate` | -          | Triggers validation and returns the result.                                          |
-| `clear`    | -          | Clears the value (modelValue → `''`).                                                |
-| `reset`    | -          | Resets the value to its initial value.                                               |
-| `open`     | -          | Opens the native picker via `showPicker()`. Call from within a user-gesture handler. |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `focus`    | -          | Focuses the date input element.                                                                |
+| `blur`     | -          | Blurs the date input element.                                                                  |
+| `validate` | -          | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `clear`    | -          | Clears the value (modelValue → `''`).                                                          |
+| `reset`    | -          | Resets the value to its initial value.                                                         |
+| `open`     | -          | Opens the native picker via `showPicker()`. Call from within a user-gesture handler.           |

@@ -178,4 +178,28 @@ describe('useInputMessages', () => {
         expect(computedMessages.value.length).toBe(1);
         expect(computedMessages.value[0].text).toBe('새로운 메시지');
     });
+
+    it('이전 호출의 비동기 message 결과가 늦게 도착하면 버려져야 한다 (#764)', async () => {
+        // given
+        const resolvers: Record<string, (message: StateMessage) => void> = {};
+        const asyncMessage = ((value: string) =>
+            new Promise<StateMessage>((resolve) => {
+                resolvers[value] = resolve;
+            })) as unknown as Message<string>;
+        messages.value = [asyncMessage];
+        const { computedMessages, checkMessages } = useInputMessages(inputValue, messages, ruleMessages);
+
+        // when
+        inputValue.value = 'old';
+        const first = checkMessages();
+        inputValue.value = 'new';
+        const second = checkMessages();
+        resolvers['new']({ state: 'info', text: 'new message' });
+        await second;
+        resolvers['old']({ state: 'info', text: 'old message' });
+        await first;
+
+        // then
+        expect(computedMessages.value).toEqual([{ state: 'info', text: 'new message' }]);
+    });
 });

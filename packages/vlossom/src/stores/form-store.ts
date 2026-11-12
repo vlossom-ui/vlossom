@@ -5,7 +5,7 @@ export class FormStore {
     private _readonly = ref(false);
     private _changedObj: Ref<Record<string, boolean>> = ref({});
     private _validObj: Ref<Record<string, boolean>> = ref({});
-    private _validateFlag = ref(false);
+    private _validators: Record<string, () => Promise<boolean>> = {};
     private _clearFlag = ref(false);
     private _resetFlag = ref(false);
 
@@ -40,12 +40,18 @@ export class FormStore {
     public removeFromForm(id: string) {
         delete this._changedObj.value[id];
         delete this._validObj.value[id];
+        delete this._validators[id];
     }
 
-    public validateFlag = computed(() => this._validateFlag.value);
+    public setValidator(id: string, validator: () => Promise<boolean>) {
+        this._validators[id] = validator;
+    }
 
-    public toggleValidateFlag() {
-        this._validateFlag.value = !this._validateFlag.value;
+    // runs every registered validator and resolves with each input's result by id
+    public async validate(): Promise<Record<string, boolean>> {
+        const entries = Object.entries(this._validators);
+        const results = await Promise.all(entries.map(([, validator]) => validator()));
+        return Object.fromEntries(entries.map(([id], index) => [id, results[index]]));
     }
 
     public clearFlag = computed(() => this._clearFlag.value);

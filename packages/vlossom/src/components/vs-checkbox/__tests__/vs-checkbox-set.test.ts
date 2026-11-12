@@ -65,14 +65,14 @@ describe('VsCheckboxSet', () => {
             await nextTick();
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
 
             // when
             await wrapper.setProps({ options: ['A', 'C', 'D'] });
             await nextTick();
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
             vi.restoreAllMocks();
         });
     });
@@ -169,7 +169,7 @@ describe('VsCheckboxSet', () => {
             });
 
             // when
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -189,7 +189,7 @@ describe('VsCheckboxSet', () => {
             });
 
             // when
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -209,7 +209,7 @@ describe('VsCheckboxSet', () => {
             });
 
             // when
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -219,7 +219,7 @@ describe('VsCheckboxSet', () => {
     });
 
     describe('validate', () => {
-        it('valid할 때 validate 함수를 호출하면 true를 반환한다', () => {
+        it('valid할 때 validate 함수를 호출하면 true를 반환한다', async () => {
             // given
             const wrapper = mount(VsCheckboxSet, {
                 props: {
@@ -230,10 +230,10 @@ describe('VsCheckboxSet', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
 
-        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', () => {
+        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', async () => {
             // given
             const wrapper = mount(VsCheckboxSet, {
                 props: {
@@ -244,7 +244,7 @@ describe('VsCheckboxSet', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
     });
 

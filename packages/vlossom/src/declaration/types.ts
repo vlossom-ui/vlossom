@@ -111,7 +111,7 @@ export interface InputComponentParams<T = unknown> {
 }
 
 export interface FormChildRef {
-    validate: () => boolean;
+    validate: () => Promise<boolean>;
     clear: () => void;
     reset: () => void;
 }

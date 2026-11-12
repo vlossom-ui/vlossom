@@ -6,7 +6,7 @@ export function useInputForm(
     id: Ref<string>,
     valid: Ref<boolean>,
     changed: Ref<boolean>,
-    validate: () => boolean,
+    validate: () => Promise<boolean>,
     clear: () => void,
     reset: () => void,
 ) {
@@ -23,8 +23,6 @@ export function useInputForm(
         formStore.updateValid(id.value, valid.value);
     });
 
-    watch(formStore.validateFlag, validate);
-
     watch(formStore.clearFlag, clear);
 
     watch(formStore.resetFlag, reset);
@@ -32,12 +30,14 @@ export function useInputForm(
     onMounted(() => {
         formStore.updateChanged(id.value, changed.value);
         formStore.updateValid(id.value, valid.value);
+        formStore.setValidator(id.value, validate);
     });
 
     watch(id, (newId, oldId) => {
         formStore.removeFromForm(oldId);
         formStore.updateChanged(newId, changed.value);
         formStore.updateValid(newId, valid.value);
+        formStore.setValidator(newId, validate);
     });
 
     onBeforeUnmount(() => {

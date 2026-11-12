@@ -184,7 +184,7 @@ describe('vs-file-drop', () => {
 
                 // when
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
@@ -200,7 +200,7 @@ describe('vs-file-drop', () => {
 
                 // when
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
@@ -220,7 +220,7 @@ describe('vs-file-drop', () => {
                 },
             } as unknown as Event);
             await wrapper.vm.$nextTick();
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
 
             // then
             expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(files);
@@ -244,7 +244,7 @@ describe('vs-file-drop', () => {
                 },
             } as unknown as Event);
             await wrapper.vm.$nextTick();
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
 
             // then
             expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(files);
@@ -276,7 +276,7 @@ describe('vs-file-drop', () => {
     });
 
     describe('validate() 메서드', () => {
-        it('valid할 때 validate 함수를 호출하면 true를 반환한다', () => {
+        it('valid할 때 validate 함수를 호출하면 true를 반환한다', async () => {
             // given
             const wrapper = mount(VsFileDrop, {
                 props: {
@@ -286,10 +286,10 @@ describe('vs-file-drop', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
 
-        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', () => {
+        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', async () => {
             // given
             const wrapper = mount(VsFileDrop, {
                 props: {
@@ -299,7 +299,7 @@ describe('vs-file-drop', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
     });
 
@@ -1173,7 +1173,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
@@ -1195,7 +1195,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
@@ -1216,7 +1216,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
@@ -1238,7 +1238,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
@@ -1257,7 +1257,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
@@ -1282,7 +1282,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
@@ -1301,7 +1301,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
@@ -1329,7 +1329,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
@@ -1348,7 +1348,7 @@ describe('vs-file-drop', () => {
                     },
                 } as unknown as Event);
                 await wrapper.vm.$nextTick();
-                wrapper.vm.validate();
+                await wrapper.vm.validate();
 
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
@@ -1427,7 +1427,7 @@ describe('vs-file-drop', () => {
                 },
             } as unknown as Event);
             await wrapper.vm.$nextTick();
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
 
             // then
             const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
@@ -1446,7 +1446,7 @@ describe('vs-file-drop', () => {
                 },
             } as unknown as Event);
             await wrapper.vm.$nextTick();
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
 
             // then
             const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');

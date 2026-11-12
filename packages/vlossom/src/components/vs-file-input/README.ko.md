@@ -100,7 +100,7 @@ const files = ref([]);
 | `multiple`       | `boolean`                                               | `false`  | -        | 복수 파일 선택 허용                                                       |
 | `noClear`        | `boolean`                                               | `false`  | -        | 전체 클리어 버튼 숨김                                                     |
 | `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                  | `'md'`   | -        | 컴포넌트 크기                                                             |
-| `modelValue`     | `File[]`                                                | `[]`     | -        | 선택된 파일 목록 (v-model). [주의사항](#주의사항) 참고.                                                                       |
+| `modelValue`     | `File[]`                                                | `[]`     | -        | 선택된 파일 목록 (v-model). [주의사항](#주의사항) 참고.                   |
 | `changed`        | `boolean`                                               | `false`  | -        | 읽기 전용 `v-model:changed` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
 | `valid`          | `boolean`                                               | `false`  | -        | 읽기 전용 `v-model:valid` (출력 전용). 외부에서 설정한 값은 무시됩니다.   |
 
@@ -153,13 +153,13 @@ interface VsFileInputStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | 설명                            |
-| ---------- | ---------- | ------------------------------- |
-| `focus`    | -          | 컴포넌트에 포커스               |
-| `blur`     | -          | 컴포넌트 포커스 해제            |
-| `validate` | -          | 유효성 검사 실행                |
-| `clear`    | -          | 선택 파일 전체 클리어           |
-| `reset`    | -          | 선택 파일을 초기값으로 되돌리기 |
+| Method     | Parameters | 설명                                                                                             |
+| ---------- | ---------- | ------------------------------------------------------------------------------------------------ |
+| `focus`    | -          | 컴포넌트에 포커스                                                                                |
+| `blur`     | -          | 컴포넌트 포커스 해제                                                                             |
+| `validate` | -          | 유효성 검사를 실행하고, 대기 중인 비동기 규칙이 끝난 뒤 결과를 `Promise<boolean>`으로 반환합니다 |
+| `clear`    | -          | 선택 파일 전체 클리어                                                                            |
+| `reset`    | -          | 선택 파일을 초기값으로 되돌리기                                                                  |
 
 ## 주의사항
 

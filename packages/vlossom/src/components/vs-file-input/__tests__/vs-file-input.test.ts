@@ -214,7 +214,7 @@ describe('vs-file-input', () => {
             await flushPromises();
 
             // when
-            const result = (wrapper.vm as any).validate();
+            const result = await (wrapper.vm as any).validate();
 
             // then
             expect(result).toBe(false);
@@ -227,7 +227,7 @@ describe('vs-file-input', () => {
             await flushPromises();
 
             // when
-            const result = (wrapper.vm as any).validate();
+            const result = await (wrapper.vm as any).validate();
 
             // then
             expect(result).toBe(true);
