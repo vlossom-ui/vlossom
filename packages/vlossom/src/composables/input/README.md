@@ -57,9 +57,9 @@ const { computedId, computedDisabled, computedReadonly, computedMessages, comput
 
 ## Args
 
-| Arg           | Type                      | Default | Required | Description                                 |
-| ------------- | ------------------------- | ------- | -------- | ------------------------------------------- |
-| `ctx`         | `{ emit: Function }`      | —       | Yes      | Component context providing the `emit` function. |
+| Arg           | Type                      | Default | Required | Description                                                             |
+| ------------- | ------------------------- | ------- | -------- | ----------------------------------------------------------------------- |
+| `ctx`         | `{ emit: Function }`      | —       | Yes      | Component context providing the `emit` function.                        |
 | `inputParams` | `InputComponentParams<T>` | —       | Yes      | Object describing the input's reactive state and callbacks (see Types). |
 
 ## Types
@@ -89,24 +89,24 @@ interface InputComponentParams<T> {
 
 ## Return Refs
 
-| RefType           | Type                        | Description                                                                    |
-| ----------------- | --------------------------- | ------------------------------------------------------------------------------ |
-| `changed`         | `ComputedRef<boolean>`      | `true` when the current value differs from the value captured at initialization (dirty). Reverting to the initial value sets it back to `false`. |
-| `valid`           | `ComputedRef<boolean>`      | `true` when there are no active rule messages.                                 |
-| `shake`           | `Ref<boolean>`              | Toggled each time `validate()` fails — bind to a shake CSS class.              |
-| `computedMessages`| `ComputedRef<StateMessage[]>` | Combined list of static and rule messages to display.                        |
-| `showRuleMessages`| `Ref<boolean>`              | Whether rule messages are currently visible.                                   |
-| `computedId`      | `ComputedRef<string>`       | The element id (prop value or auto-generated).                                 |
-| `computedDisabled`| `ComputedRef<boolean>`      | `true` when the prop or the parent form disables the input.                    |
-| `computedReadonly`| `ComputedRef<boolean>`      | `true` when the prop or the parent form sets readonly.                         |
-| `computedState`   | `ComputedRef<UIState>`      | `'error'` when rule messages are visible and invalid; otherwise the prop state.|
+| RefType            | Type                          | Description                                                                                                                                      |
+| ------------------ | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `changed`          | `ComputedRef<boolean>`        | `true` when the current value differs from the value captured at initialization (dirty). Reverting to the initial value sets it back to `false`. |
+| `valid`            | `ComputedRef<boolean>`        | `true` when there are no active rule messages.                                                                                                   |
+| `shake`            | `Ref<boolean>`                | Toggled each time `validate()` fails — bind to a shake CSS class.                                                                                |
+| `computedMessages` | `ComputedRef<StateMessage[]>` | Combined list of static and rule messages to display.                                                                                            |
+| `showRuleMessages` | `Ref<boolean>`                | Whether rule messages are currently visible.                                                                                                     |
+| `computedId`       | `ComputedRef<string>`         | The element id (prop value or auto-generated).                                                                                                   |
+| `computedDisabled` | `ComputedRef<boolean>`        | `true` when the prop or the parent form disables the input.                                                                                      |
+| `computedReadonly` | `ComputedRef<boolean>`        | `true` when the prop or the parent form sets readonly.                                                                                           |
+| `computedState`    | `ComputedRef<UIState>`        | `'error'` when rule messages are visible and invalid; otherwise the prop state.                                                                  |
 
 ## Return Methods
 
-| Method     | Parameters | Description                                                                 |
-| ---------- | ---------- | --------------------------------------------------------------------------- |
-| `validate` | —          | Shows rule messages and toggles `shake` if invalid. Returns `true` if valid.|
-| `clear`    | —          | Invokes the `onClear` callback and hides rule messages. `changed` follows from the resulting value vs. the initial value (clearing a prefilled input makes it `true`). |
+| Method     | Parameters | Description                                                                                                                                                                                |
+| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `validate` | —          | Shows rule messages, waits for pending async rules, and toggles `shake` if invalid. Returns `Promise<boolean>` resolving to `true` if valid.                                               |
+| `clear`    | —          | Invokes the `onClear` callback and hides rule messages. `changed` follows from the resulting value vs. the initial value (clearing a prefilled input makes it `true`).                     |
 | `reset`    | —          | Restores `inputValue` to the value captured at initialization and hides rule messages, so `changed` becomes `false`. Unlike `clear`, it returns to the initial value rather than emptying. |
 
 ## Hooks

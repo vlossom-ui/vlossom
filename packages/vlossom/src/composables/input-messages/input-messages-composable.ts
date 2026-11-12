@@ -9,28 +9,36 @@ export function useInputMessages<T>(
     const innerMessages: Ref<StateMessage[]> = ref([]);
     const showRuleMessages = ref(false);
 
+    let checkId = 0;
     async function checkMessages() {
-        innerMessages.value = [];
-        const pendingMessages: Promise<StateMessage>[] = [];
+        const id = ++checkId;
+        const syncMessages: StateMessage[] = [];
+        const pendingMessages: PromiseLike<StateMessage>[] = [];
 
         messages.value.forEach((message) => {
-            if (typeof message === 'function') {
-                const result = message(inputValue.value);
-                if (result instanceof Promise) {
-                    pendingMessages.push(result);
-                } else {
-                    innerMessages.value.push(result as StateMessage);
-                }
+            if (typeof message !== 'function') {
+                syncMessages.push(message);
+                return;
+            }
+            const result = message(inputValue.value) as StateMessage | PromiseLike<StateMessage>;
+            if (typeof (result as PromiseLike<StateMessage>)?.then === 'function') {
+                pendingMessages.push(result as PromiseLike<StateMessage>);
             } else {
-                innerMessages.value.push(message);
+                syncMessages.push(result as StateMessage);
             }
         });
 
+        innerMessages.value = syncMessages;
         if (pendingMessages.length === 0) {
             return;
         }
+
         const resolvedMessages = await Promise.all(pendingMessages);
-        innerMessages.value.push(...resolvedMessages);
+        // drop results of outdated calls (value or messages changed while pending)
+        if (id !== checkId) {
+            return;
+        }
+        innerMessages.value = [...syncMessages, ...resolvedMessages];
     }
 
     watch(messages, checkMessages, { deep: true });

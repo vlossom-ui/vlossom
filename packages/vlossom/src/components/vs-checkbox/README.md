@@ -209,14 +209,14 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                                                     |
-| ---------- | ---------- | --------------------------------------------------------------- |
-| `clear`    | —          | Clears the checkbox value                                       |
-| `reset`    | —          | Resets the checkbox value to its initial value                  |
-| `validate` | —          | Triggers validation and returns the result                      |
-| `focus`    | —          | Focuses the checkbox input element                              |
-| `blur`     | —          | Blurs the checkbox input element                                |
-| `toggle`   | —          | Toggles the checked state and returns whether the value changed |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `clear`    | —          | Clears the checkbox value                                                                      |
+| `reset`    | —          | Resets the checkbox value to its initial value                                                 |
+| `validate` | —          | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `focus`    | —          | Focuses the checkbox input element                                                             |
+| `blur`     | —          | Blurs the checkbox input element                                                               |
+| `toggle`   | —          | Toggles the checked state and returns whether the value changed                                |
 
 ## Cautions
 

@@ -16,39 +16,53 @@ export function useInputRules<T>(
     });
 
     const ruleMessages: Ref<StateMessage[]> = ref([]);
-    async function checkRules() {
-        ruleMessages.value = [];
-        const pendingRules: Promise<string>[] = [];
+    let checkId = 0;
+    let latestCheck: Promise<void> = Promise.resolve();
+    function checkRules() {
+        latestCheck = runRules();
+        return latestCheck;
+    }
+
+    // resolves once the latest check (including any started while waiting) has finished
+    async function waitRules(): Promise<void> {
+        const check = latestCheck;
+        await check;
+        if (check !== latestCheck) {
+            return waitRules();
+        }
+    }
+
+    async function runRules() {
+        const id = ++checkId;
+        const syncMessages: StateMessage[] = [];
+        const pendingRules: PromiseLike<string>[] = [];
 
         computedRules.value.forEach((rule) => {
             const result = rule(inputValue.value);
             if (!result) {
                 return;
             }
-            if (result instanceof Promise) {
-                pendingRules.push(result);
+            if (typeof (result as PromiseLike<string>).then === 'function') {
+                pendingRules.push(result as PromiseLike<string>);
             } else {
-                ruleMessages.value.push({ state: 'error', text: result as string });
+                syncMessages.push({ state: 'error', text: result as string });
             }
         });
 
+        ruleMessages.value = syncMessages;
         if (pendingRules.length === 0) {
             return;
         }
-        const resolvedMessages = (await Promise.all(pendingRules)).reduce((acc: StateMessage[], resolved) => {
-            if (resolved) {
-                acc.push({
-                    state: 'error',
-                    text: resolved,
-                });
-            }
 
-            return acc;
-        }, []);
-
-        ruleMessages.value.push(...resolvedMessages);
+        const resolved = await Promise.all(pendingRules);
+        // drop results of outdated calls (value or rules changed while pending)
+        if (id !== checkId) {
+            return;
+        }
+        const asyncMessages: StateMessage[] = resolved.filter(Boolean).map((text) => ({ state: 'error', text }));
+        ruleMessages.value = [...syncMessages, ...asyncMessages];
     }
     watch(computedRules, checkRules, { deep: true });
 
-    return { ruleMessages, checkRules };
+    return { ruleMessages, checkRules, waitRules };
 }

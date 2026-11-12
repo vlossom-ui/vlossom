@@ -9,7 +9,7 @@ describe('useInputForm', () => {
     let id: Ref<string>;
     let valid: Ref<boolean>;
     let changed: Ref<boolean>;
-    let validateSpy: ReturnType<typeof vi.fn<() => boolean>>;
+    let validateSpy: ReturnType<typeof vi.fn<() => Promise<boolean>>>;
     let clearSpy: ReturnType<typeof vi.fn<() => void>>;
     let resetSpy: ReturnType<typeof vi.fn<() => void>>;
     let TestComponent: ReturnType<typeof defineComponent>;
@@ -20,7 +20,7 @@ describe('useInputForm', () => {
         id = ref('test-input-id');
         valid = ref(true);
         changed = ref(false);
-        validateSpy = vi.fn<() => boolean>();
+        validateSpy = vi.fn<() => Promise<boolean>>(async () => true);
         clearSpy = vi.fn<() => void>();
         resetSpy = vi.fn<() => void>();
         TestComponent = defineComponent({
@@ -64,18 +64,31 @@ describe('useInputForm', () => {
         expect(updateValidSpy).toHaveBeenCalledWith('test-input-id', false);
     });
 
-    it('validateFlag가 토글되면 validate 함수가 호출되어야 한다', async () => {
+    it('폼 스토어의 validate가 호출되면 등록된 validate 함수가 호출되어야 한다', async () => {
         // given
         mount(TestComponent);
 
         await nextTick();
 
         // when
-        formStore.toggleValidateFlag();
-        await nextTick();
+        const results = await formStore.validate();
 
         // then
         expect(validateSpy).toHaveBeenCalled();
+        expect(results).toEqual({ 'test-input-id': true });
+    });
+
+    it('id가 변경되면 validate 함수가 새 id로 다시 등록되어야 한다', async () => {
+        // given
+        mount(TestComponent);
+        await nextTick();
+
+        // when
+        id.value = 'new-input-id';
+        await nextTick();
+
+        // then
+        expect(await formStore.validate()).toEqual({ 'new-input-id': true });
     });
 
     it('clearFlag가 토글되면 clear 함수가 호출되어야 한다', async () => {

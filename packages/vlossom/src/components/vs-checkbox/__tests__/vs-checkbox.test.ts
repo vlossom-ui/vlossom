@@ -570,7 +570,7 @@ describe('vs-checkbox', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
 
         it('invalid 할 때 validate 함수를 호출하면 false를 반환한다', async () => {
@@ -584,7 +584,7 @@ describe('vs-checkbox', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
     });
 

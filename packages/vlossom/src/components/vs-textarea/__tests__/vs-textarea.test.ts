@@ -43,14 +43,14 @@ describe('VsTextarea', () => {
             expect(wrapper.vm.inputValue).toBe(null);
         });
 
-        it('required일 때 emptyValue는 빈 값으로 검증된다', () => {
+        it('required일 때 emptyValue는 빈 값으로 검증된다', async () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: { modelValue: null, emptyValue: null, required: true },
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
     });
 
@@ -325,7 +325,7 @@ describe('VsTextarea', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -346,7 +346,7 @@ describe('VsTextarea', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -367,7 +367,7 @@ describe('VsTextarea', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -378,7 +378,7 @@ describe('VsTextarea', () => {
             expect(wrapper.vm.shake).toBe(true);
         });
 
-        it('validation 성공 시 메시지가 없고 에러 상태가 아니어야 한다', () => {
+        it('validation 성공 시 메시지가 없고 에러 상태가 아니어야 한다', async () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
@@ -390,7 +390,7 @@ describe('VsTextarea', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
 
             // then
             expect(isValid).toBe(true);
@@ -414,7 +414,7 @@ describe('VsTextarea', () => {
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const isValid = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -427,7 +427,7 @@ describe('VsTextarea', () => {
     });
 
     describe('validate() 메서드', () => {
-        it('valid할 때 validate 함수를 호출하면 true를 반환한다', () => {
+        it('valid할 때 validate 함수를 호출하면 true를 반환한다', async () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
@@ -437,10 +437,10 @@ describe('VsTextarea', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
 
-        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', () => {
+        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', async () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
@@ -450,7 +450,7 @@ describe('VsTextarea', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
     });
 

@@ -99,7 +99,7 @@ describe('vs-radio', () => {
             });
 
             // when
-            const result = wrapper.vm.validate();
+            const result = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -118,7 +118,7 @@ describe('vs-radio', () => {
             });
 
             // when
-            const result = wrapper.vm.validate();
+            const result = await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -147,7 +147,7 @@ describe('vs-radio', () => {
                 });
 
                 // when
-                const result = wrapper.vm.validate();
+                const result = await wrapper.vm.validate();
                 await nextTick();
 
                 // then
@@ -168,7 +168,7 @@ describe('vs-radio', () => {
                 });
 
                 // when
-                const result = wrapper.vm.validate();
+                const result = await wrapper.vm.validate();
                 await nextTick();
 
                 // then
@@ -373,7 +373,7 @@ describe('vs-radio (multiple inputs)', () => {
         await radio2.setProps({ modelValue: null });
 
         // when
-        const result = radio1.vm.validate();
+        const result = await radio1.vm.validate();
 
         // then
         expect(result).toBe(false);
