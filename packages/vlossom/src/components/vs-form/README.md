@@ -109,10 +109,10 @@ VsForm does not use a `styleSet` prop. Use `VsGrid` props (`gridSize`, `columnGa
 
 ## Methods
 
-| Method     | Parameters | Description                                                                                               |
-| ---------- | ---------- | --------------------------------------------------------------------------------------------------------- |
-| `validate` | -          | Triggers validation for all child inputs. Returns `Promise<boolean>` indicating whether the form is valid |
-| `clear`    | -          | Empties all child inputs                                                                                  |
-| `reset`    | -          | Restores all child inputs to the values captured at initialization (so `changed` becomes `false`)         |
-| `valid`    | -          | Computed property (`ComputedRef<boolean>`) — `true` when all child inputs are valid                       |
-| `changed`  | -          | Computed property (`ComputedRef<boolean>`) — `true` when any child input has been changed                 |
+| Method     | Parameters | Description                                                                                                                                       |
+| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validate` | -          | Triggers validation for all child inputs and waits for their pending async rules. Returns `Promise<boolean>` indicating whether the form is valid |
+| `clear`    | -          | Empties all child inputs                                                                                                                          |
+| `reset`    | -          | Restores all child inputs to the values captured at initialization (so `changed` becomes `false`)                                                 |
+| `valid`    | -          | Computed property (`ComputedRef<boolean>`) — `true` when all child inputs are valid                                                               |
+| `changed`  | -          | Computed property (`ComputedRef<boolean>`) — `true` when any child input has been changed                                                         |

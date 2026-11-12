@@ -100,7 +100,7 @@ const files = ref([]);
 | `multiple`       | `boolean`                                               | `false`  | -        | Allows multiple file selection                                                |
 | `noClear`        | `boolean`                                               | `false`  | -        | Hides the clear-all button                                                    |
 | `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                  | `'md'`   | -        | Component size                                                                |
-| `modelValue`     | `File[]`                                                | `[]`     | -        | Selected files (v-model). See [Caution](#caution).                                                                            |
+| `modelValue`     | `File[]`                                                | `[]`     | -        | Selected files (v-model). See [Caution](#caution).                            |
 | `changed`        | `boolean`                                               | `false`  | -        | Read-only `v-model:changed` (output only). Externally set values are ignored. |
 | `valid`          | `boolean`                                               | `false`  | -        | Read-only `v-model:valid` (output only). Externally set values are ignored.   |
 
@@ -153,13 +153,13 @@ interface VsFileInputStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                                |
-| ---------- | ---------- | ------------------------------------------ |
-| `focus`    | -          | Focuses the component                      |
-| `blur`     | -          | Blurs the component                        |
-| `validate` | -          | Triggers validation                        |
-| `clear`    | -          | Clears all selected files                  |
-| `reset`    | -          | Resets selected files to the initial value |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `focus`    | -          | Focuses the component                                                                          |
+| `blur`     | -          | Blurs the component                                                                            |
+| `validate` | -          | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `clear`    | -          | Clears all selected files                                                                      |
+| `reset`    | -          | Resets selected files to the initial value                                                     |
 
 ## Caution
 

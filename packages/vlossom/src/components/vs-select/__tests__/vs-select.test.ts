@@ -145,7 +145,7 @@ describe('VsSelect', () => {
             await nextTick();
 
             // then: 선택된 옵션이 없으므로 required 실패, max는 0개로 통과
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
             expect(wrapper.vm.computedMessages.map((m: any) => m.text)).toEqual(['required']);
 
             // when
@@ -153,7 +153,7 @@ describe('VsSelect', () => {
             await nextTick();
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
             vi.restoreAllMocks();
         });
 
@@ -641,7 +641,7 @@ describe('VsSelect', () => {
             });
 
             // when
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -661,7 +661,7 @@ describe('VsSelect', () => {
             });
 
             // when
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -681,7 +681,7 @@ describe('VsSelect', () => {
             });
 
             // when
-            wrapper.vm.validate();
+            await wrapper.vm.validate();
             await nextTick();
 
             // then
@@ -691,7 +691,7 @@ describe('VsSelect', () => {
     });
 
     describe('validate', () => {
-        it('valid할 때 validate 함수를 호출하면 true를 반환한다', () => {
+        it('valid할 때 validate 함수를 호출하면 true를 반환한다', async () => {
             // given
             const wrapper = mount(VsSelect, {
                 props: {
@@ -702,10 +702,10 @@ describe('VsSelect', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
 
-        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', () => {
+        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', async () => {
             // given
             const wrapper = mount(VsSelect, {
                 props: {
@@ -716,7 +716,7 @@ describe('VsSelect', () => {
             });
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
     });
 
@@ -1430,9 +1430,9 @@ describe('VsSelect', () => {
                 await nextTick();
 
                 // then
-                expect(wrapper.vm.validate()).toBe(false);
+                expect(await wrapper.vm.validate()).toBe(false);
                 await wrapper.setProps({ min: 0, required: true });
-                expect(wrapper.vm.validate()).toBe(false);
+                expect(await wrapper.vm.validate()).toBe(false);
             });
 
             it('emptyValue를 지정하지 않으면 기존처럼 []를 사용한다', async () => {
@@ -1476,7 +1476,7 @@ describe('VsSelect', () => {
             await nextTick();
 
             // then
-            expect(wrapper.vm.validate()).toBe(true);
+            expect(await wrapper.vm.validate()).toBe(true);
         });
 
         it('required일 때 emptyValue는 빈 값으로 검증된다', async () => {
@@ -1487,7 +1487,7 @@ describe('VsSelect', () => {
             await nextTick();
 
             // then
-            expect(wrapper.vm.validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
         });
     });
 

@@ -10,7 +10,8 @@ Connects an individual input component to the nearest parent `VsForm` via Vue's 
 
 - Injects the parent form store using `FORM_STORE_KEY`; falls back to a no-op default store when no form is present
 - Automatically registers and removes the input from the form on mount/unmount and id changes
-- Watches the form's `validateFlag`, `clearFlag`, and `resetFlag` to trigger the input's own `validate`, `clear`, and `reset` functions
+- Registers the input's `validate` function with the form store so `VsForm.validate()` can await every input's result
+- Watches the form's `clearFlag` and `resetFlag` to trigger the input's own `clear` and `reset` functions
 - Propagates `valid` and `changed` state changes up to the form store
 - Exposes form-driven `formDisabled` and `formReadonly` refs
 
@@ -26,7 +27,7 @@ const id = computed(() => 'my-input-id');
 const valid = ref(true);
 const changed = ref(false);
 
-function validate() { return valid.value; }
+async function validate() { return valid.value; }
 function clear() { /* empty the value */ }
 function reset() { /* restore the initial value */ }
 
@@ -36,14 +37,14 @@ const { formDisabled, formReadonly } = useInputForm(id, valid, changed, validate
 
 ## Args
 
-| Arg        | Type            | Default | Required | Description                                                              |
-| ---------- | --------------- | ------- | -------- | ------------------------------------------------------------------------ |
-| `id`       | `Ref<string>`   | —       | Yes      | Reactive ref holding the input's unique id used to register in the form. |
-| `valid`    | `Ref<boolean>`  | —       | Yes      | Reactive validity state of the input.                                    |
-| `changed`  | `Ref<boolean>`  | —       | Yes      | Reactive ref indicating whether the user has changed the value.          |
-| `validate` | `() => boolean` | —       | Yes      | Validation function called when the form triggers validation.            |
-| `clear`    | `() => void`    | —       | Yes      | Clear function called when the form triggers a clear.                    |
-| `reset`    | `() => void`    | —       | Yes      | Reset function called when the form triggers a reset.                    |
+| Arg        | Type                     | Default | Required | Description                                                              |
+| ---------- | ------------------------ | ------- | -------- | ------------------------------------------------------------------------ |
+| `id`       | `Ref<string>`            | —       | Yes      | Reactive ref holding the input's unique id used to register in the form. |
+| `valid`    | `Ref<boolean>`           | —       | Yes      | Reactive validity state of the input.                                    |
+| `changed`  | `Ref<boolean>`           | —       | Yes      | Reactive ref indicating whether the user has changed the value.          |
+| `validate` | `() => Promise<boolean>` | —       | Yes      | Validation function called when the form triggers validation.            |
+| `clear`    | `() => void`             | —       | Yes      | Clear function called when the form triggers a clear.                    |
+| `reset`    | `() => void`             | —       | Yes      | Reset function called when the form triggers a reset.                    |
 
 ## Types
 
@@ -58,11 +59,11 @@ No additional exported types.
 
 ## Hooks
 
-| Hook              | Description                                                                                                    |
-| ----------------- | -------------------------------------------------------------------------------------------------------------- |
-| `onMounted`       | Registers the input's current `changed` and `valid` state with the form.                                       |
-| `onBeforeUnmount` | Removes the input from the form store.                                                                         |
-| `watch`           | Watches `changed`, `valid`, `validateFlag`, `clearFlag`, `resetFlag`, and `id` to keep the form store in sync. |
+| Hook              | Description                                                                                          |
+| ----------------- | ---------------------------------------------------------------------------------------------------- |
+| `onMounted`       | Registers the input's current `changed` and `valid` state and its `validate` function with the form. |
+| `onBeforeUnmount` | Removes the input from the form store.                                                               |
+| `watch`           | Watches `changed`, `valid`, `clearFlag`, `resetFlag`, and `id` to keep the form store in sync.       |
 
 ## Cautions
 

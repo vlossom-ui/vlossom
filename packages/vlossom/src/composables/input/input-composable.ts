@@ -38,7 +38,7 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
 
     const initialValue = shallowRef(inputValue.value);
 
-    const { ruleMessages, checkRules } = useInputRules<T>(inputValue, rules, defaultRules, noDefaultRules);
+    const { ruleMessages, checkRules, waitRules } = useInputRules<T>(inputValue, rules, defaultRules, noDefaultRules);
 
     const { computedMessages, checkMessages, showRuleMessages } = useInputMessages(inputValue, messages, ruleMessages);
 
@@ -133,8 +133,10 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     });
 
     const shake = ref(false);
-    function validate(): boolean {
+    async function validate(): Promise<boolean> {
         showRuleMessages.value = true;
+        await nextTick(); // flush pending value watchers so the latest rule check has started
+        await waitRules();
         if (!valid.value) {
             shake.value = false;
             nextTick(() => {

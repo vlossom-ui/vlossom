@@ -170,11 +170,11 @@ interface VsTextareaStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                           |
-| ---------- | ---------- | ------------------------------------- |
-| `focus`    |            | Focuses the textarea                  |
-| `blur`     |            | Blurs the textarea                    |
-| `validate` |            | Triggers validation                   |
-| `clear`    |            | Clears the value                      |
-| `reset`    |            | Resets the value to its initial value |
-| `select`   |            | Selects all text in the textarea      |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `focus`    |            | Focuses the textarea                                                                           |
+| `blur`     |            | Blurs the textarea                                                                             |
+| `validate` |            | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `clear`    |            | Clears the value                                                                               |
+| `reset`    |            | Resets the value to its initial value                                                          |
+| `select`   |            | Selects all text in the textarea                                                               |

@@ -80,7 +80,7 @@ describe('VsDatePicker', () => {
             expect(input.attributes('min')).toBeUndefined();
             expect(input.attributes('max')).toBeUndefined();
 
-            expect((wrapper.vm as unknown as { validate: () => boolean }).validate()).toBe(false);
+            expect(await wrapper.vm.validate()).toBe(false);
             await nextTick();
             expect(wrapper.text()).toContain('Must be on or after 2026-01-01');
         });
@@ -119,7 +119,7 @@ describe('VsDatePicker', () => {
             };
             const showPicker = vi.fn();
             input.showPicker = showPicker;
-            await (wrapper.vm as unknown as { open: () => Promise<void> }).open();
+            await wrapper.vm.open();
             expect(showPicker).toHaveBeenCalled();
         });
 
@@ -159,7 +159,7 @@ describe('VsDatePicker', () => {
                 };
                 const showPicker = vi.fn();
                 input.showPicker = showPicker;
-                (wrapper.vm as unknown as { open: () => void }).open();
+                wrapper.vm.open();
                 expect(showPicker).not.toHaveBeenCalled();
             }
         });
@@ -175,16 +175,11 @@ describe('VsDatePicker', () => {
         it('VsForm 내부에서 validate()가 동작한다 (required 미충족)', async () => {
             const Form = defineComponent({
                 components: { VsForm, VsDatePicker },
-                template: '<vs-form ref="formRef"><vs-date-picker :modelValue="\'\'" required type="date" /></vs-form>',
+                template: '<vs-form><vs-date-picker :modelValue="\'\'" required type="date" /></vs-form>',
             });
             const wrapper = mount(Form);
             await nextTick();
-            const formRef = (
-                wrapper.vm as unknown as {
-                    $refs: { formRef: { validate: () => boolean | Promise<boolean> } };
-                }
-            ).$refs.formRef;
-            const valid = await formRef.validate();
+            const valid = await wrapper.findComponent(VsForm).vm.validate();
             expect(valid).toBe(false);
         });
     });

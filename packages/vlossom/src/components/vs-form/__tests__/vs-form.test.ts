@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { h } from 'vue';
+import { mount, flushPromises } from '@vue/test-utils';
 import VsForm from './../VsForm.vue';
+import VsInput from '@/components/vs-input/VsInput.vue';
 import { FormStore } from '@/stores/form-store';
 
 describe('VsForm', () => {
@@ -177,8 +179,8 @@ describe('VsForm', () => {
         describe('validate', () => {
             it('모든 필드가 유효할 때 true를 반환해야 한다', async () => {
                 // given
-                formStore.updateValid('field1', true);
-                formStore.updateValid('field2', true);
+                formStore.setValidator('field1', async () => true);
+                formStore.setValidator('field2', async () => true);
                 const wrapper = mount(VsForm);
 
                 // when
@@ -190,9 +192,9 @@ describe('VsForm', () => {
 
             it('유효하지 않은 필드가 있을 때 false를 반환하고 error 이벤트를 emit해야 한다', async () => {
                 // given
-                formStore.updateValid('field1', true);
-                formStore.updateValid('field2', false);
-                formStore.updateValid('field3', false);
+                formStore.setValidator('field1', async () => true);
+                formStore.setValidator('field2', async () => false);
+                formStore.setValidator('field3', async () => false);
                 const wrapper = mount(VsForm);
 
                 // when
@@ -204,19 +206,46 @@ describe('VsForm', () => {
                 expect(wrapper.emitted('error')?.[0]).toEqual([['field2', 'field3']]);
             });
 
-            it('validate 호출 시 FormStore의 validateFlag가 토글되어야 한다', async () => {
+            it('등록된 모든 validator가 끝날 때까지 기다린 뒤 결과를 반환해야 한다', async () => {
                 // given
-                const initialFlag = formStore.validateFlag.value;
-                formStore.updateValid('field1', true);
+                let resolveSlow: (valid: boolean) => void = () => {};
+                formStore.setValidator('fast', async () => true);
+                formStore.setValidator('slow', () => new Promise<boolean>((resolve) => (resolveSlow = resolve)));
                 const wrapper = mount(VsForm);
-                const toggleValidateFlagSpy = vi.spyOn(formStore, 'toggleValidateFlag');
 
                 // when
-                await wrapper.vm.validate();
+                let result: boolean | undefined;
+                wrapper.vm.validate().then((value: boolean) => (result = value));
+                await flushPromises();
 
                 // then
-                expect(toggleValidateFlagSpy).toHaveBeenCalled();
-                expect(formStore.validateFlag.value).toBe(!initialFlag);
+                expect(result).toBeUndefined();
+                resolveSlow(false);
+                await flushPromises();
+                expect(result).toBe(false);
+                expect(wrapper.emitted('error')?.[0]).toEqual([['slow']]);
+            });
+
+            it('자식 input의 async rule 결과를 기다려서 반영해야 한다 (#764)', async () => {
+                // given
+                let resolveRule: (message: string) => void = () => {};
+                const asyncRule = () => new Promise<string>((resolve) => (resolveRule = resolve));
+                const wrapper = mount(VsForm, {
+                    slots: { default: () => h(VsInput, { id: 'user-id', modelValue: 'admin', rules: [asyncRule] }) },
+                });
+                await flushPromises();
+
+                // when
+                let result: boolean | undefined;
+                wrapper.vm.validate().then((value: boolean) => (result = value));
+                await flushPromises();
+
+                // then
+                expect(result).toBeUndefined();
+                resolveRule('Already taken');
+                await flushPromises();
+                expect(result).toBe(false);
+                expect(wrapper.emitted('error')?.[0]).toEqual([['user-id']]);
             });
         });
 
@@ -256,9 +285,9 @@ describe('VsForm', () => {
     describe('events', () => {
         it('validate 실패 시 error 이벤트가 잘못된 필드 ID 배열과 함께 emit되어야 한다', async () => {
             // given
-            formStore.updateValid('validField', true);
-            formStore.updateValid('invalidField1', false);
-            formStore.updateValid('invalidField2', false);
+            formStore.setValidator('validField', async () => true);
+            formStore.setValidator('invalidField1', async () => false);
+            formStore.setValidator('invalidField2', async () => false);
             const wrapper = mount(VsForm);
 
             // when
@@ -272,8 +301,8 @@ describe('VsForm', () => {
 
         it('모든 필드가 유효할 때 error 이벤트가 emit되지 않아야 한다', async () => {
             // given
-            formStore.updateValid('field1', true);
-            formStore.updateValid('field2', true);
+            formStore.setValidator('field1', async () => true);
+            formStore.setValidator('field2', async () => true);
             const wrapper = mount(VsForm);
 
             // when

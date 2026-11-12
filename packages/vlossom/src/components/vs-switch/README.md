@@ -149,10 +149,10 @@ interface VsSwitchStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | Description                           |
-| ---------- | ---------- | ------------------------------------- |
-| `focus`    |            | Focuses the switch input              |
-| `blur`     |            | Blurs the switch input                |
-| `validate` |            | Triggers validation                   |
-| `clear`    |            | Clears the value                      |
-| `reset`    |            | Resets the value to its initial value |
+| Method     | Parameters | Description                                                                                    |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| `focus`    |            | Focuses the switch input                                                                       |
+| `blur`     |            | Blurs the switch input                                                                         |
+| `validate` |            | Triggers validation and returns `Promise<boolean>`, resolving after pending async rules finish |
+| `clear`    |            | Clears the value                                                                               |
+| `reset`    |            | Resets the value to its initial value                                                          |

@@ -10,7 +10,7 @@
 
 - `defaultRules`와 `rules`를 결합하며, `noDefaultRules`가 `true`가 아닌 한 `defaultRules`가 앞에 추가됩니다
 - 문자열 오류 메시지 또는 falsy 값을 반환하는 동기 규칙을 지원합니다
-- `Promise<string>`을 반환하는 비동기 규칙을 지원합니다
+- `Promise<string>`을 반환하는 비동기 규칙을 지원하며, 가장 마지막 검사 결과만 반영되어 이전 검사의 늦은 결과는 무시됩니다
 - 계산된 규칙 목록이 변경될 때마다 유효성 검사를 자동으로 재실행합니다
 
 ## Basic Usage
@@ -31,18 +31,18 @@ const rules = ref([
 const defaultRules = ref([]);
 const noDefaultRules = ref(false);
 
-const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+const { ruleMessages, checkRules, waitRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
 </script>
 ```
 
 ## Args
 
-| 인자             | 타입             | 기본값 | 필수 | 설명                                                                     |
-| ---------------- | ---------------- | ------ | ---- | ------------------------------------------------------------------------ |
-| `inputValue`     | `Ref<T>`         | —      | Yes  | 각 규칙 함수에 전달되는 현재 입력값.                                      |
-| `rules`          | `Ref<Rule<T>[]>` | —      | Yes  | 사용자가 제공한 유효성 검사 규칙.                                         |
-| `defaultRules`   | `Ref<Rule<T>[]>` | —      | Yes  | 컴포넌트에서 제공하는 내장 규칙 (예: required, 타입 검사).                |
-| `noDefaultRules` | `Ref<boolean>`   | —      | Yes  | `true`일 때 `rules`만 적용되고, `defaultRules`는 무시됩니다.             |
+| 인자             | 타입             | 기본값 | 필수 | 설명                                                         |
+| ---------------- | ---------------- | ------ | ---- | ------------------------------------------------------------ |
+| `inputValue`     | `Ref<T>`         | —      | Yes  | 각 규칙 함수에 전달되는 현재 입력값.                         |
+| `rules`          | `Ref<Rule<T>[]>` | —      | Yes  | 사용자가 제공한 유효성 검사 규칙.                            |
+| `defaultRules`   | `Ref<Rule<T>[]>` | —      | Yes  | 컴포넌트에서 제공하는 내장 규칙 (예: required, 타입 검사).   |
+| `noDefaultRules` | `Ref<boolean>`   | —      | Yes  | `true`일 때 `rules`만 적용되고, `defaultRules`는 무시됩니다. |
 
 ## Types
 
@@ -57,20 +57,21 @@ interface StateMessage {
 
 ## Return Refs
 
-| RefType        | 타입                  | 설명                                          |
-| -------------- | --------------------- | --------------------------------------------- |
-| `ruleMessages` | `Ref<StateMessage[]>` | 실패한 규칙에 의해 생성된 오류 메시지 목록.    |
+| RefType        | 타입                  | 설명                                        |
+| -------------- | --------------------- | ------------------------------------------- |
+| `ruleMessages` | `Ref<StateMessage[]>` | 실패한 규칙에 의해 생성된 오류 메시지 목록. |
 
 ## Return Methods
 
-| 메서드       | 파라미터 | 설명                                                                                        |
-| ------------ | -------- | ------------------------------------------------------------------------------------------- |
-| `checkRules` | —        | `inputValue`에 대해 모든 계산된 규칙을 실행하고 동기적으로 또는 비동기 해결 후 `ruleMessages`를 업데이트합니다. |
+| 메서드       | 파라미터 | 설명                                                                                                                |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `checkRules` | —        | `inputValue`에 대해 모든 계산된 규칙을 실행하고 동기적으로 또는 비동기 해결 후 `ruleMessages`를 업데이트합니다.     |
+| `waitRules`  | —        | 가장 마지막 `checkRules` 호출(기다리는 중 새로 시작된 호출 포함)이 끝나면 resolve되는 `Promise<void>`를 반환합니다. |
 
 ## Hooks
 
-| Hook    | 설명                                                                   |
-| ------- | ---------------------------------------------------------------------- |
+| Hook    | 설명                                                                    |
+| ------- | ----------------------------------------------------------------------- |
 | `watch` | `computedRules`를 깊이 감시하고 변경 시 `checkRules`를 다시 실행합니다. |
 
 ## Cautions
