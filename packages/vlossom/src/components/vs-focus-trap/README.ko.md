@@ -10,6 +10,7 @@
 
 - 자식 요소 내에서 `Tab` 및 `Shift+Tab` 키 탐색을 가둠
 - 마운트 시 자동으로 트랩에 포커스하고 언마운트 시 이전에 포커스된 요소를 복원
+- native `<dialog>`처럼 마운트 시 트랩 앵커 대신 `autofocus` 요소에 포커스
 - `disabled` prop으로 런타임 시 비활성화 가능
 - 프로그래밍 방식 제어를 위한 `focus` 및 `blur` 메서드 노출
 - 정확히 하나의 루트 자식 요소 필요
@@ -23,6 +24,22 @@
             <vs-input placeholder="첫 번째 필드" />
             <vs-input placeholder="두 번째 필드" />
             <vs-button>제출</vs-button>
+        </div>
+    </vs-focus-trap>
+</template>
+```
+
+### 초기 포커스
+
+마운트 시 포커스를 받을 요소에 `autofocus`를 추가합니다. `vs-input` 같은 컴포넌트에도 추가할 수 있으며, 이 경우 컴포넌트 안의 첫 번째 포커스 가능한 요소가 포커스를 받습니다. 마운트 시점에 이미 트랩 안에 포커스가 있으면 그대로 유지합니다.
+
+```html
+<template>
+    <vs-focus-trap>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <vs-input autofocus placeholder="Focused on mount" />
+            <button>Cancel</button>
+            <button>OK</button>
         </div>
     </vs-focus-trap>
 </template>
@@ -70,7 +87,7 @@ VsFocusTrap은 `styleSet` prop을 사용하지 않습니다.
 
 | 메서드  | 파라미터 | 설명                                                   |
 | ------- | -------- | ------------------------------------------------------ |
-| `focus` | -        | 포커스 트랩 앵커로 포커스 이동                         |
+| `focus` | -        | `autofocus` 요소 또는 포커스 트랩 앵커로 포커스 이동   |
 | `blur`  | -        | 트랩이 활성화되기 전에 포커스되었던 요소로 포커스 반환 |
 
 ## 주의사항

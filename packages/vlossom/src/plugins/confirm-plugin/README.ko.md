@@ -10,7 +10,7 @@
 
 - 커스텀 문자열 또는 Vue 컴포넌트 콘텐츠가 포함된 모달 오버레이를 엽니다
 - 레이블과 스타일을 구성할 수 있는 확인 및 취소 버튼을 제공합니다
-- 확인(또는 Enter 키) 시 `true`, 취소(또는 Escape 키) 시 `false`로 resolve됩니다
+- 확인 시 `true`, 취소(또는 Escape 키) 시 `false`로 resolve됩니다
 - 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
 - `swapButtons`를 통해 버튼 순서를 교체할 수 있습니다
 - `$buttons` CSSProperties로 버튼 컨테이너 스타일을 커스터마이징할 수 있습니다
@@ -119,6 +119,6 @@ interface ConfirmPlugin {
 ## 주의사항
 
 - Confirm 플러그인은 Modal 플러그인에 의존합니다. Vlossom 플러그인 설정 시 두 플러그인 모두 등록되어 있는지 확인하세요.
-- Enter 키를 누르면 Promise가 `true`로 resolve되고, Escape 키를 누르면 `false`로 resolve됩니다.
+- 열리면 확인 버튼에 포커스가 갑니다. Enter 키는 포커스된 버튼을 누르므로, 확인 버튼에서는 `true`, 취소 버튼에서는 `false`로 resolve됩니다. Escape 키를 누르면 `false`로 resolve됩니다.
 - Escape 키 닫기는 기본적으로 활성화되어 있습니다. `escClose: false`를 전달하면 Escape 키를 눌러도 모달이 닫히지 않습니다.
 - 모달 외부를 클릭해도(`dimClose`가 활성화된 경우) `false`로 resolve됩니다.

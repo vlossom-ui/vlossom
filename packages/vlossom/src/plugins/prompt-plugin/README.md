@@ -10,7 +10,7 @@ Displays a modal dialog with an input field and OK / Cancel buttons. Returns a `
 
 - Opens a modal overlay with custom string or Vue component content
 - Renders a `VsInput` field with configurable input props
-- Returns the input value on OK (or Enter key) and `null` on Cancel (or Escape key)
+- Returns the input value on OK (or Enter in the input) and `null` on Cancel (or Escape key)
 - Validates input before resolving — if validation fails, the modal stays open
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
 - Supports custom button text, button order swap, and button container styling via `$buttons` CSSProperties
@@ -122,6 +122,7 @@ interface PromptPlugin {
 ## Caution
 
 - The prompt plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
+- The input is focused on open. Enter in the input works like OK; when a button has focus, Enter presses that button.
 - If the input fails validation on OK/Enter, the modal remains open and the promise is not yet resolved.
 - Pressing Escape or clicking outside the modal (if `dimClose` is enabled) resolves the promise with `null` and clears the input.
 - Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.

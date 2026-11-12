@@ -10,6 +10,7 @@ A utility component that traps keyboard focus within its single child element, e
 
 - Traps `Tab` and `Shift+Tab` key navigation within the child element
 - Automatically focuses the trap on mount and restores the previously focused element on unmount
+- Focuses the `autofocus` element on mount instead of the trap anchor, like a native `<dialog>`
 - Can be disabled at runtime via the `disabled` prop
 - Exposes `focus` and `blur` methods for programmatic control
 - Requires exactly one root child element
@@ -23,6 +24,22 @@ A utility component that traps keyboard focus within its single child element, e
             <vs-input placeholder="First field" />
             <vs-input placeholder="Second field" />
             <vs-button>Submit</vs-button>
+        </div>
+    </vs-focus-trap>
+</template>
+```
+
+### Initial Focus
+
+Add `autofocus` to the element that should receive focus on mount. You can also add it to a component such as `vs-input`; the first focusable element inside the component receives focus. If focus is already inside the trap on mount, it stays there.
+
+```html
+<template>
+    <vs-focus-trap>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <vs-input autofocus placeholder="Focused on mount" />
+            <button>Cancel</button>
+            <button>OK</button>
         </div>
     </vs-focus-trap>
 </template>
@@ -70,7 +87,7 @@ VsFocusTrap does not use a `styleSet` prop.
 
 | Method  | Parameters | Description                                                                |
 | ------- | ---------- | -------------------------------------------------------------------------- |
-| `focus` | -          | Move focus into the focus trap anchor                                      |
+| `focus` | -          | Move focus to the `autofocus` element or the focus trap anchor             |
 | `blur`  | -          | Return focus to the element that was focused before the trap was activated |
 
 ## Caution
