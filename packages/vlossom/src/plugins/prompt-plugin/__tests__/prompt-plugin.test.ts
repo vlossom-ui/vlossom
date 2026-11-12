@@ -1,5 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { defineComponent } from 'vue';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { createApp, defineComponent, h, nextTick, type App } from 'vue';
+import { createVlossom, useVlossom } from '@/framework';
+import * as components from '@/components';
 import { PROMPT_CANCEL } from '@/declaration';
 import { createPromptPlugin } from './../prompt-plugin';
 import type { ModalPlugin } from '@/plugins/modal-plugin';
@@ -82,5 +84,86 @@ describe('prompt-plugin', () => {
         expect(passedOptions.swapButtons).toBeUndefined();
         expect(passedOptions.input).toBeUndefined();
         expect(passedOptions.colorScheme).toBe('red');
+    });
+});
+
+describe('prompt-plugin (실제 오버레이)', () => {
+    let app: App;
+
+    async function flush() {
+        for (let i = 0; i < 5; i++) {
+            await nextTick();
+            await new Promise((r) => setTimeout(r, 0));
+        }
+    }
+
+    function findButton(text: string) {
+        return Array.from(document.querySelectorAll<HTMLButtonElement>('.vs-modal-node button')).find((b) =>
+            b.textContent?.includes(text),
+        )!;
+    }
+
+    // 브라우저는 keydown 처리(마이크로태스크 포함)가 끝난 뒤, 막히지 않았다면 그 시점에 포커스된 button을 click한다
+    async function pressEnter(target: HTMLElement) {
+        const keydown = new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true });
+        target.dispatchEvent(keydown);
+        await flush();
+        if (document.activeElement instanceof HTMLButtonElement && !keydown.defaultPrevented) {
+            document.activeElement.click();
+        }
+    }
+
+    beforeEach(async () => {
+        const root = document.createElement('div');
+        document.body.appendChild(root);
+        app = createApp(defineComponent({ render: () => h('div') }));
+        app.use(createVlossom({ components: components as any }));
+        app.mount(root);
+        await flush();
+    });
+
+    afterEach(() => {
+        useVlossom().modal.clear();
+        app.unmount();
+    });
+
+    it('열리면 입력창에 포커스가 가고, 입력창에서 Enter를 누르면 입력값으로 resolve한다', async () => {
+        const promise = useVlossom().prompt.open('이름?', { input: { initialValue: 'abc' } });
+        await flush();
+
+        const input = document.querySelector<HTMLInputElement>('.vs-modal-node input')!;
+        expect(document.activeElement).toBe(input);
+
+        await pressEnter(input);
+
+        await expect(promise).resolves.toBe('abc');
+    });
+
+    it('Cancel 버튼에 포커스를 두고 Enter를 누르면 null로 resolve한다', async () => {
+        const promise = useVlossom().prompt.open('이름?', { input: { initialValue: 'abc' } });
+        await flush();
+
+        const cancel = findButton('Cancel');
+        cancel.focus();
+        await pressEnter(cancel);
+
+        await expect(promise).resolves.toBeNull();
+    });
+
+    it('입력창 Enter로 닫힌 뒤 포커스가 돌아간 트리거 버튼이 다시 눌리지 않는다', async () => {
+        const onTrigger = vi.fn();
+        const trigger = document.createElement('button');
+        trigger.addEventListener('click', onTrigger);
+        document.body.appendChild(trigger);
+        trigger.focus();
+
+        const promise = useVlossom().prompt.open('이름?', { input: { initialValue: 'abc' } });
+        await flush();
+        await pressEnter(document.querySelector<HTMLInputElement>('.vs-modal-node input')!);
+
+        await expect(promise).resolves.toBe('abc');
+        expect(document.activeElement).toBe(trigger);
+        expect(onTrigger).not.toHaveBeenCalled();
+        trigger.remove();
     });
 });
