@@ -297,7 +297,7 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsSelectStyleSet> = computed(() => {
             return {
                 $loading: { width: '1.25em', height: '1em' },
-                $options: { maxHeight: '20rem' },
+                $options: { maxHeight: '30rem' },
             };
         });
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsSelectStyleSet>(
