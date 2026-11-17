@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .vs-button {
-    @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden font-normal
+    @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-clip font-normal
         select-none hover:brightness-96 active:brightness-92;
 
     border: 1px solid var(--vs-cs-border);
