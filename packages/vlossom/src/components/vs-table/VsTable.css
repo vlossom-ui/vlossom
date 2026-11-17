@@ -206,7 +206,7 @@
     }
 
     .vs-table-no-data-text {
-        @apply font-bold;
+        font-weight: var(--vs-font-weight-bold);
         font-size: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
     }
 
@@ -340,8 +340,8 @@
         }
 
         .vs-table-td[data-label]::before {
-            @apply font-bold;
             content: attr(data-label);
+            font-weight: var(--vs-font-weight-bold);
         }
 
         .vs-table-td.vs-table-drag-handle {
