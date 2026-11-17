@@ -116,6 +116,11 @@ export interface FormChildRef {
     reset: () => void;
 }
 
+export interface FormInputEntry extends FormChildRef {
+    valid: Ref<boolean>;
+    changed: Ref<boolean>;
+}
+
 export interface FocusableRef {
     focus: () => void;
     blur: () => void;

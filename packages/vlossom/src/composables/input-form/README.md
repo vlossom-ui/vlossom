@@ -9,10 +9,8 @@ Connects an individual input component to the nearest parent `VsForm` via Vue's 
 ## Feature
 
 - Injects the parent form store using `FORM_STORE_KEY`; falls back to a no-op default store when no form is present
-- Automatically registers and removes the input from the form on mount/unmount and id changes
-- Registers the input's `validate` function with the form store so `VsForm.validate()` can await every input's result
-- Watches the form's `clearFlag` and `resetFlag` to trigger the input's own `clear` and `reset` functions
-- Propagates `valid` and `changed` state changes up to the form store
+- Registers one entry per input (`valid`, `changed`, `validate`, `clear`, `reset`) with the form store, so `VsForm` reads the input's refs directly and calls its functions
+- Automatically registers and unregisters the input on mount/unmount and id changes
 - Exposes form-driven `formDisabled` and `formReadonly` refs
 
 ## Basic Usage
@@ -59,11 +57,11 @@ No additional exported types.
 
 ## Hooks
 
-| Hook              | Description                                                                                          |
-| ----------------- | ---------------------------------------------------------------------------------------------------- |
-| `onMounted`       | Registers the input's current `changed` and `valid` state and its `validate` function with the form. |
-| `onBeforeUnmount` | Removes the input from the form store.                                                               |
-| `watch`           | Watches `changed`, `valid`, `clearFlag`, `resetFlag`, and `id` to keep the form store in sync.       |
+| Hook              | Description                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------- |
+| `onMounted`       | Registers the input's entry with the form store under the current `id`.                |
+| `onBeforeUnmount` | Unregisters the input from the form store.                                             |
+| `watch`           | Watches `id`; unregisters the old id first, then registers the entry under the new id. |
 
 ## Cautions
 

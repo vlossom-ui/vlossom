@@ -9,10 +9,8 @@ Vue의 provide/inject 메커니즘을 통해 개별 입력 컴포넌트를 가�
 ## Feature
 
 - `FORM_STORE_KEY`를 사용하여 부모 폼 스토어를 주입합니다. 폼이 없을 경우 기본 no-op 스토어로 폴백합니다
-- 마운트/언마운트 및 id 변경 시 폼에서 입력을 자동으로 등록하고 제거합니다
-- 입력의 `validate` 함수를 폼 스토어에 등록하여 `VsForm.validate()`가 모든 입력의 결과를 기다릴 수 있게 합니다
-- 폼의 `clearFlag`, `resetFlag`를 감시하여 입력 자체의 `clear`, `reset` 함수를 트리거합니다
-- `valid` 및 `changed` 상태 변경을 폼 스토어에 전파합니다
+- 입력마다 항목 하나(`valid`, `changed`, `validate`, `clear`, `reset`)를 폼 스토어에 등록하여 `VsForm`이 입력의 ref를 직접 읽고 함수를 직접 호출하게 합니다
+- 마운트/언마운트 및 id 변경 시 폼에 입력을 자동으로 등록하고 해제합니다
 - 폼 주도의 `formDisabled` 및 `formReadonly` ref를 노출합니다
 
 ## Basic Usage
@@ -59,11 +57,11 @@ const { formDisabled, formReadonly } = useInputForm(id, valid, changed, validate
 
 ## Hooks
 
-| Hook              | 설명                                                                                    |
-| ----------------- | --------------------------------------------------------------------------------------- |
-| `onMounted`       | 입력의 현재 `changed`, `valid` 상태와 `validate` 함수를 폼에 등록합니다.                |
-| `onBeforeUnmount` | 폼 스토어에서 입력을 제거합니다.                                                        |
-| `watch`           | `changed`, `valid`, `clearFlag`, `resetFlag`, `id`를 감시하여 폼 스토어를 동기화합니다. |
+| Hook              | 설명                                                                |
+| ----------------- | ------------------------------------------------------------------- |
+| `onMounted`       | 현재 `id`로 입력의 항목을 폼 스토어에 등록합니다.                   |
+| `onBeforeUnmount` | 폼 스토어에서 입력을 해제합니다.                                    |
+| `watch`           | `id`를 감시하여 이전 id를 먼저 해제한 뒤 새 id로 항목을 등록합니다. |
 
 ## Cautions
 

@@ -1,13 +1,11 @@
-import { ref, type Ref, computed } from 'vue';
+import { ref, computed, shallowReactive } from 'vue';
+import type { FormInputEntry } from '@/declaration';
 
 export class FormStore {
     private _disabled = ref(false);
     private _readonly = ref(false);
-    private _changedObj: Ref<Record<string, boolean>> = ref({});
-    private _validObj: Ref<Record<string, boolean>> = ref({});
-    private _validators: Record<string, () => Promise<boolean>> = {};
-    private _clearFlag = ref(false);
-    private _resetFlag = ref(false);
+    // shallow so that each entry keeps its own Refs instead of being unwrapped
+    private _inputs = shallowReactive(new Map<string, FormInputEntry>());
 
     public static getDefaultFormStore(): FormStore {
         return new FormStore();
@@ -25,44 +23,13 @@ export class FormStore {
         this._readonly.value = value;
     }
 
-    public changedObj = computed(() => this._changedObj.value);
+    public inputs: ReadonlyMap<string, FormInputEntry> = this._inputs;
 
-    public updateChanged(id: string, changed: boolean) {
-        this._changedObj.value[id] = changed;
+    public register(id: string, entry: FormInputEntry) {
+        this._inputs.set(id, entry);
     }
 
-    public validObj = computed(() => this._validObj.value);
-
-    public updateValid(id: string, valid: boolean) {
-        this._validObj.value[id] = valid;
-    }
-
-    public removeFromForm(id: string) {
-        delete this._changedObj.value[id];
-        delete this._validObj.value[id];
-        delete this._validators[id];
-    }
-
-    public setValidator(id: string, validator: () => Promise<boolean>) {
-        this._validators[id] = validator;
-    }
-
-    // runs every registered validator and resolves with each input's result by id
-    public async validate(): Promise<Record<string, boolean>> {
-        const entries = Object.entries(this._validators);
-        const results = await Promise.all(entries.map(([, validator]) => validator()));
-        return Object.fromEntries(entries.map(([id], index) => [id, results[index]]));
-    }
-
-    public clearFlag = computed(() => this._clearFlag.value);
-
-    public toggleClearFlag() {
-        this._clearFlag.value = !this._clearFlag.value;
-    }
-
-    public resetFlag = computed(() => this._resetFlag.value);
-
-    public toggleResetFlag() {
-        this._resetFlag.value = !this._resetFlag.value;
+    public unregister(id: string) {
+        this._inputs.delete(id);
     }
 }
