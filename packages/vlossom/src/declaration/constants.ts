@@ -14,6 +14,8 @@ export const CONFIRM_CANCEL = 'vlossom:confirm-cancel';
 export const PROMPT_OK = 'vlossom:prompt-ok';
 export const PROMPT_CANCEL = 'vlossom:prompt-cancel';
 
+export const DIALOG_MODAL_SIZE = '27rem';
+
 export const ANIMATION_DURATION = 300;
 
 export const COLORS = [

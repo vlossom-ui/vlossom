@@ -15,6 +15,7 @@ Displays a modal dialog with an input field and OK / Cancel buttons. Returns a `
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
 - Supports custom button text, button order swap, and button container styling via `$buttons` CSSProperties
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
+- Opens with a width of `27rem` by default; pass `size` to change it
 
 ## Basic Usage
 

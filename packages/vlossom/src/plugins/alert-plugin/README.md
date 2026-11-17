@@ -14,6 +14,7 @@ Displays a modal alert dialog with a single OK button. Returns a `Promise<void>`
 - Keyboard support: the OK button is focused on open, so Enter confirms it; Escape also resolves the promise and closes the dialog
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
+- Opens with a width of `27rem` by default; pass `size` to change it
 
 ## Basic Usage
 

@@ -104,7 +104,7 @@ export default defineComponent({
 
             const result: Record<string, string> = {};
             const width = (typeof size.value === 'object' ? size.value.width : size.value) ?? 'md';
-            const height = (typeof size.value === 'object' ? size.value.height : size.value) ?? 'md';
+            const height = typeof size.value === 'object' ? size.value.height : undefined;
 
             if (isSize(width)) {
                 result['width'] = modalWidthSize[width];
@@ -112,10 +112,8 @@ export default defineComponent({
                 result['width'] = stringUtil.toStringSize(width);
             }
 
-            if (isSize(height)) {
-                result['height'] = modalHeightSize[height];
-            } else {
-                result['height'] = stringUtil.toStringSize(height);
+            if (height !== undefined) {
+                result['height'] = isSize(height) ? modalHeightSize[height] : stringUtil.toStringSize(height);
             }
 
             return objectUtil.shake(result);

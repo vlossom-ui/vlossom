@@ -12,7 +12,7 @@ A modal dialog component that renders content in an overlay layer via the Vlosso
 - Content is teleported to a configurable container element (default: `body`).
 - Supports dimmed overlay background, focus locking, ESC key close, and dim click close.
 - Optionally locks page scroll, or a specific scroll container by CSS selector, via `scroll-lock`.
-- Configurable size via predefined size keywords (`xs`, `sm`, `md`, `lg`, `xl`) or custom values.
+- Configurable width via predefined size keywords (`xs`, `sm`, `md`, `lg`, `xl`) or custom values; height fits the content unless specified explicitly.
 - Emits `open` and `close` events for lifecycle hooks.
 - Removes its open modal when the component unmounts, and when it is deactivated inside `KeepAlive` (reopened on activation if `v-model` is still `true`).
 
@@ -51,6 +51,8 @@ const isOpen = ref(false);
 
 ### Predefined Size
 
+A size keyword or a single value sets only the width. The height grows with the content and scrolls inside the modal when it exceeds the container.
+
 ```html live
 <template>
     <vs-button @click="isOpen = true">Open Modal</vs-button>
@@ -63,6 +65,8 @@ const isOpen = ref(false);
 ```
 
 ### Custom Size
+
+Use an object to set the width and height separately. Both accept size keywords or custom values.
 
 ```html live
 <template>
@@ -156,7 +160,7 @@ const isOpen = ref(false);
 | `beforeClose` | `() => Promise<boolean> \| boolean`                                                                   | -        | -        | Hook invoked before the modal closes. Resolve `false` to abort the close. Bypassed by `$vs.modal.clear()`. |
 | `container`   | `string`                                                                                              | `'body'` | -        | CSS selector of the element to teleport the modal into.                                                    |
 | `escClose`    | `boolean`                                                                                             | `false`  | -        | Closes the modal when the ESC key is pressed.                                                              |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | Modal size as a predefined keyword or custom width/height.                                                 |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | Modal width as a keyword or custom value. Use an object to also set the height; otherwise it fits content. |
 | `callbacks`   | `OverlayCallbacks`                                                                                    | `{}`     | -        | Overlay callback handlers.                                                                                 |
 | `dimClose`    | `boolean`                                                                                             | `false`  | -        | Closes the modal when clicking the dimmed area.                                                            |
 | `dimmed`      | `boolean`                                                                                             | `false`  | -        | Shows a dimmed overlay behind the modal.                                                                   |

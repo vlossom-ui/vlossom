@@ -2,7 +2,7 @@ import { h, ref, type Component, type Ref } from 'vue';
 import { VsRender } from '@/components';
 import { useStyleSet, useMessages } from '@/composables';
 import { useOverlayCallbackStore } from '@/stores';
-import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE, VsComponent } from '@/declaration';
+import { CONFIRM_CANCEL, CONFIRM_OK, DIALOG_MODAL_SIZE, OVERLAY_CLOSE, VsComponent } from '@/declaration';
 import type { ModalPlugin } from '@/plugins';
 
 import { vnodeUtils } from './../utils/vnode-utils';
@@ -92,7 +92,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                             resolve(false);
                         },
                     },
-                    size: 'xs',
+                    size: modalOptions.size ?? DIALOG_MODAL_SIZE,
                 });
             });
         },

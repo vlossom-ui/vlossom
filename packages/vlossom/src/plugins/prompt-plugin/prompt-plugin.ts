@@ -1,5 +1,5 @@
 import { h, type Component, ref, type Ref } from 'vue';
-import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK, VsComponent } from '@/declaration';
+import { DIALOG_MODAL_SIZE, OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK, VsComponent } from '@/declaration';
 import { useOverlayCallbackStore } from '@/stores';
 import { useStyleSet, useMessages } from '@/composables';
 import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
@@ -126,7 +126,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                             resolve(null);
                         },
                     },
-                    size: 'xs',
+                    size: modalOptions.size ?? DIALOG_MODAL_SIZE,
                 });
             });
         },
