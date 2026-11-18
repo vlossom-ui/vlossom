@@ -2,6 +2,8 @@
 
 .vs-table {
     --vs-table-sticky-header-z-index: 100;
+    --vs-table-cell-padding-y: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.6);
+    --vs-table-cell-padding-x: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.9);
 
     @apply relative w-full;
 
@@ -79,8 +81,7 @@
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-border);
         border-bottom: 1px solid var(--vs-cs-border);
-        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8)
-            calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.2);
+        padding: var(--vs-table-cell-padding-y) var(--vs-table-cell-padding-x);
 
         min-width: 0;
         color: inherit;
@@ -102,8 +103,7 @@
     .vs-table-td {
         @apply flex items-center;
         grid-row: 1;
-        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8)
-            calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.2);
+        padding: var(--vs-table-cell-padding-y) var(--vs-table-cell-padding-x);
 
         min-width: 0;
         font-size: inherit;
@@ -181,7 +181,7 @@
     /* 셀 패딩 포함 12rem. empty slot에는 적용하지 않는다. */
     .vs-table-no-data {
         @apply flex w-full flex-col items-center justify-center;
-        height: calc(12rem - var(--vs-size-padding, var(--vs-padding-md)) * 1.6);
+        height: calc(12rem - var(--vs-table-cell-padding-y) * 2);
         color: var(--vs-cs-text-tinted);
 
         .vs-table-no-data-icon {
@@ -200,8 +200,8 @@
     .vs-table-th.vs-table-drag-handle,
     .vs-table-td.vs-table-drag-handle {
         @apply pr-0;
-        padding-left: calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.2);
-        width: calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.2 + 1rem);
+        padding-left: var(--vs-table-cell-padding-x);
+        width: calc(var(--vs-table-cell-padding-x) + 1rem);
     }
 
     .vs-table-th.vs-table-drag-handle svg {
@@ -238,7 +238,7 @@
 
     /* ── Pagination ── */
     .vs-table-pagination {
-        @apply flex items-center justify-between py-4;
+        @apply flex items-center justify-between py-3;
         container-type: inline-size;
     }
 
@@ -301,7 +301,7 @@
             }
 
             > .vs-table-tbody > .vs-table-body-row {
-                @apply mx-0 mt-0 mb-3 block w-full;
+                @apply mx-0 mt-0 mb-2 block w-full;
                 border: 1px solid var(--vs-cs-border);
             }
 
@@ -309,21 +309,23 @@
             > .vs-table-tbody > .vs-table-body-row > .vs-table-td:not(.vs-table-expanded-row) {
                 --vs-table-label-width: 9rem;
 
-                @apply relative w-full border-x-0 border-t-0 border-b border-dashed p-3;
+                @apply relative w-full border-x-0 border-t-0 border-b border-dashed;
 
                 /* currentColor를 따르지 않게 한다. */
                 border-bottom-color: var(--vs-cs-border);
+                padding: var(--vs-table-cell-padding-y) var(--vs-table-cell-padding-x);
 
                 &:last-child {
                     @apply border-b-0;
                 }
 
                 &[data-label] {
-                    padding-left: calc(0.75rem + var(--vs-table-label-width) + 0.5rem);
+                    padding-left: calc(var(--vs-table-cell-padding-x) + var(--vs-table-label-width) + 0.5rem);
                 }
 
                 &[data-label]::before {
-                    @apply absolute inset-y-0 left-3 flex items-center font-bold;
+                    @apply absolute inset-y-0 flex items-center font-bold;
+                    left: var(--vs-table-cell-padding-x);
                     width: var(--vs-table-label-width);
                     content: attr(data-label);
                     overflow-wrap: anywhere;

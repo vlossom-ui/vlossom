@@ -46,7 +46,7 @@
                     <div v-if="tablePropsSelected.includes('customSlot')">
                         <vs-input v-model="item.score" />
                     </div>
-                    <vs-button v-else>{{ value }}</vs-button>
+                    <span v-else>{{ value }}</span>
                 </template>
                 <template #expand="{ item }">
                     <div
