@@ -206,7 +206,7 @@
     }
 
     .vs-table-no-data-text {
-        font-weight: var(--vs-font-weight-bold);
+        font-weight: 500;
         font-size: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
     }
 
@@ -283,7 +283,7 @@
         .vs-table-thead > .vs-table-header-row {
             background-color: var(--vs-cs-primary);
             color: var(--vs-cs-text-primary);
-            font-weight: var(--vs-font-weight-bold);
+            font-weight: 600;
 
             > .vs-table-th {
                 border-color: var(--vs-cs-border);
@@ -341,7 +341,7 @@
 
         .vs-table-td[data-label]::before {
             content: attr(data-label);
-            font-weight: var(--vs-font-weight-bold);
+            font-weight: 600;
         }
 
         .vs-table-td.vs-table-drag-handle {

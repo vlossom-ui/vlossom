@@ -28,9 +28,8 @@
     }
 
     .vs-breadcrumb-current {
-        @apply font-semibold;
-
         color: var(--vs-cs-text);
+        font-weight: 600;
     }
 
     .vs-breadcrumb-separator {
