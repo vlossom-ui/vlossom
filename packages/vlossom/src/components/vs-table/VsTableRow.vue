@@ -21,7 +21,7 @@
             :key="column.key"
             class="vs-table-td"
             :style="getCellStyle(column)"
-            :data-label="loading ? '' : column.label"
+            :data-label="column.label"
             @click.stop="clickCell(column, colIdx, $event)"
         >
             <vs-skeleton v-if="loading" :color-scheme :style-set="{ height: '1lh' }" />
@@ -33,7 +33,7 @@
                 :colIdx
                 :rowIdx="index"
             />
-            <span v-else class="w-full">{{ getCellValue(item, column) }}</span>
+            <span v-else class="vs-table-cell-text w-full">{{ getCellValue(item, column) }}</span>
         </td>
 
         <template v-if="showExpand">

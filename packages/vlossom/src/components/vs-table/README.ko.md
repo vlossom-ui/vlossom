@@ -361,6 +361,7 @@ interface VsTablePaginationOptions {
 
 - 행 이벤트는 셀 객체가 아니라 아이템을 전달합니다. 값이 필요하면 `item`에서 읽거나, 렌더링된 셀 값이 필요할 때 `click-cell`을 사용하세요.
 - 헤더 셀 클릭은 `click-cell`을 발생시키지 않습니다. 정렬은 `sortable` 컬럼의 정렬 아이콘으로 트리거됩니다.
+- `responsive` 레이아웃에서는 헤더가 숨겨지고 각 셀에 컬럼의 `label` 텍스트가 라벨로 표시됩니다. `header-*` 슬롯 내용은 이 라벨에 렌더링되지 않습니다.
 - 드래그는 테이블이 보여주는 순서만 바꿉니다. `items`가 갱신돼도 순서를 유지해야 한다면 `totalItems`나 `drag` 이벤트로 받아 직접 저장하세요.
 - `items`는 템플릿 안의 배열 리터럴이 아니라 `ref`, `computed`, API 응답처럼 참조가 유지되는 값으로 넘기세요. 템플릿 리터럴은 부모가 렌더될 때마다 새 행 객체를 만들기 때문에, `v-model:total-items`나 `v-model:paged-items`를 함께 바인딩하면 갱신이 무한 반복됩니다.
 - 저장해 둔 선택을 복원하려면 `items`가 로드된 뒤에 `selectedItems`를 넣으세요. 아직 `items`에 없는 행은 선택에서 제외됩니다.

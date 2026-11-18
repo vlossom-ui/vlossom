@@ -361,6 +361,7 @@ The `select` slot replaces the selection column cell in the header and in every 
 
 - Row events carry the item, not cell objects. Read values from `item`, or use `click-cell` when you need the rendered cell value.
 - Clicking a header cell does not emit `click-cell`; sorting is triggered by the sort icon of a `sortable` column.
+- In the `responsive` layout, the header is hidden and each cell shows the column's `label` text as its label. `header-*` slot content is not rendered in that label.
 - Dragging changes only what the table shows. Persist the order yourself from `totalItems` or the `drag` event if it has to survive an `items` update.
 - Pass `items` as a stable reference (`ref`, `computed`, API response), not an array literal in the template. A template literal creates new row objects on every parent render, so binding `v-model:total-items` or `v-model:paged-items` causes recursive updates.
 - To restore a saved selection, set `selectedItems` after `items` has loaded. Rows not in `items` yet are dropped from the selection.
