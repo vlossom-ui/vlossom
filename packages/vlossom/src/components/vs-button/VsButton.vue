@@ -67,7 +67,7 @@ export default defineComponent({
             'vs-loading-state': loading.value,
             'vs-outline': outline.value,
             'vs-primary': primary.value,
-            'vs-responsive': responsive.value,
+            'vs-button-responsive': responsive.value,
             [sizeClass.value]: !!sizeClass.value,
         }));
 

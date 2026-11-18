@@ -111,7 +111,7 @@ describe('VsButton', () => {
             expect(button.classes()).toContain('vs-primary');
         });
 
-        it('responsive prop이 true이면 vs-responsive 클래스가 적용되어야 한다', () => {
+        it('responsive prop이 true이면 VsResponsive 루트 클래스와 겹치지 않는 vs-button-responsive 클래스가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsButton, {
                 props: {
@@ -121,7 +121,7 @@ describe('VsButton', () => {
 
             // then
             const button = wrapper.find('button');
-            expect(button.classes()).toContain('vs-responsive');
+            expect(button.classes()).toContain('vs-button-responsive');
         });
 
         it('size prop이 sm이면 vs-sm 클래스가 적용되어야 한다', () => {
