@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import VsSelect from './../VsSelect.vue';
+import VsChip from '@/components/vs-chip/VsChip.vue';
 
 describe('VsSelect', () => {
     const basicOptions = ['Apple', 'Banana', 'Orange'];
@@ -434,6 +435,33 @@ describe('VsSelect', () => {
             expect(wrapper.vm.selectedOptions).toHaveLength(2);
             expect(wrapper.vm.selectedOptions[0].value).toBe('Apple');
             expect(wrapper.vm.selectedOptions[1].value).toBe('Banana');
+        });
+
+        it('다중 선택 칩은 트리거 높이에 맞춘 기본 $height를 받는다', () => {
+            // given, when
+            const wrapper = mount(VsSelect, {
+                props: { options: basicOptions, multiple: true, modelValue: ['Apple'] },
+            });
+
+            // then
+            expect(wrapper.findComponent(VsChip).props('styleSet')).toEqual({
+                $height: 'var(--vs-select-chip-height)',
+            });
+        });
+
+        it('styleSet.$chip.$height를 지정하면 기본 칩 높이보다 우선한다', () => {
+            // given, when
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    multiple: true,
+                    modelValue: ['Apple'],
+                    styleSet: { $chip: { $height: '2rem', color: 'red' } },
+                },
+            });
+
+            // then
+            expect(wrapper.findComponent(VsChip).props('styleSet')).toEqual({ $height: '2rem', color: 'red' });
         });
     });
 
