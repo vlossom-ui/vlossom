@@ -290,6 +290,8 @@ interface VsTablePaginationOptions {
 }
 ```
 
+A column with only `maxWidth` does not shrink below `6rem`, or below `maxWidth` when it is smaller. Add `minWidth` to set a different minimum.
+
 ### StyleSet Example
 
 ```html live

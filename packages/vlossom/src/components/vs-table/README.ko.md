@@ -290,6 +290,8 @@ interface VsTablePaginationOptions {
 }
 ```
 
+`maxWidth`만 지정한 컬럼은 `6rem`보다 좁아지지 않습니다. `maxWidth`가 `6rem`보다 작으면 `maxWidth`까지만 줄어듭니다. 다른 최소 폭이 필요하면 `minWidth`를 함께 지정하세요.
+
 ### StyleSet 예시
 
 ```html live

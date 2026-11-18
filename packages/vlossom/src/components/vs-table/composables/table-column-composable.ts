@@ -1,6 +1,7 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsTableColumnDef, VsTableItem } from './../types';
+import { DEFAULT_COLUMN_MIN_WIDTH } from './../constants';
 
 export function getCellValue(item: VsTableItem, column: VsTableColumnDef): unknown {
     const value: unknown = objectUtil.get(item, column.key);
@@ -60,7 +61,8 @@ export function useTableGridTemplateComposable(
             return `minmax(${min}, 1fr)`;
         }
         if (max) {
-            return `minmax(auto, ${max})`;
+            // overflow-wrap: anywhere 때문에 auto 최소 폭은 한 글자까지 줄어든다
+            return `minmax(min(${DEFAULT_COLUMN_MIN_WIDTH}, ${max}), ${max})`;
         }
         return 'minmax(max-content, 1fr)';
     }

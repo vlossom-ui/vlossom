@@ -10,6 +10,8 @@ export const DEFAULT_PAGE_SIZE_ALL = Infinity;
 export const DEFAULT_PAGE_SIZE = 50;
 export const DEFAULT_PAGE_SIZES = [50, 100, DEFAULT_PAGE_SIZE_ALL] as const;
 
+export const DEFAULT_COLUMN_MIN_WIDTH = '6rem';
+
 export const TABLE_DRAG_HANDLE_CLASS = 'vs-table-drag-handle';
 
 export const DEFAULT_SORTABLE_OPTIONS: Partial<SortableOptions> = {
