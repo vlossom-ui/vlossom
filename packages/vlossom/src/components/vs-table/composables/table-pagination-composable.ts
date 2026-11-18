@@ -1,4 +1,4 @@
-import { computed, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, type ComputedRef, type Ref, type WritableComputedRef } from 'vue';
 import { useMessages } from '@/composables';
 import type { VsTablePageSizeOption, VsTablePageSizeOptions, VsTablePaginationOptions } from './../types';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_ALL, DEFAULT_PAGE_SIZES } from './../constants';
@@ -17,7 +17,7 @@ export function useTablePaginationComposable(
     const { optionMessages, formatMessage } = useMessages();
 
     const internalPage = ref(0);
-    const internalPageSize = ref<number | null>(null);
+    const internalPageSize: Ref<number | null> = ref(null);
 
     function toPageSizeOption(pageSize: number): VsTablePageSizeOption {
         if (pageSize === DEFAULT_PAGE_SIZE_ALL) {
@@ -30,9 +30,11 @@ export function useTablePaginationComposable(
     }
 
     // label이 전역 messages에서 오기 때문에 computed로 두어 messages 변경을 따라간다
-    const defaultPageSizeOptions = computed<VsTablePageSizeOptions>(() => DEFAULT_PAGE_SIZES.map(toPageSizeOption));
+    const defaultPageSizeOptions: ComputedRef<VsTablePageSizeOptions> = computed(() =>
+        DEFAULT_PAGE_SIZES.map(toPageSizeOption),
+    );
 
-    const paginationOptions = computed<VsTablePaginationOptions>(() => {
+    const paginationOptions: ComputedRef<VsTablePaginationOptions> = computed(() => {
         const pagination = rawPagination.value;
         if (!pagination) {
             return {};
@@ -69,7 +71,7 @@ export function useTablePaginationComposable(
     });
 
     // page/pageSize prop이 바인딩되어 있으면 getter가 prop을 따르므로, 변경은 setter에서 바로 알린다
-    const page = computed<number>({
+    const page: WritableComputedRef<number> = computed({
         get: () => rawPage.value ?? internalPage.value,
         set: (value: number) => {
             internalPage.value = value;
@@ -77,7 +79,7 @@ export function useTablePaginationComposable(
         },
     });
 
-    const pageSize = computed<number>({
+    const pageSize: WritableComputedRef<number> = computed({
         get: () =>
             internalPageSize.value ??
             rawPageSize.value ??
@@ -91,22 +93,22 @@ export function useTablePaginationComposable(
         },
     });
 
-    const totalCount = computed<number>(() =>
+    const totalCount: ComputedRef<number> = computed(() =>
         serverMode.value ? (paginationOptions.value.totalItemCount ?? 0) : searchedCount.value,
     );
 
-    const pageStartIndex = computed<number>(() =>
+    const pageStartIndex: ComputedRef<number> = computed(() =>
         pageSize.value === DEFAULT_PAGE_SIZE_ALL ? 0 : page.value * pageSize.value,
     );
 
-    const pageEndIndex = computed<number>(() => {
+    const pageEndIndex: ComputedRef<number> = computed(() => {
         if (pageSize.value === DEFAULT_PAGE_SIZE_ALL) {
             return totalCount.value;
         }
         return Math.min(pageStartIndex.value + pageSize.value, totalCount.value);
     });
 
-    const totalPages = computed<number>(() => {
+    const totalPages: ComputedRef<number> = computed(() => {
         if (pageSize.value <= 0 || pageSize.value === DEFAULT_PAGE_SIZE_ALL) {
             return 1;
         }

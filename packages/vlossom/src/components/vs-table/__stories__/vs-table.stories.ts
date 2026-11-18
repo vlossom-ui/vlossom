@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { colorScheme } from '@/storybook';
 import VsTable from './../VsTable.vue';
 import type { VsTableItem } from './../types';
@@ -161,7 +161,7 @@ export const Selectable: Story = {
     render: () => ({
         components: { VsTable },
         setup() {
-            const selectedItems = ref<VsTableItem[]>([]);
+            const selectedItems: Ref<VsTableItem[]> = ref([]);
             const selectable = (item: VsTableItem) => item.name !== 'Jim';
             return { columns: baseColumns, items: baseItems, selectedItems, selectable };
         },
@@ -378,7 +378,7 @@ export const ServerMode: Story = {
         setup() {
             const page = ref(0);
             const pageSize = ref(10);
-            const items = ref<VsTableItem[]>(paginationItems.slice(0, 10));
+            const items: Ref<VsTableItem[]> = ref(paginationItems.slice(0, 10));
             const loading = ref(false);
 
             const fetchData = (nextPage: number, nextPageSize: number) => {
@@ -418,7 +418,7 @@ export const Draggable: Story = {
     render: () => ({
         components: { VsTable },
         setup() {
-            const totalItems = ref<VsTableItem[]>([]);
+            const totalItems: Ref<VsTableItem[]> = ref([]);
             return { columns: sortableColumns, items: baseItems, totalItems };
         },
         template: `
@@ -450,9 +450,9 @@ export const BoundItems: Story = {
     render: () => ({
         components: { VsTable },
         setup() {
-            const pagedItems = ref<VsTableItem[]>([]);
-            const totalItems = ref<VsTableItem[]>([]);
-            const selectedItems = ref<VsTableItem[]>([]);
+            const pagedItems: Ref<VsTableItem[]> = ref([]);
+            const totalItems: Ref<VsTableItem[]> = ref([]);
+            const selectedItems: Ref<VsTableItem[]> = ref([]);
             return {
                 columns: sortableColumns,
                 items: paginationItems.slice(0, 20),

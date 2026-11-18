@@ -2,6 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { logUtil } from '@/utils';
+import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 import VsTable from './../VsTable.vue';
 import type { VsTableCell, VsTableColumnDef, VsTableItem } from './../types';
 
@@ -282,6 +283,136 @@ describe('VsTable', () => {
 
             expect(headerTextsOf(wrapper)).toEqual(['HEAD-firstName', 'lastName']);
             expect(bodyTextsOf(wrapper)).toEqual(['FIRST-Alice', 'Kim']);
+        });
+    });
+
+    describe('조건부 slot', () => {
+        const mountConditional = (template: string, show: boolean) => {
+            const Parent = {
+                components: { VsTable },
+                data: () => ({ show, columns: defaultColumns, items: tableItems }),
+                template,
+            };
+            const wrapper = mount(Parent, { global: { stubs: defaultStubs } });
+            return { wrapper, vm: wrapper.vm as unknown as { show: boolean } };
+        };
+
+        it('slot에 건 v-if가 false에서 true로 바뀌면 slot을 렌더링하고, 다시 false가 되면 기본 렌더링으로 돌아간다', async () => {
+            const { wrapper, vm } = mountConditional(
+                `<vs-table :columns :items>
+                    <template v-if="show" #header-name>HEADER</template>
+                    <template v-if="show" #item-name="{ value }">ITEM-{{ value }}</template>
+                </vs-table>`,
+                false,
+            );
+            await nextTick();
+            expect(headerTextsOf(wrapper)).toEqual(['name', 'age']);
+            expect(bodyTextsOf(wrapper)).toEqual(['Alice', '24', 'Bob', '30']);
+
+            vm.show = true;
+            await nextTick();
+            expect(headerTextsOf(wrapper)).toEqual(['HEADER', 'age']);
+            expect(bodyTextsOf(wrapper)).toEqual(['ITEM-Alice', '24', 'ITEM-Bob', '30']);
+
+            vm.show = false;
+            await nextTick();
+            expect(headerTextsOf(wrapper)).toEqual(['name', 'age']);
+            expect(bodyTextsOf(wrapper)).toEqual(['Alice', '24', 'Bob', '30']);
+        });
+
+        it('slot 내용이 v-if로 비어도 기본 렌더링으로 대체하지 않고 빈 셀로 둔다', async () => {
+            const { wrapper, vm } = mountConditional(
+                `<vs-table :columns :items>
+                    <template #header-name><b v-if="show">HEADER</b></template>
+                    <template #item-name="{ value }"><b v-if="show && value === 'Alice'">ITEM-{{ value }}</b></template>
+                </vs-table>`,
+                true,
+            );
+            await nextTick();
+            expect(headerTextsOf(wrapper)).toEqual(['HEADER', 'age']);
+            expect(bodyTextsOf(wrapper)).toEqual(['ITEM-Alice', '24', '', '30']);
+
+            vm.show = false;
+            await nextTick();
+            expect(headerTextsOf(wrapper)).toEqual(['', 'age']);
+            expect(bodyTextsOf(wrapper)).toEqual(['', '24', '', '30']);
+        });
+
+        it('select slot 내용이 v-if로 비어도 기본 체크박스로 대체하지 않는다', async () => {
+            const { wrapper, vm } = mountConditional(
+                `<vs-table :columns :items selectable>
+                    <template #select="{ item }"><b v-if="show">{{ item ? 'ROW' : 'ALL' }}</b></template>
+                </vs-table>`,
+                true,
+            );
+            await nextTick();
+            expect(wrapper.find('th').text()).toBe('ALL');
+            expect(wrapper.findAll('tbody tr').map((tr) => tr.find('td').text())).toEqual(['ROW', 'ROW']);
+
+            vm.show = false;
+            await nextTick();
+            expect(wrapper.find('th').text()).toBe('');
+            expect(wrapper.findAllComponents(VsCheckbox)).toHaveLength(0);
+        });
+
+        it('selectable이 false면 select slot이 있어도 선택 컬럼을 렌더링하지 않는다', async () => {
+            const wrapper = mountTable({ slots: { select: () => 'CUSTOM' } });
+
+            await nextTick();
+
+            expect(wrapper.text()).not.toContain('CUSTOM');
+            expect(headerTextsOf(wrapper)).toEqual(['name', 'age']);
+        });
+
+        it('select slot에 건 v-if가 false가 되면 기본 체크박스로 돌아간다', async () => {
+            const { wrapper, vm } = mountConditional(
+                `<vs-table :columns :items selectable>
+                    <template v-if="show" #select>CUSTOM</template>
+                </vs-table>`,
+                false,
+            );
+            await nextTick();
+            expect(wrapper.findAllComponents(VsCheckbox)).toHaveLength(3);
+
+            vm.show = true;
+            await nextTick();
+            expect(wrapper.findAllComponents(VsCheckbox)).toHaveLength(0);
+            expect(wrapper.find('th').text()).toBe('CUSTOM');
+        });
+
+        it('expand slot에 건 v-if가 바뀌면 expand UI가 함께 나타나고 사라진다', async () => {
+            const { wrapper, vm } = mountConditional(
+                `<vs-table :columns :items>
+                    <template v-if="show" #expand="{ item }">DETAIL-{{ item.name }}</template>
+                </vs-table>`,
+                false,
+            );
+            await nextTick();
+            expect(wrapper.find('.vs-table-expand-handle').exists()).toBe(false);
+
+            vm.show = true;
+            await nextTick();
+            expect(wrapper.find('th.vs-table-expand-handle').exists()).toBe(true);
+            expect(wrapper.findAll('tbody td.vs-table-expand-handle')).toHaveLength(2);
+
+            vm.show = false;
+            await nextTick();
+            expect(wrapper.find('.vs-table-expand-handle').exists()).toBe(false);
+        });
+
+        it('empty slot 내용이 v-if로 비어도 기본 자리표시자로 대체하지 않는다', async () => {
+            const Parent = {
+                components: { VsTable },
+                data: () => ({ show: false }),
+                template: `<vs-table :columns="['name']" :items="[]">
+                    <template #empty><b v-if="show">NO RESULT</b></template>
+                </vs-table>`,
+            };
+            const wrapper = mount(Parent, { global: { stubs: defaultStubs } });
+            await nextTick();
+
+            expect(wrapper.find('.vs-table-no-data').text()).toBe('');
+            expect(wrapper.find('.vs-table-no-data-text').exists()).toBe(false);
         });
     });
 

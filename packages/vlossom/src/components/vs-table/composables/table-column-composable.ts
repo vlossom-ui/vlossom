@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue';
+import { computed, type ComputedRef, type Ref } from 'vue';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsTableColumnDef, VsTableItem } from './../types';
 
@@ -11,7 +11,7 @@ export function useTableColumnComposable(
     rawColumns: Ref<VsTableColumnDef[] | string[] | undefined>,
     items: Ref<VsTableItem[]>,
 ) {
-    const columns = computed<VsTableColumnDef[]>(() => {
+    const columns: ComputedRef<VsTableColumnDef[]> = computed(() => {
         const columnDefs = rawColumns.value;
         if (columnDefs?.length) {
             return columnDefs.map((column) => (typeof column === 'string' ? { key: column, label: column } : column));
@@ -31,7 +31,7 @@ export function useTableGridTemplateComposable(
     columns: Ref<VsTableColumnDef[]>,
     handleColumns: { drag: Ref<boolean>; select: Ref<boolean>; expand: Ref<boolean> },
 ) {
-    const gridTemplateColumns = computed<string>(() => {
+    const gridTemplateColumns: ComputedRef<string> = computed(() => {
         const tracks: string[] = [];
         if (handleColumns.drag.value) {
             tracks.push('auto');

@@ -34,7 +34,7 @@
                     @sort="updateSort"
                     @select-all="selectAll"
                 >
-                    <template v-for="name in headerSlots" #[name]="slotData">
+                    <template v-for="name in getSlotNames(VS_TABLE_HEADER_SLOT_PREFIXES)" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
                     </template>
                 </vs-table-header>
@@ -53,7 +53,7 @@
                     @sort="updateSort"
                     @select-all="selectAll"
                 >
-                    <template v-for="name in headerSlots" #[name]="slotData">
+                    <template v-for="name in getSlotNames(VS_TABLE_HEADER_SLOT_PREFIXES)" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
                     </template>
                 </vs-table-header>
@@ -70,7 +70,7 @@
                 >
                     <template #item="{ element, index }">
                         <vs-table-row v-bind="getRowProps(element, index)" v-on="rowListeners">
-                            <template v-for="name in itemSlots" #[name]="slotData">
+                            <template v-for="name in getSlotNames(VS_TABLE_ITEM_SLOT_PREFIXES)" #[name]="slotData">
                                 <slot :name v-bind="slotData || {}" />
                             </template>
                         </vs-table-row>
@@ -83,7 +83,7 @@
                         v-bind="getRowProps(item, index)"
                         v-on="rowListeners"
                     >
-                        <template v-for="name in itemSlots" #[name]="slotData">
+                        <template v-for="name in getSlotNames(VS_TABLE_ITEM_SLOT_PREFIXES)" #[name]="slotData">
                             <slot :name v-bind="slotData || {}" />
                         </template>
                     </vs-table-row>
@@ -131,14 +131,17 @@ import {
     defineComponent,
     nextTick,
     onBeforeUnmount,
+    onBeforeUpdate,
     onMounted,
     ref,
     toRefs,
     useTemplateRef,
     watch,
+    type ComputedRef,
     type PropType,
     type Ref,
     type TemplateRef,
+    type WritableComputedRef,
 } from 'vue';
 import { useIntersectionObserver, useResizeObserver } from '@vueuse/core';
 import { VsComponent, type PropsOf, type Size, type UIState } from '@/declaration';
@@ -347,7 +350,7 @@ export default defineComponent({
         const scrollWrapperRef: TemplateRef<HTMLDivElement> = useTemplateRef('scrollWrapperRef');
         const stickyScrollRef: TemplateRef<HTMLDivElement> = useTemplateRef('stickyScrollRef');
 
-        const items = computed<VsTableItem[]>(() => rawItems.value ?? []);
+        const items: ComputedRef<VsTableItem[]> = computed(() => rawItems.value ?? []);
         const getItemState = computed(() =>
             functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], UIState>(state.value),
         );
@@ -370,11 +373,11 @@ export default defineComponent({
                 },
             );
 
-        const isClientPaged = computed<boolean>(() => !!pagination.value && !serverMode.value);
-        const displayItems = computed<VsTableItem[]>(() =>
+        const isClientPaged: ComputedRef<boolean> = computed(() => !!pagination.value && !serverMode.value);
+        const displayItems: ComputedRef<VsTableItem[]> = computed(() =>
             isClientPaged.value ? viewItems.value.slice(pageStartIndex.value, pageEndIndex.value) : viewItems.value,
         );
-        const draggableItems = computed<VsTableItem[]>({
+        const draggableItems: WritableComputedRef<VsTableItem[]> = computed({
             get: () => displayItems.value,
             set: (nextItems: VsTableItem[]) => setDragOrder(nextItems, isClientPaged.value ? pageStartIndex.value : 0),
         });
@@ -396,7 +399,12 @@ export default defineComponent({
             displayItems,
             getItemKey,
         );
-        const showExpand = computed<boolean>(() => anyExpandable.value && !!slots.expand);
+        // slots는 반응형이 아니므로 render 직전마다 존재 여부를 ref에 옮겨 조건부 expand slot을 반영한다
+        const hasExpandSlot: Ref<boolean> = ref(!!slots.expand);
+        onBeforeUpdate(() => {
+            hasExpandSlot.value = !!slots.expand;
+        });
+        const showExpand: ComputedRef<boolean> = computed(() => anyExpandable.value && hasExpandSlot.value);
         const { gridTemplateColumns } = useTableGridTemplateComposable(columns, {
             drag: isDraggable,
             select: anySelectable,
@@ -425,16 +433,10 @@ export default defineComponent({
             showExpand: showExpand.value,
         }));
 
-        const headerSlots = computed(() =>
-            Object.keys(slots).filter((slotName) =>
-                VS_TABLE_HEADER_SLOT_PREFIXES.some((prefix) => slotName.startsWith(prefix)),
-            ),
-        );
-        const itemSlots = computed(() =>
-            Object.keys(slots).filter((slotName) =>
-                VS_TABLE_ITEM_SLOT_PREFIXES.some((prefix) => slotName.startsWith(prefix)),
-            ),
-        );
+        // slots는 반응형이 아니므로 computed로 캐싱하면 조건부 slot(v-if)이 추가·제거될 때 갱신되지 않는다
+        function getSlotNames(prefixes: readonly string[]): string[] {
+            return Object.keys(slots).filter((slotName) => prefixes.some((prefix) => slotName.startsWith(prefix)));
+        }
 
         function getRowProps(item: VsTableItem, index: number) {
             return {
@@ -490,11 +492,11 @@ export default defineComponent({
         }
 
         /* ── sticky header ── */
-        const isHeaderOutOfView = ref<boolean>(true);
-        const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);
+        const isHeaderOutOfView: Ref<boolean> = ref(true);
+        const useStickyHeader: ComputedRef<boolean> = computed(() => stickyHeader.value && isHeaderOutOfView.value);
 
         // sticky 헤더는 복제본이라 column의 폭이 실제 table과 달라져서 일치 시키는 작업이 필요
-        const stickyColumnTracks = ref<string>('');
+        const stickyColumnTracks: Ref<string> = ref('');
         const stickyTableColumnStyle = computed(() => ({
             gridTemplateColumns: stickyColumnTracks.value || gridTemplateColumns.value,
         }));
@@ -586,8 +588,9 @@ export default defineComponent({
             contentTableRef,
             scrollWrapperRef,
             stickyScrollRef,
-            headerSlots,
-            itemSlots,
+            VS_TABLE_HEADER_SLOT_PREFIXES,
+            VS_TABLE_ITEM_SLOT_PREFIXES,
+            getSlotNames,
             headerProps,
             rowListeners,
             searchOptions,
