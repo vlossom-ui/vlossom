@@ -1,4 +1,5 @@
 @reference 'tailwindcss';
+@reference '../../styles/breakpoints.css';
 
 .vs-button {
     @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-clip font-normal
@@ -70,7 +71,7 @@
         height: var(--vs-size-height, var(--vs-comp-height-md));
     }
 
-    @container (width < 768px) {
+    @variant not-vs-sm {
         &.vs-button-responsive {
             @apply w-full;
         }

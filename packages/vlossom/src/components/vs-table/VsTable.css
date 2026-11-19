@@ -1,4 +1,5 @@
 @reference 'tailwindcss';
+@reference '../../styles/breakpoints.css';
 
 .vs-table {
     --vs-table-sticky-header-z-index: 100;
@@ -277,7 +278,7 @@
 }
 
 /* ── Responsive layout ── */
-@container (width < 1024px) {
+@variant not-vs-sm {
     .vs-table.vs-table-responsive {
         > .vs-table-content {
             @apply overflow-x-visible;

@@ -220,7 +220,7 @@ const selectedItems = ref([]);
 | `pagedItems`    | `VsTableItem[]`                                | `[]`     | 현재 페이지의 행. 읽기 전용 `v-model:paged-items` (출력 전용). 외부에서 설정한 값은 무시됩니다.                      |
 | `pagination`    | `boolean \| VsTablePaginationOptions`          | `false`  | 페이지네이션 활성화                                                                                                  |
 | `primary`       | `boolean`                                      | `false`  | 헤더에 primary 색상 적용                                                                                             |
-| `responsive`    | `boolean`                                      | `false`  | 반응형(세로 적층) 레이아웃 활성화                                                                                    |
+| `responsive`    | `boolean`                                      | `false`  | 테이블 너비가 `sm` [브레이크포인트](../vs-responsive/README.md#breakpoints) 미만이면 각 행을 세로로 쌓아 표시        |
 | `search`        | `boolean \| VsTableSearchOptions`              | `false`  | 내장 검색 활성화                                                                                                     |
 | `selectable`    | `boolean \| (item, index?, items?) => boolean` | `false`  | 행 선택 활성화                                                                                                       |
 | `selectedItems` | `VsTableItem[]`                                | `[]`     | 선택된 행, v-model                                                                                                   |
