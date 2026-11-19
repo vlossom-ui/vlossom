@@ -18,7 +18,7 @@
                     <vs-chip
                         :color-scheme
                         :closable="closableChips && !loading"
-                        :style-set="componentStyleSet.$chip"
+                        :style-set="chipStyleSet"
                         size="xs"
                         @close="$emit('deselect', selectedOptions[0].id)"
                     >
@@ -32,7 +32,7 @@
                         :key="option.id"
                         :color-scheme
                         :closable="closableChips && !loading"
-                        :style-set="componentStyleSet.$chip"
+                        :style-set="chipStyleSet"
                         size="xs"
                         @close="$emit('deselect', option.id)"
                     >
@@ -65,6 +65,7 @@ import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type 
 import { VsComponent, type ColorScheme, type OptionItem, type UIState } from '@/declaration';
 import { useStateClass, useStyleSet, useMessages } from '@/composables';
 import type { VsSelectStyleSet } from './types';
+import type { VsChipStyleSet } from '@/components/vs-chip/types';
 
 import { ChevronDownIcon, XIcon } from '@lucide/vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
@@ -106,6 +107,11 @@ export default defineComponent({
             styleSet,
         );
 
+        const chipStyleSet = computed<VsChipStyleSet>(() => ({
+            $height: 'var(--vs-select-chip-height)',
+            ...componentStyleSet.value.$chip,
+        }));
+
         const renderClearButton = computed(
             () => !noClear.value && !readonly.value && !disabled.value && !loading.value && !isEmpty.value,
         );
@@ -139,6 +145,7 @@ export default defineComponent({
             displayLabel,
             triggerClassObj,
             componentStyleSet,
+            chipStyleSet,
             optionMessages,
             componentInlineStyle,
             focus,
