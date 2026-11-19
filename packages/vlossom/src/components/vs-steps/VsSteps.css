@@ -58,7 +58,7 @@
             }
 
             .vs-step-num {
-                @apply relative flex items-center justify-center font-semibold;
+                @apply relative flex items-center justify-center;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
                 border: 1px solid var(--vs-cs-border);
@@ -67,6 +67,7 @@
                 width: var(--step-size);
                 height: var(--step-size);
                 color: var(--vs-cs-text-tinted);
+                font-weight: 600;
                 font-size: var(--vs-font-size-sm);
             }
 
@@ -119,9 +120,8 @@
                 }
 
                 .vs-step-label {
-                    @apply font-semibold;
-
                     color: var(--vs-cs-primary);
+                    font-weight: 600;
                 }
             }
         }

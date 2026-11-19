@@ -132,13 +132,13 @@ export const CustomSlots: Story = {
         template: `
             <vs-table :columns="columns" :items="items">
                 <template #caption>
-                    <span class="font-bold text-blue-500">Custom Caption</span>
+                    <span class="text-blue-500" style="font-weight: 600">Custom Caption</span>
                 </template>
                 <template #header-name="{ value }">
-                    <span class="font-bold text-blue-500">{{ value }}</span>
+                    <span class="text-blue-500" style="font-weight: 600">{{ value }}</span>
                 </template>
                 <template #item-name="{ item }">
-                    <span class="font-bold">{{ item.name }}</span>
+                    <span style="font-weight: 600">{{ item.name }}</span>
                 </template>
                 <template #item-col1="{ value }">
                     <span class="text-gray-500">{{ value }}세</span>

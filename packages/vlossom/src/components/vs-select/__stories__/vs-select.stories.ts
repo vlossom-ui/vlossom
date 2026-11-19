@@ -335,7 +335,7 @@ export const CustomOption: Story = {
                 :model-value="null"
             >
                 <template #option="{ label, value, selected }">
-                    <div :class="{ 'font-bold': selected }">
+                    <div :style="{ fontWeight: selected ? 600 : undefined }">
                         <div>{{ label }}</div>
                         <div class="text-sm text-gray-500">{{ users.find(u => u.id === value)?.email }}</div>
                     </div>
@@ -398,7 +398,7 @@ export const WithCustomGroup: Story = {
                 :model-value="null"
             >
                 <template #group="{ groupName }">
-                    <div class="font-bold text-purple-600">
+                    <div class="text-purple-600" style="font-weight: 600">
                         {{ groupName }} Category
                     </div>
                 </template>
