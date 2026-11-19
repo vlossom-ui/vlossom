@@ -1,4 +1,5 @@
 @reference 'tailwindcss';
+@reference '../../styles/breakpoints.css';
 
 .vs-page {
     @apply relative w-full;
@@ -14,19 +15,25 @@
     }
 }
 
-@container (width < 1024px) {
+@variant vs-xl {
+    .vs-page {
+        padding: 2.2rem 3.5rem;
+    }
+}
+
+@variant not-vs-lg {
     .vs-page {
         padding: 1.8rem 2.5rem;
     }
 }
 
-@container (width < 768px) {
+@variant not-vs-md {
     .vs-page {
         padding: 1.4rem 2rem;
     }
 }
 
-@container (width < 640px) {
+@variant not-vs-sm {
     .vs-page {
         padding: 1rem 1.5rem;
     }

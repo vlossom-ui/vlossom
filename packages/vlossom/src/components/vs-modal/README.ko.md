@@ -223,3 +223,5 @@ interface VsModalNodeStyleSet extends CSSProperties {
 ## Caution
 
 `VsModal`은 Vue 애플리케이션에 Vlossom 플러그인이 설치되어 있어야 합니다. 모달 콘텐츠는 `$vs.modal.open()`을 통해 마운트되고 `container` 요소로 텔레포트됩니다.
+
+`size`가 지정된 모달은 query container이므로, 내부의 [브레이크포인트](../vs-responsive/README.md#breakpoints)는 모달 너비를 따릅니다. `size`가 없거나 너비가 `auto`, `fit-content`처럼 콘텐츠 기준인 모달은 콘텐츠에 맞춰 크기가 정해지므로 query container가 아닙니다.

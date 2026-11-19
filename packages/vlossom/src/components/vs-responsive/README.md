@@ -9,7 +9,7 @@ A layout wrapper component that applies responsive width and grid column setting
 ## Feature
 
 - Applies responsive `width` and `grid` column spanning via container query breakpoints (xs, sm, md, lg, xl)
-- Accepts breakpoint objects for fine-grained control per screen size
+- Accepts breakpoint objects for fine-grained control per container width
 - Renders as any HTML element via the `tag` prop
 - Used internally by many Vlossom input components for layout consistency
 
@@ -81,8 +81,25 @@ type Breakpoints = {
 };
 ```
 
+### Breakpoints
+
+Each key applies from its container width upward, so a value stays in effect until a larger key overrides it.
+
+| Key  | Container width |
+| ---- | --------------- |
+| `xs` | All widths      |
+| `sm` | 480px and up    |
+| `md` | 768px and up    |
+| `lg` | 1200px and up   |
+| `xl` | 2000px and up   |
+
 ## Slots
 
 | Slot      | Description     |
 | --------- | --------------- |
 | `default` | Content to wrap |
+
+## Caution
+
+- Breakpoints are measured against the nearest ancestor query container, not the viewport. `VsContainer`, `VsGrid`, `VsBlock`, the body of `VsInnerScroll` (including `VsDrawer` content), and a `VsModal` with a `size` are query containers. Any element with `container-type: inline-size` works as well.
+- Without a query container ancestor, only the `xs` value applies.

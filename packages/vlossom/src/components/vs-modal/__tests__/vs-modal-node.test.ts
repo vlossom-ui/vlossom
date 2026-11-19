@@ -83,6 +83,29 @@ describe('VsModalNode', () => {
                 height: '400px',
             });
         });
+
+        it('너비가 정해진 모달은 내부 반응형 기준이 되도록 query container가 되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsModalNode, {
+                props: { size: 'md' },
+            });
+
+            // then
+            expect(wrapper.vm.componentInlineStyle).toMatchObject({ containerType: 'inline-size' });
+        });
+
+        it.each([undefined, { width: 'auto', height: '400px' }, { width: 'fit-content' }])(
+            '콘텐츠로 너비가 정해지는 모달(size: %o)은 query container가 되지 않아야 한다',
+            (size) => {
+                // given, when
+                const wrapper = mount(VsModalNode, {
+                    props: { size },
+                });
+
+                // then
+                expect(wrapper.vm.componentInlineStyle).not.toHaveProperty('containerType');
+            },
+        );
     });
 
     describe('beforeClose hook', () => {

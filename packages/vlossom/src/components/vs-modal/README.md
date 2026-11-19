@@ -223,3 +223,5 @@ interface VsModalNodeStyleSet extends CSSProperties {
 ## Caution
 
 `VsModal` requires the Vlossom plugin to be installed in your Vue application. The modal content is mounted via `$vs.modal.open()` and teleported to the `container` element.
+
+A modal with a `size` is a query container, so [breakpoints](../vs-responsive/README.md#breakpoints) inside it follow the modal width. A modal without `size`, or with a content-based width such as `auto` or `fit-content`, is sized by its content and is not a query container.
