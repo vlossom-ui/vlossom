@@ -97,8 +97,15 @@ describe('useTableColumnComposable', () => {
         const { gridTemplateColumns } = useTableGridTemplateComposable(ref(columnDefs), handleColumns);
 
         expect(gridTemplateColumns.value).toBe(
-            '120px minmax(5rem, 1fr) minmax(auto, 10rem) minmax(5rem, 10rem) minmax(max-content, 1fr)',
+            '120px minmax(5rem, 1fr) minmax(min(6rem, 10rem), 10rem) minmax(5rem, 10rem) minmax(max-content, 1fr)',
         );
+    });
+
+    it('maxWidth만 있으면 기본 최소 폭을 두되 maxWidth보다 커지지 않게 한다', () => {
+        const columnDefs: VsTableColumnDef[] = [{ key: 'a', label: 'a', maxWidth: 40 }];
+        const { gridTemplateColumns } = useTableGridTemplateComposable(ref(columnDefs), handleColumns);
+
+        expect(gridTemplateColumns.value).toBe('minmax(min(6rem, 40px), 40px)');
     });
 
     it('drag / select / expand 트랙을 필요한 경우에만 추가한다', () => {

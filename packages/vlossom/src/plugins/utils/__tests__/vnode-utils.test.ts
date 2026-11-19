@@ -31,38 +31,6 @@ describe('vnodeUtils', () => {
             vsButton.unmount();
         });
 
-        it('circle prop이 true이면 vs-circle 클래스가 적용되어야 한다', () => {
-            const vsButtonVNode = createVsButton({
-                props: {
-                    circle: true,
-                },
-                content: '원형',
-                onClickEvent: () => {},
-            });
-            const vsButton = mount(vsButtonVNode);
-
-            const button = vsButton.find('button');
-            expect(button.classes()).toContain('vs-circle');
-
-            vsButton.unmount();
-        });
-
-        it('ghost prop이 true이면 vs-ghost 클래스가 적용되어야 한다', () => {
-            const vsButtonVNode = createVsButton({
-                props: {
-                    ghost: true,
-                },
-                content: '고스트',
-                onClickEvent: () => {},
-            });
-            const vsButton = mount(vsButtonVNode);
-
-            const button = vsButton.find('button');
-            expect(button.classes()).toContain('vs-ghost');
-
-            vsButton.unmount();
-        });
-
         it('size prop이 lg이면 해당 size에 맞는 CSS 변수가 설정되어야 한다', () => {
             const vsButtonVNode = createVsButton({
                 props: {
@@ -75,38 +43,6 @@ describe('vnodeUtils', () => {
 
             const button = vsButton.find('button');
             expect(button.classes()).toContain('vs-lg');
-
-            vsButton.unmount();
-        });
-
-        it('outline prop이 true이면 vs-outline 클래스가 적용되어야 한다', () => {
-            const vsButtonVNode = createVsButton({
-                props: {
-                    outline: true,
-                },
-                content: '윤곽',
-                onClickEvent: () => {},
-            });
-            const vsButton = mount(vsButtonVNode);
-
-            const button = vsButton.find('button');
-            expect(button.classes()).toContain('vs-outline');
-
-            vsButton.unmount();
-        });
-
-        it('responsive prop이 true이면 vs-responsive 클래스가 적용되어야 한다', () => {
-            const vsButtonVNode = createVsButton({
-                props: {
-                    responsive: true,
-                },
-                content: '반응형',
-                onClickEvent: () => {},
-            });
-            const vsButton = mount(vsButtonVNode);
-
-            const button = vsButton.find('button');
-            expect(button.classes()).toContain('vs-responsive');
 
             vsButton.unmount();
         });

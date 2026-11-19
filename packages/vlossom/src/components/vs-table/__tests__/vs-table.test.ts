@@ -183,6 +183,31 @@ describe('VsTable', () => {
             expect(td.style.justifyContent).toBe('flex-end');
             expect(td.style.alignItems).toBe('flex-start');
         });
+
+        it('기본 머리글/본문 텍스트만 vs-table-cell-text로 감싸고 슬롯 내용은 감싸지 않는다', async () => {
+            const wrapper = mountTable({
+                slots: {
+                    'header-name': () => h('b', 'Name'),
+                    'item-name': ({ value }: { value: string }) => h('b', value),
+                },
+            });
+
+            await nextTick();
+
+            const [nameTh, ageTh] = wrapper.findAll('th');
+            const [nameTd, ageTd] = wrapper.findAll('tbody td');
+            expect(nameTh.find('.vs-table-cell-text').exists()).toBe(false);
+            expect(nameTd.find('.vs-table-cell-text').exists()).toBe(false);
+            expect(ageTh.find('.vs-table-cell-text').text()).toBe('age');
+            expect(ageTd.find('.vs-table-cell-text').text()).toBe('24');
+        });
+
+        it('responsive이면 VsResponsive 루트 클래스와 겹치지 않는 vs-table-responsive 클래스를 붙인다', () => {
+            const wrapper = mountTable({ props: { responsive: true } });
+
+            expect(wrapper.classes()).toContain('vs-table-responsive');
+            expect(wrapper.classes()).not.toContain('vs-responsive');
+        });
     });
 
     describe('empty', () => {
@@ -191,7 +216,15 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            expect(wrapper.find('.vs-table-no-data').text()).toBe('NO RESULT');
+            expect(wrapper.find('.vs-table-no-data-cell').text()).toBe('NO RESULT');
+        });
+
+        it('empty 슬롯은 기본 자리표시자 래퍼 없이 셀에 바로 렌더링한다', async () => {
+            const wrapper = mountTable({ props: { items: [] }, slots: { empty: () => 'NO RESULT' } });
+
+            await nextTick();
+
+            expect(wrapper.find('.vs-table-no-data').exists()).toBe(false);
         });
 
         it('items가 비어있고 empty 슬롯이 없으면 기본 자리표시자를 렌더링한다', async () => {
@@ -207,7 +240,7 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            expect(wrapper.find('.vs-table-no-data').text()).not.toBe('NO RESULT');
+            expect(wrapper.find('.vs-table-no-data-cell').text()).not.toBe('NO RESULT');
         });
     });
 
@@ -411,7 +444,8 @@ describe('VsTable', () => {
             const wrapper = mount(Parent, { global: { stubs: defaultStubs } });
             await nextTick();
 
-            expect(wrapper.find('.vs-table-no-data').text()).toBe('');
+            expect(wrapper.find('.vs-table-no-data-cell').text()).toBe('');
+            expect(wrapper.find('.vs-table-no-data').exists()).toBe(false);
             expect(wrapper.find('.vs-table-no-data-text').exists()).toBe(false);
         });
     });
@@ -1397,6 +1431,18 @@ describe('VsTable', () => {
             const skeleton = wrapper.find('.vs-skeleton');
             expect(skeleton.exists()).toBe(true);
             expect(skeleton.attributes('style') ?? '').toContain('height');
+        });
+
+        it('반응형 라벨로 쓰는 data-label은 컬럼 라벨을 유지한다', async () => {
+            const wrapper = mountTable({ props: { columns: labeledColumns, loading: true } });
+
+            await nextTick();
+
+            const labels = wrapper
+                .findAll('tbody tr')[0]
+                .findAll('td')
+                .map((td) => td.attributes('data-label'));
+            expect(labels).toEqual(['이름', '나이']);
         });
 
         it('선택 셀 클릭으로 선택되지 않는다', async () => {
