@@ -92,9 +92,9 @@
                 <tbody v-if="!displayItems.length" class="vs-table-tbody">
                     <tr class="vs-table-body-row">
                         <td class="vs-table-td vs-table-no-data-cell" colspan="100%">
-                            <div class="vs-table-no-data">
+                            <slot v-if="!loading && $slots['empty']" name="empty" />
+                            <div v-else class="vs-table-no-data">
                                 <vs-loading v-if="loading" :color-scheme="computedColorScheme" />
-                                <slot v-else-if="$slots['empty']" name="empty" />
                                 <template v-else>
                                     <BanIcon class="vs-table-no-data-icon" />
                                     <p class="vs-table-no-data-text">{{ optionMessages.VS_TABLE_NO_DATA }}</p>
@@ -412,7 +412,7 @@ export default defineComponent({
         });
 
         const classObj = computed(() => ({
-            'vs-responsive': responsive.value,
+            'vs-table-responsive': responsive.value,
             'vs-primary': primary.value,
             [sizeClass.value]: !!sizeClass.value,
         }));

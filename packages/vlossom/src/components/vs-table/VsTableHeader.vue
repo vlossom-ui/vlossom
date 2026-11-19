@@ -39,7 +39,7 @@
                     :colIdx
                     :rowIdx="0"
                 />
-                <template v-else>{{ column.label }}</template>
+                <span v-else class="vs-table-cell-text">{{ column.label }}</span>
                 <component
                     :is="getSortIcon(column)"
                     v-if="column.sortable"
