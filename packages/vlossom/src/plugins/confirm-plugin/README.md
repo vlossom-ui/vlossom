@@ -15,6 +15,7 @@ Displays a modal confirmation dialog with OK and Cancel buttons. Returns a `Prom
 - Supports swapping the button order via `swapButtons`
 - Supports custom button container styling via `$buttons` CSSProperties
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
+- Opens with a width of `27rem` by default; pass `size` to change it
 
 ## Basic Usage
 

@@ -15,6 +15,7 @@
 - `swapButtons`를 통해 버튼 순서를 교체할 수 있습니다
 - `$buttons` CSSProperties로 버튼 컨테이너 스타일을 커스터마이징할 수 있습니다
 - Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
+- 기본 너비는 `27rem`이며, `size`로 변경할 수 있습니다
 
 ## 기본 사용법
 

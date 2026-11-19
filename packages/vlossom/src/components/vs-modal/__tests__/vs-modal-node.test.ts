@@ -4,29 +4,40 @@ import VsModalNode from './../VsModalNode.vue';
 
 describe('VsModalNode', () => {
     describe('size props', () => {
-        it('size가 lg일 때 지정된 lg 크기가 적용되어야 한다', () => {
+        it('size가 lg일 때 width에만 lg 크기가 적용되고 height는 지정되지 않아야 한다', () => {
             // given, when
             const wrapper = mount(VsModalNode, {
                 props: { size: 'lg' },
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet).toMatchObject({
-                width: '70%',
-                height: '66%',
-            });
+            expect(wrapper.vm.componentStyleSet).toMatchObject({ width: '70%' });
+            expect(wrapper.vm.componentStyleSet).not.toHaveProperty('height');
         });
 
-        it('size가 문자열로 주어지면 해당 값이 적용되어야 한다', () => {
+        it('size가 문자열로 주어지면 width에만 해당 값이 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsModalNode, {
                 props: { size: '500px' },
             });
 
             // then
+            expect(wrapper.vm.componentStyleSet).toMatchObject({ width: '500px' });
+            expect(wrapper.vm.componentStyleSet).not.toHaveProperty('height');
+        });
+
+        it('size가 객체이고 height가 키워드로 주어지면 지정된 height 크기가 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsModalNode, {
+                props: {
+                    size: { width: 'lg', height: 'lg' },
+                },
+            });
+
+            // then
             expect(wrapper.vm.componentStyleSet).toMatchObject({
-                width: '500px',
-                height: '500px',
+                width: '70%',
+                height: '66%',
             });
         });
 
@@ -45,7 +56,7 @@ describe('VsModalNode', () => {
             });
         });
 
-        it('size가 객체이고 width만 주어지면 height는 md가 적용되어야 한다', () => {
+        it('size가 객체이고 width만 주어지면 height는 지정되지 않아야 한다', () => {
             // given, when
             const wrapper = mount(VsModalNode, {
                 props: {
@@ -54,10 +65,8 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet).toMatchObject({
-                width: '600px',
-                height: '50%',
-            });
+            expect(wrapper.vm.componentStyleSet).toMatchObject({ width: '600px' });
+            expect(wrapper.vm.componentStyleSet).not.toHaveProperty('height');
         });
 
         it('size가 객체이고 height만 주어지면 width는 md가 적용되어야 한다', () => {

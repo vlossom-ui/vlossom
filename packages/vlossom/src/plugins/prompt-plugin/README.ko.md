@@ -15,6 +15,7 @@
 - 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
 - 커스텀 버튼 텍스트, 버튼 순서 교체, `$buttons` CSSProperties로 버튼 컨테이너 스타일링을 지원합니다
 - Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
+- 기본 너비는 `27rem`이며, `size`로 변경할 수 있습니다
 
 ## 기본 사용법
 

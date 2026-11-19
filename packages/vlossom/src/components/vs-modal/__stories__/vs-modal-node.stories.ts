@@ -131,7 +131,7 @@ export const DifferentSizes: Story = {
     parameters: {
         docs: {
             description: {
-                story: '다양한 크기의 모달입니다. xs, sm, md, lg, xl 크기를 선택할 수 있습니다.',
+                story: '다양한 크기의 모달입니다. xs, sm, md, lg, xl 크기는 너비만 설정하며, 높이는 콘텐츠에 맞춰집니다.',
             },
         },
     },
@@ -143,16 +143,17 @@ export const DifferentSizes: Story = {
             }
 
             const sizes = ['xs', 'sm', 'md', 'lg', 'xl'];
+            const lines = [1, 4, 8, 16, 40];
 
-            return { args, handleClose, sizes };
+            return { args, handleClose, sizes, lines };
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 2rem;">
-                <div v-for="size in sizes" :key="size" style="position: relative; width: 100%; height: 400px; background: #f5f5f5; border: 1px dashed #ccc;">
+                <div v-for="(size, index) in sizes" :key="size" style="position: relative; width: 100%; height: 400px; background: #f5f5f5; border: 1px dashed #ccc;">
                     <vs-modal-node v-bind="args" :size="size">
                         <div>
                             <h3 style="margin: 0 0 0.5rem 0;">{{ size.toUpperCase() }} 크기 모달</h3>
-                            <p>이 모달은 {{ size }} 크기로 설정되었습니다.</p>
+                            <p v-for="line in lines[index]" :key="line">이 모달은 {{ size }} 너비로 설정되었습니다. ({{ line }})</p>
                         </div>
                     </vs-modal-node>
                 </div>

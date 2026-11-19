@@ -12,7 +12,7 @@ Vlossom 모달 플러그인을 통해 오버레이 레이어에 콘텐츠를 렌
 - 설정 가능한 컨테이너 요소(기본: `body`)로 콘텐츠를 텔레포트합니다.
 - 딤드 오버레이 배경, 포커스 잠금, ESC 키 닫기, 딤 클릭 닫기를 지원합니다.
 - `scroll-lock`으로 페이지 스크롤 또는 CSS 선택자로 지정한 특정 스크롤 컨테이너를 잠글 수 있습니다.
-- 사전 정의된 크기 키워드(`xs`, `sm`, `md`, `lg`, `xl`) 또는 커스텀 값으로 크기를 설정할 수 있습니다.
+- 사전 정의된 크기 키워드(`xs`, `sm`, `md`, `lg`, `xl`) 또는 커스텀 값으로 너비를 설정할 수 있으며, 높이는 명시하지 않으면 콘텐츠에 맞춰집니다.
 - 라이프사이클 훅을 위한 `open` 및 `close` 이벤트를 발생시킵니다.
 - 컴포넌트가 언마운트되거나 `KeepAlive` 안에서 비활성화되면 열려 있는 모달을 제거합니다. 다시 활성화될 때 `v-model`이 여전히 `true`이면 모달을 다시 엽니다.
 
@@ -51,6 +51,8 @@ const isOpen = ref(false);
 
 ### 사전 정의된 크기
 
+크기 키워드나 단일 값은 너비만 설정합니다. 높이는 콘텐츠에 맞춰 늘어나며, 컨테이너를 넘으면 모달 내부에서 스크롤됩니다.
+
 ```html live
 <template>
     <vs-button @click="isOpen = true">모달 열기</vs-button>
@@ -63,6 +65,8 @@ const isOpen = ref(false);
 ```
 
 ### 커스텀 크기
+
+객체를 사용하면 너비와 높이를 각각 설정할 수 있습니다. 두 값 모두 크기 키워드 또는 커스텀 값을 받습니다.
 
 ```html live
 <template>
@@ -156,7 +160,7 @@ const isOpen = ref(false);
 | `beforeClose` | `() => Promise<boolean> \| boolean`                                                                   | -        | -        | 모달이 닫히기 전에 호출되는 훅. `false`를 반환하면 닫기를 취소합니다. `$vs.modal.clear()` 호출 시에는 무시됩니다. |
 | `container`   | `string`                                                                                              | `'body'` | -        | 모달을 텔레포트할 요소의 CSS 선택자.                                                                              |
 | `escClose`    | `boolean`                                                                                             | `false`  | -        | ESC 키를 누르면 모달을 닫습니다.                                                                                  |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | 사전 정의된 키워드 또는 커스텀 width/height로 모달 크기를 설정합니다.                                             |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | 키워드 또는 커스텀 값으로 모달 너비를 설정합니다. 높이는 객체로 지정하며, 생략하면 콘텐츠에 맞춰집니다.           |
 | `callbacks`   | `OverlayCallbacks`                                                                                    | `{}`     | -        | 오버레이 콜백 핸들러.                                                                                             |
 | `dimClose`    | `boolean`                                                                                             | `false`  | -        | 딤드 영역 클릭 시 모달을 닫습니다.                                                                                |
 | `dimmed`      | `boolean`                                                                                             | `false`  | -        | 모달 뒤에 딤드 오버레이를 표시합니다.                                                                             |

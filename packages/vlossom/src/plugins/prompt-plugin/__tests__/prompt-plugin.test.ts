@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createApp, defineComponent, h, nextTick, type App } from 'vue';
 import { createVlossom, useVlossom } from '@/framework';
 import * as components from '@/components';
-import { PROMPT_CANCEL } from '@/declaration';
+import { DIALOG_MODAL_SIZE, PROMPT_CANCEL } from '@/declaration';
 import { createPromptPlugin } from './../prompt-plugin';
 import type { ModalPlugin } from '@/plugins/modal-plugin';
 
@@ -62,6 +62,22 @@ describe('prompt-plugin', () => {
 
         const passedOptions = (modalPlugin.open as any).mock.calls[0][1];
         expect(passedOptions.escClose).toBe(false);
+    });
+
+    it('size를 지정하지 않으면 기본 다이얼로그 너비로 모달을 연다', () => {
+        const promptPlugin = createPromptPlugin(modalPlugin);
+        promptPlugin.open('이름을 입력해주세요.');
+
+        const passedOptions = (modalPlugin.open as any).mock.calls[0][1];
+        expect(passedOptions.size).toBe(DIALOG_MODAL_SIZE);
+    });
+
+    it('size를 지정하면 지정한 size로 모달을 연다', () => {
+        const promptPlugin = createPromptPlugin(modalPlugin);
+        promptPlugin.open('이름을 입력해주세요.', { size: 'md' });
+
+        const passedOptions = (modalPlugin.open as any).mock.calls[0][1];
+        expect(passedOptions.size).toBe('md');
     });
 
     it('componentProps와 플러그인 전용 옵션은 modalPlugin.open에 전달되지 않고, ModalOptions는 전달된다', () => {
