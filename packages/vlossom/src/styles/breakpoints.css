@@ -1,5 +1,5 @@
 /* @container 조건에는 CSS 변수를 쓸 수 없어서 빌드 타임 variant로 수치를 공유한다. 미만 조건은 `@variant not-vs-md`처럼 쓴다. */
-@custom-variant vs-sm (@container (width >= 640px));
+@custom-variant vs-sm (@container (width >= 480px));
 @custom-variant vs-md (@container (width >= 768px));
-@custom-variant vs-lg (@container (width >= 1024px));
-@custom-variant vs-xl (@container (width >= 1280px));
+@custom-variant vs-lg (@container (width >= 1200px));
+@custom-variant vs-xl (@container (width >= 2000px));

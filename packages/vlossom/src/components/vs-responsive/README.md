@@ -88,10 +88,10 @@ Each key applies from its container width upward, so a value stays in effect unt
 | Key  | Container width |
 | ---- | --------------- |
 | `xs` | All widths      |
-| `sm` | 640px and up    |
+| `sm` | 480px and up    |
 | `md` | 768px and up    |
-| `lg` | 1024px and up   |
-| `xl` | 1280px and up   |
+| `lg` | 1200px and up   |
+| `xl` | 2000px and up   |
 
 ## Slots
 
