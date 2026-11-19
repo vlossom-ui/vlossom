@@ -27,7 +27,11 @@ export default defineComponent({
         const { header, footer, drawers } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
 
         function isPushing({ size, isOpen, pushContainer }: DrawerLayout) {
-            return pushContainer && isOpen && !!size;
+            return !!pushContainer && isOpen && !!size;
+        }
+
+        function isResponsivePush(drawer: DrawerLayout) {
+            return isPushing(drawer) && typeof drawer.pushContainer === 'object' && !!drawer.pushContainer.responsive;
         }
 
         function getDrawerPadding(drawer: DrawerLayout, barPadding?: string) {
@@ -53,9 +57,14 @@ export default defineComponent({
 
             const { left, top, bottom, right } = drawers.value;
 
+            const topPadding = getDrawerPadding(top, headerPaddingTop);
+            const bottomPadding = getDrawerPadding(bottom, footerPaddingBottom);
+
             return objectUtil.shake({
-                paddingTop: getDrawerPadding(top, headerPaddingTop) ?? headerPaddingTop,
-                paddingBottom: getDrawerPadding(bottom, footerPaddingBottom) ?? footerPaddingBottom,
+                paddingTop: (isResponsivePush(top) ? undefined : topPadding) ?? headerPaddingTop,
+                paddingBottom: (isResponsivePush(bottom) ? undefined : bottomPadding) ?? footerPaddingBottom,
+                '--vs-container-push-top': isResponsivePush(top) ? topPadding : undefined,
+                '--vs-container-push-bottom': isResponsivePush(bottom) ? bottomPadding : undefined,
                 '--vs-container-push-left': isPushing(left) ? left.size : undefined,
                 '--vs-container-push-right': isPushing(right) ? right.size : undefined,
             });
@@ -66,10 +75,14 @@ export default defineComponent({
                 return {};
             }
 
-            const { left, right } = drawers.value;
+            const { left, top, right, bottom } = drawers.value;
             return {
-                'vs-container-push-left': isPushing(left),
-                'vs-container-push-right': isPushing(right),
+                'vs-container-push-left': isPushing(left) && !isResponsivePush(left),
+                'vs-container-push-left-responsive': isResponsivePush(left),
+                'vs-container-push-right': isPushing(right) && !isResponsivePush(right),
+                'vs-container-push-right-responsive': isResponsivePush(right),
+                'vs-container-push-top-responsive': isResponsivePush(top),
+                'vs-container-push-bottom-responsive': isResponsivePush(bottom),
             };
         });
 

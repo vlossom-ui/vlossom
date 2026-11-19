@@ -42,13 +42,15 @@ export interface BarLayout {
 
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
+export type PushContainer = boolean | { responsive?: boolean };
+
 export type OverlayTuple = [string, Ref<OverlayCallbacks>];
 
 export type OverlayCallbacks<T = void> = { [eventName: string]: (...args: any[]) => T | Promise<T> };
 
 export interface DrawerLayout {
     isOpen: boolean;
-    pushContainer: boolean;
+    pushContainer: PushContainer;
     placement: DrawerPlacement;
     size: string;
 }
