@@ -47,7 +47,7 @@ export const Default: Story = {
 
                 <vs-focus-trap v-bind="args">
                     <div class="p-6 border-2 border-gray-200 rounded-lg bg-gray-50 max-w-sm">
-                        <h3 class="mb-4 text-lg font-semibold text-gray-700">기본 포커스 트랩</h3>
+                        <h3 class="mb-4 text-lg text-gray-700" style="font-weight: 600">기본 포커스 트랩</h3>
                                                 <input
                             type="text"
                             placeholder="첫 번째 입력"
@@ -100,7 +100,7 @@ export const InitialFocus: Story = {
             <div>
                 <vs-focus-trap v-bind="args">
                     <div class="p-6 border-2 border-gray-200 rounded-lg bg-gray-50 max-w-sm">
-                        <h3 class="mb-4 text-lg font-semibold text-gray-700">초기 포커스 지정</h3>
+                        <h3 class="mb-4 text-lg text-gray-700" style="font-weight: 600">초기 포커스 지정</h3>
                                                 <input
                             type="text"
                             placeholder="사용자명"
@@ -159,7 +159,7 @@ export const NoFocusLock: Story = {
 
                 <vs-focus-trap v-bind="args">
                     <div class="p-6 border-2 border-gray-200 rounded-lg bg-gray-50 max-w-sm">
-                        <h3 class="mb-4 text-lg font-semibold text-gray-700">포커스 잠금 비활성화</h3>
+                        <h3 class="mb-4 text-lg text-gray-700" style="font-weight: 600">포커스 잠금 비활성화</h3>
                         <input
                             type="text"
                             placeholder="내부 입력 1"
@@ -226,7 +226,7 @@ export const ModalSimulation: Story = {
         template: `
             <div>
                 <div class="p-5">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">모달 시뮬레이션</h3>
+                    <h3 class="text-lg text-gray-900 mb-2" style="font-weight: 600">모달 시뮬레이션</h3>
                     <p class="text-gray-600 mb-4">버튼을 클릭하면 모달이 열리고, 포커스 트랩이 활성화됩니다.</p>
                                         <button
                         @click="openModal"
@@ -244,7 +244,7 @@ export const ModalSimulation: Story = {
                 >
                     <vs-focus-trap v-bind="args" @keydown.esc="closeModal">
                         <div class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-5/6">
-                            <h2 class="text-2xl font-semibold text-gray-900 mb-6">설정</h2>
+                            <h2 class="text-2xl text-gray-900 mb-6" style="font-weight: 600">설정</h2>
                             <div class="mb-6">
                                 <div class="mb-4">
                                     <label class="block mb-1.5 font-medium text-gray-700">이름</label>

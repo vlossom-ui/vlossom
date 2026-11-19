@@ -76,8 +76,8 @@
                 }
 
                 &.vs-selected {
-                    @apply font-bold;
                     color: var(--vs-cs-text);
+                    font-weight: 600;
 
                     .vs-tab-fill {
                         transform: none;

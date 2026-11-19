@@ -31,7 +31,7 @@ A layout component that provides a scrollable content area with optional sticky 
 <template>
     <vs-inner-scroll style="height: 400px;">
         <template #header>
-            <div class="font-bold">Header</div>
+            <h2>Header</h2>
         </template>
 
         <p v-for="i in 20" :key="i">Line {{ i }}</p>

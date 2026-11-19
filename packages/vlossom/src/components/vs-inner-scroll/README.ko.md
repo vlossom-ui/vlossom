@@ -31,7 +31,7 @@
 <template>
     <vs-inner-scroll style="height: 400px;">
         <template #header>
-            <div class="font-bold">헤더</div>
+            <h2>헤더</h2>
         </template>
 
         <p v-for="i in 20" :key="i">라인 {{ i }}</p>
