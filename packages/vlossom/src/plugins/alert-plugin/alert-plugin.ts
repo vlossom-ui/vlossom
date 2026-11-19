@@ -1,5 +1,5 @@
 import { h, ref, type Component, type Ref } from 'vue';
-import { ALERT_OK, OVERLAY_CLOSE, VsComponent } from '@/declaration';
+import { ALERT_OK, DIALOG_MODAL_SIZE, OVERLAY_CLOSE, VsComponent } from '@/declaration';
 import { useOverlayCallbackStore, useOptionsStore } from '@/stores';
 import { useStyleSet } from '@/composables';
 import { VsRender } from '@/components';
@@ -67,7 +67,7 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
                             resolve();
                         },
                     },
-                    size: 'xs',
+                    size: modalOptions.size ?? DIALOG_MODAL_SIZE,
                 });
             });
         },

@@ -14,6 +14,7 @@
 - 열리면 확인 버튼에 포커스가 가므로 Enter 키로 확인할 수 있고, Escape 키로도 Promise를 resolve하고 대화상자를 닫을 수 있습니다
 - 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
 - Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
+- 기본 너비는 `27rem`이며, `size`로 변경할 수 있습니다
 
 ## 기본 사용법
 
