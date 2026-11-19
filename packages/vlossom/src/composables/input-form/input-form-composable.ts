@@ -1,5 +1,5 @@
 import { type Ref, inject, onMounted, onBeforeUnmount, watch } from 'vue';
-import { FORM_STORE_KEY } from '@/declaration';
+import { FORM_STORE_KEY, type FormInputEntry } from '@/declaration';
 import { FormStore } from '@/stores';
 
 export function useInputForm(
@@ -15,33 +15,19 @@ export function useInputForm(
         FormStore.getDefaultFormStore(), // for no provide error
     );
 
-    watch(changed, () => {
-        formStore.updateChanged(id.value, changed.value);
-    });
-
-    watch(valid, () => {
-        formStore.updateValid(id.value, valid.value);
-    });
-
-    watch(formStore.clearFlag, clear);
-
-    watch(formStore.resetFlag, reset);
+    const entry: FormInputEntry = { valid, changed, validate, clear, reset };
 
     onMounted(() => {
-        formStore.updateChanged(id.value, changed.value);
-        formStore.updateValid(id.value, valid.value);
-        formStore.setValidator(id.value, validate);
+        formStore.register(id.value, entry);
     });
 
     watch(id, (newId, oldId) => {
-        formStore.removeFromForm(oldId);
-        formStore.updateChanged(newId, changed.value);
-        formStore.updateValid(newId, valid.value);
-        formStore.setValidator(newId, validate);
+        formStore.unregister(oldId);
+        formStore.register(newId, entry);
     });
 
     onBeforeUnmount(() => {
-        formStore.removeFromForm(id.value);
+        formStore.unregister(id.value);
     });
 
     return {
