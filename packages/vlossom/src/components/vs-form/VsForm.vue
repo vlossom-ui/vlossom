@@ -30,12 +30,14 @@ export default defineComponent({
         const formStore = FormStore.getDefaultFormStore();
         provide(FORM_STORE_KEY, formStore);
 
-        const valid = computed(() => Object.values(formStore.validObj.value).every((v) => v));
-        const changed = computed(() => Object.values(formStore.changedObj.value).some((v) => v));
+        const inputs = computed(() => [...formStore.inputs.values()]);
+        const valid = computed(() => inputs.value.every((input) => input.valid.value));
+        const changed = computed(() => inputs.value.some((input) => input.changed.value));
 
         async function validate() {
-            const results = await formStore.validate();
-            const invalidIds = Object.keys(results).filter((id) => !results[id]);
+            const entries = [...formStore.inputs.entries()];
+            const results = await Promise.all(entries.map(([, input]) => input.validate()));
+            const invalidIds = entries.filter((_, index) => !results[index]).map(([id]) => id);
             if (invalidIds.length > 0) {
                 // on error callback with invalid ids
                 emit('error', invalidIds);
@@ -45,11 +47,11 @@ export default defineComponent({
         }
 
         function clear() {
-            formStore.toggleClearFlag();
+            inputs.value.forEach((input) => input.clear());
         }
 
         function reset() {
-            formStore.toggleResetFlag();
+            inputs.value.forEach((input) => input.reset());
         }
 
         function onSubmit(event: SubmitEvent) {
