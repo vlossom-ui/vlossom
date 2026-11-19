@@ -1,4 +1,4 @@
-import { computed, ref, shallowRef, toRaw, watch, type Ref } from 'vue';
+import { computed, ref, shallowRef, toRaw, watch, type ComputedRef, type Ref, type ShallowRef } from 'vue';
 import { functionUtil } from '@/utils';
 import type { VsTableItem } from './../types';
 
@@ -31,7 +31,7 @@ export function useTableSelectionComposable(
     }
 
     // 사용자 객체를 프록시로 감싸지 않은 채 그대로 emit하기 위해 shallowRef를 쓴다
-    const selectedItems = shallowRef<VsTableItem[]>(reconcile(rawSelectedItems.value));
+    const selectedItems: ShallowRef<VsTableItem[]> = shallowRef(reconcile(rawSelectedItems.value));
     const selectedKeys = computed(() => new Set(selectedItems.value.map(getItemKey)));
 
     // selectable이 boolean이면 아이템을 순회하지 않는다 (대량 items에서는 갱신마다 전체 스캔이 된다)
@@ -42,13 +42,13 @@ export function useTableSelectionComposable(
         return list.filter((item, index) => isSelectable.value(item, index, list));
     }
 
-    const anySelectable = computed<boolean>(() => filterSelectable(items.value).length > 0);
-    const selectableVisibleItems = computed<VsTableItem[]>(() => filterSelectable(visibleItems.value));
+    const anySelectable: ComputedRef<boolean> = computed(() => filterSelectable(items.value).length > 0);
+    const selectableVisibleItems: ComputedRef<VsTableItem[]> = computed(() => filterSelectable(visibleItems.value));
 
-    const selectedAll = computed<boolean>(
+    const selectedAll: ComputedRef<boolean> = computed(
         () => selectableVisibleItems.value.length > 0 && selectableVisibleItems.value.every(isSelected),
     );
-    const selectedPartial = computed<boolean>(
+    const selectedPartial: ComputedRef<boolean> = computed(
         () => !selectedAll.value && selectableVisibleItems.value.some(isSelected),
     );
 

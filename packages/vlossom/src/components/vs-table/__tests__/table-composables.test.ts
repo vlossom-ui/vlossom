@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { computed, nextTick, reactive, ref, shallowRef, type Ref } from 'vue';
+import { computed, nextTick, reactive, ref, shallowRef, type ComputedRef, type Ref, type ShallowRef } from 'vue';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import { VsTableSortType, type VsTableColumnDef, type VsTableItem, type VsTableItemKey } from './../types';
 import {
@@ -129,12 +129,12 @@ describe('getCellValue', () => {
 });
 
 describe('useTableSearchComposable', () => {
-    const columns = computed<VsTableColumnDef[]>(() => [
+    const columns: ComputedRef<VsTableColumnDef[]> = computed(() => [
         { key: 'name', label: '이름' },
         { key: 'age', label: '나이', transform: (value) => `${value}세` },
         { key: 'memo', label: '메모', skipSearch: true },
     ]);
-    const items = ref<VsTableItem[]>([
+    const items: Ref<VsTableItem[]> = ref([
         { ...alice, memo: 'hidden', tags: 'vip' },
         { ...bob, memo: 'shown', tags: 'normal' },
     ]);
@@ -214,11 +214,11 @@ describe('useTableSearchComposable', () => {
 
     it('skipSearch 컬럼의 하위 경로는 extraKeys로도 되살아나지 않는다', () => {
         const { searchInputRef, text } = createSearchInputRef();
-        const nestedColumns = computed<VsTableColumnDef[]>(() => [
+        const nestedColumns: ComputedRef<VsTableColumnDef[]> = computed(() => [
             { key: 'name', label: '이름' },
             { key: 'secret', label: '비밀', skipSearch: true },
         ]);
-        const nestedItems = ref<VsTableItem[]>([{ name: 'Alice', secret: { code: 'classified' } }]);
+        const nestedItems: Ref<VsTableItem[]> = ref([{ name: 'Alice', secret: { code: 'classified' } }]);
         const { searchedItems } = useTableSearchComposable(
             searchInputRef,
             ref({ extraKeys: ['secret.code'] }),
@@ -236,11 +236,11 @@ describe('useTableSearchComposable', () => {
             constructor(public nickname: string) {}
         }
         const { searchInputRef, text } = createSearchInputRef();
-        const objectColumns = computed<VsTableColumnDef[]>(() => [
+        const objectColumns: ComputedRef<VsTableColumnDef[]> = computed(() => [
             { key: 'profile', label: 'P' },
             { key: 'joinedAt', label: 'D' },
         ]);
-        const objectItems = ref<VsTableItem[]>([
+        const objectItems: Ref<VsTableItem[]> = ref([
             { profile: new Profile('ally'), joinedAt: new Date('2024-01-02T03:04:05.000Z') },
         ]);
         const { searchedItems } = useTableSearchComposable(searchInputRef, ref(true), objectColumns, objectItems);
@@ -257,11 +257,11 @@ describe('useTableSearchComposable', () => {
         circular.self = circular;
 
         const { searchInputRef, text } = createSearchInputRef();
-        const circularColumns = computed<VsTableColumnDef[]>(() => [
+        const circularColumns: ComputedRef<VsTableColumnDef[]> = computed(() => [
             { key: 'circular', label: 'C' },
             { key: 'run', label: 'R' },
         ]);
-        const circularItems = ref<VsTableItem[]>([{ circular, run: () => 'secret' }]);
+        const circularItems: Ref<VsTableItem[]> = ref([{ circular, run: () => 'secret' }]);
         const { searchedItems } = useTableSearchComposable(searchInputRef, ref(true), circularColumns, circularItems);
 
         text.value = 'Alice';
@@ -285,11 +285,11 @@ describe('useTableSearchComposable', () => {
 });
 
 describe('useTableSortComposable', () => {
-    const columns = computed<VsTableColumnDef[]>(() => [
+    const columns: ComputedRef<VsTableColumnDef[]> = computed(() => [
         { key: 'id', label: 'ID', sortable: true },
         { key: 'name', label: '이름', sortable: true, sortBy: 'age' },
     ]);
-    const items = computed<VsTableItem[]>(() => [bob, alice]);
+    const items: ComputedRef<VsTableItem[]> = computed(() => [bob, alice]);
 
     it('정렬 전에는 원본 순서를 유지한다', () => {
         const { sortedItems } = useTableSortComposable(columns, items);
@@ -335,7 +335,7 @@ describe('useTableSortComposable', () => {
 
 describe('useTableDragComposable', () => {
     it('드래그한 순서를 화면 순서로 유지한다', () => {
-        const items = ref<VsTableItem[]>([alice, bob]);
+        const items: Ref<VsTableItem[]> = ref([alice, bob]);
         const sortedItems = computed(() => items.value);
         const { viewItems, setDragOrder } = useTableDragComposable(sortedItems, items);
 
@@ -345,7 +345,7 @@ describe('useTableDragComposable', () => {
     });
 
     it('페이지 시작 위치부터 그 페이지 자리 안에서만 순서를 바꾼다', () => {
-        const items = ref<VsTableItem[]>([{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }]);
+        const items: Ref<VsTableItem[]> = ref([{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }]);
         const sortedItems = computed(() => items.value);
         const { viewItems, setDragOrder } = useTableDragComposable(sortedItems, items);
 
@@ -355,7 +355,7 @@ describe('useTableDragComposable', () => {
     });
 
     it('아이템이 바뀌면 드래그 순서를 버린다', async () => {
-        const items = ref<VsTableItem[]>([alice, bob]);
+        const items: Ref<VsTableItem[]> = ref([alice, bob]);
         const sortedItems = computed(() => items.value);
         const { viewItems, setDragOrder } = useTableDragComposable(sortedItems, items);
 
@@ -437,7 +437,7 @@ describe('useTableSelectionComposable', () => {
 
     it('전체 선택은 보이는 아이템만 대상으로 하고 보이지 않는 선택은 유지한다', () => {
         const carol = { id: 3, name: 'Carol' };
-        const visibleItems = ref<VsTableItem[]>([alice, bob]);
+        const visibleItems: Ref<VsTableItem[]> = ref([alice, bob]);
         const { selectedItems, selectedAll, selectedPartial, selectAll } = useTableSelectionComposable(
             ref(true),
             ref([carol]),
@@ -473,8 +473,8 @@ describe('useTableSelectionComposable', () => {
 
     it('selectedItems로 items에 없는 아이템을 넘기면 제외하고, server mode에서는 유지한다', async () => {
         const carol = { id: 3, name: 'Carol' };
-        const clientSelected = ref<VsTableItem[]>([]);
-        const serverSelected = ref<VsTableItem[]>([]);
+        const clientSelected: Ref<VsTableItem[]> = ref([]);
+        const serverSelected: Ref<VsTableItem[]> = ref([]);
         const client = useTableSelectionComposable(
             ref(true),
             clientSelected,
@@ -513,7 +513,7 @@ describe('useTableSelectionComposable', () => {
     });
 
     it('selectedItems prop이 바뀌면 내부 상태를 맞춘다', async () => {
-        const rawSelectedItems = ref<VsTableItem[]>([]);
+        const rawSelectedItems: Ref<VsTableItem[]> = ref([]);
         const { selectedItems } = useTableSelectionComposable(
             ref(true),
             rawSelectedItems,
@@ -530,7 +530,7 @@ describe('useTableSelectionComposable', () => {
 
     it('items가 새 객체로 바뀌면 같은 key의 선택은 최신 객체로 갱신하고 없는 key는 해제한다', async () => {
         const carol = { id: 3, name: 'Carol' };
-        const items = shallowRef<VsTableItem[]>([alice, bob]);
+        const items: ShallowRef<VsTableItem[]> = shallowRef([alice, bob]);
         const { selectedItems } = useTableSelectionComposable(
             ref(true),
             shallowRef([bob, carol]),
@@ -549,7 +549,7 @@ describe('useTableSelectionComposable', () => {
 
     it('server mode에서는 items에 없는 key의 선택을 유지한다', async () => {
         const carol = { id: 3, name: 'Carol' };
-        const items = shallowRef<VsTableItem[]>([alice, bob]);
+        const items: ShallowRef<VsTableItem[]> = shallowRef([alice, bob]);
         const { selectedItems } = useTableSelectionComposable(
             ref(true),
             shallowRef([bob, carol]),
@@ -569,7 +569,7 @@ describe('useTableSelectionComposable', () => {
     });
 
     it('선택된 아이템을 splice로 제거해도 선택을 해제한다', async () => {
-        const items = ref<VsTableItem[]>([alice, bob]);
+        const items: Ref<VsTableItem[]> = ref([alice, bob]);
         const { selectedItems } = useTableSelectionComposable(ref(true), ref([bob]), items, items, getItemKey);
 
         items.value.splice(1, 1);
@@ -579,7 +579,7 @@ describe('useTableSelectionComposable', () => {
     });
 
     it('items가 바뀌어도 선택 아이템이 그대로면 선택 배열을 교체하지 않는다', async () => {
-        const items = shallowRef<VsTableItem[]>([alice, bob]);
+        const items: ShallowRef<VsTableItem[]> = shallowRef([alice, bob]);
         const { selectedItems } = useTableSelectionComposable(ref(true), ref([bob]), items, items, getItemKey);
         const before = selectedItems.value;
 
@@ -647,7 +647,7 @@ describe('useTablePaginationComposable', () => {
 
     it('page prop이 바인딩되어 있어도 setter가 update를 알린다', () => {
         const updatePage = vi.fn();
-        const rawPage = ref<number | undefined>(0);
+        const rawPage: Ref<number | undefined> = ref(0);
         const { page } = useTablePaginationComposable(
             ref(true),
             rawPage,

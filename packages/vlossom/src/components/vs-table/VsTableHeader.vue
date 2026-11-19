@@ -11,23 +11,35 @@
                 :style="cellStyle"
                 @click.stop="toggleSelectAll(!selectedAll, $event)"
             >
-                <slot name="select" :item="null" :value="selectedAll || selectedPartial" :rowIdx="0">
-                    <vs-checkbox
-                        :color-scheme
-                        :disabled="loading"
-                        :size
-                        :style-set="checkboxStyleSet"
-                        :model-value="selectedAll"
-                        :indeterminate="selectedPartial"
-                        @toggle="toggleSelectAll"
-                    />
-                </slot>
+                <slot
+                    v-if="$slots['select']"
+                    name="select"
+                    :item="null"
+                    :value="selectedAll || selectedPartial"
+                    :rowIdx="0"
+                />
+                <vs-checkbox
+                    v-else
+                    :color-scheme
+                    :disabled="loading"
+                    :size
+                    :style-set="checkboxStyleSet"
+                    :model-value="selectedAll"
+                    :indeterminate="selectedPartial"
+                    @toggle="toggleSelectAll"
+                />
             </th>
 
             <th v-for="(column, colIdx) in columns" :key="column.key" class="vs-table-th" :style="getCellStyle(column)">
-                <slot :name="getSlotName(column.key, colIdx)" :item="column" :value="column.label" :colIdx :rowIdx="0">
-                    {{ column.label }}
-                </slot>
+                <slot
+                    v-if="getSlotName(column.key, colIdx)"
+                    :name="getSlotName(column.key, colIdx)"
+                    :item="column"
+                    :value="column.label"
+                    :colIdx
+                    :rowIdx="0"
+                />
+                <template v-else>{{ column.label }}</template>
                 <component
                     :is="getSortIcon(column)"
                     v-if="column.sortable"
@@ -80,8 +92,8 @@ export default defineComponent({
     setup(props, { emit, slots }) {
         const { sort, styleSet, primary, loading } = toRefs(props);
 
-        const cellStyle = computed<CSSProperties | undefined>(() => styleSet.value.$cell);
-        const headerStyle = computed<CSSProperties>(() => {
+        const cellStyle: ComputedRef<CSSProperties | undefined> = computed(() => styleSet.value.$cell);
+        const headerStyle: ComputedRef<CSSProperties> = computed(() => {
             const { $selected, ...baseRow } = styleSet.value.$row ?? {};
             return objectUtil.assign(baseRow, styleSet.value.$header ?? {});
         });

@@ -2,9 +2,9 @@ import { computed, ref, watch, type ComputedRef, type Ref } from 'vue';
 import type { VsTableItem } from './../types';
 
 export function useTableDragComposable(sortedItems: ComputedRef<VsTableItem[]>, items: Ref<VsTableItem[]>) {
-    const dragOrder = ref<VsTableItem[] | null>(null);
+    const dragOrder: Ref<VsTableItem[] | null> = ref(null);
 
-    const viewItems = computed<VsTableItem[]>(() => dragOrder.value ?? sortedItems.value);
+    const viewItems: ComputedRef<VsTableItem[]> = computed(() => dragOrder.value ?? sortedItems.value);
 
     // 드래그는 화면에 보이는 순서(정렬 결과 포함)를 다시 배열한다. 페이지네이션이 있으면 그 페이지가 차지한 자리 안에서만 바뀐다.
     function setDragOrder(nextItems: VsTableItem[], startIndex: number): void {

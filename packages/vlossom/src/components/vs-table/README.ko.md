@@ -204,29 +204,29 @@ const selectedItems = ref([]);
 
 ## Props
 
-| Prop            | Type                                           | Default  | Description                                                                                                        |
-| --------------- | ---------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
-| `colorScheme`   | `string`                                       |          | 컴포넌트 컬러 스킴                                                                                                 |
-| `styleSet`      | `string \| VsTableStyleSet`                    |          | 컴포넌트 스타일 세트                                                                                               |
-| `columns`       | `VsTableColumnDef[] \| string[]`               | `[]`     | 컬럼 정의. 비어 있으면 첫 아이템의 키를 사용합니다                                                                 |
-| `items`         | `VsTableItem[]`                                | `[]`     | 데이터 행. 테이블이 변경하지 않습니다                                                                              |
-| `itemKey`       | `string \| ((item) => string \| number)`       |          | 행 식별 키. 생략하면 아이템 객체의 동일성을 사용합니다                                                             |
-| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`         | `'md'`   | 테이블 크기 — 셀 패딩/폰트에 반영되고 검색 입력, 페이지네이션(페이지 크기 셀렉트 포함), 선택 체크박스로 전파됩니다 |
-| `draggable`     | `boolean`                                      | `false`  | 드래그 앤 드롭 행 재정렬 활성화                                                                                    |
-| `expandable`    | `boolean \| (item, index?, items?) => boolean` | `true`   | 행 확장 활성화. 확장 UI는 `expand` 슬롯이 있을 때만 렌더링됩니다                                                   |
-| `loading`       | `boolean`                                      | `false`  | 로딩 상태 표시 및 검색/페이지네이션/드래그/선택 비활성화                                                           |
-| `page`          | `number`                                       |          | 현재 페이지 인덱스 (0부터 시작), v-model                                                                           |
-| `pageSize`      | `number`                                       |          | 페이지당 행 수, v-model. 기본값은 pageSizeOptions의 첫 번째 값                                                     |
-| `pagedItems`    | `VsTableItem[]`                                | `[]`     | 현재 페이지의 행. 읽기 전용 `v-model:paged-items` (출력 전용). 외부에서 설정한 값은 무시됩니다.                     |
-| `pagination`    | `boolean \| VsTablePaginationOptions`          | `false`  | 페이지네이션 활성화                                                                                                |
-| `primary`       | `boolean`                                      | `false`  | 헤더에 primary 색상 적용                                                                                           |
-| `responsive`    | `boolean`                                      | `false`  | 반응형(세로 적층) 레이아웃 활성화                                                                                  |
-| `search`        | `boolean \| VsTableSearchOptions`              | `false`  | 내장 검색 활성화                                                                                                   |
-| `selectable`    | `boolean \| (item, index?, items?) => boolean` | `false`  | 행 선택 활성화                                                                                                     |
-| `selectedItems` | `VsTableItem[]`                                | `[]`     | 선택된 행, v-model                                                                                                 |
-| `serverMode`    | `boolean`                                      | `false`  | 서버 사이드 페이지네이션 모드                                                                                      |
-| `state`         | `UIState \| (item, index?, items?) => UIState` | `'idle'` | 행 상태 스타일                                                                                                     |
-| `stickyHeader`  | `boolean`                                      | `false`  | 스크롤 시 헤더 고정                                                                                                |
+| Prop            | Type                                           | Default  | Description                                                                                                          |
+| --------------- | ---------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`   | `string`                                       |          | 컴포넌트 컬러 스킴                                                                                                   |
+| `styleSet`      | `string \| VsTableStyleSet`                    |          | 컴포넌트 스타일 세트                                                                                                 |
+| `columns`       | `VsTableColumnDef[] \| string[]`               | `[]`     | 컬럼 정의. 비어 있으면 첫 아이템의 키를 사용합니다                                                                   |
+| `items`         | `VsTableItem[]`                                | `[]`     | 데이터 행. 테이블이 변경하지 않습니다                                                                                |
+| `itemKey`       | `string \| ((item) => string \| number)`       |          | 행 식별 키. 생략하면 아이템 객체의 동일성을 사용합니다                                                               |
+| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`         | `'md'`   | 테이블 크기 — 셀 패딩/폰트에 반영되고 검색 입력, 페이지네이션(페이지 크기 셀렉트 포함), 선택 체크박스로 전파됩니다   |
+| `draggable`     | `boolean`                                      | `false`  | 드래그 앤 드롭 행 재정렬 활성화                                                                                      |
+| `expandable`    | `boolean \| (item, index?, items?) => boolean` | `true`   | 행 확장 활성화. 확장 UI는 `expand` 슬롯이 있을 때만 렌더링됩니다                                                     |
+| `loading`       | `boolean`                                      | `false`  | 로딩 상태 표시 및 검색/페이지네이션/드래그/선택 비활성화                                                             |
+| `page`          | `number`                                       |          | 현재 페이지 인덱스 (0부터 시작), v-model                                                                             |
+| `pageSize`      | `number`                                       |          | 페이지당 행 수, v-model. 기본값은 pageSizeOptions의 첫 번째 값                                                       |
+| `pagedItems`    | `VsTableItem[]`                                | `[]`     | 현재 페이지의 행. 읽기 전용 `v-model:paged-items` (출력 전용). 외부에서 설정한 값은 무시됩니다.                      |
+| `pagination`    | `boolean \| VsTablePaginationOptions`          | `false`  | 페이지네이션 활성화                                                                                                  |
+| `primary`       | `boolean`                                      | `false`  | 헤더에 primary 색상 적용                                                                                             |
+| `responsive`    | `boolean`                                      | `false`  | 반응형(세로 적층) 레이아웃 활성화                                                                                    |
+| `search`        | `boolean \| VsTableSearchOptions`              | `false`  | 내장 검색 활성화                                                                                                     |
+| `selectable`    | `boolean \| (item, index?, items?) => boolean` | `false`  | 행 선택 활성화                                                                                                       |
+| `selectedItems` | `VsTableItem[]`                                | `[]`     | 선택된 행, v-model                                                                                                   |
+| `serverMode`    | `boolean`                                      | `false`  | 서버 사이드 페이지네이션 모드                                                                                        |
+| `state`         | `UIState \| (item, index?, items?) => UIState` | `'idle'` | 행 상태 스타일                                                                                                       |
+| `stickyHeader`  | `boolean`                                      | `false`  | 스크롤 시 헤더 고정                                                                                                  |
 | `totalItems`    | `VsTableItem[]`                                | `[]`     | 검색과 정렬을 거친 전체 행(화면 순서). 읽기 전용 `v-model:total-items` (출력 전용). 외부에서 설정한 값은 무시됩니다. |
 
 `selectable`, `expandable`, `state`를 함수로 전달하면 `index`는 현재 화면에 표시된 행 중 위치이고 `items`는 그 표시된 행 목록이므로, `items[index]`는 항상 `item`입니다.
@@ -346,6 +346,8 @@ interface VsTablePaginationOptions {
 
 헤더 셀 슬롯은 `header-`, 바디 셀 슬롯은 `item-` 접두사를 쓰며, 각각 `[key]` → `col{colIdx}-row{rowIdx}` → `row{rowIdx}` → `col{colIdx}` → 접두사 단독(`header` / `item`) 순으로 매칭됩니다.
 
+전달된 슬롯이 아무것도 렌더링하지 않으면 셀은 빈 칸으로 남습니다. 기본 내용을 보여주려면 슬롯 `<template>` 자체에 `v-if`를 걸면 됩니다.
+
 `select` 슬롯은 헤더와 모든 바디 행의 선택 컬럼 셀을 한 번에 교체합니다. 헤더 셀에서는 `item`이 `null`이고 `value`가 전체 선택 상태, `rowIdx`가 `0`이므로 `item`으로 헤더 여부를 구분합니다. 셀 아무 곳이나 클릭하면 선택이 토글되므로 커스텀 콘텐츠에 별도 클릭 핸들러는 필요 없으며, `selectable`에서 제외된 행은 토글되지 않습니다.
 
 ## Methods
@@ -362,4 +364,3 @@ interface VsTablePaginationOptions {
 - 드래그는 테이블이 보여주는 순서만 바꿉니다. `items`가 갱신돼도 순서를 유지해야 한다면 `totalItems`나 `drag` 이벤트로 받아 직접 저장하세요.
 - `items`는 템플릿 안의 배열 리터럴이 아니라 `ref`, `computed`, API 응답처럼 참조가 유지되는 값으로 넘기세요. 템플릿 리터럴은 부모가 렌더될 때마다 새 행 객체를 만들기 때문에, `v-model:total-items`나 `v-model:paged-items`를 함께 바인딩하면 갱신이 무한 반복됩니다.
 - 저장해 둔 선택을 복원하려면 `items`가 로드된 뒤에 `selectedItems`를 넣으세요. 아직 `items`에 없는 행은 선택에서 제외됩니다.
-

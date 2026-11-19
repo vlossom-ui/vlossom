@@ -11,7 +11,7 @@ export function useTableSearchComposable(
     columns: ComputedRef<VsTableColumnDef[]>,
     items: Ref<VsTableItem[]>,
 ) {
-    const search = computed<VsTableSearchOptions>(() => {
+    const search: ComputedRef<VsTableSearchOptions> = computed(() => {
         if (!rawSearch.value) {
             return {};
         }
@@ -25,7 +25,7 @@ export function useTableSearchComposable(
 
     // 같은 키가 skipSearch 컬럼이면서 extraKeys에도 있으면, 노출 사고를 막기 위해 제외를 우선한다.
     // 부모 컬럼을 제외했는데 하위 경로가 extraKeys로 되살아나지 않도록 prefix까지 본다.
-    const extraKeys = computed<string[]>(() => {
+    const extraKeys: ComputedRef<string[]> = computed(() => {
         const skipKeys = columns.value.filter((column) => column.skipSearch).map((column) => column.key);
         return (search.value.extraKeys ?? []).filter(
             (key) => !skipKeys.some((skipKey) => key === skipKey || key.startsWith(`${skipKey}.`)),
@@ -40,7 +40,7 @@ export function useTableSearchComposable(
         return [...cellTexts, ...extraTexts].filter(Boolean).join(' ');
     }
 
-    const searchedItems = computed<VsTableItem[]>(() => {
+    const searchedItems: ComputedRef<VsTableItem[]> = computed(() => {
         const searchInput = searchInputRef.value;
         if (!searchInput?.debouncedText) {
             return items.value;
