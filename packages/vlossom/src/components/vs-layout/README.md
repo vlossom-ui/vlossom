@@ -11,7 +11,8 @@ A root layout container that provides the layout store context required by `VsHe
 - Provides the layout store and a layout context marker via `provide` for descendant layout components.
 - Enables position tracking for descendants that opt in with the `layout` prop (`VsHeader`, `VsFooter`, `VsDrawer`, `VsContainer`).
 - Takes up the full width and height of its parent element.
-- Simple wrapper with no additional props or styling.
+- Acts as a CSS container named `vs-layout` (`container-type: inline-size`), so the `VsContainer` responsive push breakpoint (`pushContainer: { responsive: true }`) and descendant container queries follow the layout width instead of the viewport.
+- Has no props.
 
 ## Basic Usage
 

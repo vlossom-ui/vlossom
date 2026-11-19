@@ -60,4 +60,4 @@ VsContainer는 StyleSet 인터페이스가 없습니다.
 ## Caution
 
 - `VsContainer`는 (1) `layout` prop이 설정되어 있고 (2) `VsLayout` 조상이 있을 때만 자동 레이아웃 패딩을 적용합니다. 다른 경우엔 일반 컨테이너 요소로 동작합니다. 다른 컴포넌트로 감싸는 건 지원되지만, 중간에 다른 레이아웃 컴포넌트(`VsHeader`, `VsFooter`, `VsDrawer`, `VsContainer`)가 끼어 있으면 차단되어 동작하지 않습니다.
-- `pushContainer`가 설정된 left/right 드로어의 패딩은 viewport 너비가 768px 이상일 때만 적용됩니다. 좁은 화면에서는 본문 너비를 그대로 유지하고 드로어가 본문 위에 overlay됩니다.
+- `pushContainer`가 설정된 드로어는 열린 방향에 항상 패딩을 추가합니다. `pushContainer: { responsive: true }`이면 상위 `VsLayout` 너비가 480px 이상일 때만 드로어 패딩이 적용되어, 좁은 레이아웃에서는 본문 너비를 그대로 유지하고 드로어가 본문 위에 overlay됩니다.

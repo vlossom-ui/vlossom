@@ -183,6 +183,83 @@ describe('VsContainer', () => {
                 expect(container.classes()).toContain('vs-container-push-right');
             });
 
+            it('pushContainer가 { responsive: true }이면 일반 push class 대신 responsive push class가 적용되어야 한다', () => {
+                // given
+                layoutStore.setDrawer({
+                    placement: 'left',
+                    isOpen: true,
+                    size: '200px',
+                    pushContainer: { responsive: true },
+                });
+
+                // when
+                const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
+
+                // then
+                const container = wrapper.findComponent(VsContainer);
+                expect(container.vm.layoutStyles).toEqual({ '--vs-container-push-left': '200px' });
+                expect(container.classes()).toContain('vs-container-push-left-responsive');
+                expect(container.classes()).not.toContain('vs-container-push-left');
+            });
+
+            it('top drawer가 { responsive: true }이면 inline 패딩은 header 높이만 두고 push 값은 변수로 넘겨야 한다', () => {
+                // given
+                layoutStore.setHeader({ position: 'fixed', height: '60px' });
+                layoutStore.setDrawer({
+                    placement: 'top',
+                    isOpen: true,
+                    size: '150px',
+                    pushContainer: { responsive: true },
+                });
+
+                // when
+                const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
+
+                // then
+                const container = wrapper.findComponent(VsContainer);
+                expect(container.vm.layoutStyles).toEqual({
+                    paddingTop: '60px',
+                    '--vs-container-push-top': 'calc(60px + 150px)',
+                });
+                expect(container.classes()).toContain('vs-container-push-top-responsive');
+            });
+
+            it('bottom drawer가 { responsive: true }이면 push 값은 변수로 넘기고 responsive class가 적용되어야 한다', () => {
+                // given
+                layoutStore.setDrawer({
+                    placement: 'bottom',
+                    isOpen: true,
+                    size: '100px',
+                    pushContainer: { responsive: true },
+                });
+
+                // when
+                const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
+
+                // then
+                const container = wrapper.findComponent(VsContainer);
+                expect(container.vm.layoutStyles).toEqual({ '--vs-container-push-bottom': '100px' });
+                expect(container.classes()).toContain('vs-container-push-bottom-responsive');
+            });
+
+            it('pushContainer가 { responsive: false }이면 일반 push class가 적용되어야 한다', () => {
+                // given
+                layoutStore.setDrawer({
+                    placement: 'right',
+                    isOpen: true,
+                    size: '250px',
+                    pushContainer: { responsive: false },
+                });
+
+                // when
+                const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
+
+                // then
+                const container = wrapper.findComponent(VsContainer);
+                expect(container.classes()).toContain('vs-container-push-right');
+                expect(container.classes()).not.toContain('vs-container-push-right-responsive');
+            });
+
             it('bottom drawer가 열려있고 pushContainer이면 아래쪽 패딩이 적용되어야 한다', () => {
                 // given
                 layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '100px', pushContainer: true });

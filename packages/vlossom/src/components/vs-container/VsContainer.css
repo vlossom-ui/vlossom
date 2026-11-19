@@ -3,6 +3,8 @@
 .vs-container {
     --vs-container-push-left: initial;
     --vs-container-push-right: initial;
+    --vs-container-push-top: initial;
+    --vs-container-push-bottom: initial;
 
     @apply relative h-full w-full;
 
@@ -10,12 +12,30 @@
     container-type: inline-size;
 }
 
-@media (width >= 768px) {
-    .vs-container.vs-container-push-left {
+.vs-container.vs-container-push-left {
+    padding-left: var(--vs-container-push-left);
+}
+
+.vs-container.vs-container-push-right {
+    padding-right: var(--vs-container-push-right);
+}
+
+/* vs-sm variant는 가장 가까운 컨테이너를 기준으로 하므로, 사이에 다른 컨테이너가 있어도 레이아웃 너비를 보도록 이름 있는 쿼리를 쓴다. 수치는 breakpoints.css의 vs-sm과 맞춘다. */
+@container vs-layout (width >= 480px) {
+    .vs-container.vs-container-push-left-responsive {
         padding-left: var(--vs-container-push-left);
     }
 
-    .vs-container.vs-container-push-right {
+    .vs-container.vs-container-push-right-responsive {
         padding-right: var(--vs-container-push-right);
+    }
+
+    /* top/bottom은 좁을 때 쓸 header/footer 높이 패딩이 inline style로 들어가 있어서, 넓을 때 이를 덮으려면 !important가 필요하다. */
+    .vs-container.vs-container-push-top-responsive {
+        padding-top: var(--vs-container-push-top) !important;
+    }
+
+    .vs-container.vs-container-push-bottom-responsive {
+        padding-bottom: var(--vs-container-push-bottom) !important;
     }
 }
