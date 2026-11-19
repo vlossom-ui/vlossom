@@ -324,10 +324,11 @@
                 }
 
                 &[data-label]::before {
-                    @apply absolute inset-y-0 flex items-center font-bold;
+                    @apply absolute inset-y-0 flex items-center;
                     left: var(--vs-table-cell-padding-x);
                     width: var(--vs-table-label-width);
                     content: attr(data-label);
+                    font-weight: 500;
                     overflow-wrap: anywhere;
                 }
 
