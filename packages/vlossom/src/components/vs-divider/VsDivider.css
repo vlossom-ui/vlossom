@@ -24,7 +24,7 @@
         height: var(--vs-divider-verticalHeight, 100%);
     }
 }
-@variant not-vs-md {
+@variant not-vs-sm {
     .vs-divider.vs-vertical.vs-divider-responsive {
         @apply border-t border-l-0;
 

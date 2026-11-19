@@ -71,7 +71,7 @@
         height: var(--vs-size-height, var(--vs-comp-height-md));
     }
 
-    @variant not-vs-md {
+    @variant not-vs-sm {
         &.vs-button-responsive {
             @apply w-full;
         }

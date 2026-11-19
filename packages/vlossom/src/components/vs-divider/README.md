@@ -55,7 +55,7 @@ A horizontal or vertical line separator used to visually divide content sections
 | ------------- | ----------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | `colorScheme` | `ColorScheme`                 |         |          | Color scheme for the component                                                                                                              |
 | `styleSet`    | `string \| VsDividerStyleSet` |         |          | Custom style set                                                                                                                            |
-| `responsive`  | `boolean`                     | `false` |          | Switches a vertical divider to horizontal when the container is narrower than the `md` [breakpoint](../vs-responsive/README.md#breakpoints) |
+| `responsive`  | `boolean`                     | `false` |          | Switches a vertical divider to horizontal when the container is narrower than the `sm` [breakpoint](../vs-responsive/README.md#breakpoints) |
 | `vertical`    | `boolean`                     | `false` |          | Renders a vertical divider instead of horizontal                                                                                            |
 
 ## Types

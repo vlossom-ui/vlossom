@@ -278,7 +278,7 @@
 }
 
 /* ── Responsive layout ── */
-@variant not-vs-lg {
+@variant not-vs-sm {
     .vs-table.vs-table-responsive {
         > .vs-table-content {
             @apply overflow-x-visible;

@@ -84,7 +84,7 @@ Switch to vertical layout on small containers automatically.
 | `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | Component size (controls min-height, padding, and font size).                                                                  |
 | `primary`     | `boolean`                              | `false` | -        | Applies primary color scheme to the label cell.                                                                                |
 | `vertical`    | `boolean`                              | `false` | -        | Stacks label and value cells vertically.                                                                                       |
-| `responsive`  | `boolean`                              | `false` | -        | Switches to vertical layout when the container is narrower than the `md` [breakpoint](../vs-responsive/README.md#breakpoints). |
+| `responsive`  | `boolean`                              | `false` | -        | Switches to vertical layout when the container is narrower than the `sm` [breakpoint](../vs-responsive/README.md#breakpoints). |
 
 ## Types
 
