@@ -101,5 +101,5 @@ Each key applies from its container width upward, so a value stays in effect unt
 
 ## Caution
 
-- Breakpoints are measured against the nearest ancestor query container, not the viewport. `VsContainer`, `VsGrid`, `VsBlock`, and the body of `VsInnerScroll` (including `VsDrawer` content) are query containers. Any element with `container-type: inline-size` works as well.
+- Breakpoints are measured against the nearest ancestor query container, not the viewport. `VsContainer`, `VsGrid`, `VsBlock`, the body of `VsInnerScroll` (including `VsDrawer` content), and a `VsModal` with a `size` are query containers. Any element with `container-type: inline-size` works as well.
 - Without a query container ancestor, only the `xs` value applies.

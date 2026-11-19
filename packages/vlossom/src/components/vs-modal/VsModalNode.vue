@@ -91,6 +91,8 @@ export default defineComponent({
             xl: '80%',
         };
 
+        const INTRINSIC_WIDTHS = ['auto', 'fit-content', 'max-content', 'min-content'];
+
         function isSize(value: SizeProp): value is Size {
             return SIZES.includes(value as Size);
         }
@@ -114,6 +116,11 @@ export default defineComponent({
 
             if (height !== undefined) {
                 result['height'] = isSize(height) ? modalHeightSize[height] : stringUtil.toStringSize(height);
+            }
+
+            // 콘텐츠로 너비가 정해지는 모달에 inline-size containment를 걸면 너비가 0으로 무너진다.
+            if (!INTRINSIC_WIDTHS.includes(result['width'])) {
+                result['containerType'] = 'inline-size';
             }
 
             return objectUtil.shake(result);

@@ -101,5 +101,5 @@ type Breakpoints = {
 
 ## Caution
 
-- 브레이크포인트는 viewport가 아니라 가장 가까운 조상 query container의 너비를 기준으로 판단합니다. `VsContainer`, `VsGrid`, `VsBlock`, `VsInnerScroll`의 body(`VsDrawer` 콘텐츠 포함)가 query container입니다. `container-type: inline-size`를 준 임의의 요소도 사용할 수 있습니다.
+- 브레이크포인트는 viewport가 아니라 가장 가까운 조상 query container의 너비를 기준으로 판단합니다. `VsContainer`, `VsGrid`, `VsBlock`, `VsInnerScroll`의 body(`VsDrawer` 콘텐츠 포함), `size`가 지정된 `VsModal`이 query container입니다. `container-type: inline-size`를 준 임의의 요소도 사용할 수 있습니다.
 - 조상에 query container가 없으면 `xs` 값만 적용됩니다.
