@@ -3,7 +3,7 @@
         --vs-no-color: var(--vs-white);
         --vs-no-color-inverse: var(--vs-black);
 
-        @variant dark {
+        &.vs-dark {
             --vs-no-color: var(--vs-black);
             --vs-no-color-inverse: var(--vs-white);
         }

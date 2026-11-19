@@ -4,7 +4,7 @@
         opacity: 0.5 !important;
     }
 
-    .vs-dark {
+    :root.vs-dark {
         .vs-disabled {
             opacity: 0.75 !important;
         }
