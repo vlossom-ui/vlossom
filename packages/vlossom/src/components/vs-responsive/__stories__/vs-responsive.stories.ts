@@ -87,8 +87,8 @@ export const ResponsiveWidth: Story = {
                     <div style="background: #dbeafe; padding: 20px; text-align: center; border-radius: 8px;">
                         <h3 style="margin: 0 0 10px 0; color: #1e40af;">반응형 너비</h3>
                         <p style="margin: 0; color: #1e40af;">
-                            화면 크기에 따라 너비가 자동으로 조정됩니다:<br>
-                            xs: 100% | sm: 90% | md: 80% | lg: 70% | xl: 60%
+                            컨테이너 너비에 따라 너비가 자동으로 조정됩니다:<br>
+                            xs: 100% | sm: 90% | md: 70% | lg: 50% | xl: 30%
                         </p>
                     </div>
                 </vs-responsive>

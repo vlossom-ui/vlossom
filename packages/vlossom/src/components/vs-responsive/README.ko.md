@@ -9,7 +9,7 @@
 ## 기능
 
 - 컨테이너 쿼리 브레이크포인트(xs, sm, md, lg, xl)를 통해 반응형 `width` 및 `grid` 컬럼 스팬 적용
-- 화면 크기별 세밀한 제어를 위한 브레이크포인트 객체 허용
+- 컨테이너 너비별 세밀한 제어를 위한 브레이크포인트 객체 허용
 - `tag` prop으로 임의의 HTML 요소로 렌더링 가능
 - 레이아웃 일관성을 위해 많은 Vlossom 입력 컴포넌트 내부에서 사용
 
@@ -81,8 +81,25 @@ type Breakpoints = {
 };
 ```
 
+### Breakpoints
+
+각 키는 해당 컨테이너 너비부터 그 이상에 적용되므로, 더 큰 키가 덮어쓰기 전까지 값이 유지됩니다.
+
+| 키   | 컨테이너 너비 |
+| ---- | ------------- |
+| `xs` | 모든 너비     |
+| `sm` | 640px 이상    |
+| `md` | 768px 이상    |
+| `lg` | 1024px 이상   |
+| `xl` | 1280px 이상   |
+
 ## Slots
 
 | Slot      | 설명          |
 | --------- | ------------- |
 | `default` | 래핑할 콘텐츠 |
+
+## Caution
+
+- 브레이크포인트는 viewport가 아니라 가장 가까운 조상 query container의 너비를 기준으로 판단합니다. `VsContainer`, `VsGrid`, `VsBlock`, `VsInnerScroll`의 body(`VsDrawer` 콘텐츠 포함)가 query container입니다. `container-type: inline-size`를 준 임의의 요소도 사용할 수 있습니다.
+- 조상에 query container가 없으면 `xs` 값만 적용됩니다.

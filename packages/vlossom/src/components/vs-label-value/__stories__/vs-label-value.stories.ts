@@ -56,7 +56,7 @@ const meta: Meta<typeof VsLabelValue> = {
         },
         responsive: {
             control: 'boolean',
-            description: '컨테이너 768px 미만에서 세로 배치로 전환',
+            description: '컨테이너 너비가 md 브레이크포인트 미만이면 세로 배치로 전환',
         },
         width: {
             control: 'text',
