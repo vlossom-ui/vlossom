@@ -1,4 +1,4 @@
-import { computed, reactive, type Ref } from 'vue';
+import { computed, reactive, type ComputedRef, type Ref } from 'vue';
 import { functionUtil } from '@/utils';
 import type { VsTableItem } from './../types';
 
@@ -15,7 +15,7 @@ export function useTableExpandComposable(
     const expandedKeys = reactive(new Set<string | number>());
 
     // expandable이 boolean이면 아이템을 순회하지 않는다 (대량 items에서는 갱신마다 전체 스캔이 된다)
-    const anyExpandable = computed<boolean>(() => {
+    const anyExpandable: ComputedRef<boolean> = computed(() => {
         if (typeof rawExpandable.value === 'boolean') {
             return rawExpandable.value && items.value.length > 0;
         }

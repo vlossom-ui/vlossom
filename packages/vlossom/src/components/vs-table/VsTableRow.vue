@@ -5,16 +5,15 @@
         </td>
 
         <td v-if="showSelect" class="vs-table-td" :style="cellStyle" @click.stop="toggleSelect(!selected, $event)">
-            <slot name="select" :item :value="selected" :rowIdx="index">
-                <vs-checkbox
-                    v-if="selectable"
-                    :color-scheme
-                    :disabled="loading"
-                    :size
-                    :model-value="selected"
-                    @toggle="toggleSelect"
-                />
-            </slot>
+            <slot v-if="$slots['select']" name="select" :item :value="selected" :rowIdx="index" />
+            <vs-checkbox
+                v-else-if="selectable"
+                :color-scheme
+                :disabled="loading"
+                :size
+                :model-value="selected"
+                @toggle="toggleSelect"
+            />
         </td>
 
         <td
@@ -27,15 +26,14 @@
         >
             <vs-skeleton v-if="loading" :color-scheme :style-set="{ height: '1lh' }" />
             <slot
-                v-else
+                v-else-if="getSlotName(column.key, colIdx)"
                 :name="getSlotName(column.key, colIdx)"
                 :item
                 :value="getCellValue(item, column)"
                 :colIdx
                 :rowIdx="index"
-            >
-                <span class="w-full">{{ getCellValue(item, column) }}</span>
-            </slot>
+            />
+            <span v-else class="w-full">{{ getCellValue(item, column) }}</span>
         </td>
 
         <template v-if="showExpand">
@@ -118,8 +116,8 @@ export default defineComponent({
             boxShadow: 'inset 0 0 0.6rem 0 var(--vs-cs-shadow)',
         }));
 
-        const cellStyle = computed<CSSProperties | undefined>(() => styleSet.value.$cell);
-        const rowStyle = computed<CSSProperties>(() => {
+        const cellStyle: ComputedRef<CSSProperties | undefined> = computed(() => styleSet.value.$cell);
+        const rowStyle: ComputedRef<CSSProperties> = computed(() => {
             const { $selected = {}, ...baseRow } = styleSet.value.$row ?? {};
             return selected.value ? objectUtil.assign(baseRow, $selected) : baseRow;
         });

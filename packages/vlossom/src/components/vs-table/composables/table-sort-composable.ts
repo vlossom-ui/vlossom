@@ -1,4 +1,4 @@
-import { computed, ref, type ComputedRef } from 'vue';
+import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import { compareUtil, objectUtil } from '@/utils';
 import { VsTableSortType, type VsTableColumnDef, type VsTableItem, type VsTableSort } from './../types';
 
@@ -9,16 +9,16 @@ const NEXT_SORT_TYPE: Record<VsTableSortType, VsTableSortType> = {
 };
 
 export function useTableSortComposable(columns: ComputedRef<VsTableColumnDef[]>, items: ComputedRef<VsTableItem[]>) {
-    const sort = ref<VsTableSort>({ key: '', type: VsTableSortType.NONE });
+    const sort: Ref<VsTableSort> = ref({ key: '', type: VsTableSortType.NONE });
 
-    const sortColumn = computed<VsTableColumnDef | null>(() => {
+    const sortColumn: ComputedRef<VsTableColumnDef | null> = computed(() => {
         if (sort.value.type === VsTableSortType.NONE || !sort.value.key) {
             return null;
         }
         return columns.value.find(({ key }) => key === sort.value.key) ?? null;
     });
 
-    const sortedItems = computed<VsTableItem[]>(() => {
+    const sortedItems: ComputedRef<VsTableItem[]> = computed(() => {
         const column = sortColumn.value;
         if (!column) {
             return items.value;
