@@ -30,6 +30,17 @@
     }
 }
 
+@variant vs-xl {
+    .vs-block {
+        .vs-block-title {
+            padding: 0.6rem 1.4rem;
+        }
+        .vs-block-content {
+            padding: 0.9rem 1.4rem;
+        }
+    }
+}
+
 @variant not-vs-lg {
     .vs-block {
         .vs-block-title {
