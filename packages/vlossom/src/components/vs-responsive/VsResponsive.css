@@ -1,4 +1,5 @@
 @reference 'tailwindcss';
+@reference '../../styles/breakpoints.css';
 
 .vs-responsive {
     --vs-grid-xs: initial;
@@ -8,7 +9,7 @@
     grid-column-start: span var(--vs-grid-xs, 12);
     width: var(--vs-width-xs, 100%);
 
-    @container (width >= 640px) {
+    @variant vs-sm {
         &.vs-width-sm {
             width: var(--vs-width-sm);
         }
@@ -17,7 +18,7 @@
         }
     }
 
-    @container (width >= 768px) {
+    @variant vs-md {
         &.vs-width-md {
             width: var(--vs-width-md);
         }
@@ -26,7 +27,7 @@
         }
     }
 
-    @container (width >= 1024px) {
+    @variant vs-lg {
         &.vs-width-lg {
             width: var(--vs-width-lg);
         }
@@ -35,7 +36,7 @@
         }
     }
 
-    @container (width >= 1280px) {
+    @variant vs-xl {
         &.vs-width-xl {
             width: var(--vs-width-xl);
         }

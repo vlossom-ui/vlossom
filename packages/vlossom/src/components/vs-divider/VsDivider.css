@@ -1,4 +1,5 @@
 @reference 'tailwindcss';
+@reference '../../styles/breakpoints.css';
 
 .vs-divider {
     --vs-divider-border: initial;
@@ -23,7 +24,7 @@
         height: var(--vs-divider-verticalHeight, 100%);
     }
 }
-@container (width < 768px) {
+@variant not-vs-md {
     .vs-divider.vs-vertical.vs-divider-responsive {
         @apply border-t border-l-0;
 
