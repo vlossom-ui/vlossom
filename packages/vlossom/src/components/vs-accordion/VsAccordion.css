@@ -47,7 +47,7 @@
             content: '';
         }
 
-        @variant dark {
+        :root.vs-dark & {
             @apply hover:brightness-104 active:brightness-108;
 
             &.vs-primary {
