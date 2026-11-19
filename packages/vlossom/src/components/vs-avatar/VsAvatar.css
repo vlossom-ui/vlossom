@@ -3,7 +3,7 @@
 .vs-avatar {
     --vs-avatar-imageObjectFit: initial;
 
-    @apply relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap select-none;
+    @apply relative inline-flex shrink-0 items-center justify-center overflow-hidden whitespace-nowrap select-none;
 
     border: 1px solid var(--vs-cs-border);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
