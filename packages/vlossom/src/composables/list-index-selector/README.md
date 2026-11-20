@@ -82,3 +82,4 @@ No additional exported types. Uses `NOT_SELECTED` constant (`-1`) for the unsele
     - `NOT_SELECTED` stays.
     - If an item is selectable, `selectedIndex` moves to the nearest selectable index. If two indexes are at the same distance, the lower index is used.
     - If no item is selectable (`list` is empty or all items are disabled), `selectedIndex` keeps its value. It also keeps a value outside the list. When an item becomes selectable, the rule above applies.
+- To apply this rule, `useIndexSelector` calls the `disabled` function for every item. It calls the function at setup, and again when `list`, `disabled`, or a reactive value that the function reads changes.

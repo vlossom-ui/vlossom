@@ -82,3 +82,4 @@ const { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = us
     - `NOT_SELECTED`는 그대로 둡니다.
     - 선택 가능한 항목이 있으면 `selectedIndex`를 가장 가까운 선택 가능 인덱스로 옮깁니다. 거리가 같은 인덱스가 둘이면 작은 인덱스를 씁니다.
     - 선택 가능한 항목이 없으면(`list`가 비었거나 모든 항목이 비활성화됨) `selectedIndex`를 그대로 유지합니다. 목록 밖의 값도 유지합니다. 항목을 선택할 수 있게 되면 위 규칙을 적용합니다.
+- 이 규칙을 적용하려고 `useIndexSelector`는 모든 항목에 대해 `disabled` 함수를 부릅니다. 처음 만들 때 부르고, `list`, `disabled`, 또는 함수가 읽는 reactive 값이 바뀔 때 다시 부릅니다.
