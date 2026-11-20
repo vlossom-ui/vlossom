@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
 import VsPagination from './../VsPagination.vue';
 
 describe('VsPagination', () => {
@@ -143,6 +144,166 @@ describe('VsPagination', () => {
 
             // then
             expect(wrapper.vm.selectedIndex).toBe(2);
+        });
+
+        it('마운트 때 modelValue가 length를 벗어나면 가장 가까운 페이지를 emit해야 한다', () => {
+            // given & when
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 3,
+                    modelValue: 5,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(2);
+            expect(wrapper.emitted('update:modelValue')).toEqual([[2]]);
+            expect(wrapper.emitted('change')).toEqual([[2]]);
+        });
+
+        it('마운트 때 보정한 페이지가 0이어도 emit해야 한다', () => {
+            // given & when
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 1,
+                    modelValue: 2,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(0);
+            expect(wrapper.emitted('update:modelValue')).toEqual([[0]]);
+        });
+
+        it('modelValue가 그대로 유효하면 마운트 때 emit하지 않아야 한다', () => {
+            // given & when
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    modelValue: 2,
+                },
+            });
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+        });
+
+        it('부모가 유효한 페이지로 바꾸면 이전 페이지를 emit하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    modelValue: 0,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 3 });
+
+            // then
+            const emitted = wrapper.emitted('update:modelValue') ?? [];
+            expect(emitted.flat()).not.toContain(0);
+            expect(wrapper.vm.selectedIndex).toBe(3);
+        });
+
+        it('부모가 modelValue를 갱신하지 않아도 modelValue와 같은 페이지로 돌아가는 클릭을 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    modelValue: 0,
+                },
+            });
+
+            // when
+            await wrapper.findAll('.vs-page-button')[2].trigger('click');
+            await wrapper.findAll('.vs-page-button')[0].trigger('click');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toEqual([[2], [0]]);
+        });
+
+        it('부모가 범위 밖 페이지를 주면 보정한 페이지가 현재 페이지와 같아도 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 3,
+                    modelValue: 2,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 5 });
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(2);
+            expect(wrapper.emitted('update:modelValue')).toEqual([[2]]);
+        });
+    });
+
+    describe('length 변경', () => {
+        it('length가 줄어 현재 페이지가 범위를 벗어나면 가장 가까운 페이지를 emit하고 -1은 emit하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    modelValue: 4,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ length: 2 });
+            await nextTick();
+
+            // then
+            const emitted = wrapper.emitted('update:modelValue')!;
+            expect(emitted.flat()).not.toContain(-1);
+            expect(emitted[emitted.length - 1]).toEqual([1]);
+            expect(wrapper.vm.selectedIndex).toBe(1);
+        });
+
+        it('length가 늘어나면 현재 페이지를 유지하고 emit하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 3,
+                    modelValue: 2,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ length: 10 });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(2);
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+        });
+
+        it('disabled 동안 length가 줄면 페이지를 유지하고, disabled가 풀리면 가장 가까운 페이지를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    modelValue: 4,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ disabled: true, length: 2 });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(4);
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+
+            // when
+            await wrapper.setProps({ disabled: false });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(1);
+            expect(wrapper.emitted('update:modelValue')).toEqual([[1]]);
         });
     });
 

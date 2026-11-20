@@ -13,6 +13,7 @@
 - `findActiveIndexForwardFrom` / `findActiveIndexBackwardFrom`으로 앞/뒤로 이동할 때 비활성화된 항목을 건너뜁니다
 - 수평 및 수직 방향 모두를 위한 키보드 탐색(화살표 키, Home, End)을 처리합니다
 - 경계 감지를 위한 `isFirstEdge`와 `isLastEdge` 계산 ref를 노출합니다
+- `list`나 `disabled`가 바뀌면 `selectedIndex`를 가장 가까운 선택 가능 항목으로 옮기고, 선택 가능한 항목이 없는 동안에는 유지합니다
 
 ## Basic Usage
 
@@ -54,11 +55,11 @@ const { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = us
 
 ## Return Refs
 
-| RefType         | 타입                   | 설명                                                               |
-| --------------- | ---------------------- | ------------------------------------------------------------------ |
-| `selectedIndex` | `Ref<number>`          | 현재 선택된 인덱스. 아무것도 선택되지 않으면 `NOT_SELECTED`(`-1`). |
-| `isFirstEdge`   | `ComputedRef<boolean>` | 선택된 인덱스가 첫 번째 활성(비비활성화) 항목일 때 `true`.         |
-| `isLastEdge`    | `ComputedRef<boolean>` | 선택된 인덱스가 마지막 활성(비비활성화) 항목일 때 `true`.          |
+| RefType         | 타입                   | 설명                                                                                                                            |
+| --------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `selectedIndex` | `Ref<number>`          | 현재 선택된 인덱스. 아무것도 선택되지 않으면 `NOT_SELECTED`(`-1`). 선택 가능한 항목이 없는 동안에는 목록 밖의 값일 수 있습니다. |
+| `isFirstEdge`   | `ComputedRef<boolean>` | 선택된 인덱스가 첫 번째 활성(비비활성화) 항목일 때 `true`.                                                                      |
+| `isLastEdge`    | `ComputedRef<boolean>` | 선택된 인덱스가 마지막 활성(비비활성화) 항목일 때 `true`.                                                                       |
 
 ## Return Methods
 
@@ -70,9 +71,14 @@ const { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = us
 | `findActiveIndexForwardFrom`  | `targetIndex: number`                   | `targetIndex`부터 앞쪽으로 첫 번째 비비활성화 인덱스를 찾습니다.                                                                                                        |
 | `findActiveIndexBackwardFrom` | `targetIndex: number`                   | `targetIndex`부터 뒤쪽으로 첫 번째 비비활성화 인덱스를 찾습니다.                                                                                                        |
 | `selectIndex`                 | `index: number`                         | `index`가 유효하고 비활성화되지 않은 경우 `selectedIndex`를 설정합니다. 범위를 벗어나면 `NOT_SELECTED`로 초기화하고, 비활성화된 경우에는 현재 선택을 유지(no-op)합니다. |
+| `syncIndex`                   | `index: number`                         | `modelValue` 같은 외부 값으로 `selectedIndex`를 설정합니다. 가장 가까운 선택 가능 인덱스를 씁니다. 규칙은 [Cautions](#cautions)를 참고하세요.                           |
 | `handleKeydown`               | `e: KeyboardEvent, isVertical: boolean` | 화살표, Home, End 키를 처리합니다. `isVertical`에 따라 수직/수평 키 매핑을 사용합니다.                                                                                  |
 
 ## Cautions
 
 - `selectedIndex`는 `NOT_SELECTED`가 아닌 `0`(첫 번째 항목)에서 시작합니다. 마운트 시 첫 번째 항목이 선택 가능한지 확인하거나, 필요한 경우 수동으로 초기화하세요.
 - 모든 항목이 비활성화되었거나 대상 인덱스가 비활성화된 경우 `selectIndex`는 no-op으로, 현재 `selectedIndex`를 그대로 유지합니다.
+- `syncIndex`와 `list`·`disabled` 변경은 같은 규칙을 씁니다:
+    - `NOT_SELECTED`는 그대로 둡니다.
+    - 선택 가능한 항목이 있으면 `selectedIndex`를 가장 가까운 선택 가능 인덱스로 옮깁니다. 거리가 같은 인덱스가 둘이면 작은 인덱스를 씁니다.
+    - 선택 가능한 항목이 없으면(`list`가 비었거나 모든 항목이 비활성화됨) `selectedIndex`를 그대로 유지합니다. 목록 밖의 값도 유지합니다. 항목을 선택할 수 있게 되면 위 규칙을 적용합니다.
