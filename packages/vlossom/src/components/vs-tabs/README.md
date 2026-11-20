@@ -132,3 +132,10 @@ interface VsTabsStyleSet extends CSSProperties {
 | -------- | ---------- | ----------------------------- |
 | `goPrev` |            | Navigates to the previous tab |
 | `goNext` |            | Navigates to the next tab     |
+
+## Caution
+
+- When `tabs` or `disabled` changes and the selected tab is out of range or disabled, VsTabs selects the nearest enabled tab and emits its index. If two tabs are at the same distance, VsTabs selects the tab with the lower index.
+- When `modelValue` is out of range or points to a disabled tab, VsTabs selects the nearest enabled tab and emits its index. VsTabs keeps `-1` as "no selection".
+- While no tab is enabled (`tabs` is empty or all tabs are disabled), VsTabs keeps `modelValue`. VsTabs also keeps an out-of-range value. When a tab becomes enabled, the rules above apply.
+- So VsTabs keeps the first `modelValue` when you load `tabs` after mount.

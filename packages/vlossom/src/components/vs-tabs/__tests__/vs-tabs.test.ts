@@ -413,7 +413,7 @@ describe('VsTabs', () => {
     });
 
     describe('reactivity', () => {
-        it('tabs 길이가 줄어서 현재 선택이 범위를 벗어나면 선택이 해제되어야 한다', async () => {
+        it('tabs 길이가 줄어서 현재 선택이 범위를 벗어나면 가장 가까운 탭을 선택해야 한다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {
@@ -431,8 +431,95 @@ describe('VsTabs', () => {
             // then
             const tabItems = wrapper.findAll('.vs-tab-item');
             expect(tabItems).toHaveLength(2);
-            expect(tabItems[0].classes()).not.toContain('vs-selected');
-            expect(tabItems[1].classes()).not.toContain('vs-selected');
+            expect(tabItems[1].classes()).toContain('vs-selected');
+            expect(wrapper.emitted('update:modelValue')).toEqual([[1]]);
+            expect(wrapper.emitted('change')).toEqual([[1]]);
+        });
+
+        it('tabs가 나중에 채워져도 v-model을 -1로 덮어쓰면 안 된다', async () => {
+            // given
+            const wrapper = mount(VsTabs, { props: { tabs: [], modelValue: 1 } });
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ tabs: ['A', 'B', 'C'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.flat() ?? []).not.toContain(-1);
+            expect(wrapper.findAll('.vs-tab-item')[1].classes()).toContain('vs-selected');
+        });
+
+        it('tabs가 비어도 선택을 유지하고, 다시 채워지면 그 탭을 선택해야 한다', async () => {
+            // given
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    modelValue: 2,
+                },
+            });
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ tabs: [] });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(2);
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+
+            // when
+            await wrapper.setProps({ tabs: ['A', 'B', 'C'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.findAll('.vs-tab-item')[2].classes()).toContain('vs-selected');
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+        });
+
+        it('마운트 때 modelValue가 범위를 벗어나면 가장 가까운 탭을 emit해야 한다', async () => {
+            // given, when
+            const wrapper = mount(VsTabs, { props: { tabs: ['Tab 1'], modelValue: 3 } });
+            await nextTick();
+
+            // then
+            expect(wrapper.findAll('.vs-tab-item')[0].classes()).toContain('vs-selected');
+            expect(wrapper.emitted('update:modelValue')).toEqual([[0]]);
+        });
+
+        it('선택된 탭이 비활성화되면 가장 가까운 탭으로 옮기고 거리가 같으면 앞쪽 탭을 골라야 한다', async () => {
+            // given
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    modelValue: 1,
+                },
+            });
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ disabled: (tab: string, index: number) => index === 1 });
+            await nextTick();
+
+            // then
+            expect(wrapper.findAll('.vs-tab-item')[0].classes()).toContain('vs-selected');
+            expect(wrapper.emitted('update:modelValue')).toEqual([[0]]);
+        });
+
+        it('전체 비활성화 상태에서는 범위를 벗어난 modelValue도 유지해야 한다', async () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    modelValue: 5,
+                    disabled: true,
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(5);
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
         });
 
         it('tabs 길이가 변해도 현재 선택이 여전히 유효 범위에 있으면 유지되어야 한다', async () => {

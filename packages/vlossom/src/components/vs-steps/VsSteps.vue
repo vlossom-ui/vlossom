@@ -72,8 +72,9 @@ import {
     type CSSProperties,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
+import { useIndexModelSync } from '@/composables/list-index-selector/index-model-sync-composable';
 import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
-import { NOT_SELECTED, VsComponent } from '@/declaration';
+import { VsComponent } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
@@ -141,11 +142,11 @@ export default defineComponent({
 
         const progressStyleSet: ComputedRef<CSSProperties> = computed(() => {
             const dimensionKey = vertical.value ? 'height' : 'width';
-            if (gapCount.value === 0) {
+            if (gapCount.value <= 0) {
                 return { [dimensionKey]: '0%' };
             }
 
-            const percentage = selectedIndex.value === NOT_SELECTED ? 0 : (selectedIndex.value / gapCount.value) * 100;
+            const percentage = Math.min(Math.max((selectedIndex.value / gapCount.value) * 100, 0), 100);
             return {
                 ...componentStyleSet.value.$progress?.$active,
                 [dimensionKey]: `${percentage}%`,
@@ -176,11 +177,12 @@ export default defineComponent({
 
         watch(selectedIndex, (index: number) => {
             stepRefs.value[index]?.focus();
+        });
+
+        useIndexModelSync(modelValue, selectedIndex, syncIndex, (index: number) => {
             emit('update:modelValue', index);
             emit('change', index);
         });
-
-        watch(modelValue, syncIndex, { immediate: true });
 
         return {
             // Style

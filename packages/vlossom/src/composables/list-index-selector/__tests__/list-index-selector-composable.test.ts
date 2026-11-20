@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { useIndexSelector } from './../list-index-selector-composable';
 
 describe('list-index-selector-composable', () => {
@@ -233,6 +233,297 @@ describe('list-index-selector-composable', () => {
 
             // then
             expect(selectedIndex.value).toBe(0);
+        });
+    });
+
+    describe('syncIndex', () => {
+        it('범위 안의 고를 수 있는 인덱스는 그대로 설정해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { syncIndex, selectedIndex } = useIndexSelector(list);
+
+            // when
+            syncIndex(2);
+
+            // then
+            expect(selectedIndex.value).toBe(2);
+        });
+
+        it('범위를 벗어난 인덱스는 가장 가까운 인덱스로 맞춰야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { syncIndex, selectedIndex } = useIndexSelector(list);
+
+            // when
+            syncIndex(5);
+
+            // then
+            expect(selectedIndex.value).toBe(2);
+        });
+
+        it('NOT_SELECTED는 그대로 두어야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { syncIndex, selectedIndex } = useIndexSelector(list);
+
+            // when
+            syncIndex(-1);
+
+            // then
+            expect(selectedIndex.value).toBe(-1);
+        });
+
+        it('NOT_SELECTED가 아닌 음수는 첫 번째 활성 인덱스로 맞춰야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { syncIndex, selectedIndex } = useIndexSelector(list);
+
+            // when
+            syncIndex(-3);
+
+            // then
+            expect(selectedIndex.value).toBe(0);
+        });
+
+        it('비활성화된 인덱스는 가장 가까운 활성 인덱스로 맞추고, 거리가 같으면 앞쪽을 골라야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3', 'item4', 'item5']);
+            const disabled = ref((item: string, index: number) => index === 2);
+            const { syncIndex, selectedIndex } = useIndexSelector(list, disabled);
+
+            // when
+            syncIndex(2);
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('비활성화된 항목을 건너뛰고 가장 가까운 활성 인덱스로 맞춰야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3', 'item4', 'item5']);
+            const disabled = ref((item: string, index: number) => index >= 3);
+            const { syncIndex, selectedIndex } = useIndexSelector(list, disabled);
+
+            // when
+            syncIndex(4);
+
+            // then
+            expect(selectedIndex.value).toBe(2);
+        });
+
+        it('list가 비어 있으면 인덱스를 유지해야 한다', () => {
+            // given
+            const list = ref<string[]>([]);
+            const { syncIndex, selectedIndex } = useIndexSelector(list);
+
+            // when
+            syncIndex(1);
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('모든 항목이 비활성화되어 있으면 범위를 벗어나도 인덱스를 유지해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const disabled = ref(true);
+            const { syncIndex, selectedIndex } = useIndexSelector(list, disabled);
+
+            // when
+            syncIndex(5);
+
+            // then
+            expect(selectedIndex.value).toBe(5);
+        });
+
+        it('disabled 함수가 모든 항목을 비활성화해도 인덱스를 유지해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const disabled = ref(() => true);
+            const { syncIndex, selectedIndex } = useIndexSelector(list, disabled);
+
+            // when
+            syncIndex(4);
+
+            // then
+            expect(selectedIndex.value).toBe(4);
+        });
+    });
+
+    describe('list·disabled 변경', () => {
+        it('list가 줄어 선택 인덱스가 범위를 벗어나면 가장 가까운 인덱스로 맞춰야 한다', async () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3', 'item4', 'item5']);
+            const { selectedIndex } = useIndexSelector(list);
+            selectedIndex.value = 4;
+
+            // when
+            list.value = ['item1', 'item2'];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('list가 늘어나면 선택 인덱스를 유지해야 한다', async () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { selectedIndex } = useIndexSelector(list);
+            selectedIndex.value = 1;
+
+            // when
+            list.value = ['item1', 'item2', 'item3', 'item4', 'item5'];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('list 배열에서 항목을 직접 제거해도 선택 인덱스를 맞춰야 한다', async () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { selectedIndex } = useIndexSelector(list);
+            selectedIndex.value = 2;
+
+            // when
+            list.value.pop();
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('list가 비면 인덱스를 유지하고, 다시 채워지면 가장 가까운 인덱스로 맞춰야 한다', async () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3', 'item4']);
+            const { selectedIndex } = useIndexSelector(list);
+            selectedIndex.value = 3;
+
+            // when
+            list.value = [];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(3);
+
+            // when
+            list.value = ['item1', 'item2'];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('빈 list에서 받은 인덱스는 list가 채워진 뒤에도 그 자리를 선택해야 한다', async () => {
+            // given
+            const list = ref<string[]>([]);
+            const { syncIndex, selectedIndex } = useIndexSelector(list);
+            syncIndex(1);
+
+            // when
+            list.value = ['item1', 'item2', 'item3'];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('list가 줄 때 비활성화된 항목을 건너뛰어야 한다', async () => {
+            // given
+            const list = ref(['a', 'b', 'c', 'd', 'e']);
+            const disabled = ref((item: string) => item === 'd');
+            const { selectedIndex } = useIndexSelector(list, disabled);
+            selectedIndex.value = 4;
+
+            // when
+            list.value = ['a', 'b', 'c', 'd'];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(2);
+        });
+
+        it('선택된 항목이 비활성화되면 가장 가까운 활성 인덱스로 옮겨야 한다', async () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const disabled = ref<boolean | ((item: string, index: number) => boolean)>(false);
+            const { selectedIndex } = useIndexSelector(list, disabled);
+            selectedIndex.value = 1;
+
+            // when
+            disabled.value = (item: string, index: number) => index === 1;
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(0);
+        });
+
+        it('길이가 같은 채로 항목이 바뀌어 선택된 항목이 비활성화되면 옮겨야 한다', async () => {
+            // given
+            const list = ref(['a', 'b', 'c']);
+            const disabled = ref((item: string) => item === 'x');
+            const { selectedIndex } = useIndexSelector(list, disabled);
+            selectedIndex.value = 2;
+
+            // when
+            list.value[2] = 'x';
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('disabled 함수가 읽는 값이 바뀌어 선택된 항목이 비활성화되어도 옮겨야 한다', async () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const blockedIndex = ref(-1);
+            const disabled = ref((item: string, index: number) => index === blockedIndex.value);
+            const { selectedIndex } = useIndexSelector(list, disabled);
+            selectedIndex.value = 2;
+
+            // when
+            blockedIndex.value = 2;
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('전체 비활성화 중에는 인덱스를 유지하고, 비활성화가 풀리면 가장 가까운 인덱스로 맞춰야 한다', async () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3', 'item4', 'item5']);
+            const disabled = ref(false);
+            const { selectedIndex } = useIndexSelector(list, disabled);
+            selectedIndex.value = 4;
+
+            // when
+            disabled.value = true;
+            list.value = ['item1', 'item2'];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(4);
+
+            // when
+            disabled.value = false;
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(1);
+        });
+
+        it('NOT_SELECTED는 list가 바뀌어도 유지해야 한다', async () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { selectedIndex } = useIndexSelector(list);
+            selectedIndex.value = -1;
+
+            // when
+            list.value = ['item1'];
+            await nextTick();
+
+            // then
+            expect(selectedIndex.value).toBe(-1);
         });
     });
 

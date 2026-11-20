@@ -128,3 +128,9 @@ interface VsPaginationStyleSet extends CSSProperties {
 | `goPrev`  | -              | 이전 페이지로 이동          |
 | `goNext`  | -              | 다음 페이지로 이동          |
 | `setPage` | `page: number` | 지정한 페이지 인덱스로 이동 |
+
+## Caution
+
+- `length`가 줄어 현재 페이지가 범위를 벗어나면 VsPagination은 가장 가까운 페이지(마지막 페이지)로 이동하고 그 페이지를 emit합니다.
+- `modelValue`가 범위를 벗어나면 VsPagination은 가장 가까운 페이지로 이동하고 그 페이지를 emit합니다. VsPagination은 `-1`을 "선택 없음"으로 그대로 둡니다.
+- `disabled`가 `true`인 동안 VsPagination은 현재 페이지를 유지합니다. 범위를 벗어난 페이지도 유지합니다. `disabled`가 `false`가 되면 위 규칙을 적용합니다.

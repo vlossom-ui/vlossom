@@ -367,3 +367,5 @@ interface VsTablePaginationOptions {
 - 드래그는 테이블이 보여주는 순서만 바꿉니다. `items`가 갱신돼도 순서를 유지해야 한다면 `totalItems`나 `drag` 이벤트로 받아 직접 저장하세요.
 - `items`는 템플릿 안의 배열 리터럴이 아니라 `ref`, `computed`, API 응답처럼 참조가 유지되는 값으로 넘기세요. 템플릿 리터럴은 부모가 렌더될 때마다 새 행 객체를 만들기 때문에, `v-model:total-items`나 `v-model:paged-items`를 함께 바인딩하면 갱신이 무한 반복됩니다.
 - 저장해 둔 선택을 복원하려면 `items`가 로드된 뒤에 `selectedItems`를 넣으세요. 아직 `items`에 없는 행은 선택에서 제외됩니다.
+- 페이지 수가 줄어 현재 page가 범위를 벗어나면 테이블은 가장 가까운 페이지로 이동하고 `update:page`와 `paginate`를 emit합니다. 페이지 수는 `items`가 줄 때, client mode에서 검색 결과가 줄 때, server mode에서 `totalItemCount`가 줄 때 줄어듭니다. 첫 페이지로 돌아가지 않습니다. 첫 페이지를 보이려면 `page`를 `0`으로 설정하세요.
+- `loading`이 `true`이거나 총 개수가 `0`인 동안 테이블은 `page`를 유지합니다. loading이 끝나거나 총 개수가 `0`보다 커지면 위 규칙을 적용합니다.

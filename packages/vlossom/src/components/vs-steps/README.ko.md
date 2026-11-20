@@ -132,3 +132,10 @@ interface VsStepsStyleSet extends CSSProperties {
 | ------- | ------------------------------------------------------------------------------------------ |
 | `step`  | 각 단계 원의 커스텀 콘텐츠; `{ step, index, isSelected, isPrevious, isDisabled }` 수신     |
 | `label` | 각 단계 레이블의 커스텀 콘텐츠; `{ step, index, isSelected, isPrevious, isDisabled }` 수신 |
+
+## Caution
+
+- `steps`나 `disabled`가 바뀌어 선택된 단계가 범위를 벗어나거나 비활성화되면, VsSteps는 가장 가까운 활성 단계를 선택하고 그 index를 emit합니다. 거리가 같은 단계가 둘이면 index가 작은 단계를 선택합니다.
+- `modelValue`가 범위를 벗어나거나 비활성화된 단계를 가리키면 VsSteps는 가장 가까운 활성 단계를 선택하고 그 index를 emit합니다. VsSteps는 `-1`을 "선택 없음"으로 그대로 둡니다.
+- 활성 단계가 없는 동안(`steps`가 비었거나 모든 단계가 비활성화됨) VsSteps는 `modelValue`를 유지합니다. 범위를 벗어난 값도 유지합니다. 활성 단계가 생기면 위 규칙을 적용합니다.
+- 마지막 단계보다 뒤의 index를 유지하는 동안 모든 단계가 완료로 표시됩니다. 진행 바는 100%에 머뭅니다.

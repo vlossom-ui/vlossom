@@ -79,6 +79,7 @@ import {
     type CSSProperties,
 } from 'vue';
 import { useColorScheme, useSizeClass, useStyleSet, useIndexSelector, useMessages } from '@/composables';
+import { useIndexModelSync } from '@/composables/list-index-selector/index-model-sync-composable';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
@@ -290,13 +291,12 @@ export default defineComponent({
             }
         });
 
-        watch(selectedIndex, (index: number) => {
-            scrollTo(index);
+        watch(selectedIndex, scrollTo);
+
+        useIndexModelSync(modelValue, selectedIndex, syncIndex, (index: number) => {
             emit('update:modelValue', index);
             emit('change', index);
         });
-
-        watch(modelValue, syncIndex, { immediate: true });
 
         watch([tabs, controls], scheduleVisibleTabCountCalculation, { deep: true, flush: 'post' });
 

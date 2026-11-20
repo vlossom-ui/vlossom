@@ -89,12 +89,30 @@ export function useIndexSelector(
         selectedIndex.value = index;
     }
 
+    function findNearestActiveIndex(targetIndex: number): number {
+        return list.value.reduce<number>((nearestIndex, _, index) => {
+            if (isDisabled(index)) {
+                return nearestIndex;
+            }
+            if (nearestIndex === NOT_SELECTED) {
+                return index;
+            }
+            if (Math.abs(index - targetIndex) < Math.abs(nearestIndex - targetIndex)) {
+                return index;
+            }
+            return nearestIndex;
+        }, NOT_SELECTED);
+    }
+
     function syncIndex(index: number) {
-        if (isOutOfRange(index)) {
+        if (index === NOT_SELECTED) {
             selectedIndex.value = NOT_SELECTED;
-        } else {
-            selectedIndex.value = index;
+            return;
         }
+
+        const nearestIndex = findNearestActiveIndex(index);
+        // 고를 수 있는 항목이 없으면(빈 list, 모두 disabled) 부모의 index를 지킨다
+        selectedIndex.value = nearestIndex === NOT_SELECTED ? index : nearestIndex;
     }
 
     const isFirstEdge = computed(() => {
@@ -135,12 +153,8 @@ export function useIndexSelector(
     }
 
     watch(
-        () => list.value.length,
-        () => {
-            if (isOutOfRange(selectedIndex.value)) {
-                selectedIndex.value = NOT_SELECTED;
-            }
-        },
+        () => list.value.map((_, index) => isDisabled(index)),
+        () => syncIndex(selectedIndex.value),
     );
 
     return {
