@@ -94,7 +94,10 @@ export function useIndexSelector(
             if (isDisabled(index)) {
                 return nearestIndex;
             }
-            if (nearestIndex === NOT_SELECTED || Math.abs(index - targetIndex) < Math.abs(nearestIndex - targetIndex)) {
+            if (nearestIndex === NOT_SELECTED) {
+                return index;
+            }
+            if (Math.abs(index - targetIndex) < Math.abs(nearestIndex - targetIndex)) {
                 return index;
             }
             return nearestIndex;
