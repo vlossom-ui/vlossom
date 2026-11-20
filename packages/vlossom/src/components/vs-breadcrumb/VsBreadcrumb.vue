@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, toRefs, type ComputedRef, type CSSProperties, type PropType } from 'vue';
-import { useColorScheme, useIndexSelector, useStyleSet } from '@/composables';
+import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
 import { objectUtil } from '@/utils';
@@ -87,7 +87,13 @@ export default defineComponent({
             return objectUtil.assign(base, $current);
         });
 
-        const { isDisabled } = useIndexSelector(paths, disabled);
+        // useIndexSelector는 선택 보정을 위해 모든 항목의 disabled를 부르므로, 현재 항목에는 disabled를 부르지 않도록 직접 판단한다
+        function isDisabled(index: number): boolean {
+            if (typeof disabled.value === 'function') {
+                return disabled.value(paths.value[index], index);
+            }
+            return disabled.value;
+        }
 
         function isCurrent(index: number): boolean {
             return index === paths.value.length - 1;
