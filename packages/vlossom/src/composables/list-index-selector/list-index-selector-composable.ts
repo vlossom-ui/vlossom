@@ -90,7 +90,6 @@ export function useIndexSelector(
     }
 
     function findNearestActiveIndex(targetIndex: number): number {
-        // 앞에서부터 보면서 더 가까울 때만 바꾸므로, 거리가 같으면 앞쪽 index가 남는다
         return list.value.reduce<number>((nearestIndex, _, index) => {
             if (isDisabled(index)) {
                 return nearestIndex;
@@ -109,7 +108,7 @@ export function useIndexSelector(
         }
 
         const nearestIndex = findNearestActiveIndex(index);
-        // #768: 고를 수 있는 항목이 없으면(빈 list, 모두 disabled) 부모의 index를 지킨다
+        // 고를 수 있는 항목이 없으면(빈 list, 모두 disabled) 부모의 index를 지킨다
         selectedIndex.value = nearestIndex === NOT_SELECTED ? index : nearestIndex;
     }
 
@@ -150,7 +149,6 @@ export function useIndexSelector(
         }
     }
 
-    // disabled 함수가 읽는 reactive 값의 변경도 따라가도록 함수 참조가 아니라 항목별 결과를 본다
     watch(
         () => list.value.map((_, index) => isDisabled(index)),
         () => syncIndex(selectedIndex.value),

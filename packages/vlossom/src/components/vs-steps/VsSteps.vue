@@ -146,7 +146,6 @@ export default defineComponent({
                 return { [dimensionKey]: '0%' };
             }
 
-            // 모든 step이 disabled이면 범위 밖 index도 유지하므로 진행 바를 0~100%로 제한한다
             const percentage = Math.min(Math.max((selectedIndex.value / gapCount.value) * 100, 0), 100);
             return {
                 ...componentStyleSet.value.$progress?.$active,

@@ -1005,7 +1005,6 @@ describe('VsTable', () => {
         });
 
         describe('page 범위 보정', () => {
-            // stub은 length 변경에 반응하지 않으므로 실제 VsPagination으로 보정 경로를 확인한다
             const items25 = manyItems.slice(0, 25);
             const mountPagedTable = (props: Record<string, unknown>) =>
                 mountTable({
