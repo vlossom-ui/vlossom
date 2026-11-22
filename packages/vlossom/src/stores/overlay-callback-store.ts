@@ -50,7 +50,7 @@ export class OverlayCallbackStore {
             return;
         }
         const [, callbacks] = this._overlays.value[index];
-        return await callbacks.value[eventName]?.(...args);
+        return (await callbacks.value[eventName]?.(...args)) as T | void;
     }
 
     public push(id: string, callbacks: Ref<OverlayCallbacks>) {
