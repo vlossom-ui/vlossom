@@ -29,7 +29,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 swapButtons,
                 ...modalOptions
             } = options;
-            const { colorScheme, styleSet, escClose = true } = modalOptions;
+            const { colorScheme, styleSet, escClose = true, backClose = true } = modalOptions;
 
             const baseStyleSet: Ref<Partial<VsConfirmStyleSet>> = ref({
                 $okButton: { minWidth: '8rem' },
@@ -71,6 +71,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(confirm, {
                     ...modalOptions,
+                    backClose,
                     escClose: false,
                     callbacks: {
                         ...modalOptions.callbacks,
