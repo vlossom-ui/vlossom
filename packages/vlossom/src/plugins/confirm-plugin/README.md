@@ -12,6 +12,7 @@ Displays a modal confirmation dialog with OK and Cancel buttons. Returns a `Prom
 - Provides OK and Cancel buttons with configurable labels and styles
 - Resolves `true` on OK and `false` on Cancel (or Escape key)
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
+- Browser Back closes the dialog and resolves the promise with `false`. Pass `backClose: false` to disable it.
 - Supports swapping the button order via `swapButtons`
 - Supports custom button container styling via `$buttons` CSSProperties
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited

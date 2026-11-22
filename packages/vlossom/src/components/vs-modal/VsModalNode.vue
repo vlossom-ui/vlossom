@@ -22,10 +22,11 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, toRefs, type ComputedRef, type PropType } from 'vue';
-import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
+import { MODAL_BACK, OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
 import { useColorScheme, useMessages, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
+import { useModalHistoryStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsModalNodeStyleSet } from './types';
 
@@ -44,6 +45,7 @@ export default defineComponent({
             type: Function as PropType<() => Promise<boolean> | boolean>,
             default: undefined,
         },
+        backClose: { type: Boolean, default: false },
         container: { type: String, default: 'body' },
         escClose: { type: Boolean, default: false },
         dimClose: { type: Boolean, default: false },
@@ -55,6 +57,7 @@ export default defineComponent({
     emits: ['close', 'click-dimmed'],
     setup(props, { emit }) {
         const {
+            backClose,
             beforeClose,
             colorScheme,
             styleSet,
@@ -69,6 +72,7 @@ export default defineComponent({
         } = toRefs(props);
 
         const { optionMessages } = useMessages();
+        const modalHistoryStore = useModalHistoryStore();
 
         const innerId = stringUtil.createID();
         const computedId = computed(() => id.value || innerId);
@@ -145,6 +149,9 @@ export default defineComponent({
         function openModalNode() {
             activate();
             scrollLockApi?.lock();
+            if (backClose.value) {
+                modalHistoryStore.push(computedId.value);
+            }
         }
 
         function closeModalNode() {
@@ -160,10 +167,12 @@ export default defineComponent({
             return result !== false;
         }
 
-        async function tryCloseModalNode() {
-            if (await runBeforeClose()) {
+        async function tryCloseModalNode(): Promise<boolean> {
+            const canClose = await runBeforeClose();
+            if (canClose) {
                 closeModalNode();
             }
+            return canClose;
         }
 
         const computedCallbacks = computed(() => {
@@ -174,7 +183,9 @@ export default defineComponent({
                     emit('close');
 
                     closeModalNode();
+                    modalHistoryStore.release(computedId.value);
                 },
+                [MODAL_BACK]: tryCloseModalNode,
                 ['key-Escape']: async (event: KeyboardEvent) => {
                     event.preventDefault();
                     event.stopPropagation();
@@ -199,7 +210,10 @@ export default defineComponent({
         }
 
         onMounted(openModalNode);
-        onUnmounted(() => scrollLockApi?.unlock());
+        onUnmounted(() => {
+            scrollLockApi?.unlock();
+            modalHistoryStore.release(computedId.value);
+        });
 
         return {
             optionMessages,
