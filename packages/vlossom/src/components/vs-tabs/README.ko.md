@@ -132,3 +132,10 @@ interface VsTabsStyleSet extends CSSProperties {
 | -------- | -------- | ---------------- |
 | `goPrev` |          | 이전 탭으로 이동 |
 | `goNext` |          | 다음 탭으로 이동 |
+
+## Caution
+
+- `tabs`나 `disabled`가 바뀌어 선택된 탭이 범위를 벗어나거나 비활성화되면, VsTabs는 가장 가까운 활성 탭을 선택하고 그 index를 emit합니다. 거리가 같은 탭이 둘이면 index가 작은 탭을 선택합니다.
+- `modelValue`가 범위를 벗어나거나 비활성화된 탭을 가리키면 VsTabs는 가장 가까운 활성 탭을 선택하고 그 index를 emit합니다. VsTabs는 `-1`을 "선택 없음"으로 그대로 둡니다.
+- 활성 탭이 없는 동안(`tabs`가 비었거나 모든 탭이 비활성화됨) VsTabs는 `modelValue`를 유지합니다. 범위를 벗어난 값도 유지합니다. 활성 탭이 생기면 위 규칙을 적용합니다.
+- 그래서 마운트 뒤에 `tabs`를 불러와도 VsTabs는 처음 `modelValue`를 유지합니다.

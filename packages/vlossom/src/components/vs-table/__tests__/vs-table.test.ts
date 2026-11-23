@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { mount, type VueWrapper } from '@vue/test-utils';
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { logUtil } from '@/utils';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
+import VsPagination from '@/components/vs-pagination/VsPagination.vue';
 import VsTable from './../VsTable.vue';
 import type { VsTableCell, VsTableColumnDef, VsTableItem } from './../types';
 
@@ -1000,6 +1001,102 @@ describe('VsTable', () => {
                 await nextTick();
 
                 expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(false);
+            });
+        });
+
+        describe('page 범위 보정', () => {
+            const items25 = manyItems.slice(0, 25);
+            const mountPagedTable = (props: Record<string, unknown>) =>
+                mountTable({
+                    props: { pagination: true, pageSize: 10, ...props },
+                    stubs: { 'vs-pagination': false },
+                });
+            const moveToPage = async (wrapper: VueWrapper, page: number) => {
+                await wrapper.findComponent(VsPagination).findAll('.vs-page-button')[page].trigger('click');
+                await flushPromises();
+            };
+
+            it('items가 줄어 page가 범위를 벗어나면 가장 가까운 page로 맞추고 그 page의 행을 보여준다', async () => {
+                const wrapper = mountPagedTable({ items: items25 });
+                await flushPromises();
+                await moveToPage(wrapper, 2);
+
+                await wrapper.setProps({ items: items25.slice(0, 5) });
+                await flushPromises();
+
+                expect(wrapper.emitted('update:page')!.flat()).not.toContain(-1);
+                expect(lastEmit(wrapper, 'update:page')).toEqual([0]);
+                expect(rowNamesOf(wrapper)).toHaveLength(5);
+            });
+
+            it('page 수가 줄면 첫 page가 아니라 가장 가까운 page로 맞춘다', async () => {
+                const wrapper = mountPagedTable({ items: items25 });
+                await flushPromises();
+                await moveToPage(wrapper, 2);
+
+                await wrapper.setProps({ items: items25.slice(0, 15) });
+                await flushPromises();
+
+                expect(lastEmit(wrapper, 'update:page')).toEqual([1]);
+                expect(rowNamesOf(wrapper)[0]).toBe('User 10');
+            });
+
+            it('items가 비어 있는 동안 page를 유지하고, 다시 채워지면 가장 가까운 page로 맞춘다', async () => {
+                const wrapper = mountPagedTable({ items: items25 });
+                await flushPromises();
+                await moveToPage(wrapper, 2);
+                const emitCountBeforeEmpty = wrapper.emitted('update:page')!.length;
+
+                await wrapper.setProps({ items: [] });
+                await flushPromises();
+
+                expect(wrapper.emitted('update:page')).toHaveLength(emitCountBeforeEmpty);
+
+                await wrapper.setProps({ items: items25.slice(0, 5) });
+                await flushPromises();
+
+                expect(wrapper.emitted('update:page')!.flat()).not.toContain(-1);
+                expect(lastEmit(wrapper, 'update:page')).toEqual([0]);
+                expect(rowNamesOf(wrapper)).toHaveLength(5);
+            });
+
+            it('loading 중에는 page를 유지하고, loading이 끝나면 가장 가까운 page로 맞춘다', async () => {
+                const wrapper = mountPagedTable({ items: items25 });
+                await flushPromises();
+                await moveToPage(wrapper, 2);
+                const emitCountBeforeLoading = wrapper.emitted('update:page')!.length;
+
+                await wrapper.setProps({ loading: true, items: items25.slice(0, 5) });
+                await flushPromises();
+
+                expect(wrapper.emitted('update:page')).toHaveLength(emitCountBeforeLoading);
+
+                await wrapper.setProps({ loading: false });
+                await flushPromises();
+
+                expect(wrapper.emitted('update:page')!.flat()).not.toContain(-1);
+                expect(lastEmit(wrapper, 'update:page')).toEqual([0]);
+                expect(rowNamesOf(wrapper)).toHaveLength(5);
+            });
+
+            it('page prop이 범위를 벗어난 채로 마운트하면 가장 가까운 page를 emit한다', async () => {
+                const wrapper = mountPagedTable({ items: items25, page: 5 });
+                await flushPromises();
+
+                expect(lastEmit(wrapper, 'update:page')).toEqual([2]);
+            });
+
+            it('page size를 바꾸면 보정과 관계없이 page를 0으로 리셋한다', async () => {
+                const wrapper = mountPagedTable({ items: items25 });
+                await flushPromises();
+                await moveToPage(wrapper, 2);
+
+                wrapper.findComponent({ name: 'VsTablePagination' }).vm.$emit('update:pageSize', 50);
+                await flushPromises();
+
+                expect(wrapper.emitted('update:page')!.flat()).not.toContain(-1);
+                expect(lastEmit(wrapper, 'update:page')).toEqual([0]);
+                expect(lastEmit(wrapper, 'paginate')).toEqual([0, 50]);
             });
         });
     });

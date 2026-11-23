@@ -424,7 +424,7 @@ describe('VsSteps', () => {
             expect(stepItems[3].classes()).not.toContain('vs-selected');
         });
 
-        it('steps 길이가 줄어서 현재 선택이 범위를 벗어나면 선택이 해제되어야 한다', async () => {
+        it('steps 길이가 줄어서 현재 선택이 범위를 벗어나면 가장 가까운 스텝을 선택해야 한다', async () => {
             // given
             const wrapper = mount(VsSteps, {
                 props: {
@@ -442,8 +442,39 @@ describe('VsSteps', () => {
             // then
             const stepItems = wrapper.findAll('.vs-step-item');
             expect(stepItems).toHaveLength(2);
-            expect(stepItems[0].classes()).not.toContain('vs-selected');
-            expect(stepItems[1].classes()).not.toContain('vs-selected');
+            expect(stepItems[1].classes()).toContain('vs-selected');
+            expect(wrapper.emitted('update:modelValue')).toEqual([[1]]);
+            expect(wrapper.emitted('change')).toEqual([[1]]);
+        });
+
+        it('steps가 나중에 채워져도 v-model을 -1로 덮어쓰면 안 된다', async () => {
+            // given
+            const wrapper = mount(VsSteps, { props: { steps: [], modelValue: 1 } });
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ steps: ['A', 'B', 'C'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.flat() ?? []).not.toContain(-1);
+            expect(wrapper.findAll('.vs-step-item')[1].classes()).toContain('vs-selected');
+        });
+
+        it('마운트 때 modelValue가 비활성화된 스텝이면 가장 가까운 스텝을 emit해야 한다', async () => {
+            // given, when
+            const wrapper = mount(VsSteps, {
+                props: {
+                    steps: ['Step 1', 'Step 2', 'Step 3'],
+                    modelValue: 2,
+                    disabled: (step: string, index: number) => index === 2,
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.findAll('.vs-step-item')[1].classes()).toContain('vs-selected');
+            expect(wrapper.emitted('update:modelValue')).toEqual([[1]]);
         });
 
         it('steps 길이가 변해도 현재 선택이 여전히 유효 범위에 있으면 유지되어야 한다', async () => {
@@ -515,6 +546,44 @@ describe('VsSteps', () => {
             // then
             const progress = wrapper.find('.vs-step-progress');
             expect(progress.attributes('style')).toContain('width: 100%');
+        });
+
+        it('전체 비활성화로 범위를 벗어난 modelValue를 유지해도 진행 바는 100%를 넘지 않아야 한다', async () => {
+            // given, when
+            const wrapper = mount(VsSteps, {
+                props: {
+                    steps: ['Step 1', 'Step 2', 'Step 3'],
+                    modelValue: 5,
+                    disabled: true,
+                },
+            });
+
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(5);
+            const progress = wrapper.find('.vs-step-progress');
+            expect(progress.attributes('style')).toContain('width: 100%');
+            wrapper.findAll('.vs-step-item').forEach((stepItem) => {
+                expect(stepItem.classes()).toContain('vs-previous');
+            });
+        });
+
+        it('steps가 비어 있는 동안 modelValue를 유지해도 진행 바는 0%여야 한다', async () => {
+            // given, when
+            const wrapper = mount(VsSteps, {
+                props: {
+                    steps: [],
+                    modelValue: 2,
+                },
+            });
+
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(2);
+            const progress = wrapper.find('.vs-step-progress');
+            expect(progress.attributes('style')).toContain('width: 0%');
         });
 
         it('vertical이 true일 때 진행 바가 height로 표시되어야 한다', async () => {

@@ -367,3 +367,5 @@ The `select` slot replaces the selection column cell in the header and in every 
 - Dragging changes only what the table shows. Persist the order yourself from `totalItems` or the `drag` event if it has to survive an `items` update.
 - Pass `items` as a stable reference (`ref`, `computed`, API response), not an array literal in the template. A template literal creates new row objects on every parent render, so binding `v-model:total-items` or `v-model:paged-items` causes recursive updates.
 - To restore a saved selection, set `selectedItems` after `items` has loaded. Rows not in `items` yet are dropped from the selection.
+- When the page count decreases and the current page is out of range, the table moves to the nearest page and emits `update:page` and `paginate`. The page count decreases when `items` decrease, when a search finds fewer rows (client mode), or when `totalItemCount` decreases (server mode). The table does not go back to the first page. To show the first page, set `page` to `0`.
+- While `loading` is `true` or the total count is `0`, the table keeps `page`. When loading ends or the total count becomes larger than `0`, the rule above applies.

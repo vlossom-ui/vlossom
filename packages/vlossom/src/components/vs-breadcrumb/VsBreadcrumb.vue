@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, toRefs, type ComputedRef, type CSSProperties, type PropType } from 'vue';
-import { useColorScheme, useIndexSelector, useStyleSet } from '@/composables';
+import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
 import { objectUtil } from '@/utils';
@@ -87,7 +87,12 @@ export default defineComponent({
             return objectUtil.assign(base, $current);
         });
 
-        const { isDisabled } = useIndexSelector(paths, disabled);
+        function isDisabled(index: number): boolean {
+            if (typeof disabled.value === 'function') {
+                return disabled.value(paths.value[index], index);
+            }
+            return disabled.value;
+        }
 
         function isCurrent(index: number): boolean {
             return index === paths.value.length - 1;
