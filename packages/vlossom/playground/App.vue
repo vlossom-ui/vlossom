@@ -3,6 +3,7 @@
         <vs-header layout position="sticky" :style-set="basicBarStyleSet">
             <div class="flex h-full items-center justify-between px-8">
                 <div class="flex items-center gap-2">
+                    <vs-button small @click="drawerOpen = !drawerOpen">Menu</vs-button>
                     <vs-image src="/assets/vlossom-logo.png" width="36px" height="36px" />
                     <h1 class="text-2xl font-bold">Vlossom Playground</h1>
                 </div>
@@ -12,6 +13,10 @@
                 </div>
             </div>
         </vs-header>
+
+        <vs-drawer v-model="drawerOpen" layout push-container="responsive" position="fixed" size="240px">
+            <div class="p-4 text-sm">Fixed layout drawer</div>
+        </vs-drawer>
 
         <vs-container layout>
             <vs-page class="w-full" :style-set="{ padding: '0 2rem' }">
@@ -80,6 +85,7 @@ export default defineComponent({
             'Color Scheme',
         ];
         const activeTab = ref(0);
+        const drawerOpen = ref(false);
 
         const basicBarStyleSet: VsBarStyleSet = {
             backgroundColor: 'black',
@@ -92,6 +98,7 @@ export default defineComponent({
         return {
             tabs,
             activeTab,
+            drawerOpen,
             basicBarStyleSet,
         };
     },

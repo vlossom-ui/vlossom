@@ -2,4 +2,6 @@
 
 .vs-layout {
     @apply relative h-full w-full;
+
+    container: vs-layout / inline-size;
 }
