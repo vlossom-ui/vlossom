@@ -11,7 +11,8 @@
 - `provide`를 통해 하위 레이아웃 컴포넌트에 레이아웃 스토어와 레이아웃 컨텍스트 마커를 제공합니다.
 - `layout` prop을 명시적으로 켠 하위 컴포넌트(`VsHeader`, `VsFooter`, `VsDrawer`, `VsContainer`)의 위치 추적을 가능하게 합니다.
 - 부모 요소의 전체 너비와 높이를 차지합니다.
-- 추가 props나 스타일링이 없는 단순한 래퍼입니다.
+- `vs-layout`이라는 이름의 CSS 컨테이너(`container-type: inline-size`) 역할을 하므로, `VsContainer`의 반응형 push breakpoint(`pushContainer: 'responsive'`)와 하위 컨테이너 쿼리가 viewport가 아닌 레이아웃 너비를 기준으로 동작합니다.
+- props가 없습니다.
 
 ## Basic Usage
 

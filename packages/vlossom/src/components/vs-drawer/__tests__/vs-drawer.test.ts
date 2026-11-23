@@ -403,6 +403,29 @@ describe('VsDrawer', () => {
             });
         });
 
+        it("pushContainer가 'responsive'이면 그 값 그대로 layoutStore에 전달되어야 한다", () => {
+            // given
+            const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
+
+            // when
+            mount(MockVsLayout, {
+                slots: {
+                    default: () =>
+                        h(VsDrawer, {
+                            layout: true,
+                            modelValue: true,
+                            placement: 'left',
+                            size: 'md',
+                            pushContainer: 'responsive',
+                        }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            expect(setDrawerSpy).toHaveBeenCalledWith(expect.objectContaining({ pushContainer: 'responsive' }));
+        });
+
         it('layout prop이 없으면 setDrawer가 호출되지 않아야 한다', () => {
             // given
             const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
