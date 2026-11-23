@@ -89,9 +89,10 @@
 </template>
 
 <script lang="ts">
-import { type ComputedRef, type PropType, computed, defineComponent, toRefs, watch } from 'vue';
+import { type ComputedRef, type PropType, computed, defineComponent, toRefs } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
 import { useColorScheme, useStyleSet, useIndexSelector, useSizeClass, useMessages } from '@/composables';
+import { useIndexModelSync } from '@/composables/list-index-selector/index-model-sync-composable';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
@@ -224,9 +225,7 @@ export default defineComponent({
             selectIndex(selectedIndex.value + 1);
         }
 
-        watch(modelValue, syncIndex, { immediate: true });
-
-        watch(selectedIndex, (index: number) => {
+        useIndexModelSync(modelValue, selectedIndex, syncIndex, (index: number) => {
             emit('update:modelValue', index);
             emit('change', index);
         });

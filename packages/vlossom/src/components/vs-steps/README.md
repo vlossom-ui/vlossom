@@ -132,3 +132,10 @@ interface VsStepsStyleSet extends CSSProperties {
 | ------- | --------------------------------------------------------------------------------------------------- |
 | `step`  | Custom content for each step circle; receives `{ step, index, isSelected, isPrevious, isDisabled }` |
 | `label` | Custom content for each step label; receives `{ step, index, isSelected, isPrevious, isDisabled }`  |
+
+## Caution
+
+- When `steps` or `disabled` changes and the selected step is out of range or disabled, VsSteps selects the nearest enabled step and emits its index. If two steps are at the same distance, VsSteps selects the step with the lower index.
+- When `modelValue` is out of range or points to a disabled step, VsSteps selects the nearest enabled step and emits its index. VsSteps keeps `-1` as "no selection".
+- While no step is enabled (`steps` is empty or all steps are disabled), VsSteps keeps `modelValue`. VsSteps also keeps an out-of-range value. When a step becomes enabled, the rules above apply.
+- While VsSteps keeps an index after the last step, all steps show as completed. The progress bar stays at 100%.

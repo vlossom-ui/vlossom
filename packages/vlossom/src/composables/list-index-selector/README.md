@@ -13,6 +13,7 @@ Manages index-based selection for a list of items with optional per-item or glob
 - Skips disabled items when navigating forward/backward with `findActiveIndexForwardFrom` / `findActiveIndexBackwardFrom`
 - Handles keyboard navigation (Arrow keys, Home, End) for both horizontal and vertical orientations
 - Exposes `isFirstEdge` and `isLastEdge` computed refs for boundary detection
+- Moves `selectedIndex` to the nearest selectable item when `list` or `disabled` changes, and keeps it while no item is selectable
 
 ## Basic Usage
 
@@ -54,11 +55,11 @@ No additional exported types. Uses `NOT_SELECTED` constant (`-1`) for the unsele
 
 ## Return Refs
 
-| RefType         | Type                   | Description                                                               |
-| --------------- | ---------------------- | ------------------------------------------------------------------------- |
-| `selectedIndex` | `Ref<number>`          | Currently selected index. `NOT_SELECTED` (`-1`) when nothing is selected. |
-| `isFirstEdge`   | `ComputedRef<boolean>` | `true` when the selected index is the first active (non-disabled) item.   |
-| `isLastEdge`    | `ComputedRef<boolean>` | `true` when the selected index is the last active (non-disabled) item.    |
+| RefType         | Type                   | Description                                                                                                                        |
+| --------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `selectedIndex` | `Ref<number>`          | Currently selected index. `NOT_SELECTED` (`-1`) when nothing is selected. While no item is selectable, it can be outside the list. |
+| `isFirstEdge`   | `ComputedRef<boolean>` | `true` when the selected index is the first active (non-disabled) item.                                                            |
+| `isLastEdge`    | `ComputedRef<boolean>` | `true` when the selected index is the last active (non-disabled) item.                                                             |
 
 ## Return Methods
 
@@ -70,9 +71,15 @@ No additional exported types. Uses `NOT_SELECTED` constant (`-1`) for the unsele
 | `findActiveIndexForwardFrom`  | `targetIndex: number`                   | Finds the first non-disabled index at or after `targetIndex`.                                                                                           |
 | `findActiveIndexBackwardFrom` | `targetIndex: number`                   | Finds the first non-disabled index at or before `targetIndex`.                                                                                          |
 | `selectIndex`                 | `index: number`                         | Sets `selectedIndex` to `index` if valid and not disabled. Out-of-range clears to `NOT_SELECTED`; disabled is a no-op (current selection is preserved). |
+| `syncIndex`                   | `index: number`                         | Sets `selectedIndex` from an outside value such as `modelValue`. Uses the nearest selectable index. See [Cautions](#cautions) for the rule.             |
 | `handleKeydown`               | `e: KeyboardEvent, isVertical: boolean` | Handles Arrow, Home, and End keys. Uses vertical/horizontal key mapping based on `isVertical`.                                                          |
 
 ## Cautions
 
 - `selectedIndex` starts at `0` (the first item), not `NOT_SELECTED`. Ensure the first item is selectable on mount, or reset manually if needed.
 - If all items are disabled (or the target index is disabled), `selectIndex` is a no-op: the current `selectedIndex` is preserved rather than cleared.
+- `syncIndex` and changes to `list` or `disabled` use the same rule:
+    - `NOT_SELECTED` stays.
+    - If an item is selectable, `selectedIndex` moves to the nearest selectable index. If two indexes are at the same distance, the lower index is used.
+    - If no item is selectable (`list` is empty or all items are disabled), `selectedIndex` keeps its value. It also keeps a value outside the list. When an item becomes selectable, the rule above applies.
+- To apply this rule, `useIndexSelector` calls the `disabled` function for every item. It calls the function at setup, and again when `list`, `disabled`, or a reactive value that the function reads changes.
