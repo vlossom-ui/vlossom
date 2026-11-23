@@ -256,6 +256,23 @@ describe('VsContainer', () => {
         });
 
         describe('drawer 조건 테스트', () => {
+            it('drawer가 resize 중이면 padding transition을 끄는 class가 적용되어야 한다', () => {
+                // given
+                layoutStore.setDrawer({
+                    placement: 'left',
+                    isOpen: true,
+                    size: '200px',
+                    pushContainer: true,
+                    resizing: true,
+                });
+
+                // when
+                const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
+
+                // then
+                expect(wrapper.findComponent(VsContainer).classes()).toContain('vs-container-resizing');
+            });
+
             it('drawer가 닫혀있으면 패딩이 적용되지 않아야 한다', () => {
                 // given
                 layoutStore.setDrawer({ placement: 'left', isOpen: false, size: '200px', pushContainer: true });

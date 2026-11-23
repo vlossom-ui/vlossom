@@ -3,7 +3,7 @@
         <div
             v-show="isOpen"
             ref="drawerRef"
-            :class="['vs-drawer', colorSchemeClass, { 'vs-drawer-dimmed': dimmed }]"
+            :class="['vs-drawer', colorSchemeClass, { 'vs-drawer-dimmed': dimmed, 'vs-drawer-resizing': isResizing }]"
             :style="{ ...styleSetVariables, ...componentInlineStyle }"
         >
             <vs-dimmed
@@ -13,25 +13,34 @@
                 @click.prevent.stop="onClickDimmed"
             />
             <vs-focus-trap ref="focusTrapRef" :disabled="!focusLock">
-                <vs-inner-scroll
-                    :class="['vs-drawer-content', `vs-drawer-${placement}`]"
-                    :color-scheme="computedColorScheme"
-                    :style="layoutStyles"
-                    :style-set="{
-                        $header: componentStyleSet.$header,
-                        $content: componentStyleSet.$content,
-                        $footer: componentStyleSet.$footer,
-                    }"
-                    :hide-scroll
-                >
-                    <template #header>
-                        <slot name="header" />
-                    </template>
-                    <slot />
-                    <template #footer>
-                        <slot name="footer" />
-                    </template>
-                </vs-inner-scroll>
+                <div :class="['vs-drawer-content', `vs-drawer-${placement}`]" :style="layoutStyles">
+                    <vs-inner-scroll
+                        :color-scheme="computedColorScheme"
+                        :style-set="{
+                            $header: componentStyleSet.$header,
+                            $content: componentStyleSet.$content,
+                            $footer: componentStyleSet.$footer,
+                        }"
+                        :hide-scroll
+                    >
+                        <template #header>
+                            <slot name="header" />
+                        </template>
+                        <slot />
+                        <template #footer>
+                            <slot name="footer" />
+                        </template>
+                    </vs-inner-scroll>
+                    <div
+                        v-if="resizable"
+                        class="vs-drawer-resize-handle"
+                        role="separator"
+                        :aria-orientation="isHorizontal ? 'vertical' : 'horizontal'"
+                        @pointerdown="onResizeStart"
+                        @pointermove="onResize"
+                        @lostpointercapture="onResizeEnd"
+                    />
+                </div>
             </vs-focus-trap>
         </div>
     </Transition>
@@ -43,12 +52,14 @@ import {
     defineComponent,
     inject,
     onBeforeMount,
+    ref,
     toRefs,
     useTemplateRef,
     watch,
     watchEffect,
     type ComputedRef,
     type PropType,
+    type Ref,
     type TemplateRef,
 } from 'vue';
 import {
@@ -91,11 +102,14 @@ export default defineComponent({
             default: 'left',
         },
         size: { type: [String, Number] as PropType<SizeProp> },
+        resizable: { type: Boolean, default: false },
+        minSize: { type: [String, Number] as PropType<SizeProp> },
+        maxSize: { type: [String, Number] as PropType<SizeProp> },
 
         // v-model
         modelValue: { type: Boolean, default: false },
     },
-    emits: ['update:modelValue', 'open', 'close', 'click-dimmed'],
+    emits: ['update:modelValue', 'update:size', 'open', 'close', 'click-dimmed'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -112,6 +126,8 @@ export default defineComponent({
             modelValue,
             placement,
             size,
+            minSize,
+            maxSize,
         } = toRefs(props);
 
         const innerId = stringUtil.createID();
@@ -127,15 +143,80 @@ export default defineComponent({
         };
 
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
+        function toCssSize(value: SizeProp) {
+            if (SIZES.includes(value as Size)) {
+                return DRAWER_SIZE[value as Size];
+            }
+            return stringUtil.toStringSize(value);
+        }
+
+        const resizedSize: Ref<number | null> = ref(null);
         const drawerSize = computed(() => {
-            if (!size.value) {
-                return DRAWER_SIZE.sm;
+            if (resizedSize.value !== null) {
+                return `${resizedSize.value}px`;
             }
-            if (SIZES.includes(size.value as Size)) {
-                return DRAWER_SIZE[size.value as Size];
-            }
-            return stringUtil.toStringSize(size.value);
+            return size.value ? toCssSize(size.value) : DRAWER_SIZE.sm;
         });
+
+        watch(size, () => {
+            resizedSize.value = null;
+        });
+
+        const isHorizontal = computed(() => placement.value === 'left' || placement.value === 'right');
+        const isResizing = ref(false);
+        let resizeStart = { pointer: 0, size: 0, min: 0, max: 0 };
+
+        function measureSize(element: HTMLElement, value: SizeProp) {
+            const property = isHorizontal.value ? 'width' : 'height';
+            const previous = element.style[property];
+            element.style[property] = toCssSize(value);
+            const measured = element.getBoundingClientRect()[property];
+            element.style[property] = previous;
+            return measured;
+        }
+
+        function onResizeStart(event: PointerEvent) {
+            const handle = event.currentTarget as HTMLElement;
+            const content = handle.parentElement;
+            if (event.button !== 0 || !content || !drawerRef.value) {
+                return;
+            }
+
+            event.preventDefault();
+            handle.setPointerCapture(event.pointerId);
+
+            const property = isHorizontal.value ? 'width' : 'height';
+            resizeStart = {
+                pointer: isHorizontal.value ? event.clientX : event.clientY,
+                size: content.getBoundingClientRect()[property],
+                min: minSize.value ? measureSize(content, minSize.value) : 0,
+                max: maxSize.value
+                    ? measureSize(content, maxSize.value)
+                    : drawerRef.value.getBoundingClientRect()[property],
+            };
+            isResizing.value = true;
+        }
+
+        function onResize(event: PointerEvent) {
+            if (!isResizing.value) {
+                return;
+            }
+
+            const pointer = isHorizontal.value ? event.clientX : event.clientY;
+            const direction = placement.value === 'left' || placement.value === 'top' ? 1 : -1;
+            const nextSize = resizeStart.size + (pointer - resizeStart.pointer) * direction;
+            const clampedSize = Math.round(Math.min(Math.max(nextSize, resizeStart.min), resizeStart.max));
+
+            if (clampedSize === resizedSize.value) {
+                return;
+            }
+            resizedSize.value = clampedSize;
+            emit('update:size', clampedSize);
+        }
+
+        function onResizeEnd() {
+            isResizing.value = false;
+        }
 
         const baseStyleSet: ComputedRef<VsDrawerStyleSet> = computed(() => ({
             $header: { padding: 0 },
@@ -210,6 +291,7 @@ export default defineComponent({
                 placement: placement.value,
                 size: drawerSize.value || DRAWER_SIZE.sm,
                 pushContainer: pushContainer.value,
+                resizing: isResizing.value,
             });
         });
 
@@ -277,6 +359,11 @@ export default defineComponent({
             openDrawer,
             closeDrawer,
             layoutStyles,
+            isHorizontal,
+            isResizing,
+            onResizeStart,
+            onResize,
+            onResizeEnd,
         };
     },
 });

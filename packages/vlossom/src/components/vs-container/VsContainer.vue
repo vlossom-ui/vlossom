@@ -77,6 +77,7 @@ export default defineComponent({
 
             const { left, top, right, bottom } = drawers.value;
             return {
+                'vs-container-resizing': [left, top, right, bottom].some((drawer) => drawer.resizing),
                 'vs-container-push-left': isPushing(left) && !isResponsivePush(left),
                 'vs-container-push-left-responsive': isResponsivePush(left),
                 'vs-container-push-right': isPushing(right) && !isResponsivePush(right),

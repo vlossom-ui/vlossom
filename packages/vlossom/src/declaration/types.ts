@@ -53,6 +53,7 @@ export interface DrawerLayout {
     pushContainer: PushContainer;
     placement: DrawerPlacement;
     size: string;
+    resizing?: boolean;
 }
 
 export type DrawerLayouts = { [key in DrawerPlacement]: DrawerLayout };
