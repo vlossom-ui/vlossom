@@ -53,10 +53,11 @@
 
         <h3 class="mb-4 font-semibold">VsModal</h3>
         <vs-block class="mb-4">
-            <vs-grid :grid-size="4" column-gap="1rem">
+            <vs-grid :grid-size="5" column-gap="1rem">
                 <vs-switch v-model="modalOptions.dimmed" label="dimmed" :grid="1" no-messages />
                 <vs-switch v-model="modalOptions.dimClose" label="dimClose" :grid="1" no-messages />
                 <vs-switch v-model="modalOptions.escClose" label="escClose" :grid="1" no-messages />
+                <vs-switch v-model="modalOptions.backClose" label="backClose" :grid="1" no-messages />
                 <vs-switch v-model="modalOptions.focusLock" label="focusLock" :grid="1" no-messages />
             </vs-grid>
         </vs-block>
@@ -67,6 +68,7 @@
             :dimmed="modalOptions.dimmed"
             :dim-close="modalOptions.dimClose"
             :esc-close="modalOptions.escClose"
+            :back-close="modalOptions.backClose"
             :focus-lock="modalOptions.focusLock"
         >
             <div class="p-8">
@@ -230,6 +232,7 @@ export default defineComponent({
             dimmed: true,
             dimClose: true,
             escClose: true,
+            backClose: true,
             focusLock: false,
         });
 
