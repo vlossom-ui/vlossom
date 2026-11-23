@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.3.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.5...vlossom-v2.3.0) (2026-11-23)
+
+
+### Features
+
+* **VsBreadcrumb:** add VsBreadcrumb component ([#721](https://github.com/vlossom-ui/vlossom/issues/721)) ([bd765fa](https://github.com/vlossom-ui/vlossom/commit/bd765fa46a63449e8450e17f3038194735083c35))
+* **VsDrawer, VsContainer, VsLayout:** add responsive option to pushContainer ([#797](https://github.com/vlossom-ui/vlossom/issues/797)) ([058da00](https://github.com/vlossom-ui/vlossom/commit/058da00f4956710d5ecbad9adb3ccc2f50b0a062))
+
+
+### Bug Fixes
+
+* **alert-plugin, confirm-plugin, prompt-plugin:** let Enter press the focused element ([#766](https://github.com/vlossom-ui/vlossom/issues/766)) ([#776](https://github.com/vlossom-ui/vlossom/issues/776)) ([db370cc](https://github.com/vlossom-ui/vlossom/commit/db370cced19f477ea89da352e320c461c12fc4e7))
+* **breakpoint:** retune container breakpoints and unify responsive thresholds ([#795](https://github.com/vlossom-ui/vlossom/issues/795)) ([e85cdbe](https://github.com/vlossom-ui/vlossom/commit/e85cdbe49258e0d7e0ac94c75943b6c292ee0bae))
+* **style:** remove font-bold class usage ([#783](https://github.com/vlossom-ui/vlossom/issues/783)) ([fb80069](https://github.com/vlossom-ui/vlossom/commit/fb8006983c0fb08758d43ef60c0866f38779d6f1))
+* **useInputRules, VsForm:** ignore stale async rule results and await them on validate ([#764](https://github.com/vlossom-ui/vlossom/issues/764)) ([#775](https://github.com/vlossom-ui/vlossom/issues/775)) ([033e86e](https://github.com/vlossom-ui/vlossom/commit/033e86ea1a0055e2409a55d167500163143b6f25))
+* **VsAccordion, VsChip, styles:** follow vs-dark theme and unify dark selectors ([#794](https://github.com/vlossom-ui/vlossom/issues/794)) ([#796](https://github.com/vlossom-ui/vlossom/issues/796)) ([577336f](https://github.com/vlossom-ui/vlossom/commit/577336f83aac03065911549a2f09af814ab1d4d2))
+* **VsButton, VsAvatar:** prevent shrinking inside flex containers ([#780](https://github.com/vlossom-ui/vlossom/issues/780)) ([#785](https://github.com/vlossom-ui/vlossom/issues/785)) ([0b54de1](https://github.com/vlossom-ui/vlossom/commit/0b54de1ff38586a98b4c9f816a42c1c5c53509a0))
+* **VsModalNode, alert-plugin, confirm-plugin, prompt-plugin:** fit modal height to content by default ([#778](https://github.com/vlossom-ui/vlossom/issues/778)) ([#786](https://github.com/vlossom-ui/vlossom/issues/786)) ([a1507d6](https://github.com/vlossom-ui/vlossom/commit/a1507d6758cff52d0e74a881a336099d2b4ceea6))
+* **VsPagination, VsTabs, VsSteps:** move index to nearest selectable item instead of -1 ([#798](https://github.com/vlossom-ui/vlossom/issues/798)) ([118b322](https://github.com/vlossom-ui/vlossom/commit/118b322efa54877ff7508c6c30ad2d70bdee45bb))
+* **VsSelect:** change default options height (20rem -&gt; 30rem) ([514ea63](https://github.com/vlossom-ui/vlossom/commit/514ea6358af478cc41c17b00b8d9fb8414d0f7a1))
+* **VsSelect:** keep trigger height when chips are selected ([#792](https://github.com/vlossom-ui/vlossom/issues/792)) ([03c5cbe](https://github.com/vlossom-ui/vlossom/commit/03c5cbede3dcfcae0b1e5ab6069d77366fd42462))
+* **VsSelect:** remove click-outside listener on unmount ([#770](https://github.com/vlossom-ui/vlossom/issues/770)) ([e8b4437](https://github.com/vlossom-ui/vlossom/commit/e8b443733912bf45b62ac62ac4b80dd7f13cbbf3))
+* **VsTable:** fix slot bugs and rename responsive classes ([#791](https://github.com/vlossom-ui/vlossom/issues/791)) ([dd6fac3](https://github.com/vlossom-ui/vlossom/commit/dd6fac3ab8008f04f91fcc36cc007d47b222a084))
+* **VsTable:** respect conditional slots and keep empty slot content ([#790](https://github.com/vlossom-ui/vlossom/issues/790)) ([6c4f868](https://github.com/vlossom-ui/vlossom/commit/6c4f86828e5352a3d55b78ba2d97156d77063735))
+* **VsThemeButton:** re-define button props ([#683](https://github.com/vlossom-ui/vlossom/issues/683)) ([06d9d55](https://github.com/vlossom-ui/vlossom/commit/06d9d5596d3c4645fd7c30368c13f27439678694))
+
 ## [2.2.5](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.4...vlossom-v2.2.5) (2026-11-04)
 
 
