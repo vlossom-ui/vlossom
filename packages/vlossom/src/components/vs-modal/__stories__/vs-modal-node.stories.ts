@@ -26,9 +26,9 @@ const meta: Meta<typeof VsModalNode> = {
                 borderRadius: '8px',
                 boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                 color: '#333333',
-                padding: '2rem',
                 width: '500px',
                 height: '400px',
+                $content: { padding: '2rem' },
             } as const;
 
             useVlossom().styleSet = {
@@ -68,6 +68,10 @@ const meta: Meta<typeof VsModalNode> = {
             control: 'boolean',
             description: 'dimmed 배경 표시 여부',
         },
+        draggable: {
+            control: 'boolean',
+            description: '상단 중앙의 그립 핸들을 드래그해 모달을 옮길 수 있는지 여부',
+        },
         scrollLock: {
             control: 'boolean',
             description: '모달이 열려 있는 동안 스크롤 잠금 여부. CSS 선택자를 전달하면 해당 요소를 잠급니다.',
@@ -77,6 +81,7 @@ const meta: Meta<typeof VsModalNode> = {
         escClose: true,
         dimClose: false,
         dimmed: false,
+        draggable: false,
         size: 'md',
     },
 };
@@ -120,6 +125,67 @@ export const WithDimmed: Story = {
                     <div>
                         <h2 style="margin: 0 0 1rem 0;">Dimmed 모달</h2>
                         <p>dimmed 배경이 있는 모달입니다. dimmed 영역을 클릭하면 닫힙니다.</p>
+                    </div>
+                </vs-modal-node>
+            </div>
+        `,
+    }),
+};
+
+export const Draggable: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: '상단 중앙의 그립 핸들을 마우스나 터치로 드래그하면 컨테이너 안에서 모달을 옮길 수 있습니다. 핸들은 포커스를 받지 않습니다.',
+            },
+        },
+    },
+    args: {
+        draggable: true,
+        size: 'sm',
+    },
+    render: (args: any) => ({
+        components: { VsModalNode },
+        setup() {
+            return { args };
+        },
+        template: `
+            <div style="position: relative; width: 100%; height: 600px; background: #f5f5f5; border: 1px dashed #ccc;">
+                <vs-modal-node v-bind="args">
+                    <div>
+                        <h2 style="margin: 0 0 1rem 0;">드래그 가능한 모달</h2>
+                        <p>상단 핸들을 잡고 옮겨 보세요. 점선 영역 밖으로는 나가지 않습니다.</p>
+                    </div>
+                </vs-modal-node>
+            </div>
+        `,
+    }),
+};
+
+export const DraggableWithScroll: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: '콘텐츠가 높이를 넘어 스크롤되어도 핸들은 상단에 고정됩니다.',
+            },
+        },
+    },
+    args: {
+        draggable: true,
+        dimmed: true,
+        size: { width: 'sm', height: '300px' },
+    },
+    render: (args: any) => ({
+        components: { VsModalNode },
+        setup() {
+            return { args };
+        },
+        template: `
+            <div style="position: relative; width: 100%; height: 600px; background: #f5f5f5; border: 1px dashed #ccc;">
+                <vs-modal-node v-bind="args">
+                    <div>
+                        <h2 style="margin: 0 0 1rem 0;">스크롤 + 드래그</h2>
+                        <p v-for="line in 30" :key="line">스크롤되는 콘텐츠 {{ line }}</p>
                     </div>
                 </vs-modal-node>
             </div>
@@ -232,7 +298,7 @@ export const StyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story: '인라인 스타일 객체를 사용한 커스텀 모달입니다. styleSet prop에 직접 스타일 객체를 전달하여 세밀한 커스터마이징이 가능합니다.',
+                story: '인라인 스타일 객체를 사용한 커스텀 모달입니다. 루트는 모달 박스에, $content는 스크롤되는 콘텐츠 영역(기본 padding 포함)에 적용됩니다.',
             },
         },
     },
@@ -243,9 +309,9 @@ export const StyleSet: Story = {
             borderRadius: '12px',
             boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15)',
             color: '#1e88e5',
-            padding: '2rem',
             width: '550px',
             height: '450px',
+            $content: { padding: '2rem' },
         },
     },
     render: (args: any) => ({

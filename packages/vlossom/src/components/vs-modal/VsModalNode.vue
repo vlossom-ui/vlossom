@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-modal-node', colorSchemeClass]">
+    <div ref="nodeRef" :class="['vs-modal-node', colorSchemeClass]">
         <vs-dimmed
             v-if="dimmed"
             :model-value="dimmed"
@@ -8,34 +8,50 @@
         />
         <vs-focus-trap :disabled="!focusLock" ref="focusTrapRef">
             <div
+                ref="wrapRef"
                 class="vs-modal-wrap"
                 role="dialog"
                 :aria-label="optionMessages.VS_ARIA_MODAL_LABEL"
                 :aria-modal="true"
-                :style="componentInlineStyle"
+                :style="[componentInlineStyle, dragStyle]"
             >
-                <slot />
+                <div
+                    v-if="draggable"
+                    :class="['vs-modal-drag-handle', { 'vs-dragging': isDragging }]"
+                    aria-hidden="true"
+                    @pointerdown="onDragStart"
+                    @pointermove="onDragMove"
+                    @pointerup="onDragEnd"
+                    @pointercancel="onDragEnd"
+                >
+                    <GripHorizontalIcon />
+                </div>
+                <div class="vs-modal-content" :style="componentStyleSet.$content">
+                    <slot />
+                </div>
             </div>
         </vs-focus-trap>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, toRefs, type ComputedRef, type PropType } from 'vue';
+import { computed, defineComponent, onMounted, onUnmounted, ref, toRefs, type ComputedRef, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
 import { useColorScheme, useMessages, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsModalNodeStyleSet } from './types';
+import { useModalDrag } from './composables/modal-drag-composable';
 
+import { GripHorizontalIcon } from '@lucide/vue';
 import VsDimmed from '@/components/vs-dimmed/VsDimmed.vue';
 import VsFocusTrap from '@/components/vs-focus-trap/VsFocusTrap.vue';
 
 const componentName = VsComponent.VsModalNode;
 export default defineComponent({
     name: componentName,
-    components: { VsDimmed, VsFocusTrap },
+    components: { GripHorizontalIcon, VsDimmed, VsFocusTrap },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsModalNodeStyleSet>(),
@@ -47,6 +63,7 @@ export default defineComponent({
         container: { type: String, default: 'body' },
         escClose: { type: Boolean, default: false },
         dimClose: { type: Boolean, default: false },
+        draggable: { type: Boolean, default: false },
         scrollLock: { type: [Boolean, String] as PropType<boolean | string>, default: false },
         size: {
             type: [String, Number, Object] as PropType<SizeProp | { width?: SizeProp; height?: SizeProp }>,
@@ -119,11 +136,11 @@ export default defineComponent({
             }
 
             // 콘텐츠로 너비가 정해지는 모달에 inline-size containment를 걸면 너비가 0으로 무너진다.
-            if (!INTRINSIC_WIDTHS.includes(result['width'])) {
-                result['containerType'] = 'inline-size';
+            if (INTRINSIC_WIDTHS.includes(result['width'])) {
+                return objectUtil.shake(result);
             }
 
-            return objectUtil.shake(result);
+            return { ...objectUtil.shake(result), $content: { containerType: 'inline-size' } };
         });
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsModalNodeStyleSet>(
@@ -132,6 +149,10 @@ export default defineComponent({
             baseStyleSet,
             additionalStyleSet,
         );
+
+        const nodeRef = ref<HTMLElement | null>(null);
+        const wrapRef = ref<HTMLElement | null>(null);
+        const { dragStyle, isDragging, onDragStart, onDragMove, onDragEnd } = useModalDrag(nodeRef, wrapRef);
 
         function resolveScrollLockTarget(): string | null {
             if (!scrollLock.value) {
@@ -208,6 +229,13 @@ export default defineComponent({
             componentInlineStyle,
             focusLock,
             onClickDimmed,
+            nodeRef,
+            wrapRef,
+            dragStyle,
+            isDragging,
+            onDragStart,
+            onDragMove,
+            onDragEnd,
         };
     },
 });

@@ -11,6 +11,7 @@
                 :callbacks="modal.callbacks"
                 :dim-close="modal.dimClose"
                 :dimmed="modal.dimmed"
+                :draggable="modal.draggable"
                 :esc-close="modal.escClose"
                 :focus-lock="modal.focusLock"
                 :hide-scroll="modal.hideScroll"

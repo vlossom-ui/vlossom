@@ -10,6 +10,7 @@ export interface ModalOptions {
     callbacks?: OverlayCallbacks;
     dimClose?: boolean;
     dimmed?: boolean;
+    draggable?: boolean;
     escClose?: boolean;
     focusLock?: boolean;
     hideScroll?: boolean;
