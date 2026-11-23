@@ -31,7 +31,7 @@ export default defineComponent({
         }
 
         function isResponsivePush(drawer: DrawerLayout) {
-            return isPushing(drawer) && typeof drawer.pushContainer === 'object' && !!drawer.pushContainer.responsive;
+            return isPushing(drawer) && drawer.pushContainer === 'responsive';
         }
 
         function getDrawerPadding(drawer: DrawerLayout, barPadding?: string) {

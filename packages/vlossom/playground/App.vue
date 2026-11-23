@@ -14,7 +14,7 @@
             </div>
         </vs-header>
 
-        <vs-drawer v-model="drawerOpen" layout :push-container="{ responsive: true }" position="fixed" size="240px">
+        <vs-drawer v-model="drawerOpen" layout push-container="responsive" position="fixed" size="240px">
             <div class="p-4 text-sm">Fixed layout drawer</div>
         </vs-drawer>
 

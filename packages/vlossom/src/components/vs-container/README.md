@@ -60,4 +60,4 @@ VsContainer does not have a StyleSet interface.
 ## Caution
 
 - `VsContainer` only applies automatic layout padding when (1) it has the `layout` prop set, and (2) a `VsLayout` ancestor is present. In other contexts it behaves as a plain container element. Wrapping `VsContainer` in another component is supported as long as no intervening layout primitive (`VsHeader`, `VsFooter`, `VsDrawer`, `VsContainer`) sits between it and the `VsLayout`.
-- Open drawers with `pushContainer` always add padding on their side. With `pushContainer: { responsive: true }`, the drawer padding is only applied when the parent `VsLayout` is at least 480px wide, so narrow layouts keep the full content width and the drawer overlays it.
+- Open drawers with `pushContainer` always add padding on their side. With `pushContainer: 'responsive'`, the drawer padding is only applied when the parent `VsLayout` is at least 480px wide, so narrow layouts keep the full content width and the drawer overlays it.

@@ -42,7 +42,7 @@ export interface BarLayout {
 
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-export type PushContainer = boolean | { responsive?: boolean };
+export type PushContainer = boolean | 'responsive';
 
 export type OverlayTuple = [string, Ref<OverlayCallbacks>];
 

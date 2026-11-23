@@ -85,7 +85,7 @@ export default defineComponent({
         ...getLayoutProps(),
         open: { type: Boolean, default: false },
         position: { type: String as PropType<'absolute' | 'fixed'> },
-        pushContainer: { type: [Boolean, Object] as PropType<PushContainer>, default: false },
+        pushContainer: { type: [Boolean, String] as PropType<PushContainer>, default: false },
         placement: {
             type: String as PropType<DrawerPlacement>,
             default: 'left',
