@@ -272,7 +272,7 @@ export default defineComponent({
 
         function onInput(event: Event) {
             const target = event.target as HTMLInputElement;
-            hasBadInput.value = target.validity.badInput;
+            hasBadInput.value = !!target.validity?.badInput;
             const value = target.value || '';
             inputValue.value = convertValue(value);
         }
