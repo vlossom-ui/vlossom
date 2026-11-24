@@ -6,6 +6,7 @@ export * from './focusable/focusable-composable';
 export * from './grouped-items/grouped-items-composable';
 export * from './input/input-composable';
 export * from './input-form/input-form-composable';
+export * from './input-format/input-format-composable';
 export * from './input-messages/input-messages-composable';
 export * from './input-option/input-option-composable';
 export * from './input-rules/input-rules-composable';

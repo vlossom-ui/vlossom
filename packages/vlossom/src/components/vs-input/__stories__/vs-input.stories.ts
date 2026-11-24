@@ -70,6 +70,17 @@ const meta: Meta<typeof VsInput> = {
             description: '자동완성 활성화',
             table: { category: 'Input Props' },
         },
+        format: {
+            control: 'text',
+            description:
+                '입력 형식 (9: 숫자, a: 영문자, *: 영문자 또는 숫자, ?: 이후는 선택 입력). number, email 타입에서는 무시됩니다.',
+            table: { category: 'Input Props' },
+        },
+        formatOptions: {
+            control: 'object',
+            description: 'format 옵션 ({ slotChar, autoClear, raw })',
+            table: { category: 'Input Props' },
+        },
         noClear: {
             control: 'boolean',
             description: 'clear 버튼 숨김',
@@ -518,6 +529,46 @@ export const StringModifiers: Story = {
                     <div><strong>Capitalize:</strong> {{ capitalizeValue }}</div>
                     <div><strong>Upper:</strong> {{ upperValue }}</div>
                     <div><strong>Lower:</strong> {{ lowerValue }}</div>
+                </div>
+            </div>
+        `,
+    }),
+};
+
+export const Format: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'format prop으로 정해진 형식에 맞는 문자만 입력받고 구분 문자를 자동으로 삽입합니다. ' +
+                    'formatOptions의 raw를 사용하면 모델에 구분 문자를 제외한 값이 저장됩니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsInput },
+        setup() {
+            const phone = ref('');
+            const date = ref('');
+            const businessNumber = ref('');
+            const extension = ref('');
+            const serial = ref('');
+            const rawPhone = ref('');
+            const keepPartial = ref('');
+            return { phone, date, businessNumber, extension, serial, rawPhone, keepPartial };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-input v-model="phone" label="휴대폰 번호" format="999-9999-9999" />
+                <vs-input v-model="date" label="날짜" format="9999-99-99" :format-options="{ slotChar: 'yyyy-mm-dd' }" />
+                <vs-input v-model="businessNumber" label="사업자등록번호" format="999-99-99999" />
+                <vs-input v-model="extension" label="내선 번호 (선택 입력)" format="(999) 999-9999? x99999" />
+                <vs-input v-model="serial" label="시리얼 번호" format="a*-999-a999" />
+                <vs-input v-model="rawPhone" label="raw (구분 문자 제외)" format="999-9999-9999" :format-options="{ raw: true }" />
+                <vs-input v-model="keepPartial" label="autoClear: false" format="999-9999-9999" :format-options="{ autoClear: false }" />
+                <div style="padding: 1rem; background: #f5f5f5; border-radius: 0.5rem;">
+                    <div><strong>휴대폰:</strong> {{ phone }}</div>
+                    <div><strong>raw:</strong> {{ rawPhone }}</div>
                 </div>
             </div>
         `,

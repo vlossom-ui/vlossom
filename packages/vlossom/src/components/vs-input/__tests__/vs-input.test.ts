@@ -952,4 +952,87 @@ describe('VsInput', () => {
             expect(typeof wrapper.vm.inputValue).toBe('string');
         });
     });
+
+    describe('format', () => {
+        function typeText(input: HTMLInputElement, text: string) {
+            [...text].forEach((data) => {
+                input.dispatchEvent(
+                    new InputEvent('beforeinput', { inputType: 'insertText', data, cancelable: true, bubbles: true }),
+                );
+            });
+        }
+
+        it('입력하면 형식이 적용된 값이 화면에 표시되고 modelValue로 emit되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: { modelValue: '', format: '999-9999-9999' },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+
+            // when
+            typeText(input, '01012345678');
+            await nextTick();
+
+            // then
+            expect(input.value).toBe('010-1234-5678');
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['010-1234-5678']);
+            wrapper.unmount();
+        });
+
+        it('formatOptions.raw가 true이면 구분 문자를 제외한 값이 emit되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: { modelValue: '', format: '999-9999-9999', formatOptions: { raw: true } },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+
+            // when
+            typeText(input, '01012');
+            await nextTick();
+
+            // then
+            expect(input.value).toBe('010-12__-____');
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['01012']);
+            wrapper.unmount();
+        });
+
+        it('외부에서 modelValue를 바꾸면 형식에 맞게 표시해야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, { props: { modelValue: '', format: '999-9999-9999' } });
+
+            // when
+            await wrapper.setProps({ modelValue: '01012345678' });
+
+            // then
+            expect(wrapper.find('input').element.value).toBe('010-1234-5678');
+        });
+
+        it('clear하면 화면 값도 비워져야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, { props: { modelValue: '010-1234-5678', format: '999-9999-9999' } });
+
+            // when
+            wrapper.vm.clear();
+            await nextTick();
+
+            // then
+            expect(wrapper.find('input').element.value).toBe('');
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['']);
+        });
+
+        it('number 타입에서는 format을 적용하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, { props: { modelValue: null, type: 'number', format: '999-9999-9999' } });
+            const input = wrapper.find('input');
+
+            // when
+            await input.setValue('12345');
+
+            // then
+            expect(input.element.value).toBe('12345');
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual([12345]);
+        });
+    });
 });

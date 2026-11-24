@@ -82,43 +82,71 @@ const text = ref('');
 </template>
 ```
 
+### Format
+
+Use `format` to accept only characters that fit a fixed pattern. Separators are inserted automatically. See [useInputFormat](../../composables/input-format/README.md) for the syntax and behavior.
+
+```html live
+<template>
+    <vs-input v-model="phone" label="Phone" format="999-9999-9999" />
+    <vs-input v-model="birthday" label="Birthday (raw)" format="9999/99/99" :format-options="{ slotChar: 'yyyy/mm/dd', autoClear: false, raw: true }" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const phone = ref('');
+const birthday = ref('');
+</script>
+```
+
+> [!NOTE]
+> `format` is ignored when `type` is `number` or `email`.
+
 ## Props
 
-| Prop               | Type                                                                        | Default  | Required | Description                                                                                 |
-| ------------------ | --------------------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------------------- |
-| `colorScheme`      | `string`                                                                    | -        | -        | Color scheme for the component.                                                             |
-| `styleSet`         | `string \| VsInputStyleSet`                                                 | -        | -        | Custom style set for the component.                                                         |
-| `modelValue`       | `string \| number \| null`                                                  | `null`   | -        | The bound value (v-model).                                                                  |
-| `type`             | `'email' \| 'number' \| 'password' \| 'search' \| 'tel' \| 'text' \| 'url'` | `'text'` | -        | HTML input type.                                                                            |
-| `label`            | `string`                                                                    | `''`     | -        | Label text displayed above the input.                                                       |
-| `placeholder`      | `string`                                                                    | `''`     | -        | Placeholder text for the input.                                                             |
-| `focusPlaceholder` | `string`                                                                    | `''`     | -        | Placeholder shown while the input is focused. Falls back to `placeholder` when not focused. |
-| `disabled`         | `boolean`                                                                   | `false`  | -        | Disables the input.                                                                         |
-| `readonly`         | `boolean`                                                                   | `false`  | -        | Makes the input read-only.                                                                  |
-| `required`         | `boolean`                                                                   | `false`  | -        | Marks the field as required (adds validation).                                              |
-| `noClear`          | `boolean`                                                                   | `false`  | -        | Hides the clear button.                                                                     |
-| `autocomplete`     | `boolean`                                                                   | `false`  | -        | Enables browser autocomplete.                                                               |
-| `emptyValue`       | `string \| number \| null`                                                  | -        | -        | Value used when the input is empty. Defaults to `''` (`null` for `number`).                 |
-| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                      | `'md'`   | -        | Input height, padding, font, and border-radius.                                             |
-| `noLabel`          | `boolean`                                                                   | `false`  | -        | Hides the label area.                                                                       |
-| `noMessages`       | `boolean`                                                                   | `false`  | -        | Hides the messages area.                                                                    |
-| `hidden`           | `boolean`                                                                   | `false`  | -        | Hides the entire component.                                                                 |
-| `id`               | `string`                                                                    | `''`     | -        | The `id` attribute for the input element.                                                   |
-| `name`             | `string`                                                                    | `''`     | -        | The `name` attribute for the input element.                                                 |
-| `messages`         | `Message[]`                                                                 | `[]`     | -        | External messages (state + text) to display below the input.                                |
-| `rules`            | `Rule[]`                                                                    | `[]`     | -        | Validation rules applied on change.                                                         |
-| `noDefaultRules`   | `boolean`                                                                   | `false`  | -        | Disables the built-in required/min/max rules.                                               |
-| `state`            | `UIState`                                                                   | `'idle'` | -        | External validation state (`idle`, `info`, `success`, `warning`, `error`).                  |
-| `min`              | `string \| number`                                                          | -        | -        | Minimum value (number type) or minimum length (text type).                                  |
-| `max`              | `string \| number`                                                          | -        | -        | Maximum value (number type) or maximum length (text type).                                  |
-| `width`            | `string \| number \| Breakpoints`                                           | -        | -        | Width of the component.                                                                     |
-| `grid`             | `string \| number \| Breakpoints`                                           | -        | -        | Grid column span for layout.                                                                |
-| `changed`          | `boolean`                                                                   | `false`  | -        | Read-only `v-model:changed` binding (output only). Externally set values are ignored.       |
-| `valid`            | `boolean`                                                                   | `false`  | -        | Read-only `v-model:valid` binding (output only). Externally set values are ignored.         |
+| Prop               | Type                                                                        | Default  | Required | Description                                                                                                                  |
+| ------------------ | --------------------------------------------------------------------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                                                                    | -        | -        | Color scheme for the component.                                                                                              |
+| `styleSet`         | `string \| VsInputStyleSet`                                                 | -        | -        | Custom style set for the component.                                                                                          |
+| `modelValue`       | `string \| number \| null`                                                  | `null`   | -        | The bound value (v-model).                                                                                                   |
+| `type`             | `'email' \| 'number' \| 'password' \| 'search' \| 'tel' \| 'text' \| 'url'` | `'text'` | -        | HTML input type.                                                                                                             |
+| `label`            | `string`                                                                    | `''`     | -        | Label text displayed above the input.                                                                                        |
+| `placeholder`      | `string`                                                                    | `''`     | -        | Placeholder text for the input.                                                                                              |
+| `focusPlaceholder` | `string`                                                                    | `''`     | -        | Placeholder shown while the input is focused. Falls back to `placeholder` when not focused.                                  |
+| `disabled`         | `boolean`                                                                   | `false`  | -        | Disables the input.                                                                                                          |
+| `readonly`         | `boolean`                                                                   | `false`  | -        | Makes the input read-only.                                                                                                   |
+| `required`         | `boolean`                                                                   | `false`  | -        | Marks the field as required (adds validation).                                                                               |
+| `noClear`          | `boolean`                                                                   | `false`  | -        | Hides the clear button.                                                                                                      |
+| `autocomplete`     | `boolean`                                                                   | `false`  | -        | Enables browser autocomplete.                                                                                                |
+| `emptyValue`       | `string \| number \| null`                                                  | -        | -        | Value used when the input is empty. Defaults to `''` (`null` for `number`).                                                  |
+| `format`           | `string`                                                                    | `''`     | -        | Input format (`9`: digit, `a`: letter, `*`: letter or digit, `?`: rest is optional). Ignored for `number` and `email` types. |
+| `formatOptions`    | `VsInputFormatOptions`                                                      | `{}`     | -        | Options for `format`: `slotChar`, `autoClear`, `raw`.                                                                        |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                      | `'md'`   | -        | Input height, padding, font, and border-radius.                                                                              |
+| `noLabel`          | `boolean`                                                                   | `false`  | -        | Hides the label area.                                                                                                        |
+| `noMessages`       | `boolean`                                                                   | `false`  | -        | Hides the messages area.                                                                                                     |
+| `hidden`           | `boolean`                                                                   | `false`  | -        | Hides the entire component.                                                                                                  |
+| `id`               | `string`                                                                    | `''`     | -        | The `id` attribute for the input element.                                                                                    |
+| `name`             | `string`                                                                    | `''`     | -        | The `name` attribute for the input element.                                                                                  |
+| `messages`         | `Message[]`                                                                 | `[]`     | -        | External messages (state + text) to display below the input.                                                                 |
+| `rules`            | `Rule[]`                                                                    | `[]`     | -        | Validation rules applied on change.                                                                                          |
+| `noDefaultRules`   | `boolean`                                                                   | `false`  | -        | Disables the built-in required/min/max rules.                                                                                |
+| `state`            | `UIState`                                                                   | `'idle'` | -        | External validation state (`idle`, `info`, `success`, `warning`, `error`).                                                   |
+| `min`              | `string \| number`                                                          | -        | -        | Minimum value (number type) or minimum length (text type).                                                                   |
+| `max`              | `string \| number`                                                          | -        | -        | Maximum value (number type) or maximum length (text type).                                                                   |
+| `width`            | `string \| number \| Breakpoints`                                           | -        | -        | Width of the component.                                                                                                      |
+| `grid`             | `string \| number \| Breakpoints`                                           | -        | -        | Grid column span for layout.                                                                                                 |
+| `changed`          | `boolean`                                                                   | `false`  | -        | Read-only `v-model:changed` binding (output only). Externally set values are ignored.                                        |
+| `valid`            | `boolean`                                                                   | `false`  | -        | Read-only `v-model:valid` binding (output only). Externally set values are ignored.                                          |
 
 ## Types
 
 ```typescript
+interface VsInputFormatOptions {
+    slotChar?: string; // default '_'
+    autoClear?: boolean; // default true
+    raw?: boolean; // default false
+}
+
 interface VsInputStyleSet extends CSSProperties {
     $prepend?: CSSProperties;
     $append?: CSSProperties;

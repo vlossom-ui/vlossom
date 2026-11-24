@@ -121,6 +121,34 @@
             <vs-input label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input label="Readonly" model-value="Readonly value" readonly :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input label="Required" placeholder="Required field" required :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-input
+                v-model="inputPhone"
+                label="Format (phone)"
+                placeholder="010-0000-0000"
+                format="999-9999-9999"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-input
+                v-model="inputDate"
+                label="Format (slotChar)"
+                format="9999-99-99"
+                :format-options="{ slotChar: 'yyyy-mm-dd' }"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-input
+                v-model="inputBusinessNumber"
+                label="Format (raw)"
+                format="999-99-99999"
+                :format-options="{ raw: true }"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-input
+                v-model="inputExtension"
+                label="Format (optional part)"
+                format="(999) 999-9999? x99999"
+                :format-options="{ autoClear: false }"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
         </vs-form>
         <vs-divider style-set="playground" />
 
@@ -350,6 +378,10 @@ export default defineComponent({
         const inputText = ref('');
         const inputNumber: Ref<number | null> = ref(null);
         const inputPassword = ref('');
+        const inputPhone = ref('');
+        const inputDate = ref('');
+        const inputBusinessNumber = ref('');
+        const inputExtension = ref('');
         const searchText = ref('');
         const searchInputRef: TemplateRef<VsSearchInputRef> = useTemplateRef('searchInputRef');
         const fruits = [
@@ -434,6 +466,10 @@ export default defineComponent({
             inputText,
             inputNumber,
             inputPassword,
+            inputPhone,
+            inputDate,
+            inputBusinessNumber,
+            inputExtension,
             searchText,
             searchInputRef,
             filteredFruits,

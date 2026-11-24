@@ -82,43 +82,71 @@ const text = ref('');
 </template>
 ```
 
+### Format
+
+`format`으로 정해진 형식에 맞는 문자만 입력받습니다. 구분 문자는 자동으로 삽입됩니다. 문법과 동작은 [useInputFormat](../../composables/input-format/README.ko.md)을 참고하세요.
+
+```html live
+<template>
+    <vs-input v-model="phone" label="휴대폰 번호" format="999-9999-9999" />
+    <vs-input v-model="birthday" label="생년월일 (raw)" format="9999/99/99" :format-options="{ slotChar: 'yyyy/mm/dd', autoClear: false, raw: true }" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const phone = ref('');
+const birthday = ref('');
+</script>
+```
+
+> [!NOTE]
+> `type`이 `number`나 `email`이면 `format`은 무시됩니다.
+
 ## Props
 
-| Prop               | Type                                                                        | Default  | Required | Description                                                                                |
-| ------------------ | --------------------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------------------ |
-| `colorScheme`      | `string`                                                                    | -        | -        | 컴포넌트의 색상 스킴.                                                                      |
-| `styleSet`         | `string \| VsInputStyleSet`                                                 | -        | -        | 컴포넌트의 커스텀 스타일 셋.                                                               |
-| `modelValue`       | `string \| number \| null`                                                  | `null`   | -        | 바인딩 값 (v-model).                                                                       |
-| `type`             | `'email' \| 'number' \| 'password' \| 'search' \| 'tel' \| 'text' \| 'url'` | `'text'` | -        | HTML 입력 타입.                                                                            |
-| `label`            | `string`                                                                    | `''`     | -        | 입력 위에 표시되는 라벨 텍스트.                                                            |
-| `placeholder`      | `string`                                                                    | `''`     | -        | 입력의 플레이스홀더 텍스트.                                                                |
-| `focusPlaceholder` | `string`                                                                    | `''`     | -        | 입력에 포커스된 동안 표시되는 플레이스홀더. 포커스가 아닐 때는 `placeholder`로 대체됩니다. |
-| `disabled`         | `boolean`                                                                   | `false`  | -        | 입력을 비활성화합니다.                                                                     |
-| `readonly`         | `boolean`                                                                   | `false`  | -        | 입력을 읽기 전용으로 설정합니다.                                                           |
-| `required`         | `boolean`                                                                   | `false`  | -        | 필드를 필수로 표시합니다 (유효성 검사 추가).                                               |
-| `noClear`          | `boolean`                                                                   | `false`  | -        | 지우기 버튼을 숨깁니다.                                                                    |
-| `autocomplete`     | `boolean`                                                                   | `false`  | -        | 브라우저 자동완성을 활성화합니다.                                                          |
-| `emptyValue`       | `string \| number \| null`                                                  | -        | -        | 입력이 비었을 때 사용하는 값. 기본값은 `''` (`number`는 `null`).                           |
-| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                      | `'md'`   | -        | 입력 영역 높이 · 패딩 · 폰트 · 모서리 반경 제어.                                           |
-| `noLabel`          | `boolean`                                                                   | `false`  | -        | 라벨 영역을 숨깁니다.                                                                      |
-| `noMessages`       | `boolean`                                                                   | `false`  | -        | 메시지 영역을 숨깁니다.                                                                    |
-| `hidden`           | `boolean`                                                                   | `false`  | -        | 전체 컴포넌트를 숨깁니다.                                                                  |
-| `id`               | `string`                                                                    | `''`     | -        | 입력 요소의 `id` 속성.                                                                     |
-| `name`             | `string`                                                                    | `''`     | -        | 입력 요소의 `name` 속성.                                                                   |
-| `messages`         | `Message[]`                                                                 | `[]`     | -        | 입력 아래에 표시할 외부 메시지 (상태 + 텍스트).                                            |
-| `rules`            | `Rule[]`                                                                    | `[]`     | -        | 변경 시 적용되는 유효성 검사 규칙.                                                         |
-| `noDefaultRules`   | `boolean`                                                                   | `false`  | -        | 내장 required/min/max 규칙을 비활성화합니다.                                               |
-| `state`            | `UIState`                                                                   | `'idle'` | -        | 외부 유효성 상태 (`idle`, `info`, `success`, `warning`, `error`).                          |
-| `min`              | `string \| number`                                                          | -        | -        | 최솟값 (number 타입) 또는 최소 길이 (text 타입).                                           |
-| `max`              | `string \| number`                                                          | -        | -        | 최댓값 (number 타입) 또는 최대 길이 (text 타입).                                           |
-| `width`            | `string \| number \| Breakpoints`                                           | -        | -        | 컴포넌트 너비.                                                                             |
-| `grid`             | `string \| number \| Breakpoints`                                           | -        | -        | 레이아웃의 그리드 열 span.                                                                 |
-| `changed`          | `boolean`                                                                   | `false`  | -        | 읽기 전용 `v-model:changed` 바인딩 (출력 전용). 외부에서 설정한 값은 무시됩니다.           |
-| `valid`            | `boolean`                                                                   | `false`  | -        | 읽기 전용 `v-model:valid` 바인딩 (출력 전용). 외부에서 설정한 값은 무시됩니다.             |
+| Prop               | Type                                                                        | Default  | Required | Description                                                                                                                |
+| ------------------ | --------------------------------------------------------------------------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                                                                    | -        | -        | 컴포넌트의 색상 스킴.                                                                                                      |
+| `styleSet`         | `string \| VsInputStyleSet`                                                 | -        | -        | 컴포넌트의 커스텀 스타일 셋.                                                                                               |
+| `modelValue`       | `string \| number \| null`                                                  | `null`   | -        | 바인딩 값 (v-model).                                                                                                       |
+| `type`             | `'email' \| 'number' \| 'password' \| 'search' \| 'tel' \| 'text' \| 'url'` | `'text'` | -        | HTML 입력 타입.                                                                                                            |
+| `label`            | `string`                                                                    | `''`     | -        | 입력 위에 표시되는 라벨 텍스트.                                                                                            |
+| `placeholder`      | `string`                                                                    | `''`     | -        | 입력의 플레이스홀더 텍스트.                                                                                                |
+| `focusPlaceholder` | `string`                                                                    | `''`     | -        | 입력에 포커스된 동안 표시되는 플레이스홀더. 포커스가 아닐 때는 `placeholder`로 대체됩니다.                                 |
+| `disabled`         | `boolean`                                                                   | `false`  | -        | 입력을 비활성화합니다.                                                                                                     |
+| `readonly`         | `boolean`                                                                   | `false`  | -        | 입력을 읽기 전용으로 설정합니다.                                                                                           |
+| `required`         | `boolean`                                                                   | `false`  | -        | 필드를 필수로 표시합니다 (유효성 검사 추가).                                                                               |
+| `noClear`          | `boolean`                                                                   | `false`  | -        | 지우기 버튼을 숨깁니다.                                                                                                    |
+| `autocomplete`     | `boolean`                                                                   | `false`  | -        | 브라우저 자동완성을 활성화합니다.                                                                                          |
+| `emptyValue`       | `string \| number \| null`                                                  | -        | -        | 입력이 비었을 때 사용하는 값. 기본값은 `''` (`number`는 `null`).                                                           |
+| `format`           | `string`                                                                    | `''`     | -        | 입력 형식 (`9`: 숫자, `a`: 영문자, `*`: 영문자 또는 숫자, `?`: 이후는 선택 입력). `number`, `email` 타입에서는 무시됩니다. |
+| `formatOptions`    | `VsInputFormatOptions`                                                      | `{}`     | -        | `format` 옵션: `slotChar`, `autoClear`, `raw`.                                                                             |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                      | `'md'`   | -        | 입력 영역 높이 · 패딩 · 폰트 · 모서리 반경 제어.                                                                           |
+| `noLabel`          | `boolean`                                                                   | `false`  | -        | 라벨 영역을 숨깁니다.                                                                                                      |
+| `noMessages`       | `boolean`                                                                   | `false`  | -        | 메시지 영역을 숨깁니다.                                                                                                    |
+| `hidden`           | `boolean`                                                                   | `false`  | -        | 전체 컴포넌트를 숨깁니다.                                                                                                  |
+| `id`               | `string`                                                                    | `''`     | -        | 입력 요소의 `id` 속성.                                                                                                     |
+| `name`             | `string`                                                                    | `''`     | -        | 입력 요소의 `name` 속성.                                                                                                   |
+| `messages`         | `Message[]`                                                                 | `[]`     | -        | 입력 아래에 표시할 외부 메시지 (상태 + 텍스트).                                                                            |
+| `rules`            | `Rule[]`                                                                    | `[]`     | -        | 변경 시 적용되는 유효성 검사 규칙.                                                                                         |
+| `noDefaultRules`   | `boolean`                                                                   | `false`  | -        | 내장 required/min/max 규칙을 비활성화합니다.                                                                               |
+| `state`            | `UIState`                                                                   | `'idle'` | -        | 외부 유효성 상태 (`idle`, `info`, `success`, `warning`, `error`).                                                          |
+| `min`              | `string \| number`                                                          | -        | -        | 최솟값 (number 타입) 또는 최소 길이 (text 타입).                                                                           |
+| `max`              | `string \| number`                                                          | -        | -        | 최댓값 (number 타입) 또는 최대 길이 (text 타입).                                                                           |
+| `width`            | `string \| number \| Breakpoints`                                           | -        | -        | 컴포넌트 너비.                                                                                                             |
+| `grid`             | `string \| number \| Breakpoints`                                           | -        | -        | 레이아웃의 그리드 열 span.                                                                                                 |
+| `changed`          | `boolean`                                                                   | `false`  | -        | 읽기 전용 `v-model:changed` 바인딩 (출력 전용). 외부에서 설정한 값은 무시됩니다.                                           |
+| `valid`            | `boolean`                                                                   | `false`  | -        | 읽기 전용 `v-model:valid` 바인딩 (출력 전용). 외부에서 설정한 값은 무시됩니다.                                             |
 
 ## Types
 
 ```typescript
+interface VsInputFormatOptions {
+    slotChar?: string; // 기본값 '_'
+    autoClear?: boolean; // 기본값 true
+    raw?: boolean; // 기본값 false
+}
+
 interface VsInputStyleSet extends CSSProperties {
     $prepend?: CSSProperties;
     $append?: CSSProperties;

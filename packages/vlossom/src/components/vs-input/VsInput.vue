@@ -28,13 +28,14 @@
                 :style="componentStyleSet.$input"
                 :id="computedId"
                 :type
-                :value="isEmpty ? '' : inputValue"
+                :value="isFormatted ? displayValue : isEmpty ? '' : inputValue"
                 :autocomplete="autocomplete ? 'on' : 'off'"
                 :name
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :aria-required="required"
                 :placeholder="computedPlaceholder"
+                @beforeinput="onBeforeInput"
                 @input.stop="onInput"
                 @focus.stop="onFocus"
                 @blur.stop="onBlur"
@@ -86,6 +87,8 @@ import {
     useStateClass,
     useSizeClass,
     useMessages,
+    useInputFormat,
+    type VsInputFormatOptions,
 } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 
@@ -96,6 +99,7 @@ import { XIcon } from '@lucide/vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const componentName = VsComponent.VsInput;
+const FORMATTABLE_TYPES = ['password', 'search', 'tel', 'text', 'url'];
 
 export default defineComponent({
     name: componentName,
@@ -108,6 +112,8 @@ export default defineComponent({
         ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
         emptyValue: { type: [String, Number] as PropType<VsInputValueType> },
+        format: { type: String, default: '' },
+        formatOptions: { type: Object as PropType<VsInputFormatOptions>, default: () => ({}) },
         noClear: { type: Boolean, default: false },
         size: { type: String as PropType<Size>, default: 'md' },
         type: { type: String as PropType<VsInputType>, default: 'text' },
@@ -146,6 +152,8 @@ export default defineComponent({
             state,
             placeholder,
             focusPlaceholder,
+            format,
+            formatOptions,
         } = toRefs(props);
 
         const inputValue: Ref<VsInputValueType> = ref(modelValue.value);
@@ -240,6 +248,17 @@ export default defineComponent({
             },
         );
 
+        // number, email은 커서 위치 API가 없어 format을 적용할 수 없다
+        const activeFormat = computed(() => (FORMATTABLE_TYPES.includes(type.value) ? format.value : ''));
+        const isFormatted = computed(() => !!activeFormat.value);
+        const formatModel = computed<string>({
+            get: () => (inputValue.value === null || inputValue.value === undefined ? '' : String(inputValue.value)),
+            set: (v) => {
+                inputValue.value = convertValue(v);
+            },
+        });
+        const { displayValue, formatListeners } = useInputFormat(formatModel, activeFormat, formatOptions);
+
         const { sizeClass } = useSizeClass(size);
 
         const classObj = computed(() => ({
@@ -263,7 +282,17 @@ export default defineComponent({
             return placeholder.value || '';
         });
 
+        function onBeforeInput(event: InputEvent) {
+            if (isFormatted.value) {
+                formatListeners.beforeinput(event);
+            }
+        }
+
         function onInput(event: Event) {
+            if (isFormatted.value) {
+                formatListeners.input(event);
+                return;
+            }
             const target = event.target as HTMLInputElement;
             const value = target.value || '';
             inputValue.value = convertValue(value);
@@ -278,11 +307,17 @@ export default defineComponent({
         }
 
         function onFocus(e: FocusEvent) {
+            if (isFormatted.value) {
+                formatListeners.focus(e);
+            }
             emit('focus', e);
             focused.value = true;
         }
 
         function onBlur(e: FocusEvent) {
+            if (isFormatted.value) {
+                formatListeners.blur(e);
+            }
             emit('blur', e);
             focused.value = false;
         }
@@ -317,8 +352,11 @@ export default defineComponent({
             shake,
             stateBoxClasses,
             computedId,
+            isFormatted,
+            displayValue,
 
             // Methods
+            onBeforeInput,
             onInput,
             focus,
             blur,
