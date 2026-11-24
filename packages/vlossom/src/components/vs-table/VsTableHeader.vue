@@ -7,7 +7,7 @@
 
             <th
                 v-if="showSelect"
-                class="vs-table-th"
+                class="vs-table-th vs-table-select-handle"
                 :style="cellStyle"
                 @click.stop="toggleSelectAll(!selectedAll, $event)"
             >

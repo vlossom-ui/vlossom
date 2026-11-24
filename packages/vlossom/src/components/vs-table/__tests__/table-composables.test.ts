@@ -115,7 +115,7 @@ describe('useTableColumnComposable', () => {
             expand: ref(true),
         });
 
-        expect(gridTemplateColumns.value).toBe('auto auto minmax(max-content, 1fr) auto');
+        expect(gridTemplateColumns.value).toBe('max-content max-content minmax(max-content, 1fr) max-content');
     });
 });
 

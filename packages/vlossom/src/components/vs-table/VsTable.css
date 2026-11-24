@@ -198,11 +198,12 @@
 
     /* ── Handle cells ── */
 
+    /* drag, select 셀은 오른쪽 padding을 줄이고 둘을 같게 두어 첫 컬럼과의 간격을 맞춘다. */
     .vs-table-th.vs-table-drag-handle,
-    .vs-table-td.vs-table-drag-handle {
-        @apply pr-0;
-        padding-left: var(--vs-table-cell-padding-x);
-        width: calc(var(--vs-table-cell-padding-x) + 1rem);
+    .vs-table-td.vs-table-drag-handle,
+    .vs-table-th.vs-table-select-handle,
+    .vs-table-td.vs-table-select-handle {
+        padding-right: calc(var(--vs-table-cell-padding-x) * 0.5);
     }
 
     .vs-table-th.vs-table-drag-handle svg {
@@ -258,6 +259,7 @@
     }
 
     /* ── Modifiers ── */
+
     &.vs-table-responsive {
         @apply w-full;
         container-type: inline-size;

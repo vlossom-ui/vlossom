@@ -1417,7 +1417,8 @@ describe('VsTable', () => {
                 'grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr)',
             );
             expect(tracksOf(full)).toContain(
-                'grid-template-columns: auto auto minmax(max-content, 1fr) minmax(max-content, 1fr) auto',
+                'grid-template-columns: max-content max-content ' +
+                    'minmax(max-content, 1fr) minmax(max-content, 1fr) max-content',
             );
         });
     });

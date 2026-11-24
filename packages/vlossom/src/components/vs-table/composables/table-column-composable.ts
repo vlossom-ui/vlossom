@@ -35,14 +35,14 @@ export function useTableGridTemplateComposable(
     const gridTemplateColumns: ComputedRef<string> = computed(() => {
         const tracks: string[] = [];
         if (handleColumns.drag.value) {
-            tracks.push('auto');
+            tracks.push('max-content');
         }
         if (handleColumns.select.value) {
-            tracks.push('auto');
+            tracks.push('max-content');
         }
         columns.value.forEach((column) => tracks.push(getGridColumnWidth(column)));
         if (handleColumns.expand.value) {
-            tracks.push('auto');
+            tracks.push('max-content');
         }
         return tracks.join(' ');
     });
