@@ -147,7 +147,7 @@ describe('VsContainer', () => {
         describe('각 방향별 drawer 테스트', () => {
             it('left drawer가 열려있고 pushContainer이면 왼쪽 push 변수와 class가 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: true });
+                layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: true, resizing: false });
 
                 // when
                 const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -160,7 +160,7 @@ describe('VsContainer', () => {
 
             it('top drawer가 열려있고 pushContainer이면 위쪽 패딩이 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({ placement: 'top', isOpen: true, size: '150px', pushContainer: true });
+                layoutStore.setDrawer({ placement: 'top', isOpen: true, size: '150px', pushContainer: true, resizing: false });
 
                 // when
                 const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -172,7 +172,7 @@ describe('VsContainer', () => {
 
             it('right drawer가 열려있고 pushContainer이면 오른쪽 push 변수와 class가 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true });
+                layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true, resizing: false });
 
                 // when
                 const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -190,6 +190,7 @@ describe('VsContainer', () => {
                     isOpen: true,
                     size: '200px',
                     pushContainer: 'responsive',
+                    resizing: false,
                 });
 
                 // when
@@ -210,6 +211,7 @@ describe('VsContainer', () => {
                     isOpen: true,
                     size: '150px',
                     pushContainer: 'responsive',
+                    resizing: false,
                 });
 
                 // when
@@ -231,6 +233,7 @@ describe('VsContainer', () => {
                     isOpen: true,
                     size: '100px',
                     pushContainer: 'responsive',
+                    resizing: false,
                 });
 
                 // when
@@ -244,7 +247,7 @@ describe('VsContainer', () => {
 
             it('bottom drawer가 열려있고 pushContainer이면 아래쪽 패딩이 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '100px', pushContainer: true });
+                layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '100px', pushContainer: true, resizing: false });
 
                 // when
                 const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -275,7 +278,7 @@ describe('VsContainer', () => {
 
             it('drawer가 닫혀있으면 패딩이 적용되지 않아야 한다', () => {
                 // given
-                layoutStore.setDrawer({ placement: 'left', isOpen: false, size: '200px', pushContainer: true });
+                layoutStore.setDrawer({ placement: 'left', isOpen: false, size: '200px', pushContainer: true, resizing: false });
 
                 // when
                 const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -287,7 +290,7 @@ describe('VsContainer', () => {
 
             it('drawer의 pushContainer가 false이면 패딩이 적용되지 않아야 한다', () => {
                 // given
-                layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: false });
+                layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: false, resizing: false });
 
                 // when
                 const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -300,7 +303,7 @@ describe('VsContainer', () => {
 
             it('drawer의 size가 빈 문자열이면 패딩이 적용되지 않아야 한다', () => {
                 // given
-                layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '', pushContainer: true });
+                layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '', pushContainer: true, resizing: false });
 
                 // when
                 const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -314,10 +317,10 @@ describe('VsContainer', () => {
         describe('모든 drawer가 활성화된 경우', () => {
             it('모든 방향의 drawer가 활성화되어 있을 때 모든 패딩이 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: true });
-                layoutStore.setDrawer({ placement: 'top', isOpen: true, size: '150px', pushContainer: true });
-                layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true });
-                layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '100px', pushContainer: true });
+                layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: true, resizing: false });
+                layoutStore.setDrawer({ placement: 'top', isOpen: true, size: '150px', pushContainer: true, resizing: false });
+                layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true, resizing: false });
+                layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '100px', pushContainer: true, resizing: false });
 
                 // when
                 const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -349,8 +352,8 @@ describe('VsContainer', () => {
             // given
             layoutStore.setHeader({ position: 'fixed', height: '70px' });
             layoutStore.setFooter({ position: 'absolute', height: '90px' });
-            layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: true });
-            layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true });
+            layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: true, resizing: false });
+            layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true, resizing: false });
 
             // when
             const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -368,8 +371,8 @@ describe('VsContainer', () => {
         it('header가 sticky이고 top drawer가 열려있을 때 paddingTop은 header + drawer 크기의 합이어야 한다', () => {
             // given
             layoutStore.setHeader({ position: 'sticky', height: '60px' });
-            layoutStore.setDrawer({ placement: 'top', isOpen: true, size: '40px', pushContainer: true });
-            layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '50px', pushContainer: true });
+            layoutStore.setDrawer({ placement: 'top', isOpen: true, size: '40px', pushContainer: true, resizing: false });
+            layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '50px', pushContainer: true, resizing: false });
 
             // when
             const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -385,7 +388,7 @@ describe('VsContainer', () => {
         it('footer가 fixed이고 bottom drawer가 열려있을 때 paddingBottom은 footer + drawer 크기의 합이어야 한다', () => {
             // given
             layoutStore.setFooter({ position: 'fixed', height: '60px' });
-            layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '50px', pushContainer: true });
+            layoutStore.setDrawer({ placement: 'bottom', isOpen: true, size: '50px', pushContainer: true, resizing: false });
 
             // when
             const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
@@ -399,8 +402,8 @@ describe('VsContainer', () => {
             // given
             layoutStore.setHeader({ position: 'relative', height: '60px' }); // padding 미적용
             layoutStore.setFooter({ position: 'fixed', height: '80px' }); // padding 적용
-            layoutStore.setDrawer({ placement: 'left', isOpen: false, size: '200px', pushContainer: true }); // 닫혀있어 미적용
-            layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true }); // padding 적용
+            layoutStore.setDrawer({ placement: 'left', isOpen: false, size: '200px', pushContainer: true, resizing: false }); // 닫혀있어 미적용
+            layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true, resizing: false }); // padding 적용
 
             // when
             const wrapper = mount(MockVsLayout, { slots: { default: () => h(VsContainer, { layout: true }) } });
