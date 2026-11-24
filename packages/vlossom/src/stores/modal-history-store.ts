@@ -1,8 +1,6 @@
-import { MODAL_BACK } from '@/declaration';
+import { MODAL_BACK, MODAL_HISTORY_STATE_KEY } from '@/declaration';
 import { logUtil } from '@/utils';
 import type { OverlayCallbackStore } from './overlay-callback-store';
-
-const MODAL_HISTORY_STATE_KEY = '__vlossomModalId';
 
 interface ModalHistoryEntry {
     id: string;

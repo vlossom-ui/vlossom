@@ -7,6 +7,7 @@ export const OVERLAY_OPEN = 'vlossom:overlay-open';
 export const OVERLAY_CLOSE = 'vlossom:overlay-close';
 
 export const MODAL_BACK = 'vlossom:modal-back';
+export const MODAL_HISTORY_STATE_KEY = 'vlossom:modal-history-state';
 
 export const ALERT_OK = 'vlossom:alert-ok';
 
