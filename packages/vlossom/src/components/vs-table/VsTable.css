@@ -239,9 +239,16 @@
     }
 
     /* ── Pagination ── */
+
+    /* 한 줄에 들어가지 않으면 info와 pagination이 위아래로 떨어진다. */
     .vs-table-pagination {
-        @apply flex items-center justify-between py-3;
+        @apply flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3;
         container-type: inline-size;
+
+        /* 컨테이너보다 길면 page 버튼 영역이 스스로 스크롤된다. */
+        > .vs-pagination {
+            @apply ml-auto max-w-full min-w-0;
+        }
     }
 
     .vs-table-pagination-info {
