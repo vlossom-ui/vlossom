@@ -28,6 +28,7 @@
         --vs-radius-xl: 0.5rem;
 
         --vs-bar-z-index: 1000;
+        --vs-scroll-top-z-index: 1000;
         --vs-modal-z-index: 5000;
         --vs-toast-z-index: 99999;
 

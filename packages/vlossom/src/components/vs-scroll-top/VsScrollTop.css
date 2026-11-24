@@ -1,0 +1,24 @@
+.vs-scroll-top {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: var(--vs-scroll-top-z-index);
+
+    &.vs-fixed {
+        position: fixed;
+    }
+}
+
+.vs-scroll-top-enter-active,
+.vs-scroll-top-leave-active {
+    transition: opacity 0.25s;
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
+}
+
+.vs-scroll-top-enter-from,
+.vs-scroll-top-leave-to {
+    opacity: 0;
+}

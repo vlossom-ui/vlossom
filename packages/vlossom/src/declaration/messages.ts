@@ -44,6 +44,7 @@ export const DEFAULT_MESSAGES = {
     VS_ARIA_THEME_BUTTON_LIGHT: 'Switch to light mode',
     VS_ARIA_THEME_BUTTON_DARK: 'Switch to dark mode',
     VS_ARIA_MODAL_LABEL: 'Modal',
+    VS_ARIA_SCROLL_TOP: 'Scroll to top',
     VS_ALERT_OK: 'OK',
     VS_CONFIRM_OK: 'OK',
     VS_CONFIRM_CANCEL: 'Cancel',

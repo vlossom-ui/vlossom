@@ -269,6 +269,7 @@ function openEditor() {
 | [vs-steps](src/components/vs-steps/README.md)           | Step indicator            |
 | [vs-index-view](src/components/vs-index-view/README.md) | Index-based view switcher |
 | [vs-breadcrumb](src/components/vs-breadcrumb/README.md) | Breadcrumb navigation     |
+| [vs-scroll-top](src/components/vs-scroll-top/README.md) | Scroll-to-top button      |
 
 ### Utility
 

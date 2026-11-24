@@ -188,6 +188,15 @@
         </div>
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">VsScrollTop</h3>
+        <div class="relative">
+            <div id="playground-scroll-top-area" class="h-60 overflow-y-auto rounded border border-gray-300 p-4">
+                <p v-for="i in 50" :key="i">Line {{ i }}</p>
+            </div>
+            <vs-scroll-top target="#playground-scroll-top-area" primary />
+        </div>
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">VsSkeleton</h3>
         <div class="flex flex-wrap items-center gap-4">
             <vs-skeleton :style-set="{ width: '50px', height: '50px', borderRadius: '50%' }" />

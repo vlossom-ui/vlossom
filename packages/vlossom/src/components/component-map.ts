@@ -48,6 +48,7 @@ import VsRadio from './vs-radio/VsRadio.vue';
 import VsRadioSet from './vs-radio/VsRadioSet.vue';
 import VsRender from './vs-render/VsRender.vue';
 import VsResponsive from './vs-responsive/VsResponsive.vue';
+import VsScrollTop from './vs-scroll-top/VsScrollTop.vue';
 import VsSearchInput from './vs-search-input/VsSearchInput.vue';
 import VsSelect from './vs-select/VsSelect.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
@@ -107,6 +108,7 @@ export const VlossomComponents = {
     VsRadioSet,
     VsRender,
     VsResponsive,
+    VsScrollTop,
     VsSearchInput,
     VsSelect,
     VsSkeleton,
