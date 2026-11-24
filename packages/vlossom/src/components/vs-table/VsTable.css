@@ -52,7 +52,7 @@
     /* ── Table structure ──
        행은 subgrid로 table의 컬럼 트랙을 공유한다. */
     .vs-table-table {
-        @apply mx-auto grid min-w-full;
+        @apply grid min-w-full;
     }
 
     .vs-table-thead,
@@ -259,6 +259,11 @@
     }
 
     /* ── Modifiers ── */
+
+    /* flexible 컬럼이 없으면 toolbar, pagination까지 컬럼 폭의 합에 맞춘다. */
+    &.vs-table-fit {
+        @apply w-fit max-w-full;
+    }
 
     &.vs-table-responsive {
         @apply w-full;

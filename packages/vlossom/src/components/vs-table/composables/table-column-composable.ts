@@ -67,5 +67,10 @@ export function useTableGridTemplateComposable(
         return 'minmax(max-content, 1fr)';
     }
 
-    return { gridTemplateColumns };
+    // flexible(1fr) 컬럼이 없으면 컬럼 폭의 합이 table 폭이 된다
+    const isFitContent: ComputedRef<boolean> = computed(
+        () => columns.value.length > 0 && columns.value.every((column) => column.width || column.maxWidth),
+    );
+
+    return { gridTemplateColumns, isFitContent };
 }

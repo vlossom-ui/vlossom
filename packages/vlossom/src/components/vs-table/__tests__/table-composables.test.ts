@@ -117,6 +117,34 @@ describe('useTableColumnComposable', () => {
 
         expect(gridTemplateColumns.value).toBe('max-content max-content minmax(max-content, 1fr) max-content');
     });
+
+    describe('isFitContent', () => {
+        const fitContent = (columnDefs: VsTableColumnDef[]) =>
+            useTableGridTemplateComposable(ref(columnDefs), handleColumns).isFitContent.value;
+
+        it('모든 컬럼이 width 또는 maxWidth를 가지면 true', () => {
+            expect(
+                fitContent([
+                    { key: 'a', label: 'a', width: 100 },
+                    { key: 'b', label: 'b', maxWidth: 200 },
+                ]),
+            ).toBe(true);
+        });
+
+        it('flexible 컬럼(미지정, minWidth만)이 하나라도 있으면 false', () => {
+            expect(
+                fitContent([
+                    { key: 'a', label: 'a', width: 100 },
+                    { key: 'b', label: 'b' },
+                ]),
+            ).toBe(false);
+            expect(fitContent([{ key: 'a', label: 'a', minWidth: 100 }])).toBe(false);
+        });
+
+        it('컬럼이 없으면 false', () => {
+            expect(fitContent([])).toBe(false);
+        });
+    });
 });
 
 describe('getCellValue', () => {

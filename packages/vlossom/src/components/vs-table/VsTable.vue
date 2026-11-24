@@ -405,7 +405,7 @@ export default defineComponent({
             hasExpandSlot.value = !!slots.expand;
         });
         const showExpand: ComputedRef<boolean> = computed(() => anyExpandable.value && hasExpandSlot.value);
-        const { gridTemplateColumns } = useTableGridTemplateComposable(columns, {
+        const { gridTemplateColumns, isFitContent } = useTableGridTemplateComposable(columns, {
             drag: isDraggable,
             select: anySelectable,
             expand: showExpand,
@@ -413,6 +413,8 @@ export default defineComponent({
 
         const classObj = computed(() => ({
             'vs-table-responsive': responsive.value,
+            // responsive는 container-type 때문에 내용 기반 폭을 가질 수 없다
+            'vs-table-fit': isFitContent.value && !responsive.value,
             'vs-primary': primary.value,
             [sizeClass.value]: !!sizeClass.value,
         }));
