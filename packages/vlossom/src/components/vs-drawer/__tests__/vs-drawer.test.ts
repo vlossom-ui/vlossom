@@ -18,24 +18,6 @@ describe('VsDrawer', () => {
                 modelValue: false,
                 placement: 'left',
             },
-            global: {
-                stubs: {
-                    'vs-focus-trap': {
-                        template: '<div class="vs-focus-trap-stub"><slot /></div>',
-                        methods: {
-                            focus: vi.fn(),
-                            blur: vi.fn(),
-                        },
-                    },
-                    'vs-inner-scroll': {
-                        template:
-                            '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
-                    },
-                    Transition: {
-                        template: '<div><slot /></div>',
-                    },
-                },
-            },
         };
     });
 
@@ -484,18 +466,6 @@ describe('VsDrawer', () => {
             template: '<div><slot /></div>',
         });
 
-        const layoutStubs = {
-            'vs-focus-trap': {
-                template: '<div class="vs-focus-trap-stub"><slot /></div>',
-                methods: { focus: vi.fn(), blur: vi.fn() },
-            },
-            'vs-inner-scroll': {
-                template:
-                    '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
-            },
-            Transition: { template: '<div><slot /></div>' },
-        };
-
         it('layout prop이 true일 때 layoutStore.setDrawer가 호출되어야 한다', () => {
             // given
             const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
@@ -512,7 +482,6 @@ describe('VsDrawer', () => {
                             pushContainer: true,
                         }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -541,7 +510,6 @@ describe('VsDrawer', () => {
                             pushContainer: 'responsive',
                         }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -558,7 +526,6 @@ describe('VsDrawer', () => {
                     default: () =>
                         h(VsDrawer, { modelValue: true, placement: 'left', size: 'md', pushContainer: true }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -577,18 +544,6 @@ describe('VsDrawer', () => {
             template: '<div><slot /></div>',
         });
 
-        const layoutStubs = {
-            'vs-focus-trap': {
-                template: '<div class="vs-focus-trap-stub"><slot /></div>',
-                methods: { focus: vi.fn(), blur: vi.fn() },
-            },
-            'vs-inner-scroll': {
-                template:
-                    '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
-            },
-            Transition: { template: '<div><slot /></div>' },
-        };
-
         it('placement가 left이고 header가 fixed이면 paddingTop이 적용되어야 한다', () => {
             // given
             layoutStore.setHeader({ position: 'fixed', height: '3rem' });
@@ -598,7 +553,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'left' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -615,7 +569,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'right' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -632,7 +585,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'top' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -649,7 +601,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'top' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -666,7 +617,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'bottom' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -683,7 +633,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'bottom' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -700,7 +649,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'left' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
