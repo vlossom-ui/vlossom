@@ -37,12 +37,18 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, ref, toRefs, type ComputedRef, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
-import { useColorScheme, useMessages, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
+import {
+    useColorScheme,
+    useDraggable,
+    useMessages,
+    useOverlayCallback,
+    useScrollLock,
+    useStyleSet,
+} from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsModalNodeStyleSet } from './types';
-import { useModalDrag } from './composables/modal-drag-composable';
 
 import { GripHorizontalIcon } from '@lucide/vue';
 import VsDimmed from '@/components/vs-dimmed/VsDimmed.vue';
@@ -152,7 +158,7 @@ export default defineComponent({
 
         const nodeRef = ref<HTMLElement | null>(null);
         const wrapRef = ref<HTMLElement | null>(null);
-        const { dragStyle, isDragging, onDragStart, onDragMove, onDragEnd } = useModalDrag(nodeRef, wrapRef);
+        const { dragStyle, isDragging, onDragStart, onDragMove, onDragEnd } = useDraggable(wrapRef, nodeRef);
 
         function resolveScrollLockTarget(): string | null {
             if (!scrollLock.value) {

@@ -1,5 +1,6 @@
 export * from './click-outside/click-outside-composable';
 export * from './color-scheme/color-scheme-composable';
+export * from './draggable/draggable-composable';
 export * from './file-rules/file-rules-composable';
 export * from './focusable/focusable-composable';
 export * from './grouped-items/grouped-items-composable';

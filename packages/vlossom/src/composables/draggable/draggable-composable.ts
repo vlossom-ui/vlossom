@@ -1,4 +1,5 @@
 import { computed, ref, type ComputedRef, type CSSProperties, type Ref } from 'vue';
+import { numberUtil } from '@/utils';
 
 interface DragState {
     pointerX: number;
@@ -11,16 +12,12 @@ interface DragState {
     startY: number;
 }
 
-function clamp(value: number, min: number, max: number) {
-    return Math.min(Math.max(value, min), max);
-}
-
-export function useModalDrag(areaRef: Ref<HTMLElement | null>, targetRef: Ref<HTMLElement | null>) {
+export function useDraggable(targetRef: Ref<HTMLElement | null>, boundaryRef?: Ref<HTMLElement | null>) {
     const offset = ref({ x: 0, y: 0 });
     const isDragging = ref(false);
     let dragState: DragState | null = null;
 
-    // transform은 가운데 정렬과 열림/닫힘 애니메이션이 쓰고 있으므로 독립 속성인 translate로 이동시킨다
+    // transform은 대상 요소의 정렬이나 애니메이션이 쓰고 있을 수 있으므로 독립 속성인 translate로 이동시킨다
     const dragStyle: ComputedRef<CSSProperties> = computed(() => {
         const { x, y } = offset.value;
         return x || y ? { translate: `${x}px ${y}px` } : {};
@@ -30,26 +27,26 @@ export function useModalDrag(areaRef: Ref<HTMLElement | null>, targetRef: Ref<HT
         if (event.pointerType === 'mouse' && event.button !== 0) {
             return;
         }
-        const area = areaRef.value;
         const target = targetRef.value;
-        if (!area || !target) {
+        const boundary = boundaryRef?.value;
+        if (!target || boundary === null) {
             return;
         }
         event.preventDefault();
 
-        const areaRect = area.getBoundingClientRect();
-        const targetRect = target.getBoundingClientRect();
         const { x, y } = offset.value;
-        dragState = {
-            pointerX: event.clientX,
-            pointerY: event.clientY,
-            minX: x + areaRect.left - targetRect.left,
-            maxX: x + areaRect.right - targetRect.right,
-            minY: y + areaRect.top - targetRect.top,
-            maxY: y + areaRect.bottom - targetRect.bottom,
-            startX: x,
-            startY: y,
-        };
+        let bounds = { minX: -Infinity, maxX: Infinity, minY: -Infinity, maxY: Infinity };
+        if (boundary) {
+            const boundaryRect = boundary.getBoundingClientRect();
+            const targetRect = target.getBoundingClientRect();
+            bounds = {
+                minX: x + boundaryRect.left - targetRect.left,
+                maxX: x + boundaryRect.right - targetRect.right,
+                minY: y + boundaryRect.top - targetRect.top,
+                maxY: y + boundaryRect.bottom - targetRect.bottom,
+            };
+        }
+        dragState = { pointerX: event.clientX, pointerY: event.clientY, ...bounds, startX: x, startY: y };
         isDragging.value = true;
 
         const handle = event.currentTarget as HTMLElement | null;
@@ -62,8 +59,8 @@ export function useModalDrag(areaRef: Ref<HTMLElement | null>, targetRef: Ref<HT
         }
         const { pointerX, pointerY, minX, maxX, minY, maxY, startX, startY } = dragState;
         offset.value = {
-            x: clamp(startX + event.clientX - pointerX, minX, maxX),
-            y: clamp(startY + event.clientY - pointerY, minY, maxY),
+            x: numberUtil.clamp(startX + event.clientX - pointerX, minX, maxX),
+            y: numberUtil.clamp(startY + event.clientY - pointerY, minY, maxY),
         };
     }
 
