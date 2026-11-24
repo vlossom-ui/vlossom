@@ -14,7 +14,7 @@ export default defineConfig({
         outDir: 'dist-e2e',
         rollupOptions: {
             input: {
-                e2e: fileURLToPath(new URL('./e2e.html', import.meta.url)),
+                modalBackClose: fileURLToPath(new URL('./e2e/modal-back-close.html', import.meta.url)),
             },
         },
     },

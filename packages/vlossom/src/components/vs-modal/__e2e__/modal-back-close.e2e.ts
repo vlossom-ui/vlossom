@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 async function establishHistoryBaseline(page: Page): Promise<void> {
     await page.evaluate(() => {
-        window.history.pushState({ e2eBase: true }, '', '/e2e.html#e2e-base');
+        window.history.pushState({ e2eBase: true }, '', '/e2e/modal-back-close.html#e2e-base');
     });
 }
 
@@ -10,7 +10,7 @@ const readState = (page: Page) => page.evaluate(() => history.state);
 
 test.describe('모달 backClose', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto('/e2e.html');
+        await page.goto('/e2e/modal-back-close.html');
         await establishHistoryBaseline(page);
     });
 
