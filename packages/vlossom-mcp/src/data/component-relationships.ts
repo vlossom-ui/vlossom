@@ -53,6 +53,7 @@ export const COMPONENT_RELATIONSHIPS: RelationshipsData = {
     VsPage: { children: [], siblings: ['VsLayout', 'VsBlock', 'VsContainer'] },
     VsPagination: { children: ['VsButton'], siblings: ['VsTable', 'VsSelect'] },
     VsRadio: { children: ['VsInputWrapper'], siblings: ['VsCheckbox', 'VsSwitch'] },
+    VsScrollTop: { children: ['VsButton'], siblings: ['VsInnerScroll'] },
     VsSearchInput: { children: ['VsInput', 'VsToggle'], siblings: ['VsInput', 'VsTable', 'VsSelect'] },
     VsSelect: {
         children: ['VsCheckbox', 'VsChip', 'VsFloating', 'VsGroupedList', 'VsInputWrapper', 'VsSearchInput'],

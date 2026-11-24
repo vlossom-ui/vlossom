@@ -90,6 +90,12 @@ export const UI_PATTERN_COVERAGE: UiPatternCoverage[] = [
         alternatives: ['el-breadcrumb', 'v-breadcrumbs', 'n-breadcrumb', 'a-breadcrumb'],
     },
     {
+        requirement: 'scroll to top button',
+        keywords: ['scroll to top', 'back to top', 'scroll top', 'backtop'],
+        components: ['VsScrollTop'],
+        alternatives: ['el-backtop', 'n-back-top', 'a-back-top', 'a-float-button-back-top'],
+    },
+    {
         requirement: 'accordion or expandable content',
         keywords: ['accordion', 'collapse', 'expand', 'faq'],
         components: ['VsAccordion', 'VsExpandable'],
