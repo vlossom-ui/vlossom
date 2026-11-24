@@ -13,7 +13,7 @@
                 @click.prevent.stop="onClickDimmed"
             />
             <vs-focus-trap ref="focusTrapRef" :disabled="!focusLock">
-                <div :class="['vs-drawer-content', `vs-drawer-${placement}`]" :style="layoutStyles">
+                <div ref="contentRef" :class="['vs-drawer-content', `vs-drawer-${placement}`]" :style="layoutStyles">
                     <vs-inner-scroll
                         :color-scheme="computedColorScheme"
                         :style-set="{
@@ -37,7 +37,7 @@
                         role="separator"
                         :aria-orientation="isHorizontal ? 'vertical' : 'horizontal'"
                         @pointerdown="onResizeStart"
-                        @pointermove="onResize"
+                        @pointermove="onResizeMove"
                         @lostpointercapture="onResizeEnd"
                     />
                 </div>
@@ -52,14 +52,12 @@ import {
     defineComponent,
     inject,
     onBeforeMount,
-    ref,
     toRefs,
     useTemplateRef,
     watch,
     watchEffect,
     type ComputedRef,
     type PropType,
-    type Ref,
     type TemplateRef,
 } from 'vue';
 import {
@@ -75,7 +73,14 @@ import {
     SIZES,
     type Size,
 } from '@/declaration';
-import { useColorScheme, useLayoutChild, useOverlayCallback, useStyleSet } from '@/composables';
+import {
+    useColorScheme,
+    useLayoutChild,
+    useOverlayCallback,
+    useResizable,
+    useStyleSet,
+    type ResizeEdge,
+} from '@/composables';
 import { getColorSchemeProps, getLayoutProps, getStyleSetProps, getOverlayProps } from '@/props';
 import { LayoutStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
@@ -86,6 +91,13 @@ import VsFocusTrap from '@/components/vs-focus-trap/VsFocusTrap.vue';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 
 const componentName = VsComponent.VsDrawer;
+const RESIZE_EDGE: Record<DrawerPlacement, ResizeEdge> = {
+    left: 'right',
+    right: 'left',
+    top: 'bottom',
+    bottom: 'top',
+};
+
 export default defineComponent({
     name: componentName,
     components: { VsDimmed, VsFocusTrap, VsInnerScroll },
@@ -134,6 +146,7 @@ export default defineComponent({
         const computedId = computed(() => id.value || innerId);
         const drawerRef: TemplateRef<HTMLElement> = useTemplateRef('drawerRef');
         const focusTrapRef: TemplateRef<FocusableRef> = useTemplateRef('focusTrapRef');
+        const contentRef: TemplateRef<HTMLElement> = useTemplateRef('contentRef');
         const DRAWER_SIZE: Record<Size, string> = {
             xs: '12%',
             sm: '20%',
@@ -150,7 +163,18 @@ export default defineComponent({
             return stringUtil.toStringSize(value);
         }
 
-        const resizedSize: Ref<number | null> = ref(null);
+        const isHorizontal = computed(() => placement.value === 'left' || placement.value === 'right');
+        const { resizedSize, isResizing, onResizeStart, onResizeMove, onResizeEnd, resetSize } = useResizable(
+            contentRef,
+            {
+                edge: computed(() => RESIZE_EDGE[placement.value]),
+                minSize: computed(() => (minSize.value ? toCssSize(minSize.value) : undefined)),
+                maxSize: computed(() => (maxSize.value ? toCssSize(maxSize.value) : undefined)),
+                boundaryRef: drawerRef,
+                onResize: (resized) => emit('update:size', resized),
+            },
+        );
+
         const drawerSize = computed(() => {
             if (resizedSize.value !== null) {
                 return `${resizedSize.value}px`;
@@ -158,65 +182,7 @@ export default defineComponent({
             return size.value ? toCssSize(size.value) : DRAWER_SIZE.sm;
         });
 
-        watch(size, () => {
-            resizedSize.value = null;
-        });
-
-        const isHorizontal = computed(() => placement.value === 'left' || placement.value === 'right');
-        const isResizing = ref(false);
-        let resizeStart = { pointer: 0, size: 0, min: 0, max: 0 };
-
-        function measureSize(element: HTMLElement, value: SizeProp) {
-            const property = isHorizontal.value ? 'width' : 'height';
-            const previous = element.style[property];
-            element.style[property] = toCssSize(value);
-            const measured = element.getBoundingClientRect()[property];
-            element.style[property] = previous;
-            return measured;
-        }
-
-        function onResizeStart(event: PointerEvent) {
-            const handle = event.currentTarget as HTMLElement;
-            const content = handle.parentElement;
-            if (event.button !== 0 || !content || !drawerRef.value) {
-                return;
-            }
-
-            event.preventDefault();
-            handle.setPointerCapture(event.pointerId);
-
-            const property = isHorizontal.value ? 'width' : 'height';
-            resizeStart = {
-                pointer: isHorizontal.value ? event.clientX : event.clientY,
-                size: content.getBoundingClientRect()[property],
-                min: minSize.value ? measureSize(content, minSize.value) : 0,
-                max: maxSize.value
-                    ? measureSize(content, maxSize.value)
-                    : drawerRef.value.getBoundingClientRect()[property],
-            };
-            isResizing.value = true;
-        }
-
-        function onResize(event: PointerEvent) {
-            if (!isResizing.value) {
-                return;
-            }
-
-            const pointer = isHorizontal.value ? event.clientX : event.clientY;
-            const direction = placement.value === 'left' || placement.value === 'top' ? 1 : -1;
-            const nextSize = resizeStart.size + (pointer - resizeStart.pointer) * direction;
-            const clampedSize = Math.round(Math.min(Math.max(nextSize, resizeStart.min), resizeStart.max));
-
-            if (clampedSize === resizedSize.value) {
-                return;
-            }
-            resizedSize.value = clampedSize;
-            emit('update:size', clampedSize);
-        }
-
-        function onResizeEnd() {
-            isResizing.value = false;
-        }
+        watch(size, resetSize);
 
         const baseStyleSet: ComputedRef<VsDrawerStyleSet> = computed(() => ({
             $header: { padding: 0 },
@@ -362,7 +328,7 @@ export default defineComponent({
             isHorizontal,
             isResizing,
             onResizeStart,
-            onResize,
+            onResizeMove,
             onResizeEnd,
         };
     },
