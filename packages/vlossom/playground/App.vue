@@ -46,7 +46,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import Basic from './views/Basic.vue';
 import Inputs from './views/Inputs.vue';
 import DataDisplay from './views/DataDisplay.vue';
@@ -74,6 +75,8 @@ export default defineComponent({
         ColorScheme,
     },
     setup() {
+        const router = useRouter();
+        const route = useRoute();
         const tabs = [
             'Sandbox',
             'Basic',
@@ -84,7 +87,15 @@ export default defineComponent({
             'Color Palette',
             'Color Scheme',
         ];
-        const activeTab = ref(0);
+        const activeTab = computed({
+            get() {
+                const tab = (route?.query.tab as string) ?? 'Sandbox';
+                return tabs.indexOf(tab);
+            },
+            set(value: number) {
+                router.push({ query: { tab: tabs[value] } });
+            },
+        });
         const drawerOpen = ref(false);
 
         const basicBarStyleSet: VsBarStyleSet = {

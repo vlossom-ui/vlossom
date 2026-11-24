@@ -12,8 +12,16 @@ import '@/styles/index.scss';
 
 console.log('Hello Vlossom');
 
+import { createRouter, createWebHistory } from 'vue-router';
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes: [{ path: '/', component: () => import('./App.vue') }],
+});
+
 const app = createApp(App);
 
+app.use(router);
 app.use(
     createVlossom({
         components: VlossomComponents,
