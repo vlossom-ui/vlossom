@@ -12,6 +12,7 @@ A modal dialog component that renders content in an overlay layer via the Vlosso
 - Content is teleported to a configurable container element (default: `body`).
 - Supports dimmed overlay background, focus locking, ESC key close, and dim click close.
 - Optionally locks page scroll, or a specific scroll container by CSS selector, via `scroll-lock`.
+- Can be moved by dragging a grip handle at the top center with `draggable`.
 - Configurable width via predefined size keywords (`xs`, `sm`, `md`, `lg`, `xl`) or custom values; height fits the content unless specified explicitly.
 - Emits `open` and `close` events for lifecycle hooks.
 - Removes its open modal when the component unmounts, and when it is deactivated inside `KeepAlive` (reopened on activation if `v-model` is still `true`).
@@ -91,6 +92,21 @@ Use an object to set the width and height separately. Both accept size keywords 
 </template>
 ```
 
+### Draggable
+
+Set `draggable` to show a grip handle at the top center of the modal. Drag the handle with a mouse or touch to move the modal within its container.
+
+```html live
+<template>
+    <vs-button @click="isOpen = true">Open Modal</vs-button>
+
+    <vs-modal v-model="isOpen" :draggable="true" size="sm">
+        <div>Drag the handle at the top to move me.</div>
+        <vs-button @click="isOpen = false">Close</vs-button>
+    </vs-modal>
+</template>
+```
+
 ### Before Close Hook
 
 ```html live
@@ -159,6 +175,7 @@ const isOpen = ref(false);
 | `modelValue`  | `boolean`                                                                                             | `false`  | -        | Controls the visibility of the modal (v-model).                                                            |
 | `beforeClose` | `() => Promise<boolean> \| boolean`                                                                   | -        | -        | Hook invoked before the modal closes. Resolve `false` to abort the close. Bypassed by `$vs.modal.clear()`. |
 | `container`   | `string`                                                                                              | `'body'` | -        | CSS selector of the element to teleport the modal into.                                                    |
+| `draggable`   | `boolean`                                                                                             | `false`  | -        | Shows a grip handle at the top center that moves the modal within its container when dragged.              |
 | `escClose`    | `boolean`                                                                                             | `false`  | -        | Closes the modal when the ESC key is pressed.                                                              |
 | `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | Modal width as a keyword or custom value. Use an object to also set the height; otherwise it fits content. |
 | `callbacks`   | `OverlayCallbacks`                                                                                    | `{}`     | -        | Overlay callback handlers.                                                                                 |
@@ -173,11 +190,13 @@ const isOpen = ref(false);
 
 ```typescript
 interface VsModalNodeStyleSet extends CSSProperties {
+    $content?: CSSProperties;
     $dimmed?: VsDimmedStyleSet;
 }
 ```
 
 > [!NOTE]
+> The root style set styles the modal box (size, border, background, radius, shadow). `$content` styles the scrollable content area inside it, which owns the default padding.
 > `$dimmed` uses `VsDimmedStyleSet`. See the [VsDimmed README](../vs-dimmed/README.md) for details.
 
 ### StyleSet Example
@@ -191,10 +210,12 @@ interface VsModalNodeStyleSet extends CSSProperties {
         :dimmed="true"
         :style-set="{
             borderRadius: '16px',
-            padding: '2rem',
             backgroundColor: '#fff',
             color: '#1f2937',
             boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+            $content: {
+                padding: '2rem',
+            },
             $dimmed: {
                 backgroundColor: 'rgba(0,0,0,0.6)',
             },
@@ -223,5 +244,9 @@ interface VsModalNodeStyleSet extends CSSProperties {
 ## Caution
 
 `VsModal` requires the Vlossom plugin to be installed in your Vue application. The modal content is mounted via `$vs.modal.open()` and teleported to the `container` element.
+
+Set padding through `$content` rather than the root style set. The default padding belongs to the content area, so a root `padding` adds space around it and moves the scrollbar away from the modal edge.
+
+With `draggable`, the handle takes its own row above the content area, and the content area's top padding is removed by default. The handle is for mouse and touch only and is not focusable. The dragged position resets each time the modal opens.
 
 A modal with a `size` is a query container, so [breakpoints](../vs-responsive/README.md#breakpoints) inside it follow the modal width. A modal without `size`, or with a content-based width such as `auto` or `fit-content`, is sized by its content and is not a query container.

@@ -45,6 +45,21 @@ describe('VsFocusTrap', () => {
         expect(wrapper.find('#vs-focus-trap-anchor').element).toBe(document.activeElement);
     });
 
+    it('slot 자식 요소에 지정한 template ref가 유지되어야 한다', async () => {
+        // given, when
+        const wrapper = mount(
+            defineComponent({
+                components: { VsFocusTrap },
+                template: '<vs-focus-trap><div ref="childRef">child</div></vs-focus-trap>',
+            }),
+            { attachTo: document.body },
+        );
+        await nextTick();
+
+        // then
+        expect(wrapper.vm.$refs.childRef).toBe(wrapper.find('.vs-focus-trap > div:not(#vs-focus-trap-anchor)').element);
+    });
+
     describe('autofocus', () => {
         it('autofocus 속성을 가진 요소가 있으면, 마운트 시 앵커 대신 그 요소에 focus를 준다', async () => {
             // given, when

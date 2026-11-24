@@ -31,6 +31,7 @@ export default defineComponent({
             default: undefined,
         },
         container: { type: String, default: 'body' },
+        draggable: { type: Boolean, default: false },
         escClose: { type: Boolean, default: false },
         scrollLock: { type: [Boolean, String] as PropType<boolean | string>, default: false },
         size: {

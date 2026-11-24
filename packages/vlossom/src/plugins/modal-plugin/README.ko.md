@@ -12,7 +12,7 @@
 - 이벤트(예: 버튼 클릭, 키보드 단축키)에 대한 커스텀 콜백을 지원합니다
 - 동일하거나 다른 컨테이너 내에 여러 모달을 스택할 수 있습니다
 - 이벤트 emit, 특정 모달 닫기, 모든 모달 닫기를 위한 명령형 API를 제공합니다
-- 오버레이 동작 구성 가능: 딤, 딤 닫기, 포커스 잠금, 스크롤 숨기기, 스크롤 잠금, 크기 설정
+- 오버레이 동작 구성 가능: 딤, 딤 닫기, 드래그 이동, 포커스 잠금, 스크롤 숨기기, 스크롤 잠금, 크기 설정
 - Alert, Confirm, Prompt 플러그인이 모두 이 플러그인 위에 구축됩니다
 
 ## 기본 사용법
@@ -140,14 +140,14 @@ function openModal() {
 
 ## 메서드
 
-| 메서드          | 파라미터                                                                   | 설명                                                                                                     |
-| --------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `open`          | `content: string \| Component, options?: ModalOptions`      | 주어진 콘텐츠와 옵션으로 모달을 엽니다. 모달의 고유 문자열 ID를 반환합니다. `content`가 컴포넌트인 경우 옵션의 `componentProps`로 props를 전달할 수 있습니다. |
-| `emit`          | `eventName: string, ...args: any[]`                                        | 가장 최근에 열린 모달의 콜백 스토어에 이름이 있는 이벤트를 emit합니다.                                  |
-| `emitWithId`    | `id: string, eventName: string, ...args: any[]`                            | ID로 특정 모달에 이름이 있는 이벤트를 emit합니다.                                                       |
-| `close`         | `container?: string`                                                       | 가장 최근에 열린 모달을 닫습니다. `container`를 생략하면 모든 컨테이너를 통틀어 마지막으로 열린 모달을, `container`를 지정하면 해당 컨테이너의 마지막 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다 (`beforeClose`가 `false`를 반환하면 닫기를 취소). |
-| `closeWithId`   | `id: string`                                                               | 컨테이너와 무관하게 ID로 특정 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다.     |
-| `clear`         | `container?: string`                                                       | 모든 모달을 닫습니다. `container`를 생략하면 모든 컨테이너의 모달을, `container`를 지정하면 해당 컨테이너의 모달만 닫습니다. `beforeClose`를 무시합니다. |
+| 메서드        | 파라미터                                               | 설명                                                                                                                                                                                                                                                                         |
+| ------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`        | `content: string \| Component, options?: ModalOptions` | 주어진 콘텐츠와 옵션으로 모달을 엽니다. 모달의 고유 문자열 ID를 반환합니다. `content`가 컴포넌트인 경우 옵션의 `componentProps`로 props를 전달할 수 있습니다.                                                                                                                |
+| `emit`        | `eventName: string, ...args: any[]`                    | 가장 최근에 열린 모달의 콜백 스토어에 이름이 있는 이벤트를 emit합니다.                                                                                                                                                                                                       |
+| `emitWithId`  | `id: string, eventName: string, ...args: any[]`        | ID로 특정 모달에 이름이 있는 이벤트를 emit합니다.                                                                                                                                                                                                                            |
+| `close`       | `container?: string`                                   | 가장 최근에 열린 모달을 닫습니다. `container`를 생략하면 모든 컨테이너를 통틀어 마지막으로 열린 모달을, `container`를 지정하면 해당 컨테이너의 마지막 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다 (`beforeClose`가 `false`를 반환하면 닫기를 취소). |
+| `closeWithId` | `id: string`                                           | 컨테이너와 무관하게 ID로 특정 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다.                                                                                                                                                                          |
+| `clear`       | `container?: string`                                   | 모든 모달을 닫습니다. `container`를 생략하면 모든 컨테이너의 모달을, `container`를 지정하면 해당 컨테이너의 모달만 닫습니다. `beforeClose`를 무시합니다.                                                                                                                     |
 
 ## 타입
 
@@ -160,6 +160,7 @@ interface ModalOptions {
     callbacks?: OverlayCallbacks;
     dimClose?: boolean;
     dimmed?: boolean;
+    draggable?: boolean;
     escClose?: boolean;
     focusLock?: boolean;
     hideScroll?: boolean;
