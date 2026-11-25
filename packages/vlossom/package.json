@@ -1,7 +1,7 @@
 {
     "name": "vlossom",
     "description": "Vlossom UI components for Vue",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "author": "vlossom",
     "repository": {
         "type": "git",

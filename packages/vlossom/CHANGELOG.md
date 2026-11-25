@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.3.0...vlossom-v2.3.1) (2026-11-25)
+
+
+### Bug Fixes
+
+* prevent input components from inheriting parent text color ([#811](https://github.com/vlossom-ui/vlossom/issues/811)) ([2faeef4](https://github.com/vlossom-ui/vlossom/commit/2faeef40b43f5397cf6a4a4335a9d6fb0f691386))
+* **VsInput:** keep clear button visible for non-numeric text in number type ([#809](https://github.com/vlossom-ui/vlossom/issues/809)) ([43e5692](https://github.com/vlossom-ui/vlossom/commit/43e569279c3d35f0d40c247c5470381afb0239e5))
+* **VsTable:** fix handle cell spacing, fixed-width table, pagination and search layout when narrow ([#810](https://github.com/vlossom-ui/vlossom/issues/810)) ([3430c26](https://github.com/vlossom-ui/vlossom/commit/3430c2685f979ca348c49da14441aa80094050ea))
+
 ## [2.3.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.5...vlossom-v2.3.0) (2026-11-23)
 
 
