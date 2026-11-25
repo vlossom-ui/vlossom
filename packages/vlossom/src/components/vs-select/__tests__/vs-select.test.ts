@@ -1,10 +1,20 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { flushPromises, mount } from '@vue/test-utils';
+import { DOMWrapper, enableAutoUnmount, flushPromises, mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import VsSelect from './../VsSelect.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
 
 describe('VsSelect', () => {
+    enableAutoUnmount(afterEach);
+
+    // VsFloating은 enterDelay 타이머가 지난 뒤에 옵션 목록을 렌더링하므로 fake timer가 필요하다
+    async function openAndRenderOptions(wrapper: ReturnType<typeof mount<typeof VsSelect>>) {
+        wrapper.vm.openOptions();
+        await nextTick();
+        vi.advanceTimersByTime(0);
+        await nextTick();
+    }
+
     const basicOptions = ['Apple', 'Banana', 'Orange'];
     const objectOptions = [
         { id: 1, name: 'Apple', disabled: false },
@@ -964,11 +974,9 @@ describe('VsSelect', () => {
 
         it('선택된 옵션이 있고 스크롤이 있을 때 openOptions 호출 시 scrollToItem에 50px offset이 전달된다', async () => {
             // given
-            // VsFloating을 스텁으로 대체해 Teleport/v-if 없이 슬롯을 바로 렌더링 → optionsListRef 즉시 접근 가능
             vi.useFakeTimers();
             const wrapper = mount(VsSelect, {
                 attachTo: document.body,
-                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
                 props: {
                     options: basicOptions,
                     modelValue: 'Apple',
@@ -976,12 +984,11 @@ describe('VsSelect', () => {
             });
             await nextTick();
 
+            // when
+            await openAndRenderOptions(wrapper);
             const optionsListRef = wrapper.vm.optionsListRef;
             vi.spyOn(optionsListRef as any, 'hasScroll').mockReturnValue(true);
             const scrollToItemSpy = vi.spyOn(optionsListRef as any, 'scrollToItem');
-
-            // when
-            wrapper.vm.openOptions();
             vi.advanceTimersByTime(100);
             await nextTick();
 
@@ -998,7 +1005,6 @@ describe('VsSelect', () => {
             vi.useFakeTimers();
             const wrapper = mount(VsSelect, {
                 attachTo: document.body,
-                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
                 props: {
                     options: basicOptions,
                     optionsDisabled: (option: string) => option === 'Banana',
@@ -1007,12 +1013,11 @@ describe('VsSelect', () => {
             });
             await nextTick();
 
+            // when
+            await openAndRenderOptions(wrapper);
             const optionsListRef = wrapper.vm.optionsListRef;
             vi.spyOn(optionsListRef as any, 'hasScroll').mockReturnValue(true);
             const scrollToItemSpy = vi.spyOn(optionsListRef as any, 'scrollToItem');
-
-            // when
-            wrapper.vm.openOptions();
             vi.advanceTimersByTime(100);
             await nextTick();
 
@@ -1029,7 +1034,6 @@ describe('VsSelect', () => {
             vi.useFakeTimers();
             const wrapper = mount(VsSelect, {
                 attachTo: document.body,
-                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
                 props: {
                     options: basicOptions,
                     modelValue: null,
@@ -1037,12 +1041,11 @@ describe('VsSelect', () => {
             });
             await nextTick();
 
+            // when
+            await openAndRenderOptions(wrapper);
             const optionsListRef = wrapper.vm.optionsListRef;
             vi.spyOn(optionsListRef as any, 'hasScroll').mockReturnValue(true);
             const scrollToItemSpy = vi.spyOn(optionsListRef as any, 'scrollToItem');
-
-            // when
-            wrapper.vm.openOptions();
             vi.advanceTimersByTime(100);
             await nextTick();
 
@@ -1193,17 +1196,21 @@ describe('VsSelect', () => {
 
     describe('options header', () => {
         it('search를 사용하지 않으면 options-header slot이 있어도 search 영역을 렌더링하지 않는다', async () => {
-            // given, when
+            // given
+            vi.useFakeTimers();
             const wrapper = mount(VsSelect, {
-                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
+                attachTo: document.body,
                 props: { options: basicOptions, modelValue: null },
                 slots: { 'options-header': '<div class="custom-header" />' },
             });
-            await nextTick();
+
+            // when
+            await openAndRenderOptions(wrapper);
 
             // then
-            expect(wrapper.find('.custom-header').exists()).toBe(true);
-            expect(wrapper.find('.vs-select-search').exists()).toBe(false);
+            expect(document.querySelector('.custom-header')).not.toBeNull();
+            expect(document.querySelector('.vs-select-search')).toBeNull();
+            vi.useRealTimers();
         });
     });
 
@@ -1600,20 +1607,24 @@ describe('VsSelect', () => {
 
     describe('noVirtual', () => {
         it('noVirtual을 VsGroupedList에 전달하여 옵션이 많아도 모든 옵션을 렌더링한다', async () => {
-            // given, when
+            // given
+            vi.useFakeTimers();
             const wrapper = mount(VsSelect, {
-                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
+                attachTo: document.body,
                 props: {
                     options: Array.from({ length: 150 }, (_, i) => `Option ${i + 1}`),
                     modelValue: null,
                     noVirtual: true,
                 },
             });
-            await nextTick();
+
+            // when
+            await openAndRenderOptions(wrapper);
 
             // then
             expect(wrapper.findComponent({ name: 'VsGroupedList' }).props('noVirtual')).toBe(true);
-            expect(wrapper.findAll('.vs-select-option-wrap')).toHaveLength(150);
+            expect(document.querySelectorAll('.vs-select-option-wrap')).toHaveLength(150);
+            vi.useRealTimers();
         });
     });
 
@@ -1647,14 +1658,22 @@ describe('VsSelect', () => {
         async function mountOpenedSelect(props: Record<string, any>) {
             const wrapper = mount(VsSelect, {
                 attachTo: document.body,
-                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
                 props: { modelValue: null, ...props },
             });
-            await nextTick();
             wrapper.vm.openOptions();
+            await nextTick();
             vi.advanceTimersByTime(100);
             await nextTick();
+            await nextTick();
             return wrapper;
+        }
+
+        function findInDocument(selector: string) {
+            return new DOMWrapper(document.querySelector(selector));
+        }
+
+        function findAllInDocument(selector: string) {
+            return Array.from(document.querySelectorAll(selector), (element) => new DOMWrapper(element));
         }
 
         async function pressKey(code: string) {
@@ -1679,9 +1698,9 @@ describe('VsSelect', () => {
         it('virtual로 렌더링되지 않은 마지막 옵션도 End 키로 포커스하고 선택할 수 있다', async () => {
             // given
             const wrapper = await mountOpenedSelect({ options: manyOptions });
-            expect(wrapper.find('[data-id]').exists()).toBe(true);
+            expect(findInDocument('[data-id]').exists()).toBe(true);
             const lastOption = wrapper.vm.filteredOptions[manyOptions.length - 1];
-            expect(wrapper.find(`[data-id="${lastOption?.id}"]`).exists()).toBe(false);
+            expect(findInDocument(`[data-id="${lastOption?.id}"]`).exists()).toBe(false);
             const scrollToItemSpy = vi.spyOn(wrapper.vm.optionsListRef as any, 'scrollToItem');
 
             // when
@@ -1806,7 +1825,7 @@ describe('VsSelect', () => {
         it('마우스를 올린 옵션으로 포커스가 이동하고 Enter로 선택할 수 있다', async () => {
             // given
             const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
-            const thirdOption = wrapper.findAll('.vs-select-option-wrap')[2];
+            const thirdOption = findAllInDocument('.vs-select-option-wrap')[2];
 
             // when
             thirdOption.element.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
@@ -1826,11 +1845,11 @@ describe('VsSelect', () => {
         it('마우스를 옵션에 올려도 검색창에서 누른 Enter/Space는 옵션을 선택하지 않는다', async () => {
             // given
             const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
-            wrapper
-                .findAll('.vs-select-option-wrap')[2]
-                .element.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+            findAllInDocument('.vs-select-option-wrap')[2].element.dispatchEvent(
+                new MouseEvent('mousemove', { bubbles: true }),
+            );
             await nextTick();
-            const searchInput = wrapper.find('.vs-select-search input').element;
+            const searchInput = findInDocument('.vs-select-search input').element;
             const spaceEvent = new KeyboardEvent('keydown', { code: 'Space', bubbles: true, cancelable: true });
 
             // when
@@ -1848,7 +1867,7 @@ describe('VsSelect', () => {
         it('single 모드에서 Enter로 옵션을 선택하면 포커스가 트리거로 돌아온다', async () => {
             // given
             const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
-            expect(document.activeElement).toBe(wrapper.find('.vs-select-search input').element);
+            expect(document.activeElement).toBe(findInDocument('.vs-select-search input').element);
 
             // when
             await pressKey('ArrowDown');
@@ -1865,7 +1884,7 @@ describe('VsSelect', () => {
             const wrapper = await mountOpenedSelect({ options: manyOptions });
 
             // when
-            await wrapper.findAll('.vs-select-option-wrap')[2].trigger('click');
+            await findAllInDocument('.vs-select-option-wrap')[2].trigger('click');
 
             // then
             expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['Option 3']);
@@ -1876,7 +1895,7 @@ describe('VsSelect', () => {
         it('multiple 모드에서 검색창에 포커스가 있을 때 목록이 닫히면 포커스가 트리거로 돌아온다', async () => {
             // given
             const wrapper = await mountOpenedSelect({ options: manyOptions, search: true, multiple: true });
-            expect(document.activeElement).toBe(wrapper.find('.vs-select-search input').element);
+            expect(document.activeElement).toBe(findInDocument('.vs-select-search input').element);
 
             // when
             await pressKey('Escape');

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
-import { provide, defineComponent, h } from 'vue';
+import { mount, type DOMWrapper } from '@vue/test-utils';
+import { provide, defineComponent, h, nextTick } from 'vue';
 import { LayoutStore } from '@/stores';
 import { LAYOUT_PROVIDED_KEY, LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import VsDrawer from './../VsDrawer.vue';
@@ -17,24 +17,6 @@ describe('VsDrawer', () => {
             props: {
                 modelValue: false,
                 placement: 'left',
-            },
-            global: {
-                stubs: {
-                    'vs-focus-trap': {
-                        template: '<div class="vs-focus-trap-stub"><slot /></div>',
-                        methods: {
-                            focus: vi.fn(),
-                            blur: vi.fn(),
-                        },
-                    },
-                    'vs-inner-scroll': {
-                        template:
-                            '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
-                    },
-                    Transition: {
-                        template: '<div><slot /></div>',
-                    },
-                },
             },
         };
     });
@@ -193,6 +175,127 @@ describe('VsDrawer', () => {
                 '--vs-drawer-size': '300px',
             });
             expect(wrapper.vm.componentStyleSet.$size).toBe('300px');
+        });
+    });
+
+    describe('resizable', () => {
+        function mockRect(element: Element, rect: Partial<DOMRect>) {
+            vi.spyOn(element, 'getBoundingClientRect').mockReturnValue({ width: 0, height: 0, ...rect } as DOMRect);
+        }
+
+        async function dispatchPointer(handle: DOMWrapper<Element>, type: string, init: MouseEventInit) {
+            handle.element.dispatchEvent(new MouseEvent(type, { bubbles: true, ...init }));
+            await nextTick();
+        }
+
+        function mountResizable(props: Record<string, unknown> = {}) {
+            const wrapper = mount(VsDrawer, {
+                ...defaultOptions,
+                props: { ...defaultOptions.props, modelValue: true, resizable: true, size: '200px', ...props },
+            });
+            const handle = wrapper.find('.vs-drawer-resize-handle');
+            (handle.element as HTMLElement).setPointerCapture = vi.fn();
+            mockRect(wrapper.find('.vs-drawer').element, { width: 1000, height: 800 });
+            mockRect(wrapper.find('.vs-drawer-content').element, { width: 200, height: 200 });
+            return { wrapper, handle };
+        }
+
+        it('resizable이 없으면 resize handle을 렌더링하지 않는다', () => {
+            // given, when
+            const wrapper = mount(VsDrawer, {
+                ...defaultOptions,
+                props: { ...defaultOptions.props, modelValue: true },
+            });
+
+            // then
+            expect(wrapper.find('.vs-drawer-resize-handle').exists()).toBe(false);
+        });
+
+        it('left drawer의 handle을 오른쪽으로 드래그하면 size가 커지고 update:size를 emit한다', async () => {
+            // given
+            const { wrapper, handle } = mountResizable();
+
+            // when
+            await dispatchPointer(handle, 'pointerdown', { clientX: 200 });
+            await dispatchPointer(handle, 'pointermove', { clientX: 260 });
+
+            // then
+            expect(wrapper.vm.styleSetVariables['--vs-drawer-size']).toBe('260px');
+            expect(wrapper.emitted('update:size')).toEqual([[260]]);
+        });
+
+        it('right drawer는 왼쪽으로, bottom drawer는 위로 드래그해야 size가 커진다', async () => {
+            // given
+            const right = mountResizable({ placement: 'right' });
+            const bottom = mountResizable({ placement: 'bottom' });
+
+            // when
+            await dispatchPointer(right.handle, 'pointerdown', { clientX: 800 });
+            await dispatchPointer(right.handle, 'pointermove', { clientX: 750 });
+            await dispatchPointer(bottom.handle, 'pointerdown', { clientY: 600 });
+            await dispatchPointer(bottom.handle, 'pointermove', { clientY: 580 });
+
+            // then
+            expect(right.wrapper.emitted('update:size')).toEqual([[250]]);
+            expect(bottom.wrapper.emitted('update:size')).toEqual([[220]]);
+        });
+
+        it('drawer 영역을 넘거나 0보다 작아지지 않도록 size를 제한한다', async () => {
+            // given
+            const { wrapper, handle } = mountResizable();
+
+            // when
+            await dispatchPointer(handle, 'pointerdown', { clientX: 200 });
+            await dispatchPointer(handle, 'pointermove', { clientX: 5000 });
+            await dispatchPointer(handle, 'pointermove', { clientX: -5000 });
+
+            // then
+            expect(wrapper.emitted('update:size')).toEqual([[1000], [0]]);
+        });
+
+        it('minSize와 maxSize를 실제 크기로 환산해 size를 제한한다', async () => {
+            // given
+            const { wrapper, handle } = mountResizable({ minSize: 120, maxSize: '480px' });
+            const content = wrapper.find('.vs-drawer-content').element as HTMLElement;
+            vi.spyOn(content, 'getBoundingClientRect').mockImplementation(
+                () => ({ width: parseFloat(content.style.width) || 200 }) as DOMRect,
+            );
+
+            // when
+            await dispatchPointer(handle, 'pointerdown', { clientX: 200 });
+            await dispatchPointer(handle, 'pointermove', { clientX: 900 });
+            await dispatchPointer(handle, 'pointermove', { clientX: 0 });
+
+            // then
+            expect(wrapper.emitted('update:size')).toEqual([[480], [120]]);
+            expect(content.style.width).toBe('');
+        });
+
+        it('pointer capture가 해제되면 이후 pointermove는 무시한다', async () => {
+            // given
+            const { wrapper, handle } = mountResizable();
+            await dispatchPointer(handle, 'pointerdown', { clientX: 200 });
+
+            // when
+            await handle.trigger('lostpointercapture');
+            await dispatchPointer(handle, 'pointermove', { clientX: 300 });
+
+            // then
+            expect(wrapper.emitted('update:size')).toBeUndefined();
+            expect(wrapper.find('.vs-drawer-resizing').exists()).toBe(false);
+        });
+
+        it('size prop이 바뀌면 드래그로 바뀐 size 대신 새 prop 값을 사용한다', async () => {
+            // given
+            const { wrapper, handle } = mountResizable();
+            await dispatchPointer(handle, 'pointerdown', { clientX: 200 });
+            await dispatchPointer(handle, 'pointermove', { clientX: 300 });
+
+            // when
+            await wrapper.setProps({ size: 'md' });
+
+            // then
+            expect(wrapper.vm.styleSetVariables['--vs-drawer-size']).toBe('40%');
         });
     });
 
@@ -363,18 +466,6 @@ describe('VsDrawer', () => {
             template: '<div><slot /></div>',
         });
 
-        const layoutStubs = {
-            'vs-focus-trap': {
-                template: '<div class="vs-focus-trap-stub"><slot /></div>',
-                methods: { focus: vi.fn(), blur: vi.fn() },
-            },
-            'vs-inner-scroll': {
-                template:
-                    '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
-            },
-            Transition: { template: '<div><slot /></div>' },
-        };
-
         it('layout prop이 true일 때 layoutStore.setDrawer가 호출되어야 한다', () => {
             // given
             const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
@@ -391,7 +482,6 @@ describe('VsDrawer', () => {
                             pushContainer: true,
                         }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -400,6 +490,7 @@ describe('VsDrawer', () => {
                 placement: 'left',
                 size: '40%',
                 pushContainer: true,
+                resizing: false,
             });
         });
 
@@ -419,7 +510,6 @@ describe('VsDrawer', () => {
                             pushContainer: 'responsive',
                         }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -436,7 +526,6 @@ describe('VsDrawer', () => {
                     default: () =>
                         h(VsDrawer, { modelValue: true, placement: 'left', size: 'md', pushContainer: true }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -455,18 +544,6 @@ describe('VsDrawer', () => {
             template: '<div><slot /></div>',
         });
 
-        const layoutStubs = {
-            'vs-focus-trap': {
-                template: '<div class="vs-focus-trap-stub"><slot /></div>',
-                methods: { focus: vi.fn(), blur: vi.fn() },
-            },
-            'vs-inner-scroll': {
-                template:
-                    '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
-            },
-            Transition: { template: '<div><slot /></div>' },
-        };
-
         it('placement가 left이고 header가 fixed이면 paddingTop이 적용되어야 한다', () => {
             // given
             layoutStore.setHeader({ position: 'fixed', height: '3rem' });
@@ -476,7 +553,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'left' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -493,7 +569,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'right' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -510,7 +585,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'top' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -527,7 +601,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'top' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -544,7 +617,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'bottom' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -561,7 +633,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'bottom' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then
@@ -578,7 +649,6 @@ describe('VsDrawer', () => {
                 slots: {
                     default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'left' }),
                 },
-                global: { stubs: layoutStubs },
             });
 
             // then

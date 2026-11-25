@@ -10,6 +10,10 @@
 
     transition: padding 0.3s ease-in-out;
     container-type: inline-size;
+
+    &.vs-container-resizing {
+        transition: none;
+    }
 }
 
 .vs-container.vs-container-push-left {

@@ -17,6 +17,7 @@ export * from './option-list/option-list-composable';
 export * from './overlay-callback/overlay-callback-composable';
 export * from './overlay-dom/overlay-dom-composable';
 export * from './positioning/positioning-composable';
+export * from './resizable/resizable-composable';
 export * from './scroll-lock/scroll-lock-composable';
 export * from './size-class/size-class-composable';
 export * from './state-class/state-class-composable';
