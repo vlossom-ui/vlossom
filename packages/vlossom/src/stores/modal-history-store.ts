@@ -1,9 +1,10 @@
-import { MODAL_BACK, MODAL_HISTORY_STATE_KEY } from '@/declaration';
+import { MODAL_BACK, MODAL_HISTORY_DEPTH_KEY, MODAL_HISTORY_STATE_KEY } from '@/declaration';
 import { logUtil } from '@/utils';
 import type { OverlayCallbackStore } from './overlay-callback-store';
 
 interface ModalHistoryEntry {
     id: string;
+    depth: number;
     active: boolean;
     popped: boolean;
     closing: boolean;
@@ -16,12 +17,19 @@ export class ModalHistoryStore {
 
     constructor(private overlayCallbackStore: OverlayCallbackStore) {}
 
-    private pushState(id: string): void {
-        window.history.pushState({ ...window.history.state, [MODAL_HISTORY_STATE_KEY]: id }, '');
+    private pushState(id: string, depth: number): void {
+        window.history.pushState(
+            {
+                ...window.history.state,
+                [MODAL_HISTORY_STATE_KEY]: id,
+                [MODAL_HISTORY_DEPTH_KEY]: depth,
+            },
+            '',
+        );
     }
 
     private restore(entry: ModalHistoryEntry): void {
-        this.pushState(entry.id);
+        this.pushState(entry.id, entry.depth);
         entry.popped = false;
     }
 
@@ -59,7 +67,18 @@ export class ModalHistoryStore {
         }
 
         const entry = this.entries[this.entries.length - 1];
-        if (!entry || window.history.state?.[MODAL_HISTORY_STATE_KEY] === entry.id) {
+        if (!entry) {
+            return;
+        }
+
+        const stateDepth = window.history.state?.[MODAL_HISTORY_DEPTH_KEY];
+
+        if (typeof stateDepth === 'number' && stateDepth > entry.depth) {
+            this.rewinding = true;
+            window.history.go(-1);
+            return;
+        }
+        if (window.history.state?.[MODAL_HISTORY_STATE_KEY] === entry.id) {
             return;
         }
 
@@ -106,8 +125,9 @@ export class ModalHistoryStore {
         if (parent?.active && parent.popped) {
             this.restore(parent);
         }
-        this.pushState(id);
-        this.entries.push({ id, active: true, popped: false, closing: false });
+        const depth = this.entries.length + 1;
+        this.pushState(id, depth);
+        this.entries.push({ id, depth, active: true, popped: false, closing: false });
         window.addEventListener('popstate', this.handleBack);
     }
 

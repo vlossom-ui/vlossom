@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ref } from 'vue';
-import { MODAL_BACK, MODAL_HISTORY_STATE_KEY, type OverlayCallbacks } from '@/declaration';
+import { MODAL_BACK, MODAL_HISTORY_DEPTH_KEY, MODAL_HISTORY_STATE_KEY, type OverlayCallbacks } from '@/declaration';
 import { ModalHistoryStore } from './../modal-history-store';
 import { OverlayCallbackStore } from './../overlay-callback-store';
 
@@ -160,7 +160,10 @@ describe('ModalHistoryStore', () => {
 
         await pressBack();
 
-        expect(pushState).toHaveBeenLastCalledWith({ [MODAL_HISTORY_STATE_KEY]: 'second' }, '');
+        expect(pushState).toHaveBeenLastCalledWith(
+            { [MODAL_HISTORY_STATE_KEY]: 'second', [MODAL_HISTORY_DEPTH_KEY]: 1 },
+            '',
+        );
         expect(go).toHaveBeenCalledTimes(1);
     });
 
@@ -197,6 +200,28 @@ describe('ModalHistoryStore', () => {
         // then
         expect(go).toHaveBeenCalledWith(-1);
         expect(onBottomBack).not.toHaveBeenCalled();
+    });
+
+    it('앞으로가기는 남아 있는 부모 모달을 닫지 않는다', async () => {
+        // given
+        const onParentBack = vi.fn(() => true);
+        openOverlay('parent', onParentBack);
+        store.push('parent');
+        openOverlay('child', () => true);
+        store.push('child');
+        await pressBack();
+        vi.spyOn(window.history, 'state', 'get').mockReturnValue({
+            [MODAL_HISTORY_STATE_KEY]: 'child',
+            [MODAL_HISTORY_DEPTH_KEY]: 2,
+        });
+        go.mockClear();
+
+        // when
+        await pressBack();
+
+        // then
+        expect(onParentBack).not.toHaveBeenCalled();
+        expect(go).toHaveBeenCalledWith(-1);
     });
 
     it('beforeClose 대기 중 추가 뒤로가기는 이전 페이지에 entry를 쌓지 않는다', async () => {
