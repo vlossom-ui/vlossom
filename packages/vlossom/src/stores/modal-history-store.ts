@@ -63,10 +63,16 @@ export class ModalHistoryStore {
             return;
         }
 
+        if (entry.closing) {
+            this.rewinding = true;
+            window.history.go(1);
+            return;
+        }
+
         entry.popped = true;
         const overlays = this.overlayCallbackStore.overlays.value;
         const topModal = [...overlays].reverse().find(([, callbacks]) => callbacks.value[MODAL_BACK]);
-        if (topModal?.[0] !== entry.id || entry.closing) {
+        if (topModal?.[0] !== entry.id) {
             this.restore(entry);
             return;
         }

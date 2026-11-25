@@ -198,4 +198,31 @@ describe('ModalHistoryStore', () => {
         expect(go).toHaveBeenCalledWith(-1);
         expect(onBottomBack).not.toHaveBeenCalled();
     });
+
+    it('beforeClose 대기 중 추가 뒤로가기는 이전 페이지에 entry를 쌓지 않는다', async () => {
+        // given
+        let resolveClose!: (result: boolean) => void;
+        openOverlay(
+            'modal',
+            () =>
+                new Promise<boolean>((resolve) => {
+                    resolveClose = resolve;
+                }),
+        );
+        store.push('modal');
+        window.dispatchEvent(new PopStateEvent('popstate'));
+        pushState.mockClear();
+        go.mockClear();
+
+        // when
+        window.dispatchEvent(new PopStateEvent('popstate'));
+
+        // then
+        expect(go).toHaveBeenCalledWith(1);
+        expect(pushState).not.toHaveBeenCalled();
+
+        resolveClose(false);
+        await new Promise((resolve) => setTimeout(resolve));
+        expect(pushState).toHaveBeenCalledTimes(1);
+    });
 });
