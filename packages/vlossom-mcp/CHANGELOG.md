@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-mcp-v0.14.0...vlossom-mcp-v0.15.0) (2026-11-25)
+
+
+### Features
+
+* **VsBreadcrumb:** add VsBreadcrumb component ([#721](https://github.com/vlossom-ui/vlossom/issues/721)) ([bd765fa](https://github.com/vlossom-ui/vlossom/commit/bd765fa46a63449e8450e17f3038194735083c35))
+
 ## [0.14.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-mcp-v0.13.1...vlossom-mcp-v0.14.0) (2026-05-21)
 
 
