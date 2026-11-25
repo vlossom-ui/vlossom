@@ -8,13 +8,21 @@ describe('ModalHistoryStore', () => {
     const overlayCallbackStore = new OverlayCallbackStore();
     let store: ModalHistoryStore;
     let listener: EventListener;
+    let historyStack: unknown[] = [];
 
     function openOverlay(id: string, onBack?: () => boolean | Promise<boolean>) {
         const callbacks: OverlayCallbacks = onBack ? { [MODAL_BACK]: onBack } : {};
         overlayCallbackStore.push(id, ref(callbacks));
     }
 
+    function leaveCurrentEntry() {
+        if (historyStack.length > 1) {
+            historyStack.pop();
+        }
+    }
+
     async function pressBack() {
+        leaveCurrentEntry();
         window.dispatchEvent(new PopStateEvent('popstate'));
         await new Promise((resolve) => setTimeout(resolve));
     }
@@ -32,7 +40,11 @@ describe('ModalHistoryStore', () => {
             addListener(event, handler, options);
         });
         overlayCallbackStore.clear();
-        pushState = vi.spyOn(window.history, 'pushState').mockImplementation(() => undefined);
+        historyStack = [window.history.state];
+        pushState = vi.spyOn(window.history, 'pushState').mockImplementation((state) => {
+            historyStack.push(state);
+        });
+        vi.spyOn(window.history, 'state', 'get').mockImplementation(() => historyStack[historyStack.length - 1]);
         go = vi.spyOn(window.history, 'go').mockImplementation(() => undefined);
     });
 
@@ -177,6 +189,7 @@ describe('ModalHistoryStore', () => {
                 }),
         );
         store.push('modal');
+        leaveCurrentEntry();
         window.dispatchEvent(new PopStateEvent('popstate'));
         store.release('modal');
         rejectClose(false);
@@ -200,6 +213,18 @@ describe('ModalHistoryStore', () => {
         // then
         expect(go).toHaveBeenCalledWith(-1);
         expect(onBottomBack).not.toHaveBeenCalled();
+    });
+
+    it('현재 history가 모달 entry가 아니면 라우트 이동을 되감지 않는다', () => {
+        // given
+        store.push('modal');
+        historyStack.push({ current: '/detail' });
+
+        // when
+        store.release('modal');
+
+        // then
+        expect(go).not.toHaveBeenCalled();
     });
 
     it('앞으로가기는 남아 있는 부모 모달을 닫지 않는다', async () => {
@@ -235,11 +260,13 @@ describe('ModalHistoryStore', () => {
                 }),
         );
         store.push('modal');
+        leaveCurrentEntry();
         window.dispatchEvent(new PopStateEvent('popstate'));
         pushState.mockClear();
         go.mockClear();
 
         // when
+        leaveCurrentEntry();
         window.dispatchEvent(new PopStateEvent('popstate'));
 
         // then

@@ -40,20 +40,30 @@ export class ModalHistoryStore {
 
         // A lower modal can close first. Rewind its entry once everything above it has closed.
         let count = 0;
+        let topId: string | undefined;
+
         while (this.entries.length && !this.entries[this.entries.length - 1].active) {
             const entry = this.entries.pop()!;
             if (!entry.popped) {
+                if (topId == null) {
+                    topId = entry.id;
+                }
+
                 count++;
             }
         }
-        if (count) {
+
+        // A route change replaces the modal entry. Rewinding would undo that navigation.
+        if (count && window.history.state?.[MODAL_HISTORY_STATE_KEY] === topId) {
             this.rewinding = true;
             window.history.go(-count);
             return;
         }
+
         for (const id of this.pendingPushes.splice(0)) {
             this.push(id);
         }
+
         if (!this.entries.length) {
             window.removeEventListener('popstate', this.handleBack);
         }
