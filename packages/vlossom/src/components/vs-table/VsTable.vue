@@ -3,12 +3,12 @@
         <vs-grid v-if="search || $slots['toolbar']" class="vs-table-toolbar" :column-gap="'1rem'">
             <vs-responsive
                 class="vs-table-toolbar-start"
-                :grid="{ md: search ? 9 : 12, lg: search ? 10 : 12 }"
+                :grid="{ sm: search ? 7 : 12, md: search ? 9 : 12, lg: search ? 10 : 12 }"
                 :style="componentStyleSet.$toolbar"
             >
                 <slot name="toolbar" />
             </vs-responsive>
-            <vs-responsive v-if="search" class="vs-table-search-input" :grid="{ md: 3, lg: 2 }">
+            <vs-responsive v-if="search" class="vs-table-search-input" :grid="{ sm: 5, md: 3, lg: 2 }">
                 <vs-search-input
                     ref="searchInputRef"
                     v-bind="searchOptions"
@@ -405,7 +405,7 @@ export default defineComponent({
             hasExpandSlot.value = !!slots.expand;
         });
         const showExpand: ComputedRef<boolean> = computed(() => anyExpandable.value && hasExpandSlot.value);
-        const { gridTemplateColumns } = useTableGridTemplateComposable(columns, {
+        const { gridTemplateColumns, isFitContent } = useTableGridTemplateComposable(columns, {
             drag: isDraggable,
             select: anySelectable,
             expand: showExpand,
@@ -413,6 +413,8 @@ export default defineComponent({
 
         const classObj = computed(() => ({
             'vs-table-responsive': responsive.value,
+            // responsive는 container-type 때문에 내용 기반 폭을 가질 수 없다
+            'vs-table-fit': isFitContent.value && !responsive.value,
             'vs-primary': primary.value,
             [sizeClass.value]: !!sizeClass.value,
         }));
