@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ref } from 'vue';
-import { MODAL_BACK, type OverlayCallbacks } from '@/declaration';
+import { MODAL_BACK, MODAL_HISTORY_STATE_KEY, type OverlayCallbacks } from '@/declaration';
 import { ModalHistoryStore } from './../modal-history-store';
 import { OverlayCallbackStore } from './../overlay-callback-store';
 
@@ -160,7 +160,7 @@ describe('ModalHistoryStore', () => {
 
         await pressBack();
 
-        expect(pushState).toHaveBeenLastCalledWith({ __vlossomModalId: 'second' }, '');
+        expect(pushState).toHaveBeenLastCalledWith({ [MODAL_HISTORY_STATE_KEY]: 'second' }, '');
         expect(go).toHaveBeenCalledTimes(1);
     });
 

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { MODAL_HISTORY_STATE_KEY } from '../../../declaration/constants';
 
 async function establishHistoryBaseline(page: Page): Promise<void> {
     await page.evaluate(() => {
@@ -88,7 +89,7 @@ test.describe('모달 backClose', () => {
         await page.getByTestId('open-protected-stack').click();
         await expect(page.getByTestId('stack-top')).toBeVisible();
         const state = await readState(page);
-        expect(state.__vlossomModalId).toBeTruthy();
+        expect(state[MODAL_HISTORY_STATE_KEY]).toBeTruthy();
         await page.goBack();
         await expect.poll(() => readState(page)).toEqual(state);
         await expect(page.getByTestId('stack-bottom')).toBeVisible();
@@ -153,7 +154,7 @@ test.describe('모달 backClose', () => {
         await page.getByTestId('open-reject-modal').click();
         await expect(page.getByText('Rejecting modal', { exact: true })).toBeVisible();
         const modalState = await readState(page);
-        expect(modalState.__vlossomModalId).toBeTruthy();
+        expect(modalState[MODAL_HISTORY_STATE_KEY]).toBeTruthy();
 
         await page.goBack();
 
