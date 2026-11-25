@@ -52,7 +52,7 @@
     /* ── Table structure ──
        행은 subgrid로 table의 컬럼 트랙을 공유한다. */
     .vs-table-table {
-        @apply mx-auto grid min-w-full;
+        @apply grid min-w-full;
     }
 
     .vs-table-thead,
@@ -198,11 +198,12 @@
 
     /* ── Handle cells ── */
 
+    /* drag, select 셀은 오른쪽 padding을 줄이고 둘을 같게 두어 첫 컬럼과의 간격을 맞춘다. */
     .vs-table-th.vs-table-drag-handle,
-    .vs-table-td.vs-table-drag-handle {
-        @apply pr-0;
-        padding-left: var(--vs-table-cell-padding-x);
-        width: calc(var(--vs-table-cell-padding-x) + 1rem);
+    .vs-table-td.vs-table-drag-handle,
+    .vs-table-th.vs-table-select-handle,
+    .vs-table-td.vs-table-select-handle {
+        padding-right: calc(var(--vs-table-cell-padding-x) * 0.5);
     }
 
     .vs-table-th.vs-table-drag-handle svg {
@@ -238,9 +239,16 @@
     }
 
     /* ── Pagination ── */
+
+    /* 한 줄에 들어가지 않으면 info와 pagination이 위아래로 떨어진다. */
     .vs-table-pagination {
-        @apply flex items-center justify-between py-3;
+        @apply flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3;
         container-type: inline-size;
+
+        /* 컨테이너보다 길면 page 버튼 영역이 스스로 스크롤된다. */
+        > .vs-pagination {
+            @apply ml-auto max-w-full min-w-0;
+        }
     }
 
     .vs-table-pagination-info {
@@ -258,6 +266,12 @@
     }
 
     /* ── Modifiers ── */
+
+    /* flexible 컬럼이 없으면 toolbar, pagination까지 컬럼 폭의 합에 맞춘다. */
+    &.vs-table-fit {
+        @apply w-fit max-w-full;
+    }
+
     &.vs-table-responsive {
         @apply w-full;
         container-type: inline-size;

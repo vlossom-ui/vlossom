@@ -209,6 +209,17 @@ describe('VsTable', () => {
             expect(wrapper.classes()).toContain('vs-table-responsive');
             expect(wrapper.classes()).not.toContain('vs-responsive');
         });
+
+        it('모든 컬럼이 고정폭이면 vs-table-fit 클래스를 붙이고, responsive나 flexible 컬럼이 있으면 붙이지 않는다', () => {
+            const fixed = [
+                { key: 'name', label: 'name', width: 100 },
+                { key: 'age', label: 'age', width: 100 },
+            ];
+
+            expect(mountTable({ props: { columns: fixed } }).classes()).toContain('vs-table-fit');
+            expect(mountTable({ props: { columns: fixed, responsive: true } }).classes()).not.toContain('vs-table-fit');
+            expect(mountTable({ props: { columns: [fixed[0], 'age'] } }).classes()).not.toContain('vs-table-fit');
+        });
     });
 
     describe('empty', () => {
@@ -1417,7 +1428,8 @@ describe('VsTable', () => {
                 'grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr)',
             );
             expect(tracksOf(full)).toContain(
-                'grid-template-columns: auto auto minmax(max-content, 1fr) minmax(max-content, 1fr) auto',
+                'grid-template-columns: max-content max-content ' +
+                    'minmax(max-content, 1fr) minmax(max-content, 1fr) max-content',
             );
         });
     });

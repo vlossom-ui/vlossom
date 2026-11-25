@@ -4,7 +4,7 @@
             <GripVerticalIcon />
         </td>
 
-        <td v-if="showSelect" class="vs-table-td" :style="cellStyle" @click.stop="toggleSelect(!selected, $event)">
+        <td v-if="showSelect" class="vs-table-td vs-table-select-handle" :style="cellStyle" @click.stop="toggleSelect(!selected, $event)">
             <slot v-if="$slots['select']" name="select" :item :value="selected" :rowIdx="index" />
             <vs-checkbox
                 v-else-if="selectable"
