@@ -4,6 +4,7 @@
             <vs-modal-node
                 v-for="modal in modals"
                 :key="modal.id"
+                :back-close="modal.backClose"
                 :before-close="modal.beforeClose"
                 :color-scheme="modal.colorScheme"
                 :container="modal.container"

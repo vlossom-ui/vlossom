@@ -1,0 +1,152 @@
+import { MODAL_BACK, MODAL_HISTORY_DEPTH_KEY, MODAL_HISTORY_STATE_KEY } from '@/declaration';
+import { logUtil } from '@/utils';
+import type { OverlayCallbackStore } from './overlay-callback-store';
+
+interface ModalHistoryEntry {
+    id: string;
+    depth: number;
+    active: boolean;
+    popped: boolean;
+    closing: boolean;
+}
+
+export class ModalHistoryStore {
+    private entries: ModalHistoryEntry[] = [];
+    private rewinding = false;
+    private pendingPushes: string[] = [];
+
+    constructor(private overlayCallbackStore: OverlayCallbackStore) {}
+
+    private pushState(id: string, depth: number): void {
+        window.history.pushState(
+            {
+                ...window.history.state,
+                [MODAL_HISTORY_STATE_KEY]: id,
+                [MODAL_HISTORY_DEPTH_KEY]: depth,
+            },
+            '',
+        );
+    }
+
+    private restore(entry: ModalHistoryEntry): void {
+        this.pushState(entry.id, entry.depth);
+        entry.popped = false;
+    }
+
+    private syncHistory(): void {
+        if (this.rewinding) {
+            return;
+        }
+
+        // A lower modal can close first. Rewind its entry once everything above it has closed.
+        let count = 0;
+        let topId: string | undefined;
+
+        while (this.entries.length && !this.entries[this.entries.length - 1].active) {
+            const entry = this.entries.pop()!;
+            if (!entry.popped) {
+                if (topId == null) {
+                    topId = entry.id;
+                }
+
+                count++;
+            }
+        }
+
+        // A route change replaces the modal entry. Rewinding would undo that navigation.
+        if (count && window.history.state?.[MODAL_HISTORY_STATE_KEY] === topId) {
+            this.rewinding = true;
+            window.history.go(-count);
+            return;
+        }
+
+        for (const id of this.pendingPushes.splice(0)) {
+            this.push(id);
+        }
+
+        if (!this.entries.length) {
+            window.removeEventListener('popstate', this.handleBack);
+        }
+    }
+
+    private handleBack = async (): Promise<void> => {
+        if (this.rewinding) {
+            this.rewinding = false;
+            this.syncHistory();
+            return;
+        }
+
+        const entry = this.entries[this.entries.length - 1];
+        if (!entry) {
+            return;
+        }
+
+        const stateDepth = window.history.state?.[MODAL_HISTORY_DEPTH_KEY];
+
+        if (typeof stateDepth === 'number' && stateDepth > entry.depth) {
+            this.rewinding = true;
+            window.history.go(-1);
+            return;
+        }
+        if (window.history.state?.[MODAL_HISTORY_STATE_KEY] === entry.id) {
+            return;
+        }
+
+        if (entry.closing) {
+            this.rewinding = true;
+            window.history.go(1);
+            return;
+        }
+
+        entry.popped = true;
+        const overlays = this.overlayCallbackStore.overlays.value;
+        const topModal = [...overlays].reverse().find(([, callbacks]) => callbacks.value[MODAL_BACK]);
+        if (topModal?.[0] !== entry.id) {
+            this.restore(entry);
+            return;
+        }
+
+        entry.closing = true;
+        try {
+            if ((await this.overlayCallbackStore.run<boolean>(entry.id, MODAL_BACK)) === true) {
+                entry.active = false;
+            }
+        } catch {
+            logUtil.error('ModalHistoryStore', 'Modal back-close callback failed.');
+        } finally {
+            entry.closing = false;
+            if (entry.active && entry.popped) {
+                this.restore(entry);
+            }
+            this.syncHistory();
+        }
+    };
+
+    public push(id: string): void {
+        if (typeof window === 'undefined' || !window.history?.pushState || !window.history?.go) {
+            return;
+        }
+        if (this.rewinding) {
+            this.pendingPushes.push(id);
+            return;
+        }
+        // A beforeClose hook can open a confirmation while its own entry is popped.
+        const parent = this.entries[this.entries.length - 1];
+        if (parent?.active && parent.popped) {
+            this.restore(parent);
+        }
+        const depth = this.entries.length + 1;
+        this.pushState(id, depth);
+        this.entries.push({ id, depth, active: true, popped: false, closing: false });
+        window.addEventListener('popstate', this.handleBack);
+    }
+
+    public release(id: string): void {
+        this.pendingPushes = this.pendingPushes.filter((pending) => pending !== id);
+        const entry = this.entries.find((item) => item.active && item.id === id);
+        if (entry) {
+            entry.active = false;
+            this.syncHistory();
+        }
+    }
+}

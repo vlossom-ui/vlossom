@@ -13,6 +13,7 @@
 - 확인(또는 입력창에서 Enter 키) 시 입력 값을 반환하고, 취소(또는 Escape 키) 시 `null`을 반환합니다
 - resolve 전에 입력의 유효성을 검사합니다 — 유효성 검사 실패 시 모달이 열린 상태로 유지됩니다
 - 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
+- 브라우저 뒤로가기로 닫으면 Promise는 `null`로 완료됩니다. `backClose: false`로 뒤로가기 닫기를 끌 수 있습니다.
 - 커스텀 버튼 텍스트, 버튼 순서 교체, `$buttons` CSSProperties로 버튼 컨테이너 스타일링을 지원합니다
 - Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
 - 기본 너비는 `27rem`이며, `size`로 변경할 수 있습니다

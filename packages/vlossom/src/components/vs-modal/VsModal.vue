@@ -30,6 +30,7 @@ export default defineComponent({
             type: Function as PropType<() => Promise<boolean> | boolean>,
             default: undefined,
         },
+        backClose: { type: Boolean, default: false },
         container: { type: String, default: 'body' },
         draggable: { type: Boolean, default: false },
         escClose: { type: Boolean, default: false },

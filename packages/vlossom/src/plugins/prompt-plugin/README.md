@@ -13,6 +13,7 @@ Displays a modal dialog with an input field and OK / Cancel buttons. Returns a `
 - Returns the input value on OK (or Enter in the input) and `null` on Cancel (or Escape key)
 - Validates input before resolving — if validation fails, the modal stays open
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
+- Browser Back closes the dialog and resolves the promise with `null`. Pass `backClose: false` to disable it.
 - Supports custom button text, button order swap, and button container styling via `$buttons` CSSProperties
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
 - Opens with a width of `27rem` by default; pass `size` to change it

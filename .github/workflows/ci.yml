@@ -88,6 +88,37 @@ jobs:
               working-directory: ./packages/vlossom
               run: pnpm test
 
+    vlossom-e2e:
+        timeout-minutes: 15
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - name: Install pnpm
+              uses: pnpm/action-setup@v6
+              with:
+                  version: 10
+            - uses: actions/setup-node@v7
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom/pnpm-lock.yaml
+            - name: Install dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install --frozen-lockfile
+            - name: Install Playwright Chromium
+              working-directory: ./packages/vlossom
+              run: pnpm exec playwright install --with-deps chromium
+            - name: Run E2E tests
+              working-directory: ./packages/vlossom
+              run: pnpm e2e
+            - name: Upload Playwright traces
+              if: failure()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: vlossom-playwright-traces
+                  path: packages/vlossom/test-results/
+                  retention-days: 7
+
     vlossom-docs-build:
         timeout-minutes: 10
         runs-on: ubuntu-latest

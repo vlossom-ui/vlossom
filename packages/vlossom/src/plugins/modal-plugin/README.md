@@ -104,6 +104,26 @@ function closeModal() {
 </script>
 ```
 
+### Closing with Browser Back
+
+Set `backClose: true` to close the modal instead of navigating away when the browser back button is pressed:
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+
+const $vs = useVlossom();
+
+function openModal() {
+    $vs.modal.open('This modal closes on browser back.', {
+        backClose: true,
+    });
+}
+</script>
+```
+
+Browser back applies to the topmost modal. Non-modal overlays such as select dropdowns, drawers, and tooltips do not block it, so the modal still closes when one of them is open above it. If a modal without `backClose` is stacked above, the back navigation is cancelled and the modal below stays open. Closing the modal with ESC, dim click, `close`, `closeWithId`, or `clear` also rewinds its history entry. If `beforeClose` returns `false`, the modal stays open and its history entry is restored.
+
 ### Locking Scroll
 
 Set `scrollLock: true` to lock the page (`body`) scroll while the modal is open:
@@ -158,6 +178,7 @@ interface ModalOptions {
     colorScheme?: ColorScheme;
     styleSet?: string | VsModalNodeStyleSet;
     callbacks?: OverlayCallbacks;
+    backClose?: boolean;
     dimClose?: boolean;
     dimmed?: boolean;
     draggable?: boolean;

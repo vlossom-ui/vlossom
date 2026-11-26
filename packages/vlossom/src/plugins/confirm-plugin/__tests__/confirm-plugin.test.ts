@@ -74,6 +74,12 @@ describe('confirm-plugin', () => {
         expect(passedOptions.escClose).toBe(false);
     });
 
+    it('backClose의 기본값을 명시적으로 끌 수 있다', () => {
+        const plugin = createConfirmPlugin(modalPlugin);
+        plugin.open('message', { backClose: false });
+        expect(modalPlugin.open).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ backClose: false }));
+    });
+
     it('size를 지정하지 않으면 기본 다이얼로그 너비로 모달을 연다', () => {
         const confirmPlugin = createConfirmPlugin(modalPlugin);
         confirmPlugin.open('계속 진행하시겠습니까?');

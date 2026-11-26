@@ -8,6 +8,7 @@ export interface ModalOptions {
     colorScheme?: ColorScheme;
     styleSet?: string | VsModalNodeStyleSet;
     callbacks?: OverlayCallbacks;
+    backClose?: boolean;
     dimClose?: boolean;
     dimmed?: boolean;
     draggable?: boolean;
