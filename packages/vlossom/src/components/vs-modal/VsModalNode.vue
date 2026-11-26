@@ -35,11 +35,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, toRefs, type ComputedRef, type PropType } from 'vue';
-import { MODAL_BACK, OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
-import { useColorScheme, useMessages, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
 import { computed, defineComponent, onMounted, onUnmounted, ref, toRefs, type ComputedRef, type PropType } from 'vue';
-import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
+import { MODAL_BACK, OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
 import {
     useColorScheme,
     useDraggable,
