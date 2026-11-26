@@ -1,17 +1,19 @@
 import { expect, test, type Page } from '@playwright/test';
 import { MODAL_HISTORY_STATE_KEY } from '../../../declaration/constants';
 
+const fixturePath = '/e2e/index.html?fixture=modal-back-close';
+
 async function establishHistoryBaseline(page: Page): Promise<void> {
-    await page.evaluate(() => {
-        window.history.pushState({ e2eBase: true }, '', '/e2e/modal-back-close.html#e2e-base');
-    });
+    await page.evaluate((path) => {
+        window.history.pushState({ e2eBase: true }, '', `${path}#e2e-base`);
+    }, fixturePath);
 }
 
 const readState = (page: Page) => page.evaluate(() => history.state);
 
 test.describe('모달 backClose', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto('/e2e/modal-back-close.html');
+        await page.goto(fixturePath);
         await establishHistoryBaseline(page);
     });
 

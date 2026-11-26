@@ -15,7 +15,7 @@ export default defineConfig({
     },
     webServer: {
         command: 'pnpm dev:e2e',
-        url: 'http://127.0.0.1:4174',
+        url: 'http://127.0.0.1:4174/e2e/index.html',
         reuseExistingServer: !process.env.CI,
     },
 });
