@@ -21,5 +21,6 @@ export interface VsModalNodeRef extends ComponentPublicInstance<typeof VsModalNo
 export interface VsModalViewRef extends ComponentPublicInstance<typeof VsModalView> {}
 
 export interface VsModalNodeStyleSet extends CSSProperties {
+    $content?: CSSProperties;
     $dimmed?: VsDimmedStyleSet;
 }

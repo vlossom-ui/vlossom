@@ -13,6 +13,7 @@
 - 접근성 있는 키보드 탐색을 위한 포커스 트래핑
 - `layout` prop을 통한 `VsLayout` 통합 opt-in — 설정 시 헤더/푸터 높이를 자동 오프셋하고, 컨테이너 패딩 계산에도 반영
 - 부드러운 슬라이드 인/아웃 트랜지션 애니메이션
+- `resizable`로 안쪽 변을 마우스로 드래그해 크기 조절 가능하며, `minSize` / `maxSize`로 범위 제한
 - `v-model` 또는 `openDrawer` / `closeDrawer` 메서드로 제어 가능
 
 ## 기본 사용법
@@ -60,6 +61,25 @@ const drawerOpen = ref(false);
         <vs-button @click="open = false">닫기</vs-button>
     </vs-drawer>
 </template>
+```
+
+### 크기 조절 드로어
+
+`resizable`을 설정하면 드로어의 안쪽 변(`left` 드로어는 오른쪽 변, `bottom` 드로어는 위쪽 변 등)을 드래그해 크기를 바꿀 수 있습니다. 크기는 `minSize`와 `maxSize` 사이로 제한되며, `maxSize`가 없으면 드로어 영역을 넘지 않습니다. 드래그한 크기를 픽셀 값으로 읽거나 유지하려면 `v-model:size`를 바인딩합니다.
+
+```html live
+<template>
+    <vs-button @click="open = true">드로어 열기</vs-button>
+    <vs-drawer v-model="open" v-model:size="size" resizable min-size="160px" max-size="60%">
+        <p>현재 크기: {{ size }}</p>
+    </vs-drawer>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const open = ref(false);
+const size = ref('240px');
+</script>
 ```
 
 ### VsLayout 내부에서 사용
@@ -117,6 +137,9 @@ const drawerOpen = ref(false);
 | `pushContainer` | `PushContainer`                          | `false`      |      | `layout`과 함께 사용 시 드로어가 `VsContainer`를 옆으로 밀어 공간을 확보 (overlay 대신). `'responsive'`이면 `VsLayout` 너비 480px 이상에서만 밀어냄 |
 | `placement`     | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'`     |      | 드로어가 슬라이드 인되는 가장자리 방향                                                                                                              |
 | `size`          | `string \| number`                       |              |      | 드로어 패널의 너비(left/right) 또는 높이(top/bottom). 크기 토큰(`xs`, `sm`, `md`, `lg`, `xl`) 또는 CSS 값 허용                                      |
+| `resizable`     | `boolean`                                | `false`      |      | 안쪽 변을 드래그해 드로어 크기 조절 허용                                                                                                            |
+| `minSize`       | `string \| number`                       |              |      | 크기 조절 시 최소 크기. `size`와 같은 값 허용                                                                                                       |
+| `maxSize`       | `string \| number`                       |              |      | 크기 조절 시 최대 크기. `size`와 같은 값 허용. 기본값은 드로어 영역 크기                                                                            |
 | `modelValue`    | `boolean`                                | `false`      |      | 열기 상태를 제어하는 v-model 바인딩                                                                                                                 |
 
 ## 타입
@@ -161,12 +184,13 @@ interface VsDrawerStyleSet extends CSSProperties {
 
 ## 이벤트
 
-| 이벤트              | 페이로드  | 설명                       |
-| ------------------- | --------- | -------------------------- |
-| `update:modelValue` | `boolean` | 열기 상태가 변경될 때 발생 |
-| `open`              | -         | 드로어가 열릴 때 발생      |
-| `close`             | -         | 드로어가 닫힐 때 발생      |
-| `click-dimmed`      | -         | 딤드 배경이 클릭될 때 발생 |
+| 이벤트              | 페이로드  | 설명                                             |
+| ------------------- | --------- | ------------------------------------------------ |
+| `update:modelValue` | `boolean` | 열기 상태가 변경될 때 발생                       |
+| `update:size`       | `number`  | 크기 조절 중 새 크기를 픽셀 값으로 전달하며 발생 |
+| `open`              | -         | 드로어가 열릴 때 발생                            |
+| `close`             | -         | 드로어가 닫힐 때 발생                            |
+| `click-dimmed`      | -         | 딤드 배경이 클릭될 때 발생                       |
 
 ## 슬롯
 

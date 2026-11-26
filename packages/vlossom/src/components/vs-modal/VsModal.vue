@@ -32,6 +32,7 @@ export default defineComponent({
         },
         backClose: { type: Boolean, default: false },
         container: { type: String, default: 'body' },
+        draggable: { type: Boolean, default: false },
         escClose: { type: Boolean, default: false },
         scrollLock: { type: [Boolean, String] as PropType<boolean | string>, default: false },
         size: {

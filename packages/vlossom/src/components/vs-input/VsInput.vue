@@ -46,9 +46,9 @@
                 type="button"
                 class="vs-clear-button"
                 :aria-label="optionMessages.VS_ARIA_INPUT_CLEAR"
-                :class="{ show: !isEmpty }"
-                :disabled="isEmpty"
-                :tabindex="isEmpty ? -1 : 0"
+                :class="{ show: hasContent }"
+                :disabled="!hasContent"
+                :tabindex="hasContent ? 0 : -1"
                 @click.stop="clearWithFocus"
             >
                 <XIcon class="vs-clear-icon" />
@@ -174,6 +174,9 @@ export default defineComponent({
         }
 
         const isEmpty = computed(() => isEmptyValue(inputValue.value));
+        // number input: non-numeric text makes target.value '' while the text stays visible
+        const hasBadInput = ref(false);
+        const hasContent = computed(() => !isEmpty.value || hasBadInput.value);
 
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type, isEmptyValue);
 
@@ -235,6 +238,10 @@ export default defineComponent({
                     },
                     onClear: () => {
                         inputValue.value = computedEmptyValue.value;
+                        hasBadInput.value = false;
+                        if (inputRef.value) {
+                            inputRef.value.value = '';
+                        }
                     },
                 },
             },
@@ -253,7 +260,7 @@ export default defineComponent({
         const { stateBoxClasses } = useStateClass(computedState);
 
         const renderClearButton = computed(
-            () => !isEmpty.value && !noClear.value && !computedReadonly.value && !computedDisabled.value,
+            () => hasContent.value && !noClear.value && !computedReadonly.value && !computedDisabled.value,
         );
 
         const computedPlaceholder: ComputedRef<string> = computed(() => {
@@ -265,6 +272,7 @@ export default defineComponent({
 
         function onInput(event: Event) {
             const target = event.target as HTMLInputElement;
+            hasBadInput.value = !!target.validity?.badInput;
             const value = target.value || '';
             inputValue.value = convertValue(value);
         }
@@ -308,6 +316,7 @@ export default defineComponent({
             componentInlineStyle,
             inputValue,
             isEmpty,
+            hasContent,
             computedMessages,
             computedDisabled,
             computedReadonly,

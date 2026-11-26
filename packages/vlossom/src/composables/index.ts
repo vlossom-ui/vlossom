@@ -1,5 +1,6 @@
 export * from './click-outside/click-outside-composable';
 export * from './color-scheme/color-scheme-composable';
+export * from './draggable/draggable-composable';
 export * from './file-rules/file-rules-composable';
 export * from './focusable/focusable-composable';
 export * from './grouped-items/grouped-items-composable';
@@ -16,6 +17,7 @@ export * from './option-list/option-list-composable';
 export * from './overlay-callback/overlay-callback-composable';
 export * from './overlay-dom/overlay-dom-composable';
 export * from './positioning/positioning-composable';
+export * from './resizable/resizable-composable';
 export * from './scroll-lock/scroll-lock-composable';
 export * from './size-class/size-class-composable';
 export * from './state-class/state-class-composable';

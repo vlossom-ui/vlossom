@@ -4,6 +4,7 @@ import { h, nextTick } from 'vue';
 import { logUtil } from '@/utils';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 import VsPagination from '@/components/vs-pagination/VsPagination.vue';
+import VsSelect from '@/components/vs-select/VsSelect.vue';
 import VsTable from './../VsTable.vue';
 import type { VsTableCell, VsTableColumnDef, VsTableItem } from './../types';
 
@@ -27,39 +28,6 @@ const draggableStub = {
 };
 
 const defaultStubs = {
-    'vs-checkbox': true,
-    'vs-button': { template: '<button data-testid="vs-button"><slot /></button>' },
-    'vs-expandable': { props: ['open'], template: '<div v-if="open" data-testid="vs-expandable"><slot /></div>' },
-    'vs-pagination': {
-        props: ['modelValue', 'length', 'showingLength', 'edgeButtons', 'disabled'],
-        emits: ['update:modelValue'],
-        template: `<button data-testid="vs-pagination" :disabled="!!disabled" :data-length="length"
-            @click="$emit('update:modelValue', modelValue + 1)">Pagination</button>`,
-    },
-    'vs-select': {
-        props: ['modelValue', 'options', 'disabled'],
-        emits: ['update:modelValue'],
-        template: '<select data-testid="vs-select" :disabled="!!disabled"></select>',
-    },
-    // 검색 필터는 VsSearchInput.match()에 위임하므로, stub도 keyword를 들고 match를 제공한다
-    'vs-search-input': {
-        props: ['disabled'],
-        emits: ['search'],
-        data() {
-            return { debouncedText: '' };
-        },
-        template: '<input data-testid="search-input" :disabled="disabled" @input="onInput" />',
-        methods: {
-            onInput(event: Event) {
-                (this as any).debouncedText = (event.target as HTMLInputElement).value;
-                (this as any).$emit('search', (this as any).debouncedText);
-            },
-            match(text: string) {
-                const keyword = (this as any).debouncedText;
-                return !keyword || String(text).toLowerCase().includes(String(keyword).toLowerCase());
-            },
-        },
-    },
     draggable: draggableStub,
     vuedraggable: draggableStub,
 };
@@ -87,6 +55,18 @@ const rowNamesOf = (wrapper: ReturnType<typeof mount>) =>
 const lastEmit = (wrapper: ReturnType<typeof mount>, event: string) => {
     const emitted = wrapper.emitted(event);
     return emitted?.[emitted.length - 1];
+};
+// VsSearchInput은 입력값을 debounce한 뒤에 검색어로 반영한다
+const searchTable = async (wrapper: ReturnType<typeof mount>, keyword: string) => {
+    vi.useFakeTimers();
+    await wrapper.get('.vs-search-input input').setValue(keyword);
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+    await flushPromises();
+};
+const moveToPage = async (wrapper: ReturnType<typeof mount>, page: number) => {
+    await wrapper.findComponent(VsPagination).findAll('.vs-page-button')[page].trigger('click');
+    await flushPromises();
 };
 
 describe('VsTable', () => {
@@ -208,6 +188,17 @@ describe('VsTable', () => {
 
             expect(wrapper.classes()).toContain('vs-table-responsive');
             expect(wrapper.classes()).not.toContain('vs-responsive');
+        });
+
+        it('모든 컬럼이 고정폭이면 vs-table-fit 클래스를 붙이고, responsive나 flexible 컬럼이 있으면 붙이지 않는다', () => {
+            const fixed = [
+                { key: 'name', label: 'name', width: 100 },
+                { key: 'age', label: 'age', width: 100 },
+            ];
+
+            expect(mountTable({ props: { columns: fixed } }).classes()).toContain('vs-table-fit');
+            expect(mountTable({ props: { columns: fixed, responsive: true } }).classes()).not.toContain('vs-table-fit');
+            expect(mountTable({ props: { columns: [fixed[0], 'age'] } }).classes()).not.toContain('vs-table-fit');
         });
     });
 
@@ -525,7 +516,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({ props: { search: true } });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('Alice');
+            await searchTable(wrapper, 'Alice');
 
             const [items, searchText] = lastEmit(wrapper, 'search') as [VsTableItem[], string];
             expect(searchText).toBe('Alice');
@@ -571,7 +562,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({ props: { selectable: true, search: true } });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            await searchTable(wrapper, 'Bob');
             await wrapper.get('thead th').trigger('click');
 
             expect(lastEmit(wrapper, 'update:selectedItems')).toEqual([[tableItems[1]]]);
@@ -605,7 +596,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({ props: { selectable, search: true } });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            await searchTable(wrapper, 'Bob');
             selectable.mockClear();
             await wrapper.get('tbody tr td').trigger('click');
 
@@ -623,10 +614,7 @@ describe('VsTable', () => {
         });
 
         it('실제 체크박스를 클릭해도 선택 상태가 토글된다', async () => {
-            const wrapper = mount(VsTable, {
-                props: { columns: defaultColumns, items: tableItems, itemKey: 'id', selectable: true },
-                global: { stubs: { ...defaultStubs, 'vs-checkbox': false } },
-            });
+            const wrapper = mountTable({ props: { itemKey: 'id', selectable: true } });
 
             await nextTick();
             const checkbox = wrapper.find('tbody input[type="checkbox"]');
@@ -663,7 +651,7 @@ describe('VsTable', () => {
 
             await expandButtons[0].trigger('click');
 
-            expect(wrapper.find('[data-testid="vs-expandable"]').text()).toBe('0-Alice');
+            expect(wrapper.find('.vs-expandable-content').text()).toBe('0-Alice');
         });
 
         it('expand 슬롯이 없으면 확장 UI를 렌더링하지 않는다', async () => {
@@ -690,15 +678,15 @@ describe('VsTable', () => {
             const vm = wrapper.vm as unknown as { expand: (index: number) => void; collapse: (index: number) => void };
 
             await nextTick();
-            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+            expect(wrapper.find('.vs-expandable-content').exists()).toBe(false);
 
             vm.expand(0);
             await nextTick();
-            expect(wrapper.find('[data-testid="vs-expandable"]').text()).toBe('Alice');
+            expect(wrapper.find('.vs-expandable-content').text()).toBe('Alice');
 
             vm.collapse(0);
             await nextTick();
-            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+            expect(wrapper.find('.vs-expandable-content').exists()).toBe(false);
         });
 
         it('없는 index나 expandable하지 않은 행은 expand(index)로 펼쳐지지 않는다', async () => {
@@ -714,7 +702,7 @@ describe('VsTable', () => {
             vm.expand(1);
             await nextTick();
 
-            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+            expect(wrapper.find('.vs-expandable-content').exists()).toBe(false);
         });
     });
 
@@ -765,7 +753,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({ props: { search: true } });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            await searchTable(wrapper, 'Bob');
 
             expect(rowNamesOf(wrapper)).toEqual(['Bob']);
         });
@@ -786,7 +774,7 @@ describe('VsTable', () => {
             });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('hidden');
+            await searchTable(wrapper, 'hidden');
 
             expect(rowNamesOf(wrapper)).toEqual([]);
         });
@@ -804,7 +792,7 @@ describe('VsTable', () => {
             });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('vip');
+            await searchTable(wrapper, 'vip');
 
             expect(rowNamesOf(wrapper)).toEqual(['Alice']);
         });
@@ -819,7 +807,7 @@ describe('VsTable', () => {
             });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('24세');
+            await searchTable(wrapper, '24세');
 
             expect(bodyTextsOf(wrapper)).toEqual(['24세']);
         });
@@ -837,8 +825,8 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(true);
-            expect(wrapper.find('[data-testid="vs-select"]').exists()).toBe(true);
+            expect(wrapper.findComponent(VsPagination).exists()).toBe(true);
+            expect(wrapper.findComponent(VsSelect).exists()).toBe(true);
         });
 
         it('기본 pageSize(50)만큼만 렌더링한다', async () => {
@@ -853,7 +841,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({ props: { items: manyItems, pagination: true, pageSize: 50 } });
 
             await nextTick();
-            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+            await moveToPage(wrapper, 1);
 
             expect(lastEmit(wrapper, 'update:page')).toEqual([1]);
             expect(lastEmit(wrapper, 'paginate')).toEqual([1, 50]);
@@ -861,23 +849,14 @@ describe('VsTable', () => {
         });
 
         it('page size를 변경하면 page를 0으로 리셋하고 paginate를 한 번만 발생시킨다', async () => {
-            const wrapper = mountTable({
-                props: { items: manyItems, pagination: true },
-                stubs: {
-                    'vs-select': {
-                        props: ['modelValue', 'options'],
-                        emits: ['update:modelValue'],
-                        template: `<button data-testid="vs-select"
-                            @click="$emit('update:modelValue', 100)" />`,
-                    },
-                },
-            });
+            const wrapper = mountTable({ props: { items: manyItems, pagination: true } });
 
             await nextTick();
-            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+            await moveToPage(wrapper, 1);
             const paginateCount = wrapper.emitted('paginate')?.length ?? 0;
 
-            await wrapper.get('[data-testid="vs-select"]').trigger('click');
+            wrapper.findComponent(VsSelect).vm.$emit('update:modelValue', 100);
+            await flushPromises();
 
             expect(wrapper.emitted('paginate')).toHaveLength(paginateCount + 1);
             expect(lastEmit(wrapper, 'paginate')).toEqual([0, 100]);
@@ -887,7 +866,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({ props: { items: manyItems, pagination: true, page: 0, pageSize: 50 } });
 
             await nextTick();
-            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+            await moveToPage(wrapper, 1);
 
             expect(lastEmit(wrapper, 'update:page')).toEqual([1]);
 
@@ -911,7 +890,14 @@ describe('VsTable', () => {
         });
 
         it('page와 pageSize prop이 주어지면 해당 페이지를 렌더링한다', async () => {
-            const wrapper = mountTable({ props: { items: manyItems, pagination: true, page: 2, pageSize: 10 } });
+            const wrapper = mountTable({
+                props: {
+                    items: manyItems,
+                    pagination: { pageSizeOptions: [{ label: '10', value: 10 }] },
+                    page: 2,
+                    pageSize: 10,
+                },
+            });
 
             await nextTick();
 
@@ -952,7 +938,7 @@ describe('VsTable', () => {
                 await nextTick();
                 const paginateCount = wrapper.emitted('paginate')?.length ?? 0;
 
-                await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+                await moveToPage(wrapper, 1);
                 expect(lastEmit(wrapper, 'update:page')).toEqual([1]);
 
                 await wrapper.setProps({ page: 1 });
@@ -968,7 +954,7 @@ describe('VsTable', () => {
 
                 await nextTick();
 
-                expect(wrapper.find('[data-testid="vs-pagination"]').attributes('data-length')).toBe('10');
+                expect(wrapper.findComponent(VsPagination).props('length')).toBe(10);
             });
 
             it('client-side pagination을 수행하지 않고 전달된 items를 모두 렌더링한다', async () => {
@@ -1000,7 +986,7 @@ describe('VsTable', () => {
 
                 await nextTick();
 
-                expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(false);
+                expect(wrapper.findComponent(VsPagination).exists()).toBe(false);
             });
         });
 
@@ -1008,14 +994,17 @@ describe('VsTable', () => {
             const items25 = manyItems.slice(0, 25);
             const mountPagedTable = (props: Record<string, unknown>) =>
                 mountTable({
-                    props: { pagination: true, pageSize: 10, ...props },
-                    stubs: { 'vs-pagination': false },
+                    props: {
+                        pagination: {
+                            pageSizeOptions: [
+                                { label: '10', value: 10 },
+                                { label: '50', value: 50 },
+                            ],
+                        },
+                        pageSize: 10,
+                        ...props,
+                    },
                 });
-            const moveToPage = async (wrapper: VueWrapper, page: number) => {
-                await wrapper.findComponent(VsPagination).findAll('.vs-page-button')[page].trigger('click');
-                await flushPromises();
-            };
-
             it('items가 줄어 page가 범위를 벗어나면 가장 가까운 page로 맞추고 그 page의 행을 보여준다', async () => {
                 const wrapper = mountPagedTable({ items: items25 });
                 await flushPromises();
@@ -1115,7 +1104,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({ props: { search: true } });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            await searchTable(wrapper, 'Bob');
 
             expect(lastEmit(wrapper, 'update:pagedItems')).toEqual([[tableItems[1]]]);
             expect(lastEmit(wrapper, 'update:totalItems')).toEqual([[tableItems[1]]]);
@@ -1151,7 +1140,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({ props: { search: true } });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('nobody');
+            await searchTable(wrapper, 'nobody');
 
             expect(lastEmit(wrapper, 'update:totalItems')).toEqual([[]]);
             expect(lastEmit(wrapper, 'update:pagedItems')).toEqual([[]]);
@@ -1216,7 +1205,7 @@ describe('VsTable', () => {
             const wrapper = mount(Parent, { global: { stubs: defaultStubs } });
 
             await nextTick();
-            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            await searchTable(wrapper, 'Bob');
             await nextTick();
 
             expect(onUpdateTotalItems).toHaveBeenLastCalledWith([tableItems[1]]);
@@ -1368,12 +1357,12 @@ describe('VsTable', () => {
             await wrapper.get('tbody tr td').trigger('click');
             await wrapper.get('tbody tr button').trigger('click');
             expect(wrapper.findAll('tbody tr')[0].classes()).toContain('vs-selected');
-            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(true);
+            expect(wrapper.find('.vs-expandable-content').exists()).toBe(true);
 
             await wrapper.setProps({ items: tableItems.map((item) => ({ ...item })) });
 
             expect(wrapper.findAll('tbody tr')[0].classes()).toContain('vs-selected');
-            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(true);
+            expect(wrapper.find('.vs-expandable-content').exists()).toBe(true);
         });
     });
 
@@ -1417,7 +1406,8 @@ describe('VsTable', () => {
                 'grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr)',
             );
             expect(tracksOf(full)).toContain(
-                'grid-template-columns: auto auto minmax(max-content, 1fr) minmax(max-content, 1fr) auto',
+                'grid-template-columns: max-content max-content ' +
+                    'minmax(max-content, 1fr) minmax(max-content, 1fr) max-content',
             );
         });
     });
@@ -1508,7 +1498,7 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            expect(wrapper.find('[data-testid="search-input"]').attributes('disabled')).toBeDefined();
+            expect(wrapper.find('.vs-search-input input').attributes('disabled')).toBeDefined();
         });
 
         it('페이지네이션을 비활성화한다', async () => {
@@ -1517,7 +1507,9 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            expect(wrapper.find('[data-testid="vs-pagination"]').attributes('disabled')).toBeDefined();
+            const pageButtons = wrapper.findComponent(VsPagination).findAll('button');
+            expect(pageButtons.length).toBeGreaterThan(0);
+            expect(pageButtons.every((button) => button.attributes('disabled') !== undefined)).toBe(true);
         });
 
         it('데이터가 있던 셀을 무너지지 않는 높이의 스켈레톤으로 대체한다', async () => {

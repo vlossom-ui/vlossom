@@ -60,6 +60,60 @@
             height: var(--vs-drawer-size);
         }
     }
+
+    .vs-drawer-resize-handle {
+        @apply absolute z-10;
+        transition: background-color 0.15s ease-in-out;
+        background-color: transparent;
+
+        touch-action: none;
+
+        &:hover {
+            background-color: var(--vs-cs-border-strong);
+        }
+    }
+
+    &.vs-drawer-resizing {
+        .vs-drawer-content {
+            user-select: none;
+        }
+
+        .vs-drawer-resize-handle {
+            background-color: var(--vs-cs-border-strong);
+        }
+    }
+
+    .vs-drawer-left > .vs-drawer-resize-handle,
+    .vs-drawer-right > .vs-drawer-resize-handle {
+        @apply top-0 bottom-0;
+
+        cursor: col-resize;
+        width: 6px;
+    }
+
+    .vs-drawer-top > .vs-drawer-resize-handle,
+    .vs-drawer-bottom > .vs-drawer-resize-handle {
+        @apply right-0 left-0;
+
+        cursor: row-resize;
+        height: 6px;
+    }
+
+    .vs-drawer-left > .vs-drawer-resize-handle {
+        right: -3px;
+    }
+
+    .vs-drawer-right > .vs-drawer-resize-handle {
+        left: -3px;
+    }
+
+    .vs-drawer-top > .vs-drawer-resize-handle {
+        bottom: -3px;
+    }
+
+    .vs-drawer-bottom > .vs-drawer-resize-handle {
+        top: -3px;
+    }
 }
 
 .drawer-enter-active .vs-drawer-content,

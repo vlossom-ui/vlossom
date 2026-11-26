@@ -6,8 +6,10 @@
     gap: 0.5rem;
 
     .vs-page-buttons {
-        @apply flex items-center justify-center overflow-x-auto select-none;
+        @apply flex items-center overflow-x-auto select-none;
 
+        /* 넘칠 때 왼쪽이 잘려 스크롤로도 닿지 않는 것을 막는다. */
+        justify-content: safe center;
         gap: 0.5rem;
         margin-block: -4px;
         padding-block: 4px;

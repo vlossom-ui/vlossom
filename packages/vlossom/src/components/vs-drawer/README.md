@@ -13,6 +13,7 @@ A slide-in panel component that overlays content from any edge of the screen wit
 - Focus trapping for accessible keyboard navigation
 - Opt-in `VsLayout` integration via the `layout` prop — when set, offsets header/footer heights automatically and registers itself for container padding
 - Smooth slide-in/out transition animation
+- Optional mouse-drag resizing from the inner edge with `resizable`, bounded by `minSize` / `maxSize`
 - Controllable via `v-model` or programmatic `openDrawer` / `closeDrawer` methods
 
 ## Basic Usage
@@ -60,6 +61,25 @@ const drawerOpen = ref(false);
         <vs-button @click="open = false">Close</vs-button>
     </vs-drawer>
 </template>
+```
+
+### Resizable Drawer
+
+Set `resizable` to drag the inner edge (the right edge of a `left` drawer, the top edge of a `bottom` drawer, and so on) to change the size. The size stays between `minSize` and `maxSize`; without `maxSize`, it cannot exceed the drawer area. Bind `v-model:size` to read or keep the dragged size in pixels.
+
+```html live
+<template>
+    <vs-button @click="open = true">Open Drawer</vs-button>
+    <vs-drawer v-model="open" v-model:size="size" resizable min-size="160px" max-size="60%">
+        <p>Current size: {{ size }}</p>
+    </vs-drawer>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const open = ref(false);
+const size = ref('240px');
+</script>
 ```
 
 ### Inside VsLayout
@@ -117,6 +137,9 @@ Pass `'responsive'` to push the container only while the parent `VsLayout` is at
 | `pushContainer` | `PushContainer`                          | `false`      |          | When used with `layout`, push the sibling `VsContainer` to make room for the drawer instead of overlaying it. With `'responsive'`, it only pushes while the `VsLayout` is at least 480px wide |
 | `placement`     | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'`     |          | Edge from which the drawer slides in                                                                                                                                                          |
 | `size`          | `string \| number`                       |              |          | Width (left/right) or height (top/bottom) of the drawer panel. Accepts size tokens (`xs`, `sm`, `md`, `lg`, `xl`) or CSS values                                                               |
+| `resizable`     | `boolean`                                | `false`      |          | Allow resizing the drawer by dragging its inner edge                                                                                                                                          |
+| `minSize`       | `string \| number`                       |              |          | Minimum size while resizing. Accepts the same values as `size`                                                                                                                                |
+| `maxSize`       | `string \| number`                       |              |          | Maximum size while resizing. Accepts the same values as `size`. Defaults to the drawer area                                                                                                   |
 | `modelValue`    | `boolean`                                | `false`      |          | v-model binding to control open state                                                                                                                                                         |
 
 ## Types
@@ -161,12 +184,13 @@ interface VsDrawerStyleSet extends CSSProperties {
 
 ## Events
 
-| Event               | Payload   | Description                                 |
-| ------------------- | --------- | ------------------------------------------- |
-| `update:modelValue` | `boolean` | Emitted when the open state changes         |
-| `open`              | -         | Emitted when the drawer opens               |
-| `close`             | -         | Emitted when the drawer closes              |
-| `click-dimmed`      | -         | Emitted when the dimmed backdrop is clicked |
+| Event               | Payload   | Description                                        |
+| ------------------- | --------- | -------------------------------------------------- |
+| `update:modelValue` | `boolean` | Emitted when the open state changes                |
+| `update:size`       | `number`  | Emitted with the new size in pixels while resizing |
+| `open`              | -         | Emitted when the drawer opens                      |
+| `close`             | -         | Emitted when the drawer closes                     |
+| `click-dimmed`      | -         | Emitted when the dimmed backdrop is clicked        |
 
 ## Slots
 

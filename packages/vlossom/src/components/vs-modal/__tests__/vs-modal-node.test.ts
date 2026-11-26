@@ -91,7 +91,20 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentInlineStyle).toMatchObject({ containerType: 'inline-size' });
+            expect(wrapper.vm.componentStyleSet.$content).toMatchObject({ containerType: 'inline-size' });
+            expect(wrapper.vm.componentInlineStyle).not.toHaveProperty('containerType');
+        });
+
+        it('styleSet의 $content는 query container 설정과 합쳐져 콘텐츠 영역에 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsModalNode, {
+                props: { size: 'md', styleSet: { padding: '1rem', $content: { padding: '3rem' } } },
+            });
+
+            // then
+            expect(wrapper.vm.componentInlineStyle).toMatchObject({ padding: '1rem' });
+            expect(wrapper.vm.componentStyleSet.$content).toEqual({ padding: '3rem', containerType: 'inline-size' });
+            expect(wrapper.find('.vs-modal-content').attributes('style')).toContain('padding: 3rem');
         });
 
         it.each([undefined, { width: 'auto', height: '400px' }, { width: 'fit-content' }])(
@@ -103,7 +116,7 @@ describe('VsModalNode', () => {
                 });
 
                 // then
-                expect(wrapper.vm.componentInlineStyle).not.toHaveProperty('containerType');
+                expect(wrapper.vm.componentStyleSet.$content).toBeUndefined();
             },
         );
     });

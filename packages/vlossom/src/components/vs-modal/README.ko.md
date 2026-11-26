@@ -12,6 +12,7 @@ Vlossom 모달 플러그인을 통해 오버레이 레이어에 콘텐츠를 렌
 - 설정 가능한 컨테이너 요소(기본: `body`)로 콘텐츠를 텔레포트합니다.
 - 딤드 오버레이 배경, 포커스 잠금, ESC 키 닫기, 딤 클릭 닫기를 지원합니다.
 - `scroll-lock`으로 페이지 스크롤 또는 CSS 선택자로 지정한 특정 스크롤 컨테이너를 잠글 수 있습니다.
+- `draggable`을 지정하면 상단 중앙의 그립 핸들을 드래그해 모달을 옮길 수 있습니다.
 - 사전 정의된 크기 키워드(`xs`, `sm`, `md`, `lg`, `xl`) 또는 커스텀 값으로 너비를 설정할 수 있으며, 높이는 명시하지 않으면 콘텐츠에 맞춰집니다.
 - 라이프사이클 훅을 위한 `open` 및 `close` 이벤트를 발생시킵니다.
 - 컴포넌트가 언마운트되거나 `KeepAlive` 안에서 비활성화되면 열려 있는 모달을 제거합니다. 다시 활성화될 때 `v-model`이 여전히 `true`이면 모달을 다시 엽니다.
@@ -91,6 +92,21 @@ const isOpen = ref(false);
 </template>
 ```
 
+### 드래그 이동
+
+`draggable`을 지정하면 모달 상단 중앙에 그립 핸들이 표시됩니다. 마우스나 터치로 핸들을 드래그하면 컨테이너 안에서 모달을 옮길 수 있습니다.
+
+```html live
+<template>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
+
+    <vs-modal v-model="isOpen" :draggable="true" size="sm">
+        <div>상단 핸들을 드래그해 옮겨 보세요.</div>
+        <vs-button @click="isOpen = false">닫기</vs-button>
+    </vs-modal>
+</template>
+```
+
 ### Before Close Hook
 
 ```html live
@@ -160,6 +176,7 @@ const isOpen = ref(false);
 | `beforeClose` | `() => Promise<boolean> \| boolean`                                                                   | -        | -        | 모달이 닫히기 전에 호출되는 훅. `false`를 반환하면 닫기를 취소합니다. `$vs.modal.clear()` 호출 시에는 무시됩니다. |
 | `backClose`   | `boolean`                                                                                             | `false`  | -        | 최상단 모달일 때 브라우저 뒤로가기를 누르면 모달을 닫습니다.                                                   |
 | `container`   | `string`                                                                                              | `'body'` | -        | 모달을 텔레포트할 요소의 CSS 선택자.                                                                              |
+| `draggable`   | `boolean`                                                                                             | `false`  | -        | 상단 중앙에 그립 핸들을 표시하고, 핸들을 드래그하면 컨테이너 안에서 모달을 옮깁니다.                              |
 | `escClose`    | `boolean`                                                                                             | `false`  | -        | ESC 키를 누르면 모달을 닫습니다.                                                                                  |
 | `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | 키워드 또는 커스텀 값으로 모달 너비를 설정합니다. 높이는 객체로 지정하며, 생략하면 콘텐츠에 맞춰집니다.           |
 | `callbacks`   | `OverlayCallbacks`                                                                                    | `{}`     | -        | 오버레이 콜백 핸들러.                                                                                             |
@@ -174,11 +191,13 @@ const isOpen = ref(false);
 
 ```typescript
 interface VsModalNodeStyleSet extends CSSProperties {
+    $content?: CSSProperties;
     $dimmed?: VsDimmedStyleSet;
 }
 ```
 
 > [!NOTE]
+> 루트 스타일 셋은 모달 박스(크기, 테두리, 배경, 모서리, 그림자)에 적용됩니다. `$content`는 그 안의 스크롤되는 콘텐츠 영역에 적용되며, 기본 padding은 이 영역이 가집니다.
 > `$dimmed`는 `VsDimmedStyleSet`을 사용합니다. 자세한 내용은 [VsDimmed README](../vs-dimmed/README.md)를 참고하세요.
 
 ### StyleSet 사용 예시
@@ -192,10 +211,12 @@ interface VsModalNodeStyleSet extends CSSProperties {
         :dimmed="true"
         :style-set="{
             borderRadius: '16px',
-            padding: '2rem',
             backgroundColor: '#fff',
             color: '#1f2937',
             boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+            $content: {
+                padding: '2rem',
+            },
             $dimmed: {
                 backgroundColor: 'rgba(0,0,0,0.6)',
             },
@@ -224,5 +245,9 @@ interface VsModalNodeStyleSet extends CSSProperties {
 ## Caution
 
 `VsModal`은 Vue 애플리케이션에 Vlossom 플러그인이 설치되어 있어야 합니다. 모달 콘텐츠는 `$vs.modal.open()`을 통해 마운트되고 `container` 요소로 텔레포트됩니다.
+
+padding은 루트 스타일 셋 대신 `$content`로 지정하세요. 기본 padding은 콘텐츠 영역에 있으므로, 루트에 `padding`을 주면 그 바깥에 여백이 더해지고 스크롤바가 모달 가장자리에서 떨어집니다.
+
+`draggable`을 지정하면 핸들이 콘텐츠 영역 위에 별도의 줄로 놓이고, 콘텐츠 영역의 상단 padding은 기본적으로 제거됩니다. 핸들은 마우스와 터치 전용이며 포커스를 받지 않습니다. 드래그로 옮긴 위치는 모달을 열 때마다 초기화됩니다.
 
 `size`가 지정된 모달은 query container이므로, 내부의 [브레이크포인트](../vs-responsive/README.md#breakpoints)는 모달 너비를 따릅니다. `size`가 없거나 너비가 `auto`, `fit-content`처럼 콘텐츠 기준인 모달은 콘텐츠에 맞춰 크기가 정해지므로 query container가 아닙니다.
