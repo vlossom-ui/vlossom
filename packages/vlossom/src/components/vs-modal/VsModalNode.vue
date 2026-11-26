@@ -212,7 +212,6 @@ export default defineComponent({
         onMounted(openModalNode);
         onUnmounted(() => {
             scrollLockApi?.unlock();
-            modalHistoryStore.release(computedId.value);
         });
 
         return {
